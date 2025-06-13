@@ -1,0 +1,51 @@
+<!-- スペック　-->
+<div class="slots d-flex">
+    <div class="now-san slot">
+        <h3>現在SAN値</h3>
+        <div class="slot-txt">
+            <input type="number" name="current_san" class="current_san">
+            <span style="padding-left: 5px;">/
+                <input type="number" name="max_san" class="readonly _02 max_san" readonly>
+            </span>
+        </div>
+    </div>
+    <div class="db slot">
+        <h3>ダメ―ジボーナス</h3>
+        <div class="slot-txt">
+            <input type="text" name="damage_bonus" class="readonly _02" readonly>
+        </div>
+    </div>
+    <div class="jobp slot">
+        <h3>職業P</h3>
+        <div class="slot-txt">
+            <input type="number" name="job_points_used" class="readonly _02 auto-resize" readonly id="field1">
+            <span>/
+                <input type="number" name="job_points_total" class="readonly auto-resize _02" readonly
+                    style="min-width: 45px;"></span>
+            <br>
+            <select name="job_points_formula" onchange="updateJobPointsFormula()" class="job-point">
+                <option value="edu20">EDU×20</option>
+                <option value="edu10_str10">EDU×10+STR×10</option>
+                <option value="edu10_con10">EDU×10+CON×10</option>
+                <option value="edu10_pow10">EDU×10+POW×10</option>
+                <option value="edu10_dex10">EDU×10+DEX×10</option>
+                <option value="edu10_app10">EDU×10+APP×10</option>
+                <option value="edu10_siz10">EDU×10+SIZ×10</option>
+                <option value="edu10_int10">EDU×10+INT×10</option>
+                <option value="manual">手動入力</option>
+            </select></span>
+        </div>
+    </div>
+    <div class="intp slot">
+        <h3>興味P</h3>
+        <div class="slot-txt">
+            <input type="number" name="interest_points_used" class="readonly _02 auto-resize" readonly>
+            <span>/
+                <input type="number" name="interest_points_total" class="readonly _02 auto-resize" readonly>
+                <br>
+                <span class="interest-point">追加分 ：
+                    <input type="number" name="interest_points_extra" oninput="updateInterestPoints()"
+                        class="_02 nterest_points_extra" placeholder="-"></span></span>
+        </div>
+    </div>
+</div>

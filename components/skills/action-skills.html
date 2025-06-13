@@ -1,0 +1,246 @@
+<h3><i class="fas fa-running"></i> 行動技能</h3>
+<ul>
+    <li class="d-flex skill-li skill-head">
+        <div class="growth">成長</div>
+        <div class="title">技能名</div>
+        <div class="total">合計<span class="pc-only">値</span></div>
+        <div class="breakdown"><span class="pc-only">初期値</span><span class="sp-only">初期</span>|<span
+                class="pc-only">職業P</span><span class="sp-only">職業</span>|<span class="pc-only">興味P</span><span
+                class="sp-only">興味</span>|<span>成長</span>|<span class="pc-only">その他</span><span class="sp-only">他</span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">運転<br class="sp-only"> <input type="text" name="drive_specialty" placeholder="" class="free">
+        </div>
+        <div class="total">
+            <input type="number" name="drive_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="drive_initial" class="readonly _02" readonly value="20">
+            </span>|<span class="atai">
+                <input type="number" name="drive_job" oninput="updateSkillTotal('drive')">
+            </span>|<span class="atai">
+                <input type="number" name="drive_interest" oninput="updateSkillTotal('drive')">
+            </span>|<span class="atai">
+                <input type="number" name="drive_growth" oninput="updateSkillTotal('drive')">
+            </span>|<span class="atai">
+                <input type="number" name="drive_other" oninput="updateSkillTotal('drive')">
+            </span>
+        </div>
+    </li>
+
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">機械修理</div>
+        <div class="total">
+            <input type="number" name="mechanical_repair_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="mechanical_repair_initial" class="readonly _02" readonly value="20">
+            </span>|<span class="atai">
+                <input type="number" name="mechanical_repair_job" oninput="updateSkillTotal('mechanical_repair')">
+            </span>|<span class="atai">
+                <input type="number" name="mechanical_repair_interest" oninput="updateSkillTotal('mechanical_repair')">
+            </span>|<span class="atai">
+                <input type="number" name="mechanical_repair_growth" oninput="updateSkillTotal('mechanical_repair')">
+            </span>|<span class="atai">
+                <input type="number" name="mechanical_repair_other" oninput="updateSkillTotal('mechanical_repair')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">重機械操作</div>
+        <div class="total">
+            <input type="number" name="heavy_machinery_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="heavy_machinery_initial" class="readonly _02" readonly value="1">
+            </span>|<span class="atai">
+                <input type="number" name="heavy_machinery_job" oninput="updateSkillTotal('heavy_machinery')">
+            </span>|<span class="atai">
+                <input type="number" name="heavy_machinery_interest" oninput="updateSkillTotal('heavy_machinery')">
+            </span>|<span class="atai">
+                <input type="number" name="heavy_machinery_growth" oninput="updateSkillTotal('heavy_machinery')">
+            </span>|<span class="atai">
+                <input type="number" name="heavy_machinery_other" oninput="updateSkillTotal('heavy_machinery')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">乗馬</div>
+        <div class="total">
+            <input type="number" name="ride_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="ride_initial" class="readonly _02" readonly value="5">
+            </span>|<span class="atai">
+                <input type="number" name="ride_job" oninput="updateSkillTotal('ride')">
+            </span>|<span class="atai">
+                <input type="number" name="ride_interest" oninput="updateSkillTotal('ride')">
+            </span>|<span class="atai">
+                <input type="number" name="ride_growth" oninput="updateSkillTotal('ride')">
+            </span>|<span class="atai">
+                <input type="number" name="ride_other" oninput="updateSkillTotal('ride')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">水泳</div>
+        <div class="total">
+            <input type="number" name="swim_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="swim_initial" class="readonly _02" readonly value="25">
+            </span>|<span class="atai">
+                <input type="number" name="swim_job" oninput="updateSkillTotal('swim')">
+            </span>|<span class="atai">
+                <input type="number" name="swim_interest" oninput="updateSkillTotal('swim')">
+            </span>|<span class="atai">
+                <input type="number" name="swim_growth" oninput="updateSkillTotal('swim')">
+            </span>|<span class="atai">
+                <input type="number" name="swim_other" oninput="updateSkillTotal('swim')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">製作<br class="sp-only"> <input type="text" name="craft_specialty" placeholder="" class="free">
+        </div>
+        <div class="total">
+            <input type="number" name="craft_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="craft_initial" class="readonly _02" readonly value="5">
+            </span>|<span class="atai">
+                <input type="number" name="craft_job" oninput="updateSkillTotal('craft')">
+            </span>|<span class="atai">
+                <input type="number" name="craft_interest" oninput="updateSkillTotal('craft')">
+            </span>|<span class="atai">
+                <input type="number" name="craft_growth" oninput="updateSkillTotal('craft')">
+            </span>|<span class="atai">
+                <input type="number" name="craft_other" oninput="updateSkillTotal('craft')">
+            </span>
+        </div>
+    </li>
+
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">操縦 <br class="sp-only"><input type="text" name="pilot_specialty" placeholder="" class="free">
+        </div>
+        <div class="total">
+            <input type="number" name="pilot_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="pilot_initial" class="readonly _02" readonly value="1">
+            </span>|<span class="atai">
+                <input type="number" name="pilot_job" oninput="updateSkillTotal('pilot')">
+            </span>|<span class="atai">
+                <input type="number" name="pilot_interest" oninput="updateSkillTotal('pilot')">
+            </span>|<span class="atai">
+                <input type="number" name="pilot_growth" oninput="updateSkillTotal('pilot')">
+            </span>|<span class="atai">
+                <input type="number" name="pilot_other" oninput="updateSkillTotal('pilot')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">跳躍</div>
+        <div class="total">
+            <input type="number" name="jump_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="jump_initial" class="readonly _02" readonly value="25">
+            </span>|<span class="atai">
+                <input type="number" name="jump_job" oninput="updateSkillTotal('jump')">
+            </span>|<span class="atai">
+                <input type="number" name="jump_interest" oninput="updateSkillTotal('jump')">
+            </span>|<span class="atai">
+                <input type="number" name="jump_growth" oninput="updateSkillTotal('jump')">
+            </span>|<span class="atai">
+                <input type="number" name="jump_other" oninput="updateSkillTotal('jump')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">電気修理</div>
+        <div class="total">
+            <input type="number" name="electrical_repair_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="electrical_repair_initial" class="readonly _02" readonly value="10">
+            </span>|<span class="atai">
+                <input type="number" name="electrical_repair_job" oninput="updateSkillTotal('electrical_repair')">
+            </span>|<span class="atai">
+                <input type="number" name="electrical_repair_interest" oninput="updateSkillTotal('electrical_repair')">
+            </span>|<span class="atai">
+                <input type="number" name="electrical_repair_growth" oninput="updateSkillTotal('electrical_repair')">
+            </span>|<span class="atai">
+                <input type="number" name="electrical_repair_other" oninput="updateSkillTotal('electrical_repair')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">ナビゲート</div>
+        <div class="total">
+            <input type="number" name="navigate_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="navigate_initial" class="readonly _02" readonly value="10">
+            </span>|<span class="atai">
+                <input type="number" name="navigate_job" oninput="updateSkillTotal('navigate')">
+            </span>|<span class="atai">
+                <input type="number" name="navigate_interest" oninput="updateSkillTotal('navigate')">
+            </span>|<span class="atai">
+                <input type="number" name="navigate_growth" oninput="updateSkillTotal('navigate')">
+            </span>|<span class="atai">
+                <input type="number" name="navigate_other" oninput="updateSkillTotal('navigate')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">変装</div>
+        <div class="total">
+            <input type="number" name="disguise_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="disguise_initial" class="readonly _02" readonly value="1">
+            </span>|<span class="atai">
+                <input type="number" name="disguise_job" oninput="updateSkillTotal('disguise')">
+            </span>|<span class="atai">
+                <input type="number" name="disguise_interest" oninput="updateSkillTotal('disguise')">
+            </span>|<span class="atai">
+                <input type="number" name="disguise_growth" oninput="updateSkillTotal('disguise')">
+            </span>|<span class="atai">
+                <input type="number" name="disguise_other" oninput="updateSkillTotal('disguise')">
+            </span>
+        </div>
+    </li>
+
+    <!-- 追加行動技能の動的リスト -->
+    <span id="additional-action-skills">
+        <!-- 動的に追加される行動技能がここに表示されます -->
+    </span>
+</ul>
+<!-- 追加行動技能の管理ボタン -->
+<button type="button" onclick="addActionSkill()" class="add-btn">
+    <i class="fas fa-plus"></i> 行動技能を追加
+</button>

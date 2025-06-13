@@ -1,0 +1,144 @@
+<h3><i class="fas fa-american-sign-language-interpreting"></i> 交渉技能</h3>
+<ul>
+    <li class="d-flex skill-li skill-head">
+        <div class="growth">成長</div>
+        <div class="title">技能名</div>
+        <div class="total">合計<span class="pc-only">値</span></div>
+        <div class="breakdown"><span class="pc-only">初期値</span><span class="sp-only">初期</span>|<span
+                class="pc-only">職業P</span><span class="sp-only">職業</span>|<span class="pc-only">興味P</span><span
+                class="sp-only">興味</span>|<span>成長</span>|<span class="pc-only">その他</span><span class="sp-only">他</span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">言いくるめ</div>
+        <div class="total">
+            <input type="number" name="fast_talk_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="fast_talk_initial" class="readonly _02" readonly value="5">
+            </span>|<span class="atai">
+                <input type="number" name="fast_talk_job" oninput="updateSkillTotal('fast_talk')">
+            </span>|<span class="atai">
+                <input type="number" name="fast_talk_interest" oninput="updateSkillTotal('fast_talk')">
+            </span>|<span class="atai">
+                <input type="number" name="fast_talk_growth" oninput="updateSkillTotal('fast_talk')">
+            </span>|<span class="atai">
+                <input type="number" name="fast_talk_other" oninput="updateSkillTotal('fast_talk')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">説得</div>
+        <div class="total">
+            <input type="number" name="persuade_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="persuade_initial" class="readonly _02" readonly value="15">
+            </span>|<span class="atai">
+                <input type="number" name="persuade_job" oninput="updateSkillTotal('persuade')">
+            </span>|<span class="atai">
+                <input type="number" name="persuade_interest" oninput="updateSkillTotal('persuade')">
+            </span>|<span class="atai">
+                <input type="number" name="persuade_growth" oninput="updateSkillTotal('persuade')">
+            </span>|<span class="atai">
+                <input type="number" name="persuade_other" oninput="updateSkillTotal('persuade')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">信用</div>
+        <div class="total">
+            <input type="number" name="credit_rating_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="credit_rating_initial" class="readonly _02" readonly value="15">
+            </span>|<span class="atai">
+                <input type="number" name="credit_rating_job" oninput="updateSkillTotal('credit_rating')">
+            </span>|<span class="atai">
+                <input type="number" name="credit_rating_interest" oninput="updateSkillTotal('credit_rating')">
+            </span>|<span class="atai">
+                <input type="number" name="credit_rating_growth" oninput="updateSkillTotal('credit_rating')">
+            </span>|<span class="atai">
+                <input type="number" name="credit_rating_other" oninput="updateSkillTotal('credit_rating')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">値切り</div>
+        <div class="total">
+            <input type="number" name="bargain_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="bargain_initial" class="readonly _02" readonly value="5">
+            </span>|<span class="atai">
+                <input type="number" name="bargain_job" oninput="updateSkillTotal('bargain')">
+            </span>|<span class="atai">
+                <input type="number" name="bargain_interest" oninput="updateSkillTotal('bargain')">
+            </span>|<span class="atai">
+                <input type="number" name="bargain_growth" oninput="updateSkillTotal('bargain')">
+            </span>|<span class="atai">
+                <input type="number" name="bargain_other" oninput="updateSkillTotal('bargain')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">母国語 <br class="sp-only"><input type="text" name="mother_tongue_specialty" placeholder=""
+                class="free">
+        </div>
+        <div class="total">
+            <input type="number" name="mother_tongue_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="mother_tongue_initial" class="readonly _02" readonly>
+            </span>|<span class="atai">
+                <input type="number" name="mother_tongue_job" oninput="updateSkillTotal('mother_tongue')">
+            </span>|<span class="atai">
+                <input type="number" name="mother_tongue_interest" oninput="updateSkillTotal('mother_tongue')">
+            </span>|<span class="atai">
+                <input type="number" name="mother_tongue_growth" oninput="updateSkillTotal('mother_tongue')">
+            </span>|<span class="atai">
+                <input type="number" name="mother_tongue_other" oninput="updateSkillTotal('mother_tongue')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">外国語 <br class="sp-only"><input type="text" name="language_specialty" placeholder=""
+                class="free"></div>
+        <div class="total">
+            <input type="number" name="language_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="language_initial" class="readonly _02" readonly value="1">
+            </span>|<span class="atai">
+                <input type="number" name="language_job" oninput="updateSkillTotal('language')">
+            </span>|<span class="atai">
+                <input type="number" name="language_interest" oninput="updateSkillTotal('language')">
+            </span>|<span class="atai">
+                <input type="number" name="language_growth" oninput="updateSkillTotal('language')">
+            </span>|<span class="atai">
+                <input type="number" name="language_other" oninput="updateSkillTotal('language')">
+            </span>
+        </div>
+    </li>
+    <!-- 追加交渉技能の動的リスト -->
+    <span id="additional-negotiation-skills">
+        <!-- 動的に追加される交渉技能がここに表示されます -->
+    </span>
+
+</ul>
+<!-- 追加交渉技能の管理ボタン -->
+<button type="button" onclick="addNegotiationSkill()" class="add-btn">
+    <i class="fas fa-plus"></i> 交渉技能を追加
+</button>

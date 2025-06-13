@@ -1,0 +1,412 @@
+<h3><i class="fas fa-book"></i> 知識技能</h3>
+<ul>
+    <li class="d-flex skill-li skill-head">
+        <div class="growth">成長</div>
+        <div class="title">技能名</div>
+        <div class="total">合計<span class="pc-only">値</span></div>
+        <div class="breakdown"><span class="pc-only">初期値</span><span class="sp-only">初期</span>|<span
+                class="pc-only">職業P</span><span class="sp-only">職業</span>|<span class="pc-only">興味P</span><span
+                class="sp-only">興味</span>|<span>成長</span>|<span class="pc-only">その他</span><span class="sp-only">他</span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">医学</div>
+        <div class="total">
+            <input type="number" name="medicine_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="medicine_initial" class="readonly _02" readonly value="5">
+            </span>|<span class="atai">
+                <input type="number" name="medicine_job" oninput="updateSkillTotal('medicine')">
+            </span>|<span class="atai">
+                <input type="number" name="medicine_interest" oninput="updateSkillTotal('medicine')">
+            </span>|<span class="atai">
+                <input type="number" name="medicine_growth" oninput="updateSkillTotal('medicine')">
+            </span>|<span class="atai">
+                <input type="number" name="medicine_other" oninput="updateSkillTotal('medicine')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">オカルト</div>
+        <div class="total">
+            <input type="number" name="occult_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="occult_initial" class="readonly _02" readonly value="5">
+            </span>|<span class="atai">
+                <input type="number" name="occult_job" oninput="updateSkillTotal('occult')">
+            </span>|<span class="atai">
+                <input type="number" name="occult_interest" oninput="updateSkillTotal('occult')">
+            </span>|<span class="atai">
+                <input type="number" name="occult_growth" oninput="updateSkillTotal('occult')">
+            </span>|<span class="atai">
+                <input type="number" name="occult_other" oninput="updateSkillTotal('occult')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">化学</div>
+        <div class="total">
+            <input type="number" name="chemistry_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="chemistry_initial" class="readonly _02" readonly value="1">
+            </span>|<span class="atai">
+                <input type="number" name="chemistry_job" oninput="updateSkillTotal('chemistry')">
+            </span>|<span class="atai">
+                <input type="number" name="chemistry_interest" oninput="updateSkillTotal('chemistry')">
+            </span>|<span class="atai">
+                <input type="number" name="chemistry_growth" oninput="updateSkillTotal('chemistry')">
+            </span>|<span class="atai">
+                <input type="number" name="chemistry_other" oninput="updateSkillTotal('chemistry')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">クトゥルフ神話</div>
+        <div class="total">
+            <input type="number" name="cthulhu_mythos_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="cthulhu_mythos_initial" class="readonly _02" readonly value="0">
+            </span>|<span class="atai">
+                <input type="number" name="cthulhu_mythos_job" oninput="updateSkillTotal('cthulhu_mythos')">
+            </span>|<span class="atai">
+                <input type="number" name="cthulhu_mythos_interest" oninput="updateSkillTotal('cthulhu_mythos')">
+            </span>|<span class="atai">
+                <input type="number" name="cthulhu_mythos_growth" oninput="updateSkillTotal('cthulhu_mythos')">
+            </span>|<span class="atai">
+                <input type="number" name="cthulhu_mythos_other" oninput="updateSkillTotal('cthulhu_mythos')">
+            </span>
+        </div>
+    </li>
+
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">芸術 <br class="sp-only"><input type="text" name="art_specialty" placeholder="" class="free">
+        </div>
+        <div class="total">
+            <input type="number" name="art_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="art_initial" class="readonly _02" readonly value="5">
+            </span>|<span class="atai">
+                <input type="number" name="art_job" oninput="updateSkillTotal('art')">
+            </span>|<span class="atai">
+                <input type="number" name="art_interest" oninput="updateSkillTotal('art')">
+            </span>|<span class="atai">
+                <input type="number" name="art_growth" oninput="updateSkillTotal('art')">
+            </span>|<span class="atai">
+                <input type="number" name="art_other" oninput="updateSkillTotal('art')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">経理</div>
+        <div class="total">
+            <input type="number" name="accounting_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="accounting_initial" class="readonly _02" readonly value="10">
+            </span>|<span class="atai">
+                <input type="number" name="accounting_job" oninput="updateSkillTotal('accounting')">
+            </span>|<span class="atai">
+                <input type="number" name="accounting_interest" oninput="updateSkillTotal('accounting')">
+            </span>|<span class="atai">
+                <input type="number" name="accounting_growth" oninput="updateSkillTotal('accounting')">
+            </span>|<span class="atai">
+                <input type="number" name="accounting_other" oninput="updateSkillTotal('accounting')">
+            </span>
+        </div>
+    </li>
+
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">考古学</div>
+        <div class="total">
+            <input type="number" name="archaeology_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="archaeology_initial" class="readonly _02" readonly value="1">
+            </span>|<span class="atai">
+                <input type="number" name="archaeology_job" oninput="updateSkillTotal('archaeology')">
+            </span>|<span class="atai">
+                <input type="number" name="archaeology_interest" oninput="updateSkillTotal('archaeology')">
+            </span>|<span class="atai">
+                <input type="number" name="archaeology_growth" oninput="updateSkillTotal('archaeology')">
+            </span>|<span class="atai">
+                <input type="number" name="archaeology_other" oninput="updateSkillTotal('archaeology')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">コンピューター</div>
+        <div class="total">
+            <input type="number" name="computer_use_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="computer_use_initial" class="readonly _02" readonly value="1">
+            </span>|<span class="atai">
+                <input type="number" name="computer_use_job" oninput="updateSkillTotal('computer_use')">
+            </span>|<span class="atai">
+                <input type="number" name="computer_use_interest" oninput="updateSkillTotal('computer_use')">
+            </span>|<span class="atai">
+                <input type="number" name="computer_use_growth" oninput="updateSkillTotal('computer_use')">
+            </span>|<span class="atai">
+                <input type="number" name="computer_use_other" oninput="updateSkillTotal('computer_use')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">心理学</div>
+        <div class="total">
+            <input type="number" name="psychology_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="psychology_initial" class="readonly _02" readonly value="5">
+            </span>|<span class="atai">
+                <input type="number" name="psychology_job" oninput="updateSkillTotal('psychology')">
+            </span>|<span class="atai">
+                <input type="number" name="psychology_interest" oninput="updateSkillTotal('psychology')">
+            </span>|<span class="atai">
+                <input type="number" name="psychology_growth" oninput="updateSkillTotal('psychology')">
+            </span>|<span class="atai">
+                <input type="number" name="psychology_other" oninput="updateSkillTotal('psychology')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">人類学</div>
+        <div class="total">
+            <input type="number" name="anthropology_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="anthropology_initial" class="readonly _02" readonly value="1">
+            </span>|<span class="atai">
+                <input type="number" name="anthropology_job" oninput="updateSkillTotal('anthropology')">
+            </span>|<span class="atai">
+                <input type="number" name="anthropology_interest" oninput="updateSkillTotal('anthropology')">
+            </span>|<span class="atai">
+                <input type="number" name="anthropology_growth" oninput="updateSkillTotal('anthropology')">
+            </span>|<span class="atai">
+                <input type="number" name="anthropology_other" oninput="updateSkillTotal('anthropology')">
+            </span>
+        </div>
+    </li>
+
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">生物学</div>
+        <div class="total">
+            <input type="number" name="biology_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="biology_initial" class="readonly _02" readonly value="1">
+            </span>|<span class="atai">
+                <input type="number" name="biology_job" oninput="updateSkillTotal('biology')">
+            </span>|<span class="atai">
+                <input type="number" name="biology_interest" oninput="updateSkillTotal('biology')">
+            </span>|<span class="atai">
+                <input type="number" name="biology_growth" oninput="updateSkillTotal('biology')">
+            </span>|<span class="atai">
+                <input type="number" name="biology_other" oninput="updateSkillTotal('biology')">
+            </span>
+        </div>
+    </li>
+
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">地質学</div>
+        <div class="total">
+            <input type="number" name="geology_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="geology_initial" class="readonly _02" readonly value="1">
+            </span>|<span class="atai">
+                <input type="number" name="geology_job" oninput="updateSkillTotal('geology')">
+            </span>|<span class="atai">
+                <input type="number" name="geology_interest" oninput="updateSkillTotal('geology')">
+            </span>|<span class="atai">
+                <input type="number" name="geology_growth" oninput="updateSkillTotal('geology')">
+            </span>|<span class="atai">
+                <input type="number" name="geology_other" oninput="updateSkillTotal('geology')">
+            </span>
+        </div>
+    </li>
+
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">電子工学</div>
+        <div class="total">
+            <input type="number" name="electronics_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="electronics_initial" class="readonly _02" readonly value="1">
+            </span>|<span class="atai">
+                <input type="number" name="electronics_job" oninput="updateSkillTotal('electronics')">
+            </span>|<span class="atai">
+                <input type="number" name="electronics_interest" oninput="updateSkillTotal('electronics')">
+            </span>|<span class="atai">
+                <input type="number" name="electronics_growth" oninput="updateSkillTotal('electronics')">
+            </span>|<span class="atai">
+                <input type="number" name="electronics_other" oninput="updateSkillTotal('electronics')">
+            </span>
+        </div>
+    </li>
+
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">天文学</div>
+        <div class="total">
+            <input type="number" name="astronomy_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="astronomy_initial" class="readonly _02" readonly value="1">
+            </span>|<span class="atai">
+                <input type="number" name="astronomy_job" oninput="updateSkillTotal('astronomy')">
+            </span>|<span class="atai">
+                <input type="number" name="astronomy_interest" oninput="updateSkillTotal('astronomy')">
+            </span>|<span class="atai">
+                <input type="number" name="astronomy_growth" oninput="updateSkillTotal('astronomy')">
+            </span>|<span class="atai">
+                <input type="number" name="astronomy_other" oninput="updateSkillTotal('astronomy')">
+            </span>
+        </div>
+    </li>
+
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">博物学</div>
+        <div class="total">
+            <input type="number" name="natural_history_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="natural_history_initial" class="readonly _02" readonly value="10">
+            </span>|<span class="atai">
+                <input type="number" name="natural_history_job" oninput="updateSkillTotal('natural_history')">
+            </span>|<span class="atai">
+                <input type="number" name="natural_history_interest" oninput="updateSkillTotal('natural_history')">
+            </span>|<span class="atai">
+                <input type="number" name="natural_history_growth" oninput="updateSkillTotal('natural_history')">
+            </span>|<span class="atai">
+                <input type="number" name="natural_history_other" oninput="updateSkillTotal('natural_history')">
+            </span>
+        </div>
+    </li>
+
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">物理学</div>
+        <div class="total">
+            <input type="number" name="physics_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="physics_initial" class="readonly _02" readonly value="1">
+            </span>|<span class="atai">
+                <input type="number" name="physics_job" oninput="updateSkillTotal('physics')">
+            </span>|<span class="atai">
+                <input type="number" name="physics_interest" oninput="updateSkillTotal('physics')">
+            </span>|<span class="atai">
+                <input type="number" name="physics_growth" oninput="updateSkillTotal('physics')">
+            </span>|<span class="atai">
+                <input type="number" name="physics_other" oninput="updateSkillTotal('physics')">
+            </span>
+        </div>
+    </li>
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">法律</div>
+        <div class="total">
+            <input type="number" name="law_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="law_initial" class="readonly _02" readonly value="5">
+            </span>|<span class="atai">
+                <input type="number" name="law_job" oninput="updateSkillTotal('law')">
+            </span>|<span class="atai">
+                <input type="number" name="law_interest" oninput="updateSkillTotal('law')">
+            </span>|<span class="atai">
+                <input type="number" name="law_growth" oninput="updateSkillTotal('law')">
+            </span>|<span class="atai">
+                <input type="number" name="law_other" oninput="updateSkillTotal('law')">
+            </span>
+        </div>
+    </li>
+
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">薬学</div>
+        <div class="total">
+            <input type="number" name="pharmacy_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="pharmacy_initial" class="readonly _02" readonly value="1">
+            </span>|<span class="atai">
+                <input type="number" name="pharmacy_job" oninput="updateSkillTotal('pharmacy')">
+            </span>|<span class="atai">
+                <input type="number" name="pharmacy_interest" oninput="updateSkillTotal('pharmacy')">
+            </span>|<span class="atai">
+                <input type="number" name="pharmacy_growth" oninput="updateSkillTotal('pharmacy')">
+            </span>|<span class="atai">
+                <input type="number" name="pharmacy_other" oninput="updateSkillTotal('pharmacy')">
+            </span>
+        </div>
+    </li>
+
+    <li class="d-flex skill-li skill-body">
+        <input type="checkbox" name="check-growth" class="check-growth">
+        <div class="title">歴史</div>
+        <div class="total">
+            <input type="number" name="history_total" class="readonly _02" readonly>
+        </div>
+        <div class="breakdown">
+            <span class="initial">
+                <input type="number" name="history_initial" class="readonly _02" readonly value="20">
+            </span>|<span class="atai">
+                <input type="number" name="history_job" oninput="updateSkillTotal('history')">
+            </span>|<span class="atai">
+                <input type="number" name="history_interest" oninput="updateSkillTotal('history')">
+            </span>|<span class="atai">
+                <input type="number" name="history_growth" oninput="updateSkillTotal('history')">
+            </span>|<span class="atai">
+                <input type="number" name="history_other" oninput="updateSkillTotal('history')">
+            </span>
+        </div>
+    </li>
+
+    <!-- 追加知識技能の動的リスト -->
+    <span id="additional-knowledge-skills">
+        <!-- 動的に追加される知識技能がここに表示されます -->
+    </span>
+</ul>
+<!-- 追加知識技能の管理ボタン -->
+<button type="button" onclick="addKnowledgeSkill()" class="add-btn">
+    <i class="fas fa-plus"></i> 知識技能を追加
+</button>
