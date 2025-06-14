@@ -1,0 +1,150 @@
+
+> coc-character-sheet@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.30
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+  - Experiments (use with caution):
+    · esmExternals
+
+ ✓ Starting...
+ ✓ Ready in 613ms
+ ○ Compiling / ...
+ ✓ Compiled / in 882ms (300 modules)
+ HEAD / 200 in 936ms
+ ✓ Compiled /create in 452ms (373 modules)
+ GET /create 200 in 555ms
+ ✓ Compiled /404 in 109ms (377 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 118ms
+ ✓ Compiled in 506ms (354 modules)
+ ✓ Compiled in 526ms (354 modules)
+ ✓ Compiled in 538ms (354 modules)
+ ✓ Compiled in 514ms (364 modules)
+ ✓ Compiled in 481ms (364 modules)
+ ✓ Compiled in 377ms (364 modules)
+ ✓ Compiled in 670ms (364 modules)
+ ✓ Compiled in 335ms (242 modules)
+ ✓ Compiled in 343ms (122 modules)
+ GET /_next/data/development/create.json 200 in 46ms
+ ✓ Compiled in 354ms (242 modules)
+ ✓ Compiled in 349ms (122 modules)
+ GET /_next/data/development/create.json 200 in 33ms
+ ✓ Compiled in 335ms (122 modules)
+ GET /_next/data/development/create.json 200 in 42ms
+ ✓ Compiled in 355ms (242 modules)
+ ✓ Compiled in 351ms (242 modules)
+ ✓ Compiled in 338ms (122 modules)
+ GET /_next/data/development/create.json 200 in 32ms
+ ✓ Compiled in 332ms (122 modules)
+ GET /_next/data/development/create.json 200 in 25ms
+ ✓ Compiled in 374ms (242 modules)
+ ✓ Compiled in 343ms (122 modules)
+ GET /_next/data/development/create.json 200 in 28ms
+ ✓ Compiled in 404ms (242 modules)
+ ✓ Compiled in 383ms (242 modules)
+ ✓ Compiled in 359ms (122 modules)
+ GET /_next/data/development/create.json 200 in 29ms
+ ✓ Compiled in 335ms (122 modules)
+ GET /_next/data/development/create.json 200 in 21ms
+ ✓ Compiled in 363ms (242 modules)
+ ✓ Compiled in 333ms (122 modules)
+ GET /_next/data/development/create.json 200 in 38ms
+ ✓ Compiled in 365ms (242 modules)
+ ✓ Compiled in 767ms (364 modules)
+ ✓ Compiled in 354ms (242 modules)
+ ✓ Compiled in 324ms (122 modules)
+ GET /create 200 in 56ms
+ ✓ Compiled /404 in 213ms (368 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 223ms
+ ✓ Compiled in 559ms (368 modules)
+ ✓ Compiled in 445ms (368 modules)
+ ✓ Compiled in 381ms (364 modules)
+ ✓ Compiled in 390ms (364 modules)
+ ✓ Compiled in 430ms (364 modules)
+ ✓ Compiled in 401ms (364 modules)
+ ✓ Compiled in 369ms (364 modules)
+ ✓ Compiled in 367ms (364 modules)
+ ✓ Compiled in 371ms (364 modules)
+ ✓ Compiled in 359ms (122 modules)
+ GET /_next/data/development/create.json 200 in 55ms
+ ✓ Compiled in 406ms (242 modules)
+ ✓ Compiled in 335ms (122 modules)
+ GET /_next/data/development/create.json 200 in 45ms
+ ✓ Compiled in 367ms (242 modules)
+ ✓ Compiled in 322ms (122 modules)
+ GET /_next/data/development/create.json 200 in 29ms
+ ✓ Compiled in 318ms (242 modules)
+ ⨯ ./components/character-form/SkillSections.tsx
+Error: 
+  [31mx[0m Expression expected
+    ,-[[36;1;4m/Users/m.hirosaka/03_private/character/components/character-form/SkillSections.tsx[0m:60:1]
+ [2m60[0m |   removeKnowledgeSkill
+ [2m61[0m | }: SkillSectionsProps) {
+ [2m62[0m |   return (
+ [2m63[0m |     <>
+    : [31;1m     ^[0m
+ [2m64[0m |       {/* 技能表示切替ボタン */}
+ [2m65[0m |       <div className="skill-toggle-container" style={{ textAlign: 'right', marginBottom: '10px' }}>
+ [2m66[0m |         <div className="segmented-toggle">
+    `----
+
+  [31mx[0m Expected ',', got '< (jsx tag start)'
+    ,-[[36;1;4m/Users/m.hirosaka/03_private/character/components/character-form/SkillSections.tsx[0m:62:1]
+ [2m62[0m |   return (
+ [2m63[0m |     <>
+ [2m64[0m |       {/* 技能表示切替ボタン */}
+ [2m65[0m |       <div className="skill-toggle-container" style={{ textAlign: 'right', marginBottom: '10px' }}>
+    : [31;1m      ^[0m
+ [2m66[0m |         <div className="segmented-toggle">
+ [2m67[0m |           <button 
+ [2m68[0m |             type="button" 
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/character-form/SkillSections.tsx
+./pages/create.tsx
+ ⨯ ./components/character-form/SkillSections.tsx
+Error: 
+  [31mx[0m Expression expected
+    ,-[[36;1;4m/Users/m.hirosaka/03_private/character/components/character-form/SkillSections.tsx[0m:60:1]
+ [2m60[0m |   removeKnowledgeSkill
+ [2m61[0m | }: SkillSectionsProps) {
+ [2m62[0m |   return (
+ [2m63[0m |     <>
+    : [31;1m     ^[0m
+ [2m64[0m |       {/* 技能表示切替ボタン */}
+ [2m65[0m |       <div className="skill-toggle-container" style={{ textAlign: 'right', marginBottom: '10px' }}>
+ [2m66[0m |         <div className="segmented-toggle">
+    `----
+
+  [31mx[0m Expected ',', got '< (jsx tag start)'
+    ,-[[36;1;4m/Users/m.hirosaka/03_private/character/components/character-form/SkillSections.tsx[0m:62:1]
+ [2m62[0m |   return (
+ [2m63[0m |     <>
+ [2m64[0m |       {/* 技能表示切替ボタン */}
+ [2m65[0m |       <div className="skill-toggle-container" style={{ textAlign: 'right', marginBottom: '10px' }}>
+    : [31;1m      ^[0m
+ [2m66[0m |         <div className="segmented-toggle">
+ [2m67[0m |           <button 
+ [2m68[0m |             type="button" 
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/character-form/SkillSections.tsx
+ ✓ Compiled in 315ms (122 modules)
+ ✓ Compiled /_error in 365ms (364 modules)
+ GET /_next/data/development/create.json 500 in 565ms
+ GET /create 200 in 26ms
+ ✓ Compiled /404 in 154ms (368 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 163ms
+ ✓ Compiled in 322ms (124 modules)
+ GET /_next/data/development/create.json 200 in 29ms
+ ✓ Compiled in 361ms (244 modules)
+ ✓ Compiled in 446ms (368 modules)
