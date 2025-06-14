@@ -1,0 +1,2586 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Critical CSS inlined -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </noscript>
+    <link rel="stylesheet" href="assets/css/style.css" type="text/css" media="all" />
+
+    <!-- プリローダー用スタイル -->
+    <style>
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+
+        #preloader.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .preloader-content {
+            text-align: center;
+            font-family: 'Kosugi', sans-serif;
+        }
+
+        .preloader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #f0f0f0;
+            border-top: 3px solid #333;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        .preloader-progress {
+            width: 200px;
+            height: 4px;
+            background: #f0f0f0;
+            border-radius: 2px;
+            margin: 15px auto;
+            overflow: hidden;
+        }
+
+        .preloader-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+
+
+<body class="works-template-default single single-works postid-6531 custom-background" itemscope
+    itemtype="http://schema.org/WebPage">
+
+    <!-- プリローダー -->
+    <div id="preloader">
+        <div class="preloader-content">
+            <div class="preloader-spinner"></div>
+            <div class="preloader-progress">
+                <div class="preloader-progress-bar" id="preloader-progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="content" class="chara-coc character">
+        <div id="inner-content" class="wrap cf">
+            <main id="main" role="main" itemscope itemprop="mainContentOfPage" itemtype="http://schema.org/Blog">
+                <article id="post-6531"
+                    class="cf post-6531 works type-works status-publish has-post-thumbnail hentry custom_cat-character custom_cat-chara-coc custom_tag-1072"
+                    role="article">
+
+                    <section class="chara-seet">
+                        <div class="scores d-flex">
+                            <!-- 能力値　-->
+                            <ul class="basic-score d-flex ul-score">
+                                <li class="name">
+                                    <div class="score-sum"></div>
+                                    <ul class="score-detail">
+                                        <li>基礎能力</li>
+                                        <li class="ages">年齢修正</li>
+                                        <li>他増減</li>
+                                    </ul>
+                                </li>
+                                <li class="str score-li">
+                                    <h3 style="background:<?php the_field('txt-color'); ?>">STR</h3>
+                                    <div class="score-sum">
+                                        <span id="str_total">-</span>
+                                    </div>
+                                    <ul class="score-detail">
+                                        <li>
+                                            <span class="val" id="str_base">-</span>
+                                        </li>
+                                        <li class="ages">
+                                            <span class="val" id="str_age_mod">-</span>
+                                        </li>
+                                        <li>
+                                            <span class="val" id="str_other_mod">-</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="con score-li">
+                                    <h3 style="background:<?php the_field('txt-color'); ?>">CON</h3>
+                                    <div class="score-sum">
+                                        <span id="con_total">-</span>
+                                    </div>
+                                    <ul class="score-detail">
+                                        <li>
+                                            <span class="val" id="con_base">-</span>
+                                        </li>
+                                        <li class="ages">
+                                            <span class="val" id="con_age_mod">-</span>
+                                        </li>
+                                        <li>
+                                            <span class="val" id="con_other_mod">-</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="pow score-li">
+                                    <h3 style="background:<?php the_field('txt-color'); ?>">POW</h3>
+                                    <div class="score-sum">
+                                        <span id="pow_total">-</span>
+                                    </div>
+                                    <ul class="score-detail">
+                                        <li>
+                                            <span class="val" id="pow_base">-</span>
+                                        </li>
+                                        <li class="ages">
+                                            <span class="val" id="pow_age_mod">-</span>
+                                        </li>
+                                        <li>
+                                            <span class="val" id="pow_other_mod">-</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dex score-li">
+                                    <h3 style="background:<?php the_field('txt-color'); ?>">DEX</h3>
+                                    <div class="score-sum">
+                                        <span id="dex_total">-</span>
+                                    </div>
+                                    <ul class="score-detail">
+                                        <li>
+                                            <span class="val" id="dex_base">-</span>
+                                        </li>
+                                        <li class="ages">
+                                            <span class="val" id="dex_age_mod">-</span>
+                                        </li>
+                                        <li>
+                                            <span class="val" id="dex_other_mod">-</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="app score-li">
+                                    <h3 style="background:<?php the_field('txt-color'); ?>">APP</h3>
+                                    <div class="score-sum">
+                                        <span id="app_total">-</span>
+                                    </div>
+                                    <ul class="score-detail">
+                                        <li>
+                                            <span class="val" id="app_base">-</span>
+                                        </li>
+                                        <li class="ages">
+                                            <span class="val" id="app_age_mod">-</span>
+                                        </li>
+                                        <li>
+                                            <span class="val" id="app_other_mod">-</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="siz score-li">
+                                    <h3 style="background:<?php the_field('txt-color'); ?>">SIZ</h3>
+                                    <div class="score-sum">
+                                        <span id="siz_total">-</span>
+                                    </div>
+                                    <ul class="score-detail">
+                                        <li>
+                                            <span class="val" id="siz_base">-</span>
+                                        </li>
+                                        <li class="ages">
+                                            <span class="val" id="siz_age_mod">-</span>
+                                        </li>
+                                        <li>
+                                            <span class="val" id="siz_other_mod">-</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="int score-li">
+                                    <h3 style="background:<?php the_field('txt-color'); ?>">INT</h3>
+                                    <div class="score-sum">
+                                        <span id="int_total">-</span>
+                                    </div>
+                                    <ul class="score-detail">
+                                        <li>
+                                            <span class="val" id="int_base">-</span>
+                                        </li>
+                                        <li class="ages">
+                                            <span class="val" id="int_age_mod">-</span>
+                                        </li>
+                                        <li>
+                                            <span class="val" id="int_other_mod">-</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="edu score-li">
+                                    <h3 style="background:<?php the_field('txt-color'); ?>">EDU</h3>
+                                    <div class="score-sum">
+                                        <span id="edu_total">-</span>
+                                    </div>
+                                    <ul class="score-detail">
+                                        <li>
+                                            <span class="val" id="edu_base">-</span>
+                                        </li>
+                                        <li class="ages">
+                                            <span class="val" id="edu_age_mod">-</span>
+                                        </li>
+                                        <li>
+                                            <span class="val" id="edu_other_mod">-</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <!-- 基礎スペック　-->
+                            <ul class="calc-score d-flex ul-score">
+                                <li class="name sp-only">
+                                    <div class="score-sum"></div>
+                                    <ul class="score-detail">
+                                        <li>基礎能力</li>
+                                        <li class="ages">年齢修正</li>
+                                        <li>他増減</li>
+                                    </ul>
+                                </li>
+                                <li class="san score-li">
+                                    <h3>初期SAN</h3>
+                                    <div class="score-sum">
+                                        <span id="san_total">-</span>
+                                    </div>
+                                    <ul class="score-detail">
+                                        <li>
+                                            <span id="san_base_value">-</span>
+                                        </li>
+                                        <li class="ages">
+                                            -
+                                        </li>
+                                        <li>
+                                            <span id="san_other_mod">-</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="hp score-li">
+                                    <h3>HP</h3>
+                                    <div class="score-sum">
+                                        <span id="hp_total">-</span>
+                                    </div>
+                                    <ul class="score-detail">
+                                        <li>
+                                            <span id="hp_base_value">-</span>
+                                        </li>
+                                        <li class="ages">
+                                            -
+                                        </li>
+                                        <li>
+                                            <span id="hp_other_mod">-</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="mp score-li">
+                                    <h3>MP</h3>
+                                    <div class="score-sum">
+                                        <span id="mp_total">-</span>
+                                    </div>
+                                    <ul class="score-detail">
+                                        <li>
+                                            <span id="mp_base_value">-</span>
+                                        </li>
+                                        <li class="ages">
+                                            -
+                                        </li>
+                                        <li>
+                                            <span id="mp_other_mod">-</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="idea score-li">
+                                    <h3>アイデア</h3>
+                                    <div class="score-sum">
+                                        <span id="idea_total">-</span>
+                                    </div>
+                                    <ul class="score-detail">
+                                        <li>
+                                            <span id="idea_base_value">-</span>
+                                        </li>
+                                        <li class="ages">
+                                            -
+                                        </li>
+                                        <li>
+                                            <span id="idea_other_mod">-</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="luck score-li">
+                                    <h3>幸運</h3>
+                                    <div class="score-sum">
+                                        <span id="luck_total">-</span>
+                                    </div>
+                                    <ul class="score-detail">
+                                        <li>
+                                            <span id="luck_base_value">-</span>
+                                        </li>
+                                        <li class="ages">
+                                            -
+                                        </li>
+                                        <li>
+                                            <span id="luck_other_mod">-</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="knowledge score-li">
+                                    <h3>知識</h3>
+                                    <div class="score-sum">
+                                        <span id="knowledge_total">-</span>
+                                    </div>
+                                    <ul class="score-detail">
+                                        <li>
+                                            <span id="knowledge_base_value">-</span>
+                                        </li>
+                                        <li class="ages">
+                                            -
+                                        </li>
+                                        <li>
+                                            <span id="knowledge_other_mod">-</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- スペック　-->
+
+                        <div class="slots d-flex">
+                            <div class="now-san slot">
+                                <h3>現在SAN値</h3>
+                                <div class="slot-txt">
+                                    <span id="current_san">-</span>
+                                    <span>/
+                                        <span id="max_san">-</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="db slot">
+                                <h3>ダメ―ジボーナス</h3>
+                                <div class="slot-txt">
+                                    <span id="damage_bonus">-</span>
+                                </div>
+                            </div>
+                            <div class="jobp slot">
+                                <h3>職業P</h3>
+                                <div class="slot-txt">
+                                    <span id="job_points_used">-</span>
+                                    <span>/
+                                        <span id="job_points_total">-</span>
+                                        <br class="sp-only">
+                                        (
+                                        <span id="job_points_formula_text">STR×10 + EDU×10</span>
+                                        )</span>
+                                </div>
+                            </div>
+                            <div class="intp slot">
+                                <h3>興味P</h3>
+                                <div class="slot-txt">
+                                    <span id="interest_points_used">-</span>
+                                    <span>/
+                                        <span id="interest_points_total">-</span>
+                                        <br class="sp-only">
+                                        ( 追加分 ：
+                                        <span id="interest_points_extra">-</span>
+                                        )</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 特徴表　-->
+                        <div class="features">
+                            <ul>
+                                <li class="d-flex f-list" style="border-color:<?php the_field('txt-color'); ?>;">
+                                    <div class="f-label" style="color:<?php the_field('txt-color'); ?>;"><span
+                                            class="num">0-0</span><span class="name">特徴名</span></div>
+                                    <div class="contents">特徴表説明</div>
+                                </li>
+                            </ul>
+                            <div class="d-flex job-base">
+                                <div><span>ベース</span>
+                                    (職業名)
+                                </div>
+                                <div><span>特　記</span>
+                                    (特記事項)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="skill">
+                            <ul class="d-flex">
+                                <li class="skill-group">
+                                    <h3><i class="fas fa-fist-raised"></i> 戦闘技能</h3>
+                                    <ul>
+                                        <li class="d-flex skill-li skill-head">
+                                            <div class="title">技能名</div>
+                                            <div class="total">-合計<span class="pc-only">値</span></div>
+                                            <div class="breakdown"><span class="pc-only">初期値</span><span
+                                                    class="sp-only">初期</span>|<span class="pc-only">職業P</span><span
+                                                    class="sp-only">職業</span>|<span class="pc-only">興味P</span><span
+                                                    class="sp-only">興味</span>|<span>成長</span>|<span
+                                                    class="pc-only">その他</span><span class="sp-only">他</span></div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">回避</div>
+                                            <div class="total"><span id="dodge_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="dodge_initial">-
+                                                </span>|<span class="atai" id="dodge_job">
+                                                    -
+                                                </span>|<span class="atai" id="dodge_interest">
+                                                    -
+                                                </span>|<span class="atai" id="dodge_growth">
+                                                    -
+                                                </span>|<span class="atai" id="dodge_other">
+                                                    -
+                                                </span></div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">キック</div>
+                                            <div class="total"><span id="kick_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="kick_initial">-
+                                                </span>|<span class="atai" id="kick_job">
+                                                    -
+                                                </span>|<span class="atai" id="kick_interest">
+                                                    -
+                                                </span>|<span class="atai" id="kick_growth">
+                                                    -
+                                                </span>|<span class="atai" id="kick_other">
+                                                    -
+                                                </span></div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">組み付き</div>
+                                            <div class="total"><span id="grapple_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="grapple_initial">-
+                                                </span>|<span class="atai" id="grapple_job">
+                                                    -
+                                                </span>|<span class="atai" id="grapple_interest">
+                                                    -
+                                                </span>|<span class="atai" id="grapple_growth">
+                                                    -
+                                                </span>|<span class="atai" id="grapple_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">こぶし</div>
+                                            <div class="total"><span id="punch_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="punch_initial">-
+                                                </span>|<span class="atai" id="punch_job">
+                                                    -
+                                                </span>|<span class="atai" id="punch_interest">
+                                                    -
+                                                </span>|<span class="atai" id="punch_growth">
+                                                    -
+                                                </span>|<span class="atai" id="punch_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">頭突き</div>
+                                            <div class="total"><span id="headbutt_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="headbutt_initial">-
+                                                </span>|<span class="atai" id="headbutt_job">
+                                                    -
+                                                </span>|<span class="atai" id="headbutt_interest">
+                                                    -
+                                                </span>|<span class="atai" id="headbutt_growth">
+                                                    -
+                                                </span>|<span class="atai" id="headbutt_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">投擲</div>
+                                            <div class="total"><span id="throw_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="throw_initial">-
+                                                </span>|<span class="atai" id="throw_job">
+                                                    -
+                                                </span>|<span class="atai" id="throw_interest">
+                                                    -
+                                                </span>|<span class="atai" id="throw_growth">
+                                                    -
+                                                </span>|<span class="atai" id="throw_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">マーシャルアーツ</div>
+                                            <div class="total"><span id="martial_arts_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="martial_arts_initial">-
+                                                </span>|<span class="atai" id="martial_arts_job">
+                                                    -
+                                                </span>|<span class="atai" id="martial_arts_interest">
+                                                    -
+                                                </span>|<span class="atai" id="martial_arts_growth">
+                                                    -
+                                                </span>|<span class="atai" id="martial_arts_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">拳銃</div>
+                                            <div class="total"><span id="handgun_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="handgun_initial">-
+                                                </span>|<span class="atai" id="handgun_job">
+                                                    -
+                                                </span>|<span class="atai" id="handgun_interest">
+                                                    -
+                                                </span>|<span class="atai" id="handgun_growth">
+                                                    -
+                                                </span>|<span class="atai" id="handgun_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">サブマシンガン</div>
+                                            <div class="total"><span id="submachine_gun_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="submachine_gun_initial">-
+                                                </span>|<span class="atai" id="submachine_gun_job">
+                                                    -
+                                                </span>|<span class="atai" id="submachine_gun_interest">
+                                                    -
+                                                </span>|<span class="atai" id="submachine_gun_growth">
+                                                    -
+                                                </span>|<span class="atai" id="submachine_gun_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">ショットガン</div>
+                                            <div class="total"><span id="shotgun_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="shotgun_initial">-
+                                                </span>|<span class="atai" id="shotgun_job">
+                                                    -
+                                                </span>|<span class="atai" id="shotgun_interest">
+                                                    -
+                                                </span>|<span class="atai" id="shotgun_growth">
+                                                    -
+                                                </span>|<span class="atai" id="shotgun_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">マシンガン</div>
+                                            <div class="total"><span id="machine_gun_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="machine_gun_initial">-
+                                                </span>|<span class="atai" id="machine_gun_job">
+                                                    -
+                                                </span>|<span class="atai" id="machine_gun_interest">
+                                                    -
+                                                </span>|<span class="atai" id="machine_gun_growth">
+                                                    -
+                                                </span>|<span class="atai" id="machine_gun_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">ライフル</div>
+                                            <div class="total"><span id="rifle_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="rifle_initial">-
+                                                </span>|<span class="atai" id="rifle_job">
+                                                    -
+                                                </span>|<span class="atai" id="rifle_interest">
+                                                    -
+                                                </span>|<span class="atai" id="rifle_growth">
+                                                    -
+                                                </span>|<span class="atai" id="rifle_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <!-- 追加戦闘技能がここに動的に挿入されます -->
+                                        <div id="additional-combat-skills-display">
+                                        </div>
+                                    </ul>
+                                </li>
+                                <li class="skill-group">
+                                    <h3><i class="fas fa-search"></i> 探索技能</h3>
+                                    <ul>
+                                        <li class="d-flex skill-li skill-head">
+                                            <div class="title">技能名</div>
+                                            <div class="total">-合計<span class="pc-only">値</span></div>
+                                            <div class="breakdown"><span class="pc-only">初期値</span><span
+                                                    class="sp-only">初期</span>|<span class="pc-only">職業P</span><span
+                                                    class="sp-only">職業</span>|<span class="pc-only">興味P</span><span
+                                                    class="sp-only">興味</span>|<span>成長</span>|<span
+                                                    class="pc-only">その他</span><span class="sp-only">他</span></div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">応急手当</div>
+                                            <div class="total"><span id="first_aid_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="first_aid_initial">-
+                                                </span>|<span class="atai" id="first_aid_job">
+                                                    -
+                                                </span>|<span class="atai" id="first_aid_interest">
+                                                    -
+                                                </span>|<span class="atai" id="first_aid_growth">
+                                                    -
+                                                </span>|<span class="atai" id="first_aid_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">鍵開け</div>
+                                            <div class="total"><span id="locksmith_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="locksmith_initial">-
+                                                </span>|<span class="atai" id="locksmith_job">
+                                                    -
+                                                </span>|<span class="atai" id="locksmith_interest">
+                                                    -
+                                                </span>|<span class="atai" id="locksmith_growth">
+                                                    -
+                                                </span>|<span class="atai" id="locksmith_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">隠す</div>
+                                            <div class="total"><span id="conceal_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="conceal_initial">-
+                                                </span>|<span class="atai" id="conceal_job">
+                                                    -
+                                                </span>|<span class="atai" id="conceal_interest">
+                                                    -
+                                                </span>|<span class="atai" id="conceal_growth">
+                                                    -
+                                                </span>|<span class="atai" id="conceal_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">隠れる</div>
+                                            <div class="total"><span id="hide_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="hide_initial">-
+                                                </span>|<span class="atai" id="hide_job">
+                                                    -
+                                                </span>|<span class="atai" id="hide_interest">
+                                                    -
+                                                </span>|<span class="atai" id="hide_growth">
+                                                    -
+                                                </span>|<span class="atai" id="hide_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">聞き耳</div>
+                                            <div class="total"><span id="listen_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="listen_initial">-
+                                                </span>|<span class="atai" id="listen_job">
+                                                    -
+                                                </span>|<span class="atai" id="listen_interest">
+                                                    -
+                                                </span>|<span class="atai" id="listen_growth">
+                                                    -
+                                                </span>|<span class="atai" id="listen_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">忍び歩き</div>
+                                            <div class="total"><span id="sneak_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="sneak_initial">-
+                                                </span>|<span class="atai" id="sneak_job">
+                                                    -
+                                                </span>|<span class="atai" id="sneak_interest">
+                                                    -
+                                                </span>|<span class="atai" id="sneak_growth">
+                                                    -
+                                                </span>|<span class="atai" id="sneak_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">写真術</div>
+                                            <div class="total"><span id="photography_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="photography_initial">-
+                                                </span>|<span class="atai" id="photography_job">
+                                                    -
+                                                </span>|<span class="atai" id="photography_interest">
+                                                    -
+                                                </span>|<span class="atai" id="photography_growth">
+                                                    -
+                                                </span>|<span class="atai" id="photography_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">精神分析</div>
+                                            <div class="total"><span id="psychoanalysis_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="psychoanalysis_initial">-
+                                                </span>|<span class="atai" id="psychoanalysis_job">
+                                                    -
+                                                </span>|<span class="atai" id="psychoanalysis_interest">
+                                                    -
+                                                </span>|<span class="atai" id="psychoanalysis_growth">
+                                                    -
+                                                </span>|<span class="atai" id="psychoanalysis_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">追跡</div>
+                                            <div class="total"><span id="track_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="track_initial">-
+                                                </span>|<span class="atai" id="track_job">
+                                                    -
+                                                </span>|<span class="atai" id="track_interest">
+                                                    -
+                                                </span>|<span class="atai" id="track_growth">
+                                                    -
+                                                </span>|<span class="atai" id="track_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">登攀</div>
+                                            <div class="total"><span id="climb_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="climb_initial">-
+                                                </span>|<span class="atai" id="climb_job">
+                                                    -
+                                                </span>|<span class="atai" id="climb_interest">
+                                                    -
+                                                </span>|<span class="atai" id="climb_growth">
+                                                    -
+                                                </span>|<span class="atai" id="climb_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">図書館</div>
+                                            <div class="total"><span id="library_use_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="library_use_initial">-
+                                                </span>|<span class="atai" id="library_use_job">
+                                                    -
+                                                </span>|<span class="atai" id="library_use_interest">
+                                                    -
+                                                </span>|<span class="atai" id="library_use_growth">
+                                                    -
+                                                </span>|<span class="atai" id="library_use_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">目星</div>
+                                            <div class="total"><span id="spot_hidden_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="spot_hidden_initial">-
+                                                </span>|<span class="atai" id="spot_hidden_job">
+                                                    -
+                                                </span>|<span class="atai" id="spot_hidden_interest">
+                                                    -
+                                                </span>|<span class="atai" id="spot_hidden_growth">
+                                                    -
+                                                </span>|<span class="atai" id="spot_hidden_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <!-- 追加探索技能がここに動的に挿入されます -->
+                                        <div id="additional-exploration-skills-display">
+                                        </div>
+
+                                    </ul>
+                                </li>
+                                <li class="skill-group">
+                                    <h3><i class="fas fa-running"></i> 行動技能</h3>
+                                    <ul>
+                                        <li class="d-flex skill-li skill-head">
+                                            <div class="title">技能名</div>
+                                            <div class="total">-合計<span class="pc-only">値</span></div>
+                                            <div class="breakdown"><span class="pc-only">初期値</span><span
+                                                    class="sp-only">初期</span>|<span class="pc-only">職業P</span><span
+                                                    class="sp-only">職業</span>|<span class="pc-only">興味P</span><span
+                                                    class="sp-only">興味</span>|<span>成長</span>|<span
+                                                    class="pc-only">その他</span><span class="sp-only">他</span></div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">運転(---)</div>
+                                            <div class="total"><span id="drive_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="drive_initial">-
+                                                </span>|<span class="atai" id="drive_job">
+                                                    -
+                                                </span>|<span class="atai" id="drive_interest">
+                                                    -
+                                                </span>|<span class="atai" id="drive_growth">
+                                                    -
+                                                </span>|<span class="atai" id="drive_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">機械修理</div>
+                                            <div class="total"><span id="mechanical_repair_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial"
+                                                    id="mechanical_repair_initial">-
+                                                </span>|<span class="atai" id="mechanical_repair_job">
+                                                    -
+                                                </span>|<span class="atai" id="mechanical_repair_interest">
+                                                    -
+                                                </span>|<span class="atai" id="mechanical_repair_growth">
+                                                    -
+                                                </span>|<span class="atai" id="mechanical_repair_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">重機械操作</div>
+                                            <div class="total"><span id="heavy_machinery_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="heavy_machinery_initial">-
+                                                </span>|<span class="atai" id="heavy_machinery_job">
+                                                    -
+                                                </span>|<span class="atai" id="heavy_machinery_interest">
+                                                    -
+                                                </span>|<span class="atai" id="heavy_machinery_growth">
+                                                    -
+                                                </span>|<span class="atai" id="heavy_machinery_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">乗馬</div>
+                                            <div class="total"><span id="ride_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="ride_initial">-
+                                                </span>|<span class="atai" id="ride_job">
+                                                    -
+                                                </span>|<span class="atai" id="ride_interest">
+                                                    -
+                                                </span>|<span class="atai" id="ride_growth">
+                                                    -
+                                                </span>|<span class="atai" id="ride_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">水泳</div>
+                                            <div class="total"><span id="swim_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="swim_initial">-
+                                                </span>|<span class="atai" id="swim_job">
+                                                    -
+                                                </span>|<span class="atai" id="swim_interest">
+                                                    -
+                                                </span>|<span class="atai" id="swim_growth">
+                                                    -
+                                                </span>|<span class="atai" id="swim_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">製作(---)</div>
+                                            <div class="total"><span id="craft_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="craft_initial">-
+                                                </span>|<span class="atai" id="craft_job">
+                                                    -
+                                                </span>|<span class="atai" id="craft_interest">
+                                                    -
+                                                </span>|<span class="atai" id="craft_growth">
+                                                    -
+                                                </span>|<span class="atai" id="craft_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">操縦(---)</div>
+                                            <div class="total"><span id="pilot_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="pilot_initial">-
+                                                </span>|<span class="atai" id="pilot_job">
+                                                    -
+                                                </span>|<span class="atai" id="pilot_interest">
+                                                    -
+                                                </span>|<span class="atai" id="pilot_growth">
+                                                    -
+                                                </span>|<span class="atai" id="pilot_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">跳躍</div>
+                                            <div class="total"><span id="jump_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="jump_initial">-
+                                                </span>|<span class="atai" id="jump_job">
+                                                    -
+                                                </span>|<span class="atai" id="jump_interest">
+                                                    -
+                                                </span>|<span class="atai" id="jump_growth">
+                                                    -
+                                                </span>|<span class="atai" id="jump_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">電気修理</div>
+                                            <div class="total"><span id="electrical_repair_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial"
+                                                    id="electrical_repair_initial">-
+                                                </span>|<span class="atai" id="electrical_repair_job">
+                                                    -
+                                                </span>|<span class="atai" id="electrical_repair_interest">
+                                                    -
+                                                </span>|<span class="atai" id="electrical_repair_growth">
+                                                    -
+                                                </span>|<span class="atai" id="electrical_repair_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">ナビゲート</div>
+                                            <div class="total"><span id="navigate_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="navigate_initial">-
+                                                </span>|<span class="atai" id="navigate_job">
+                                                    -
+                                                </span>|<span class="atai" id="navigate_interest">
+                                                    -
+                                                </span>|<span class="atai" id="navigate_growth">
+                                                    -
+                                                </span>|<span class="atai" id="navigate_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">変装</div>
+                                            <div class="total"><span id="disguise_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="disguise_initial">-
+                                                </span>|<span class="atai" id="disguise_job">
+                                                    -
+                                                </span>|<span class="atai" id="disguise_interest">
+                                                    -
+                                                </span>|<span class="atai" id="disguise_growth">
+                                                    -
+                                                </span>|<span class="atai" id="disguise_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+
+                                        <!-- 追加行動技能がここに動的に挿入されます -->
+                                        <div id="additional-action-skills-display">
+                                        </div>
+
+                                    </ul>
+                                </li>
+                                <li class="skill-group">
+                                    <h3><i class="fas fa-american-sign-language-interpreting"></i> 交渉技能</h3>
+                                    <ul>
+                                        <li class="d-flex skill-li skill-head">
+                                            <div class="title">技能名</div>
+                                            <div class="total">-合計<span class="pc-only">値</span></div>
+                                            <div class="breakdown"><span class="pc-only">初期値</span><span
+                                                    class="sp-only">初期</span>|<span class="pc-only">職業P</span><span
+                                                    class="sp-only">職業</span>|<span class="pc-only">興味P</span><span
+                                                    class="sp-only">興味</span>|<span>成長</span>|<span
+                                                    class="pc-only">その他</span><span class="sp-only">他</span></div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">言いくるめ</div>
+                                            <div class="total"><span id="fast_talk_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="fast_talk_initial">-
+                                                </span>|<span class="atai" id="fast_talk_job">
+                                                    -
+                                                </span>|<span class="atai" id="fast_talk_interest">
+                                                    -
+                                                </span>|<span class="atai" id="fast_talk_growth">
+                                                    -
+                                                </span>|<span class="atai" id="fast_talk_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">説得</div>
+                                            <div class="total"><span id="persuade_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="persuade_initial">-
+                                                </span>|<span class="atai" id="persuade_job">
+                                                    -
+                                                </span>|<span class="atai" id="persuade_interest">
+                                                    -
+                                                </span>|<span class="atai" id="persuade_growth">
+                                                    -
+                                                </span>|<span class="atai" id="persuade_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">信用</div>
+                                            <div class="total"><span id="credit_rating_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="credit_rating_initial">-
+                                                </span>|<span class="atai" id="credit_rating_job">
+                                                    -
+                                                </span>|<span class="atai" id="credit_rating_interest">
+                                                    -
+                                                </span>|<span class="atai" id="credit_rating_growth">
+                                                    -
+                                                </span>|<span class="atai" id="credit_rating_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">値切り</div>
+                                            <div class="total"><span id="bargain_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="bargain_initial">-
+                                                </span>|<span class="atai" id="bargain_job">
+                                                    -
+                                                </span>|<span class="atai" id="bargain_interest">
+                                                    -
+                                                </span>|<span class="atai" id="bargain_growth">
+                                                    -
+                                                </span>|<span class="atai" id="bargain_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">母国語(---)</div>
+                                            <div class="total"><span id="mother_tongue_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="mother_tongue_initial">-
+                                                </span>|<span class="atai" id="mother_tongue_job">
+                                                    -
+                                                </span>|<span class="atai" id="mother_tongue_interest">
+                                                    -
+                                                </span>|<span class="atai" id="mother_tongue_growth">
+                                                    -
+                                                </span>|<span class="atai" id="mother_tongue_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">外国語(---)</div>
+                                            <div class="total"><span id="language_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="language_initial">-
+                                                </span>|<span class="atai" id="language_job">
+                                                    -
+                                                </span>|<span class="atai" id="language_interest">
+                                                    -
+                                                </span>|<span class="atai" id="language_growth">
+                                                    -
+                                                </span>|<span class="atai" id="language_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <!-- 追加交渉技能がここに動的に挿入されます -->
+                                        <div id="additional-negotiation-skills-display">
+                                        </div>
+                                    </ul>
+                                </li>
+                                <li class="skill-group">
+                                    <h3><i class="fas fa-book"></i> 知識技能</h3>
+                                    <ul>
+                                        <li class="d-flex skill-li skill-head">
+                                            <div class="title">技能名</div>
+                                            <div class="total">-合計<span class="pc-only">値</span></div>
+                                            <div class="breakdown"><span class="pc-only">初期値</span><span
+                                                    class="sp-only">初期</span>|<span class="pc-only">職業P</span><span
+                                                    class="sp-only">職業</span>|<span class="pc-only">興味P</span><span
+                                                    class="sp-only">興味</span>|<span>成長</span>|<span
+                                                    class="pc-only">その他</span><span class="sp-only">他</span></div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">医学</div>
+                                            <div class="total"><span id="medicine_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="medicine_initial">-
+                                                </span>|<span class="atai" id="medicine_job">
+                                                    -
+                                                </span>|<span class="atai" id="medicine_interest">
+                                                    -
+                                                </span>|<span class="atai" id="medicine_growth">
+                                                    -
+                                                </span>|<span class="atai" id="medicine_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">オカルト</div>
+                                            <div class="total"><span id="occult_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="occult_initial">-
+                                                </span>|<span class="atai" id="occult_job">
+                                                    -
+                                                </span>|<span class="atai" id="occult_interest">
+                                                    -
+                                                </span>|<span class="atai" id="occult_growth">
+                                                    -
+                                                </span>|<span class="atai" id="occult_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">化学</div>
+                                            <div class="total"><span id="chemistry_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="chemistry_initial">-
+                                                </span>|<span class="atai" id="chemistry_job">
+                                                    -
+                                                </span>|<span class="atai" id="chemistry_interest">
+                                                    -
+                                                </span>|<span class="atai" id="chemistry_growth">
+                                                    -
+                                                </span>|<span class="atai" id="chemistry_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">クトゥルフ神話</div>
+                                            <div class="total"><span id="cthulhu_mythos_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="cthulhu_mythos_initial">-
+                                                </span>|<span class="atai" id="cthulhu_mythos_job">
+                                                    -
+                                                </span>|<span class="atai" id="cthulhu_mythos_interest">
+                                                    -
+                                                </span>|<span class="atai" id="cthulhu_mythos_growth">
+                                                    -
+                                                </span>|<span class="atai" id="cthulhu_mythos_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">芸術(---)</div>
+                                            <div class="total"><span id="art_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="art_initial">-
+                                                </span>|<span class="atai" id="art_job">
+                                                    -
+                                                </span>|<span class="atai" id="art_interest">
+                                                    -
+                                                </span>|<span class="atai" id="art_growth">
+                                                    -
+                                                </span>|<span class="atai" id="art_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">経理</div>
+                                            <div class="total"><span id="accounting_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="accounting_initial">-
+                                                </span>|<span class="atai" id="accounting_job">
+                                                    -
+                                                </span>|<span class="atai" id="accounting_interest">
+                                                    -
+                                                </span>|<span class="atai" id="accounting_growth">
+                                                    -
+                                                </span>|<span class="atai" id="accounting_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">考古学</div>
+                                            <div class="total"><span id="archaeology_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="archaeology_initial">-
+                                                </span>|<span class="atai" id="archaeology_job">
+                                                    -
+                                                </span>|<span class="atai" id="archaeology_interest">
+                                                    -
+                                                </span>|<span class="atai" id="archaeology_growth">
+                                                    -
+                                                </span>|<span class="atai" id="archaeology_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">コンピューター</div>
+                                            <div class="total"><span id="computer_use_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="computer_use_initial">-
+                                                </span>|<span class="atai" id="computer_use_job">
+                                                    -
+                                                </span>|<span class="atai" id="computer_use_interest">
+                                                    -
+                                                </span>|<span class="atai" id="computer_use_growth">
+                                                    -
+                                                </span>|<span class="atai" id="computer_use_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">心理学</div>
+                                            <div class="total"><span id="psychology_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="psychology_initial">-
+                                                </span>|<span class="atai" id="psychology_job">
+                                                    -
+                                                </span>|<span class="atai" id="psychology_interest">
+                                                    -
+                                                </span>|<span class="atai" id="psychology_growth">
+                                                    -
+                                                </span>|<span class="atai" id="psychology_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">人類学</div>
+                                            <div class="total"><span id="anthropology_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="anthropology_initial">-
+                                                </span>|<span class="atai" id="anthropology_job">
+                                                    -
+                                                </span>|<span class="atai" id="anthropology_interest">
+                                                    -
+                                                </span>|<span class="atai" id="anthropology_growth">
+                                                    -
+                                                </span>|<span class="atai" id="anthropology_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">生物学</div>
+                                            <div class="total"><span id="biology_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="biology_initial">-
+                                                </span>|<span class="atai" id="biology_job">
+                                                    -
+                                                </span>|<span class="atai" id="biology_interest">
+                                                    -
+                                                </span>|<span class="atai" id="biology_growth">
+                                                    -
+                                                </span>|<span class="atai" id="biology_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">地質学</div>
+                                            <div class="total"><span id="geology_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="geology_initial">-
+                                                </span>|<span class="atai" id="geology_job">
+                                                    -
+                                                </span>|<span class="atai" id="geology_interest">
+                                                    -
+                                                </span>|<span class="atai" id="geology_growth">
+                                                    -
+                                                </span>|<span class="atai" id="geology_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">電子工学</div>
+                                            <div class="total"><span id="electronics_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="electronics_initial">-
+                                                </span>|<span class="atai" id="electronics_job">
+                                                    -
+                                                </span>|<span class="atai" id="electronics_interest">
+                                                    -
+                                                </span>|<span class="atai" id="electronics_growth">
+                                                    -
+                                                </span>|<span class="atai" id="electronics_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">天文学</div>
+                                            <div class="total"><span id="astronomy_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="astronomy_initial">-
+                                                </span>|<span class="atai" id="astronomy_job">
+                                                    -
+                                                </span>|<span class="atai" id="astronomy_interest">
+                                                    -
+                                                </span>|<span class="atai" id="astronomy_growth">
+                                                    -
+                                                </span>|<span class="atai" id="astronomy_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">博物学</div>
+                                            <div class="total"><span id="natural_history_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="natural_history_initial">-
+                                                </span>|<span class="atai" id="natural_history_job">
+                                                    -
+                                                </span>|<span class="atai" id="natural_history_interest">
+                                                    -
+                                                </span>|<span class="atai" id="natural_history_growth">
+                                                    -
+                                                </span>|<span class="atai" id="natural_history_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">物理学</div>
+                                            <div class="total"><span id="physics_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="physics_initial">-
+                                                </span>|<span class="atai" id="physics_job">
+                                                    -
+                                                </span>|<span class="atai" id="physics_interest">
+                                                    -
+                                                </span>|<span class="atai" id="physics_growth">
+                                                    -
+                                                </span>|<span class="atai" id="physics_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">法律</div>
+                                            <div class="total"><span id="law_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="law_initial">-
+                                                </span>|<span class="atai" id="law_job">
+                                                    -
+                                                </span>|<span class="atai" id="law_interest">
+                                                    -
+                                                </span>|<span class="atai" id="law_growth">
+                                                    -
+                                                </span>|<span class="atai" id="law_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">薬学</div>
+                                            <div class="total"><span id="pharmacy_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="pharmacy_initial">-
+                                                </span>|<span class="atai" id="pharmacy_job">
+                                                    -
+                                                </span>|<span class="atai" id="pharmacy_interest">
+                                                    -
+                                                </span>|<span class="atai" id="pharmacy_growth">
+                                                    -
+                                                </span>|<span class="atai" id="pharmacy_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+
+                                        <li class="d-flex skill-li skill-body">
+                                            <div class="title">歴史</div>
+                                            <div class="total"><span id="history_total">-</span>
+                                            </div>
+                                            <div class="breakdown"><span class="initial" id="history_initial">-
+                                                </span>|<span class="atai" id="history_job">
+                                                    -
+                                                </span>|<span class="atai" id="history_interest">
+                                                    -
+                                                </span>|<span class="atai" id="history_growth">
+                                                    -
+                                                </span>|<span class="atai" id="history_other">
+                                                    -
+                                                </span>
+                                            </div>
+                                        </li>
+
+                                        <!-- 追加知識技能がここに動的に挿入されます -->
+                                        <div id="additional-knowledge-skills-display">
+                                        </div>
+                                    </ul>
+                                </li>
+                                <li class="skill-group">
+                                    <textarea id="copy2">
+CCB<=
+CCB<={SAN} SANチェック
+CCB<=<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('idea'); endwhile;}?> アイデア
+CCB<=<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('luck'); endwhile;}?> 幸運
+CCB<=<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('knowledge'); endwhile;}?> 知識
+
+▼戦闘技能-------------------------------------
+CCB<=<?php if(have_rows('avoidance')){ while (have_rows('avoidance')): the_row(); the_sub_field('total'); endwhile;}?> 回避
+CCB<=<?php if(have_rows('kumitsuki')){ while (have_rows('kumitsuki')): the_row(); the_sub_field('total'); endwhile;}?> 組み付き
+CCB<=<?php if(have_rows('touteki')){ while (have_rows('touteki')): the_row(); the_sub_field('total'); endwhile;}?> 投擲
+CCB<=<?php if(have_rows('kenjuu')){ while (have_rows('kenjuu')): the_row(); the_sub_field('total'); endwhile;}?> 拳銃
+CCB<=<?php if(have_rows('submachinegun')){ while (have_rows('submachinegun')): the_row(); the_sub_field('total'); endwhile;}?> サブマシンガン
+CCB<=<?php if(have_rows('shotgun')){ while (have_rows('shotgun')): the_row(); the_sub_field('total'); endwhile;}?> ショットガン
+CCB<=<?php if(have_rows('machinegun')){ while (have_rows('machinegun')): the_row(); the_sub_field('total'); endwhile;}?> マシンガン
+CCB<=<?php if(have_rows('rifle')){ while (have_rows('rifle')): the_row(); the_sub_field('total'); endwhile;}?> ライフル
+CCB<=<?php if(have_rows('MA')){ while (have_rows('MA')): the_row(); the_sub_field('total'); endwhile;}?> マーシャルアーツ
+CCB<=<?php if(have_rows('kick')){ while (have_rows('kick')): the_row(); the_sub_field('total'); endwhile;}?> キック
+CBRB(<?php if(have_rows('kick')){ while (have_rows('kick')): the_row(); the_sub_field('total'); endwhile;}?>,<?php if(have_rows('MA')){ while (have_rows('MA')): the_row(); the_sub_field('total'); endwhile;}?>) キック+MA
+CCB<=<?php if(have_rows('kobushi')){ while (have_rows('kobushi')): the_row(); the_sub_field('total'); endwhile;}?> こぶし
+CBRB(<?php if(have_rows('kobushi')){ while (have_rows('kobushi')): the_row(); the_sub_field('total'); endwhile;}?>,<?php if(have_rows('MA')){ while (have_rows('MA')): the_row(); the_sub_field('total'); endwhile;}?>) こぶし+MA
+CCB<=<?php if(have_rows('zutsuki')){ while (have_rows('zutsuki')): the_row(); the_sub_field('total'); endwhile;}?> 頭突き
+CBRB(<?php if(have_rows('zutsuki')){ while (have_rows('zutsuki')): the_row(); the_sub_field('total'); endwhile;}?>,<?php if(have_rows('MA')){ while (have_rows('MA')): the_row(); the_sub_field('total'); endwhile;}?>) 頭突き+MA
+<?php if(have_rows('add-sentou')): ?><?php while(have_rows('add-sentou')): the_row(); ?>
+CCB<=<?php the_sub_field('total'); ?> <?php the_sub_field('skillName'); ?>&#13;<?php endwhile; ?><?php endif; ?>
+▼探索技能-------------------------------------
+CCB<=<?php if(have_rows('oukyuteate')){ while (have_rows('oukyuteate')): the_row(); the_sub_field('total'); endwhile;}?> 応急手当
+CCB<=<?php if(have_rows('kagiake')){ while (have_rows('kagiake')): the_row(); the_sub_field('total'); endwhile;}?> 鍵開け
+CCB<=<?php if(have_rows('kakusu')){ while (have_rows('kakusu')): the_row(); the_sub_field('total'); endwhile;}?> 隠す
+CCB<=<?php if(have_rows('kakureru')){ while (have_rows('kakureru')): the_row(); the_sub_field('total'); endwhile;}?> 隠れる
+CCB<=<?php if(have_rows('kikimimi')){ while (have_rows('kikimimi')): the_row(); the_sub_field('total'); endwhile;}?> 聞き耳
+CCB<=<?php if(have_rows('shinobiaruki')){ while (have_rows('shinobiaruki')): the_row(); the_sub_field('total'); endwhile;}?> 忍び歩き
+CCB<=<?php if(have_rows('syasinnjutu')){ while (have_rows('syasinnjutu')): the_row(); the_sub_field('total'); endwhile;}?> 写真術
+CCB<=<?php if(have_rows('seishinbunseki')){ while (have_rows('seishinbunseki')): the_row(); the_sub_field('total'); endwhile;}?> 精神分析
+CCB<=<?php if(have_rows('tsuiseki')){ while (have_rows('tsuiseki')): the_row(); the_sub_field('total'); endwhile;}?> 追跡
+CCB<=<?php if(have_rows('tohan')){ while (have_rows('tohan')): the_row(); the_sub_field('total'); endwhile;}?> 登攀
+CCB<=<?php if(have_rows('tosyokan')){ while (have_rows('tosyokan')): the_row(); the_sub_field('total'); endwhile;}?> 図書館
+CCB<=<?php if(have_rows('meboshi')){ while (have_rows('meboshi')): the_row(); the_sub_field('total'); endwhile;}?> 目星
+<?php if(have_rows('add-tansaku')): ?><?php while(have_rows('add-tansaku')): the_row(); ?>CCB<=<?php the_sub_field('total'); ?> <?php the_sub_field('skillName'); ?>&#13;<?php endwhile; ?><?php endif; ?>
+▼行動技能-------------------------------------
+<?php if(have_rows('unten')): ?><?php while(have_rows('unten')): the_row(); ?>
+CCB<=<?php the_sub_field('total'); ?> 運転(<?php the_sub_field('meisyou'); ?>)<?php endwhile; ?><?php endif; ?>&#13;
+CCB<=<?php if(have_rows('kikai')){ while (have_rows('kikai')): the_row(); the_sub_field('total'); endwhile;}?> 機械修理
+CCB<=<?php if(have_rows('jukikai')){ while (have_rows('jukikai')): the_row(); the_sub_field('total'); endwhile;}?> 重機械操作
+CCB<=<?php if(have_rows('joba')){ while (have_rows('joba')): the_row(); the_sub_field('total'); endwhile;}?> 乗馬
+CCB<=<?php if(have_rows('suiei')){ while (have_rows('suiei')): the_row(); the_sub_field('total'); endwhile;}?> 水泳
+<?php if(have_rows('seisaku')): ?><?php while(have_rows('seisaku')): the_row(); ?>CCB<=<?php the_sub_field('total'); ?> 製作(<?php the_sub_field('meisyou'); ?>)<?php endwhile; ?><?php endif; ?>&#13;
+<?php if(have_rows('souju')): ?><?php while(have_rows('souju')): the_row(); ?>CCB<=<?php the_sub_field('total'); ?> 操縦(<?php the_sub_field('meisyou'); ?>)<?php endwhile; ?><?php endif; ?>&#13;
+CCB<=<?php if(have_rows('choyaku')){ while (have_rows('choyaku')): the_row(); the_sub_field('total'); endwhile;}?> 跳躍
+CCB<=<?php if(have_rows('denki')){ while (have_rows('denki')): the_row(); the_sub_field('total'); endwhile;}?> 電気修理
+CCB<=<?php if(have_rows('nabigeto')){ while (have_rows('nabigeto')): the_row(); the_sub_field('total'); endwhile;}?> ナビゲート
+CCB<=<?php if(have_rows('hennsou')){ while (have_rows('hennsou')): the_row(); the_sub_field('total'); endwhile;}?> 変装
+<?php if(have_rows('add-koudou')): ?><?php while(have_rows('add-koudou')): the_row(); ?>CCB<=<?php the_sub_field('total'); ?> <?php the_sub_field('skillName'); ?>&#13;<?php endwhile; ?><?php endif; ?>
+▼交渉技能-------------------------------------
+CCB<=<?php if(have_rows('iikurume')){ while (have_rows('iikurume')): the_row(); the_sub_field('total'); endwhile;}?> 言いくるめ
+CCB<=<?php if(have_rows('shinyo')){ while (have_rows('shinyo')): the_row(); the_sub_field('total'); endwhile;}?> 信用
+CCB<=<?php if(have_rows('settoku')){ while (have_rows('settoku')): the_row(); the_sub_field('total'); endwhile;}?> 説得
+CCB<=<?php if(have_rows('negiri')){ while (have_rows('negiri')): the_row(); the_sub_field('total'); endwhile;}?> 値切り
+<?php if(have_rows('bokokugo')): ?><?php while(have_rows('bokokugo')): the_row(); ?>CCB<=<?php the_sub_field('total'); ?> 母国語(<?php the_sub_field('meisyou'); ?>)<?php endwhile; ?><?php endif; ?>&#13;
+<?php if(have_rows('add-kosyo')): ?><?php while(have_rows('add-kosyo')): the_row(); ?>CCB<=<?php the_sub_field('total'); ?> <?php the_sub_field('skillName'); ?>&#13;<?php endwhile; ?><?php endif; ?>
+▼知識技能-------------------------------------
+CCB<=<?php if(have_rows('igaku')){ while (have_rows('igaku')): the_row(); the_sub_field('total'); endwhile;}?>医学
+CCB<=<?php if(have_rows('okaruto')){ while (have_rows('okaruto')): the_row(); the_sub_field('total'); endwhile;}?> オカルト
+CCB<=<?php if(have_rows('avoidance')){ while (have_rows('avoidance')): the_row(); the_sub_field('total'); endwhile;}?> 化学
+CCB<=<?php if(have_rows('sinwa')){ while (have_rows('sinwa')): the_row(); the_sub_field('total'); endwhile;}?> クトゥルフ神話
+<?php if(have_rows('geijutu')): ?><?php while(have_rows('geijutu')): the_row(); ?>CCB<=<?php the_sub_field('total'); ?> 芸術(<?php the_sub_field('meisyou'); ?>)<?php endwhile; ?><?php endif; ?>&#13;
+CCB<=<?php if(have_rows('keiri')){ while (have_rows('keiri')): the_row(); the_sub_field('total'); endwhile;}?>経理
+CCB<=<?php if(have_rows('koukogaku')){ while (have_rows('koukogaku')): the_row(); the_sub_field('total'); endwhile;}?> 考古学
+CCB<=<?php if(have_rows('computer')){ while (have_rows('computer')): the_row(); the_sub_field('total'); endwhile;}?> コンピューター
+CCB<=<?php if(have_rows('sinnrigaku')){ while (have_rows('sinnrigaku')): the_row(); the_sub_field('total'); endwhile;}?> 心理学
+CCB<=<?php if(have_rows('jinruigaku')){ while (have_rows('jinruigaku')): the_row(); the_sub_field('total'); endwhile;}?> 人類学
+CCB<=<?php if(have_rows('seibutugaku')){ while (have_rows('seibutugaku')): the_row(); the_sub_field('total'); endwhile;}?> 生物学
+CCB<=<?php if(have_rows('tisitugaku')){ while (have_rows('tisitugaku')): the_row(); the_sub_field('total'); endwhile;}?> 地質学
+CCB<=<?php if(have_rows('denshi')){ while (have_rows('denshi')): the_row(); the_sub_field('total'); endwhile;}?> 電子工学
+CCB<=<?php if(have_rows('tenmongaku')){ while (have_rows('tenmongaku')): the_row(); the_sub_field('total'); endwhile;}?> 天文学
+CCB<=<?php if(have_rows('hakubutugaku')){ while (have_rows('hakubutugaku')): the_row(); the_sub_field('total'); endwhile;}?> 博物学
+CCB<=<?php if(have_rows('buturigaku')){ while (have_rows('buturigaku')): the_row(); the_sub_field('total'); endwhile;}?> 物理学
+CCB<=<?php if(have_rows('houritu')){ while (have_rows('houritu')): the_row(); the_sub_field('total'); endwhile;}?> 法律
+CCB<=<?php if(have_rows('yakugaku')){ while (have_rows('yakugaku')): the_row(); the_sub_field('total'); endwhile;}?> 薬学
+CCB<=<?php if(have_rows('rekishi')){ while (have_rows('rekishi')): the_row(); the_sub_field('total'); endwhile;}?> 歴史
+<?php if(have_rows('add-tisiki')): ?><?php while(have_rows('add-tisiki')): the_row(); ?>CCB<=<?php the_sub_field('total'); ?> <?php the_sub_field('skillName'); ?>&#13;<?php endwhile; ?><?php endif; ?>
+▼×5-------------------------------------
+CCB<=({STR}*5) STR*5
+CCB<=({CON}*5) CON*5
+CCB<=({POW}*5) POW*5
+CCB<=({DEX}*5) DEX*5
+CCB<=({APP}*5) APP*5
+CCB<=({SIZ}*5) SIZ*5
+CCB<=({INT}*5) INT*5
+CCB<=({EDU}*5) EDU*5
+▼×4-------------------------------------
+CCB<=({STR}*4) STR*4
+CCB<=({CON}*4) CON*4
+CCB<=({POW}*4) POW*4
+CCB<=({DEX}*4) DEX*4
+CCB<=({APP}*4) APP*4
+CCB<=({SIZ}*4) SIZ*4
+CCB<=({INT}*4) INT*4
+CCB<=({EDU}*4) EDU*4
+▼×3-------------------------------------
+CCB<=({STR}*3) STR*3
+CCB<=({CON}*3) CON*3
+CCB<=({POW}*3) POW*3
+CCB<=({DEX}*3) DEX*3
+CCB<=({APP}*3) APP*3
+CCB<=({SIZ}*3) SIZ*3
+CCB<=({INT}*3) INT*3
+CCB<=({EDU}*3) EDU*3
+▼×2-------------------------------------
+CCB<=({STR}*2) STR*2
+CCB<=({CON}*2) CON*2
+CCB<=({POW}*2) POW*2
+CCB<=({DEX}*2) DEX*2
+CCB<=({APP}*2) APP*2
+CCB<=({SIZ}*2) SIZ*2
+CCB<=({INT}*2) INT*2
+CCB<=({EDU}*2) EDU*2
+
+▼対抗-------------------------------------
+RESB({STR}-対抗値) STR対抗
+RESB({CON}-対抗値) CON対抗
+RESB({POW}-対抗値) POW対抗
+RESB({DEX}-対抗値) DEX対抗
+RESB({APP}-対抗値) APP対抗
+RESB({SIZ}-対抗値) SIZ対抗
+RESB({INT}-対抗値) INT対抗
+RESB({EDU}-対抗値) EDU対抗
+
+▼ダメ―ジ-------------------------------------
+1D3{DB} こぶしダメージ
+2D3{DB} こぶし+MAダメージ
+1D6{DB} キックダメージ
+2D6{DB} キック+MAダメージ
+1D4{DB} 頭突きダメージ
+2D4{DB} 頭突き+MAダメージ
+1Dn{DB}/2 投擲ダメージ
+<?php if(have_rows('buki')): ?><?php while(have_rows('buki')): the_row(); ?><?php the_sub_field('damage'); ?> <?php the_sub_field('buki'); ?> ダメ―ジ<?php endwhile; ?><?php endif; ?>&#13;
+▼回復-------------------------------------
+1D3応急手当回復
+1D3 SAN回復
+
+▼コマンド-------------------------------------
+:SAN+
+:SAN-
+:HP+
+:HP-
+:MP+
+:MP-
+</textarea>
+                                    <button onclick="cp()" id="coco-btn">ココフォリアのコマを作成</button>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="data-wrap buki">
+                            <h3 onclick="toggleCharacterEquipmentSection('weapons')"
+                                style="cursor: pointer; user-select: none;">
+                                <i class="fa-solid fa-gun"></i> 武器
+                                <i id="weapons-toggle-icon-display" class="fas fa-chevron-up"
+                                    style="float: right; transition: transform 0.3s; background: #dddddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 25px; height: 25px;"></i>
+                            </h3>
+                            <div id="weapons-content-display" class="equipment-content">
+                                <ul>
+
+                                    <li class="d-flex data-li skill-body">
+                                        <div class="title">
+                                            --
+                                        </div>
+                                        <div class="ginou kazu"><span class="label">成功</span>
+
+                                            --%</div>
+                                        <div class="damage"><span class="label">ダメ―ジ</span>
+
+                                        </div>
+                                        <div class="syatei kazu"><span class="label">射程</span>
+                                            --
+                                        </div>
+                                        <div class="kougekikaisu kazu"><span class="label">回数</span>
+                                            --
+                                        </div>
+                                        <div class="soudansuu kazu"><span class="label">装弾</span>
+                                            --
+                                        </div>
+                                        <div class="kosyou kazu"><span class="label">故障</span>
+                                            --
+                                        </div>
+                                        <div class="taikyu kazu"><span class="label">耐久</span>
+                                            --
+                                        </div>
+                                        <div class="memo"><span class="label">詳細</span>
+                                            --
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="data-wrap item">
+                            <h3 onclick="toggleCharacterEquipmentSection('items')"
+                                style="cursor: pointer; user-select: none;">
+                                <i class="fas fa-suitcase"></i> 所持品
+                                <i id="items-toggle-icon-display" class="fas fa-chevron-up"
+                                    style="float: right; transition: transform 0.3s; background: #dddddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 25px; height: 25px;"></i>
+                            </h3>
+                            <div id="items-content-display" class="equipment-content">
+                                <ul>
+
+                                    <li class="d-flex data-li skill-body">
+                                        <div class="title">
+                                            --
+                                        </div>
+                                        <div class="kosu">
+                                            --
+                                        </div>
+                                        <div class="content">
+                                            --
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="data-wrap hutei">
+                            <h3 onclick="toggleCharacterEquipmentSection('disorders')"
+                                style="cursor: pointer; user-select: none;">
+                                <i class="fas fa-bed"></i> 不定・後遺症
+                                <i id="disorders-toggle-icon-display" class="fas fa-chevron-up"
+                                    style="float: right; transition: transform 0.3s; background: #dddddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 25px; height: 25px;"></i>
+                            </h3>
+                            <div id="disorders-content-display" class="equipment-content">
+                                <ul>
+
+                                    <li class="d-flex data-li skill-body">
+                                        <div class="title">
+                                            --
+                                        </div>
+                                        <div class="term">
+                                            ----/--/--
+                                            ～
+                                            ----/--/--
+                                        </div>
+                                        <div class="content">
+                                            -
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="data-wrap book">
+                            <h3 onclick="toggleCharacterEquipmentSection('books')"
+                                style="cursor: pointer; user-select: none;">
+                                <i class="fas fa-book-dead"></i> 読んだ魔導書
+                                <i id="books-toggle-icon-display" class="fas fa-chevron-up"
+                                    style="float: right; transition: transform 0.3s; background: #dddddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 25px; height: 25px;"></i>
+                            </h3>
+                            <div id="books-content-display" class="equipment-content">
+                                <ul id="books-display">
+
+                                    <li class="d-flex data-li skill-body">
+                                        <div class="title">
+                                            ---
+                                        </div>
+                                        <div class="content">
+                                            -----
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="data-wrap jumon">
+                            <h3 onclick="toggleCharacterEquipmentSection('spells')"
+                                style="cursor: pointer; user-select: none;">
+                                <i class="fa-solid fa-hand-sparkles"></i> 覚えた呪文
+                                <i id="spells-toggle-icon-display" class="fas fa-chevron-up"
+                                    style="float: right; transition: transform 0.3s; background: #dddddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 25px; height: 25px;"></i>
+                            </h3>
+                            <div id="spells-content-display" class="equipment-content">
+                                <ul id="spells-display">
+
+                                    <li class="d-flex data-li skill-body">
+                                        <div class="title">
+                                            ---
+                                        </div>
+                                        <div class="content">
+                                            -----
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="data-wrap af">
+                            <h3 onclick="toggleCharacterEquipmentSection('artifacts')"
+                                style="cursor: pointer; user-select: none;">
+                                <i class="fa-solid fa-star-of-david"></i> 所持AF
+                                <i id="artifacts-toggle-icon-display" class="fas fa-chevron-up"
+                                    style="float: right; transition: transform 0.3s; background: #dddddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 25px; height: 25px;"></i>
+                            </h3>
+                            <div id="artifacts-content-display" class="equipment-content">
+                                <ul id="artifacts-display">
+
+                                    <li class="d-flex data-li skill-body">
+                                        <div class="title">
+                                            --
+                                        </div>
+                                        <div class="content">
+                                            -----
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="data-wrap cthulhu">
+                            <h3 onclick="toggleCharacterEquipmentSection('entities')"
+                                style="cursor: pointer; user-select: none;">
+                                <i class="fa-brands fa-octopus-deploy"></i> 遭遇した超自然の存在
+                                <i id="entities-toggle-icon-display" class="fas fa-chevron-up"
+                                    style="float: right; transition: transform 0.3s; background: #dddddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 25px; height: 25px;"></i>
+                            </h3>
+                            <div id="entities-content-display" class="equipment-content">
+                                <ul id="entities-display">
+
+                                    <li class="d-flex data-li skill-body">
+                                        <div class="title">
+                                            --
+                                        </div>
+                                        <div class="content">
+                                            -----
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div class="data-wrap o-memo">
+                            <h3 class="memo-title"><i class="fas fa-scroll"></i> その他メモ</h3>
+                            <div class="o-memos">
+                                ----
+                            </div>
+                        </div>
+
+                        <div class="data-wrap">
+                            <h3 class="memo-title"><i class="fas fa-scroll"></i> 秘匿関連</h3>
+                            <input id="acd-check-sc" class="acd-check" type="checkbox">
+                            <label class="acd-label more-secret" for="acd-check-sc">Read more…</label>
+                            <div class="o-memos acd-content">
+                                -----
+                            </div>
+                        </div>
+
+                        <div style="position:absolute;opacity:0;">
+                            <textarea id="copy" readonly>
+			{"kind":"character","data":{"name":"<?php the_title(); ?>","memo":"<?php the_field('name-kana-ja'); ?>\n<?php if (get_sub_field('job') == ''): ?><?php else: ?><?php the_sub_field('job'); ?> | <?php endif; ?><?php the_sub_field('sex'); ?> | <?php the_sub_field('age'); ?> | <?php the_sub_field('size'); ?>\n(PL:ひろ)","externalUrl":"<?php the_permalink() ?> ","commands":"CCB<=\nCCB<={SAN} SANチェック\nCCB<=<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('idea'); endwhile;}?> アイデア\nCCB<=<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('luck'); endwhile;}?> 幸運\nCCB<=<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('knowledge'); endwhile;}?> 知識\n▼戦闘技能-------------------------------------\nCCB<=<?php if(have_rows('avoidance')){ while (have_rows('avoidance')): the_row(); the_sub_field('total'); endwhile;}?> 回避\nCCB<=<?php if(have_rows('kumitsuki')){ while (have_rows('kumitsuki')): the_row(); the_sub_field('total'); endwhile;}?> 組み付き\nCCB<=<?php if(have_rows('touteki')){ while (have_rows('touteki')): the_row(); the_sub_field('total'); endwhile;}?> 投擲\nCCB<=<?php if(have_rows('kenjuu')){ while (have_rows('kenjuu')): the_row(); the_sub_field('total'); endwhile;}?> 拳銃\nCCB<=<?php if(have_rows('submachinegun')){ while (have_rows('submachinegun')): the_row(); the_sub_field('total'); endwhile;}?> サブマシンガン\nCCB<=<?php if(have_rows('shotgun')){ while (have_rows('shotgun')): the_row(); the_sub_field('total'); endwhile;}?> ショットガン\nCCB<=<?php if(have_rows('machinegun')){ while (have_rows('machinegun')): the_row(); the_sub_field('total'); endwhile;}?> マシンガン\nCCB<=<?php if(have_rows('rifle')){ while (have_rows('rifle')): the_row(); the_sub_field('total'); endwhile;}?> ライフル\nCCB<=<?php if(have_rows('MA')){ while (have_rows('MA')): the_row(); the_sub_field('total'); endwhile;}?> マーシャルアーツ\nCCB<=<?php if(have_rows('kick')){ while (have_rows('kick')): the_row(); the_sub_field('total'); endwhile;}?> キック\nCBRB(<?php if(have_rows('kick')){ while (have_rows('kick')): the_row(); the_sub_field('total'); endwhile;}?>,<?php if(have_rows('MA')){ while (have_rows('MA')): the_row(); the_sub_field('total'); endwhile;}?>) キック+MA\nCCB<=<?php if(have_rows('kobushi')){ while (have_rows('kobushi')): the_row(); the_sub_field('total'); endwhile;}?> こぶし\nCBRB(<?php if(have_rows('kobushi')){ while (have_rows('kobushi')): the_row(); the_sub_field('total'); endwhile;}?>,<?php if(have_rows('MA')){ while (have_rows('MA')): the_row(); the_sub_field('total'); endwhile;}?>) こぶし+MA\nCCB<=<?php if(have_rows('zutsuki')){ while (have_rows('zutsuki')): the_row(); the_sub_field('total'); endwhile;}?> 頭突き\nCBRB(<?php if(have_rows('zutsuki')){ while (have_rows('zutsuki')): the_row(); the_sub_field('total'); endwhile;}?>,<?php if(have_rows('MA')){ while (have_rows('MA')): the_row(); the_sub_field('total'); endwhile;}?>) 頭突き+MA<?php if(have_rows('add-sentou')): ?><?php while(have_rows('add-sentou')): the_row(); ?>\nCCB<=<?php the_sub_field('total'); ?> <?php the_sub_field('skillName'); ?><?php endwhile; ?><?php endif; ?>\n▼探索技能-------------------------------------\nCCB<=<?php if(have_rows('oukyuteate')){ while (have_rows('oukyuteate')): the_row(); the_sub_field('total'); endwhile;}?> 応急手当\nCCB<=<?php if(have_rows('kagiake')){ while (have_rows('kagiake')): the_row(); the_sub_field('total'); endwhile;}?> 鍵開け\nCCB<=<?php if(have_rows('kakusu')){ while (have_rows('kakusu')): the_row(); the_sub_field('total'); endwhile;}?> 隠す\nCCB<=<?php if(have_rows('kakureru')){ while (have_rows('kakureru')): the_row(); the_sub_field('total'); endwhile;}?> 隠れる\nCCB<=<?php if(have_rows('kikimimi')){ while (have_rows('kikimimi')): the_row(); the_sub_field('total'); endwhile;}?> 聞き耳\nCCB<=<?php if(have_rows('shinobiaruki')){ while (have_rows('shinobiaruki')): the_row(); the_sub_field('total'); endwhile;}?> 忍び歩き\nCCB<=<?php if(have_rows('syasinnjutu')){ while (have_rows('syasinnjutu')): the_row(); the_sub_field('total'); endwhile;}?> 写真術\nCCB<=<?php if(have_rows('seishinbunseki')){ while (have_rows('seishinbunseki')): the_row(); the_sub_field('total'); endwhile;}?> 精神分析\nCCB<=<?php if(have_rows('tsuiseki')){ while (have_rows('tsuiseki')): the_row(); the_sub_field('total'); endwhile;}?> 追跡\nCCB<=<?php if(have_rows('tohan')){ while (have_rows('tohan')): the_row(); the_sub_field('total'); endwhile;}?> 登攀\nCCB<=<?php if(have_rows('tosyokan')){ while (have_rows('tosyokan')): the_row(); the_sub_field('total'); endwhile;}?> 図書館\nCCB<=<?php if(have_rows('meboshi')){ while (have_rows('meboshi')): the_row(); the_sub_field('total'); endwhile;}?> 目星<?php if(have_rows('add-tansaku')): ?><?php while(have_rows('add-tansaku')): the_row(); ?>\nCCB<=<?php the_sub_field('total'); ?> <?php the_sub_field('skillName'); ?><?php endwhile; ?><?php endif; ?>\n▼行動技能-------------------------------------<?php if(have_rows('unten')): ?><?php while(have_rows('unten')): the_row(); ?>\nCCB<=<?php the_sub_field('total'); ?> 運転(<?php the_sub_field('meisyou'); ?>)<?php endwhile; ?><?php endif; ?>\nCCB<=<?php if(have_rows('kikai')){ while (have_rows('kikai')): the_row(); the_sub_field('total'); endwhile;}?> 機械修理\nCCB<=<?php if(have_rows('jukikai')){ while (have_rows('jukikai')): the_row(); the_sub_field('total'); endwhile;}?> 重機械操作\nCCB<=<?php if(have_rows('joba')){ while (have_rows('joba')): the_row(); the_sub_field('total'); endwhile;}?> 乗馬\nCCB<=<?php if(have_rows('suiei')){ while (have_rows('suiei')): the_row(); the_sub_field('total'); endwhile;}?> 水泳<?php if(have_rows('seisaku')): ?><?php while(have_rows('seisaku')): the_row(); ?>\nCCB<=<?php the_sub_field('total'); ?> 製作(<?php the_sub_field('meisyou'); ?>)<?php endwhile; ?><?php endif; ?><?php if(have_rows('souju')): ?><?php while(have_rows('souju')): the_row(); ?>\nCCB<=<?php the_sub_field('total'); ?> 操縦(<?php the_sub_field('meisyou'); ?>)<?php endwhile; ?><?php endif; ?>\nCCB<=<?php if(have_rows('choyaku')){ while (have_rows('choyaku')): the_row(); the_sub_field('total'); endwhile;}?> 跳躍\nCCB<=<?php if(have_rows('denki')){ while (have_rows('denki')): the_row(); the_sub_field('total'); endwhile;}?> 電気修理\nCCB<=<?php if(have_rows('nabigeto')){ while (have_rows('nabigeto')): the_row(); the_sub_field('total'); endwhile;}?> ナビゲート\nCCB<=<?php if(have_rows('hennsou')){ while (have_rows('hennsou')): the_row(); the_sub_field('total'); endwhile;}?> 変装<?php if(have_rows('add-koudou')): ?><?php while(have_rows('add-koudou')): the_row(); ?>\nCCB<=<?php the_sub_field('total'); ?> <?php the_sub_field('skillName'); ?><?php endwhile; ?><?php endif; ?>\n▼交渉技能-------------------------------------\nCCB<=<?php if(have_rows('iikurume')){ while (have_rows('iikurume')): the_row(); the_sub_field('total'); endwhile;}?> 言いくるめ\nCCB<=<?php if(have_rows('shinyo')){ while (have_rows('shinyo')): the_row(); the_sub_field('total'); endwhile;}?> 信用\nCCB<=<?php if(have_rows('settoku')){ while (have_rows('settoku')): the_row(); the_sub_field('total'); endwhile;}?> 説得\nCCB<=<?php if(have_rows('negiri')){ while (have_rows('negiri')): the_row(); the_sub_field('total'); endwhile;}?> 値切り<?php if(have_rows('bokokugo')): ?><?php while(have_rows('bokokugo')): the_row(); ?>\nCCB<=<?php the_sub_field('total'); ?> 母国語(<?php the_sub_field('meisyou'); ?>)<?php endwhile; ?><?php endif; ?><?php if(have_rows('add-kosyo')): ?><?php while(have_rows('add-kosyo')): the_row(); ?>\nCCB<=<?php the_sub_field('total'); ?> <?php the_sub_field('skillName'); ?><?php endwhile; ?><?php endif; ?>\n▼知識技能-------------------------------------\nCCB<=<?php if(have_rows('igaku')){ while (have_rows('igaku')): the_row(); the_sub_field('total'); endwhile;}?> 医学\nCCB<=<?php if(have_rows('okaruto')){ while (have_rows('okaruto')): the_row(); the_sub_field('total'); endwhile;}?> オカルト\nCCB<=<?php if(have_rows('avoidance')){ while (have_rows('avoidance')): the_row(); the_sub_field('total'); endwhile;}?> 化学\nCCB<=<?php if(have_rows('sinwa')){ while (have_rows('sinwa')): the_row(); the_sub_field('total'); endwhile;}?> クトゥルフ神話<?php if(have_rows('geijutu')): ?><?php while(have_rows('geijutu')): the_row(); ?>\nCCB<=<?php the_sub_field('total'); ?> 芸術(<?php the_sub_field('meisyou'); ?>)<?php endwhile; ?><?php endif; ?>\nCCB<=<?php if(have_rows('keiri')){ while (have_rows('keiri')): the_row(); the_sub_field('total'); endwhile;}?>経理\nCCB<=<?php if(have_rows('koukogaku')){ while (have_rows('koukogaku')): the_row(); the_sub_field('total'); endwhile;}?> 考古学\nCCB<=<?php if(have_rows('computer')){ while (have_rows('computer')): the_row(); the_sub_field('total'); endwhile;}?> コンピューター\nCCB<=<?php if(have_rows('sinnrigaku')){ while (have_rows('sinnrigaku')): the_row(); the_sub_field('total'); endwhile;}?> 心理学\nCCB<=<?php if(have_rows('jinruigaku')){ while (have_rows('jinruigaku')): the_row(); the_sub_field('total'); endwhile;}?> 人類学\nCCB<=<?php if(have_rows('seibutugaku')){ while (have_rows('seibutugaku')): the_row(); the_sub_field('total'); endwhile;}?> 生物学\nCCB<=<?php if(have_rows('tisitugaku')){ while (have_rows('tisitugaku')): the_row(); the_sub_field('total'); endwhile;}?> 地質学\nCCB<=<?php if(have_rows('denshi')){ while (have_rows('denshi')): the_row(); the_sub_field('total'); endwhile;}?> 電子工学\nCCB<=<?php if(have_rows('tenmongaku')){ while (have_rows('tenmongaku')): the_row(); the_sub_field('total'); endwhile;}?> 天文学\nCCB<=<?php if(have_rows('hakubutugaku')){ while (have_rows('hakubutugaku')): the_row(); the_sub_field('total'); endwhile;}?> 博物学\nCCB<=<?php if(have_rows('buturigaku')){ while (have_rows('buturigaku')): the_row(); the_sub_field('total'); endwhile;}?> 物理学\nCCB<=<?php if(have_rows('houritu')){ while (have_rows('houritu')): the_row(); the_sub_field('total'); endwhile;}?> 法律\nCCB<=<?php if(have_rows('yakugaku')){ while (have_rows('yakugaku')): the_row(); the_sub_field('total'); endwhile;}?> 薬学\nCCB<=<?php if(have_rows('rekishi')){ while (have_rows('rekishi')): the_row(); the_sub_field('total'); endwhile;}?> 歴史<?php if(have_rows('add-tisiki')): ?><?php while(have_rows('add-tisiki')): the_row(); ?>\nCCB<=<?php the_sub_field('total'); ?> <?php the_sub_field('skillName'); ?><?php endwhile; ?><?php endif; ?>\n▼×5-------------------------------------\nCCB<=({STR}*5) STR*5\nCCB<=({CON}*5) CON*5\nCCB<=({POW}*5) POW*5\nCCB<=({DEX}*5) DEX*5\nCCB<=({APP}*5) APP*5\nCCB<=({SIZ}*5) SIZ*5\nCCB<=({INT}*5) INT*5\nCCB<=({EDU}*5) EDU*5\n▼×4-------------------------------------\nCCB<=({STR}*4) STR*4\nCCB<=({CON}*4) CON*4\nCCB<=({POW}*4) POW*4\nCCB<=({DEX}*4) DEX*4\nCCB<=({APP}*4) APP*4\nCCB<=({SIZ}*4) SIZ*4\nCCB<=({INT}*4) INT*4\nCCB<=({EDU}*4) EDU*4\n▼×3-------------------------------------\nCCB<=({STR}*3) STR*3\nCCB<=({CON}*3) CON*3\nCCB<=({POW}*3) POW*3\nCCB<=({DEX}*3) DEX*3\nCCB<=({APP}*3) APP*3\nCCB<=({SIZ}*3) SIZ*3\nCCB<=({INT}*3) INT*3\nCCB<=({EDU}*3) EDU*3\n▼×2-------------------------------------\nCCB<=({STR}*2) STR*2\nCCB<=({CON}*2) CON*2\nCCB<=({POW}*2) POW*2\nCCB<=({DEX}*2) DEX*2\nCCB<=({APP}*2) APP*2\nCCB<=({SIZ}*2) SIZ*2\nCCB<=({INT}*2) INT*2\nCCB<=({EDU}*2) EDU*2\n▼対抗-------------------------------------\nRESB({STR}-対抗値) STR対抗\nRESB({CON}-対抗値) CON対抗\nRESB({POW}-対抗値) POW対抗\nRESB({DEX}-対抗値) DEX対抗\nRESB({APP}-対抗値) APP対抗\nRESB({SIZ}-対抗値) SIZ対抗\nRESB({INT}-対抗値) INT対抗\nRESB({EDU}-対抗値) EDU対抗\n▼ダメ―ジ-------------------------------------\n1D3{DB} こぶしダメージ\n2D3{DB} こぶし+MAダメージ\n1D6{DB} キックダメージ\n2D6{DB} キック+MAダメージ\n1D4{DB} 頭突きダメージ\n2D4{DB} 頭突き+MAダメージ\n1Dn{DB}/2 投擲ダメージ<?php if(have_rows('buki')): ?><?php while(have_rows('buki')): the_row(); ?>\n<?php the_sub_field('damage'); ?> <?php the_sub_field('buki'); ?> ダメ―ジ<?php endwhile; ?><?php endif; ?>\n▼回復-------------------------------------\n1D3応急手当回復\n1D3 SAN回復\n▼コマンド-------------------------------------\n:SAN+\n:SAN-\n:HP+\n:HP-\n:MP+\n:MP-","initiative":<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('dex'); endwhile;}?>,"status":[{"label":"HP","value":<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('hp'); endwhile;}?>,"max":<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('hp'); endwhile;}?>},{"label":"MP","value":<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('mp'); endwhile;}?>,"max":<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('mp'); endwhile;}?>},{"label":"SAN","value":<?php the_field('san'); ?>,"max":<?php the_field('san'); ?>}],"params":[{"label":"STR","value":"<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('str'); endwhile;}?>"},{"label":"CON","value":"<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('con'); endwhile;}?>"},{"label":"POW","value":"<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('pow'); endwhile;}?>"},{"label":"DEX","value":"<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('dex'); endwhile;}?>"},{"label":"APP","value":"<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('app'); endwhile;}?>"},{"label":"SIZ","value":"<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('siz'); endwhile;}?>"},{"label":"INT","value":"<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('int'); endwhile;}?>"},{"label":"EDU","value":"<?php if(have_rows('Sumscore')){ while (have_rows('Sumscore')): the_row(); the_sub_field('edu'); endwhile;}?>"},{"label":"DB","value":"<?php if(get_field('db_kijun') < 13): ?>-1D6<?php elseif(get_field('db_kijun') < 17): ?>-1d4<?php elseif( get_field('db_kijun') < 25): ?>0<?php elseif( get_field('db_kijun') < 33): ?>+1d4<?php elseif( get_field('db_kijun') > 32): ?>+1d6<?php endif;?>"}]}}
+		</textarea>
+                        </div>
+                    </section>
+
+                </article>
+            </main>
+        </div>
+        <script src="./assets/js/character-sheet.js"></script>
+        <style>
+            .equipment-content {
+                overflow: hidden;
+                transition: max-height 0.1s ease-out, opacity 0.1s ease-out;
+                max-height: 1000px;
+                opacity: 1;
+            }
+
+            .equipment-content.collapsed {
+                max-height: 0;
+                opacity: 0;
+                padding: 0;
+                margin: 0;
+            }
+
+            .data-wrap h3 {
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 5px;
+                margin-bottom: 10px;
+            }
+
+            .fa-chevron-up {
+                float: right;
+                transition: transform 0.3s;
+                background: #dddddd;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 25px;
+                height: 25px;
+            }
+        </style>
+        <script>
+            // Service Worker registration
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/character/sw.js')
+                        .then(registration => {
+                            console.log('SW registered: ', registration);
+                        })
+                        .catch(registrationError => {
+                            console.log('SW registration failed: ', registrationError);
+                        });
+                });
+            }
+        </script>
+
+        <script>
+            // データの事前読み込み検出
+            const params = new URLSearchParams(window.location.search);
+            const characterId = params.get('share') || params.get('id');
+
+            // キャラクターデータが事前に埋め込まれているかチェック
+            const preloadedData = window.__CHARACTER_DATA__;
+
+            if (preloadedData) {
+                // 事前読み込みデータがある場合は即座に表示
+                document.addEventListener('DOMContentLoaded', () => {
+                    loadCharacterData(preloadedData);
+                    hidePreloader();
+                });
+            } else {
+                // フォールバック: 従来のFirebase読み込み
+                initializeFirebaseLoading();
+            }
+
+            function initializeFirebaseLoading() {
+            // 既存のFirebase読み込み処理をここに移動
+        </script>
+
+        <script type="module">
+                import { db } from './assets/js/firebase-config.js';
+                import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+                // キャラクターデータのキャッシュ
+                const characterCache = new Map();
+                const cacheExpiry = 5 * 60 * 1000; // 5分間のキャッシュ
+
+                // プリローダー制御
+                function updatePreloaderProgress(percentage) {
+                    const progressBar = document.getElementById('preloader-progress-bar');
+
+                    if (progressBar) {
+                        progressBar.style.width = percentage + '%';
+                    }
+                }
+
+                function hidePreloader() {
+                    const preloader = document.getElementById('preloader');
+                    if (preloader) {
+                        preloader.classList.add('fade-out');
+                        setTimeout(() => {
+                            preloader.remove();
+                        }, 500);
+                    }
+                }
+
+                // 旧ローディングインジケーターは削除（プリローダーで代替）
+                function showCharacterLoadingIndicator() {
+                    updatePreloaderProgress(20);
+                }
+
+                function hideCharacterLoadingIndicator() {
+                    updatePreloaderProgress(100);
+                    setTimeout(hidePreloader, 300);
+                }
+
+                // Firebase読み込み（キャッシュ機能付き）
+                async function loadCharacterFromFirebase(characterId) {
+                    // キャッシュをチェック
+                    const cached = characterCache.get(characterId);
+                    if (cached && (Date.now() - cached.timestamp) < cacheExpiry) {
+                        return cached.data;
+                    }
+                    const docRef = doc(db, "characters", characterId);
+                    const docSnap = await getDoc(docRef);
+
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+
+                        // キャッシュに保存
+                        characterCache.set(characterId, {
+                            data: data,
+                            timestamp: Date.now()
+                        });
+
+                        return data;
+                    } else {
+                        throw new Error('共有キャラクターが見つかりません');
+                    }
+                }
+
+                // 共有リンクからの読み込み（最適化版）
+                if (params.get('share')) {
+                    updatePreloaderProgress(10);
+
+                    (async () => {
+                        try {
+                            const characterId = params.get('share');
+                            updatePreloaderProgress(30);
+
+                            const data = await loadCharacterFromFirebase(characterId);
+                            updatePreloaderProgress(60);
+
+                            // DOM読み込み完了を待ってから表示
+                            if (document.readyState === 'loading') {
+                                document.addEventListener('DOMContentLoaded', () => {
+                                    updatePreloaderProgress(80);
+                                    requestAnimationFrame(() => {
+                                        loadCharacterData(data);
+                                        hideCharacterLoadingIndicator();
+                                    });
+                                });
+                            } else {
+                                updatePreloaderProgress(80);
+                                requestAnimationFrame(() => {
+                                    loadCharacterData(data);
+                                    hideCharacterLoadingIndicator();
+                                });
+                            }
+                        } catch (error) {
+                            console.error('共有キャラクターの読み込みエラー:', error);
+                            hideCharacterLoadingIndicator();
+
+                            // エラー表示
+                            const errorDiv = document.createElement('div');
+                            errorDiv.style.cssText = `
+                            position: fixed;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            background: rgba(220,53,69,0.9);
+                            color: white;
+                            padding: 20px;
+                            border-radius: 5px;
+                            z-index: 9999;
+                        `;
+                            errorDiv.textContent = 'キャラクターの読み込みに失敗しました';
+                            document.body.appendChild(errorDiv);
+
+                            setTimeout(() => errorDiv.remove(), 3000);
+                        }
+                    })();
+                }
+                // 従来のBase64データからの読み込み（最適化版）
+                else if (params.get('data')) {
+                    showCharacterLoadingIndicator();
+
+                    try {
+                        const data = JSON.parse(decodeURIComponent(escape(atob(params.get('data')))));
+
+                        // DOM読み込み完了を待ってから表示
+                        if (document.readyState === 'loading') {
+                            document.addEventListener('DOMContentLoaded', () => {
+                                requestAnimationFrame(() => {
+                                    loadCharacterData(data);
+                                    hideCharacterLoadingIndicator();
+                                });
+                            });
+                        } else {
+                            requestAnimationFrame(() => {
+                                loadCharacterData(data);
+                                hideCharacterLoadingIndicator();
+                            });
+                        }
+                    } catch (error) {
+                        console.error('データの読み込みに失敗しました:', error);
+                        hideCharacterLoadingIndicator();
+                    }
+                }
+
+                function loadCharacterData(data) {
+                    // フィールド名とIDの対応マッピング
+                    const fieldMapping = {
+                        // 基本情報
+                        'character_name': 'character_name',
+                        'character_name_kana': 'character_name_kana',
+                        'job': 'job',
+                        'age': 'age',
+                        'sex': 'sex',
+                        'height': 'height',
+                        'weight': 'weight',
+                        'hometown': 'hometown',
+                        'hair_eyes': 'hair_eyes',
+                        'skin': 'skin',
+
+                        // 能力値
+                        'str_total': 'str_total',
+                        'str_base': 'str_base',
+                        'str_age_mod': 'str_age_mod',
+                        'str_other_mod': 'str_other_mod',
+                        'con_total': 'con_total',
+                        'con_base': 'con_base',
+                        'con_age_mod': 'con_age_mod',
+                        'con_other_mod': 'con_other_mod',
+                        'pow_total': 'pow_total',
+                        'pow_base': 'pow_base',
+                        'pow_age_mod': 'pow_age_mod',
+                        'pow_other_mod': 'pow_other_mod',
+                        'dex_total': 'dex_total',
+                        'dex_base': 'dex_base',
+                        'dex_age_mod': 'dex_age_mod',
+                        'dex_other_mod': 'dex_other_mod',
+                        'app_total': 'app_total',
+                        'app_base': 'app_base',
+                        'app_age_mod': 'app_age_mod',
+                        'app_other_mod': 'app_other_mod',
+                        'siz_total': 'siz_total',
+                        'siz_base': 'siz_base',
+                        'siz_age_mod': 'siz_age_mod',
+                        'siz_other_mod': 'siz_other_mod',
+                        'int_total': 'int_total',
+                        'int_base': 'int_base',
+                        'int_age_mod': 'int_age_mod',
+                        'int_other_mod': 'int_other_mod',
+                        'edu_total': 'edu_total',
+                        'edu_base': 'edu_base',
+                        'edu_age_mod': 'edu_age_mod',
+                        'edu_other_mod': 'edu_other_mod',
+
+                        // 派生能力値
+                        'san_total': 'san_total',
+                        'san_base_value': 'san_base_value',
+                        'san_other_mod': 'san_other_mod',
+                        'hp_total': 'hp_total',
+                        'hp_base_value': 'hp_base_value',
+                        'hp_other_mod': 'hp_other_mod',
+                        'mp_total': 'mp_total',
+                        'mp_base_value': 'mp_base_value',
+                        'mp_other_mod': 'mp_other_mod',
+                        'idea_total': 'idea_total',
+                        'idea_base_value': 'idea_base_value',
+                        'idea_other_mod': 'idea_other_mod',
+                        'luck_total': 'luck_total',
+                        'luck_base_value': 'luck_base_value',
+                        'luck_other_mod': 'luck_other_mod',
+                        'knowledge_total': 'knowledge_total',
+                        'knowledge_base_value': 'knowledge_base_value',
+                        'knowledge_other_mod': 'knowledge_other_mod',
+
+                        // 追加の派生値
+                        'current_san': 'current_san',
+                        'max_san': 'max_san',
+                        'damage_bonus': 'damage_bonus',
+                        'job_points_used': 'job_points_used',
+                        'job_points_total': 'job_points_total',
+                        'interest_points_used': 'interest_points_used',
+                        'interest_points_total': 'interest_points_total',
+                        'interest_points_extra': 'interest_points_extra',
+
+                        // 戦闘技能
+                        'dodge_total': 'dodge_total',
+                        'dodge_initial': 'dodge_initial',
+                        'dodge_job': 'dodge_job',
+                        'dodge_interest': 'dodge_interest',
+                        'dodge_growth': 'dodge_growth',
+                        'dodge_other': 'dodge_other'
+                    };
+
+                    // データを対応するIDに設定（最適化版）
+                    const elementsToUpdate = [];
+
+                    // まずマッピングされたフィールドを処理
+                    for (const [fieldName, elementId] of Object.entries(fieldMapping)) {
+                        if (data[fieldName] !== undefined) {
+                            const el = document.getElementById(elementId);
+                            if (el) {
+                                elementsToUpdate.push([el, data[fieldName] || '-']);
+                            }
+                        }
+                    }
+
+                    // nameフィールドの特別処理（旧互換性のため）
+                    for (const key in data) {
+                        if (!fieldMapping[key]) {
+                            const el = document.getElementById(key);
+                            if (el) {
+                                elementsToUpdate.push([el, data[key]]);
+                            }
+                        }
+                    }
+
+                    // 技能値の表示（パターンマッチングで自動設定）
+                    for (const [fieldName, value] of Object.entries(data)) {
+                        if (fieldName.includes('_') && (
+                            fieldName.endsWith('_total') ||
+                            fieldName.endsWith('_initial') ||
+                            fieldName.endsWith('_job') ||
+                            fieldName.endsWith('_interest') ||
+                            fieldName.endsWith('_growth') ||
+                            fieldName.endsWith('_other')
+                        )) {
+                            const el = document.getElementById(fieldName);
+                            if (el) {
+                                elementsToUpdate.push([el, value || '-']);
+                            }
+                        }
+                    }
+
+                    // バッチでDOM更新（レイアウト再計算を最小化）
+                    requestAnimationFrame(() => {
+                        elementsToUpdate.forEach(([el, value]) => {
+                            el.textContent = value;
+                        });
+
+                        // 次のフレームで技能名と追加技能を処理
+                        requestAnimationFrame(() => {
+                            // 自由記述技能名の表示
+                            updateFreeSkillNames(data);
+
+                            // 職業ポイント計算式の表示更新
+                            updateJobPointsFormulaText(data);
+
+                            // 追加技能の表示（効率化）
+                            displayAdditionalCombatSkills(data);
+                            displayAdditionalExplorationSkills(data);
+                            displayAdditionalActionSkills(data);
+                            displayAdditionalNegotiationSkills(data);
+                            displayAdditionalKnowledgeSkills(data);
+                        });
+                    });
+
+                    function updateFreeSkillNames(data) {
+
+                        // 全ての.titleクラス要素を取得
+                        const titleElements = document.querySelectorAll('.title');
+
+                        titleElements.forEach(titleEl => {
+                            const text = titleEl.textContent.trim();
+
+                            // 運転技能名の更新
+                            if (text === '運転(---)') {
+                                if (data.drive_specialty && data.drive_specialty.trim() !== '') {
+                                    titleEl.textContent = `運転(${data.drive_specialty})`;
+                                }
+                            }
+
+                            // 製作技能名の更新
+                            if (text === '製作(---)') {
+                                if (data.craft_specialty && data.craft_specialty.trim() !== '') {
+                                    titleEl.textContent = `製作(${data.craft_specialty})`;
+                                }
+                            }
+
+                            // 操縦技能名の更新
+                            if (text === '操縦(---)') {
+                                if (data.pilot_specialty && data.pilot_specialty.trim() !== '') {
+                                    titleEl.textContent = `操縦(${data.pilot_specialty})`;
+                                }
+                            }
+
+                            // 母国語技能名の更新
+                            if (text === '母国語(---)') {
+                                if (data.mother_tongue_specialty && data.mother_tongue_specialty.trim() !== '') {
+                                    titleEl.textContent = `母国語(${data.mother_tongue_specialty})`;
+                                }
+                            }
+
+                            // 外国語技能名の更新
+                            if (text === '外国語(---)') {
+                                if (data.language_specialty && data.language_specialty.trim() !== '') {
+                                    titleEl.textContent = `外国語(${data.language_specialty})`;
+                                }
+                            }
+
+                            // 芸術技能名の更新
+                            if (text === '芸術(---)') {
+                                if (data.art_specialty && data.art_specialty.trim() !== '') {
+                                    titleEl.textContent = `芸術(${data.art_specialty})`;
+                                }
+                            }
+                        });
+                    }
+
+                    function updateJobPointsFormulaText(data) {
+                        const formulaTextEl = document.getElementById('job_points_formula_text');
+                        if (!formulaTextEl || !data.job_points_formula) return;
+
+                        const formulaMap = {
+                            'edu20': 'EDU×20',
+                            'edu10_str10': 'EDU×10 + STR×10',
+                            'edu10_con10': 'EDU×10 + CON×10',
+                            'edu10_pow10': 'EDU×10 + POW×10',
+                            'edu10_dex10': 'EDU×10 + DEX×10',
+                            'edu10_app10': 'EDU×10 + APP×10',
+                            'edu10_siz10': 'EDU×10 + SIZ×10',
+                            'edu10_int10': 'EDU×10 + INT×10',
+                            'manual': '手動設定'
+                        };
+
+                        const formulaText = formulaMap[data.job_points_formula] || 'EDU×10 + STR×10';
+                        formulaTextEl.textContent = formulaText;
+                    }
+
+                    function displayAdditionalCombatSkills(data) {
+                        const container = document.getElementById('additional-combat-skills-display');
+                        if (!container) return;
+
+                        container.innerHTML = ''; // 既存の内容をクリア
+
+                        // additional_combat_X パターンの技能を検索
+                        const additionalCombatSkills = [];
+                        for (const [key, value] of Object.entries(data)) {
+                            if (key.startsWith('additional_combat_') && key.endsWith('_name')) {
+                                const skillId = key.replace('_name', '');
+                                const skillName = value;
+
+                                // 技能名が空でない場合のみ表示
+                                if (skillName && skillName.trim() !== '') {
+                                    const skillData = {
+                                        id: skillId,
+                                        name: skillName,
+                                        total: data[skillId + '_total'] || '0',
+                                        initial: data[skillId + '_initial'] || '0',
+                                        job: data[skillId + '_job'] || '0',
+                                        interest: data[skillId + '_interest'] || '0',
+                                        growth: data[skillId + '_growth'] || '0',
+                                        other: data[skillId + '_other'] || '0'
+                                    };
+
+                                    // 0の値は表示しない（技能名と初期値は除く）
+                                    const hasNonZeroValues =
+                                        parseInt(skillData.total) > 0 ||
+                                        parseInt(skillData.job) > 0 ||
+                                        parseInt(skillData.interest) > 0 ||
+                                        parseInt(skillData.growth) > 0 ||
+                                        parseInt(skillData.other) > 0;
+
+                                    if (hasNonZeroValues) {
+                                        additionalCombatSkills.push(skillData);
+                                    }
+                                }
+                            }
+                        }
+
+                        // 追加戦闘技能がある場合のみHTML要素を作成
+                        additionalCombatSkills.forEach(skill => {
+                            const skillHtml = `
+                            <li class="d-flex skill-li skill-body">
+                                <div class="title">${skill.name}</div>
+                                <div class="total"><span>${skill.total}</span></div>
+                                <div class="breakdown">
+                                    <span class="initial">${skill.initial}</span>|
+                                    <span class="atai">${skill.job}</span>|
+                                    <span class="atai">${skill.interest}</span>|
+                                    <span class="atai">${skill.growth}</span>|
+                                    <span class="atai">${skill.other}</span>
+                                </div>
+                            </li>
+                        `;
+                            container.innerHTML += skillHtml;
+                        });
+                    }
+
+                    // 汎用的な追加技能表示関数
+                    function displayAdditionalSkills(data, skillType, containerId) {
+                        const container = document.getElementById(containerId);
+                        if (!container) return;
+
+                        container.innerHTML = ''; // 既存の内容をクリア
+
+                        // additional_SKILLTYPE_X パターンの技能を検索
+                        const additionalSkills = [];
+                        for (const [key, value] of Object.entries(data)) {
+                            if (key.startsWith(`additional_${skillType}_`) && key.endsWith('_name')) {
+                                const skillId = key.replace('_name', '');
+                                const skillName = value;
+
+                                // 技能名が存在し、かつ空でない場合のみ表示
+                                if (skillName && skillName.trim() !== '') {
+                                    const skillData = {
+                                        id: skillId,
+                                        name: skillName,
+                                        total: data[skillId + '_total'] || '0',
+                                        initial: data[skillId + '_initial'] || '0',
+                                        job: data[skillId + '_job'] || '0',
+                                        interest: data[skillId + '_interest'] || '0',
+                                        growth: data[skillId + '_growth'] || '0',
+                                        other: data[skillId + '_other'] || '0'
+                                    };
+
+                                    // 技能名があり、かつ何らかの値が入っている場合のみ表示
+                                    const hasNonZeroValues =
+                                        parseInt(skillData.total) > 0 ||
+                                        parseInt(skillData.job) > 0 ||
+                                        parseInt(skillData.interest) > 0 ||
+                                        parseInt(skillData.growth) > 0 ||
+                                        parseInt(skillData.other) > 0;
+
+                                    if (hasNonZeroValues) {
+                                        additionalSkills.push(skillData);
+                                    }
+                                }
+                            }
+                        }
+
+                        // 追加技能がある場合のみHTML要素を作成
+                        additionalSkills.forEach(skill => {
+                            const skillHtml = `
+                            <li class="d-flex skill-li skill-body">
+                                <div class="title">${skill.name}</div>
+                                <div class="total"><span>${skill.total}</span></div>
+                                <div class="breakdown">
+                                    <span class="initial">${skill.initial}</span>|
+                                    <span class="atai">${skill.job}</span>|
+                                    <span class="atai">${skill.interest}</span>|
+                                    <span class="atai">${skill.growth}</span>|
+                                    <span class="atai">${skill.other}</span>
+                                </div>
+                            </li>
+                        `;
+                            container.innerHTML += skillHtml;
+                        });
+                    }
+
+                    // 各技能カテゴリの表示関数
+                    function displayAdditionalExplorationSkills(data) {
+                        displayAdditionalSkills(data, 'exploration', 'additional-exploration-skills-display');
+                    }
+
+                    function displayAdditionalActionSkills(data) {
+                        displayAdditionalSkills(data, 'action', 'additional-action-skills-display');
+                    }
+
+                    function displayAdditionalNegotiationSkills(data) {
+                        displayAdditionalSkills(data, 'negotiation', 'additional-negotiation-skills-display');
+                    }
+
+                    function displayAdditionalKnowledgeSkills(data) {
+                        displayAdditionalSkills(data, 'knowledge', 'additional-knowledge-skills-display');
+                    }
+
+                    // 装備データの表示（最適化版 - 遅延読み込み対応）
+                    requestAnimationFrame(() => {
+                        updatePreloaderProgress(85);
+
+                        // 基本データを即座に表示
+                        if (data.equipment && typeof window.displayEquipmentData === 'function') {
+                            // Intersection Observerで遅延読み込み
+                            lazyLoadEquipmentData(data.equipment);
+                        }
+
+                        // アコーディオン状態復元
+                        setTimeout(() => {
+                            if (typeof window.restoreCharacterEquipmentSectionStates === 'function') {
+                                window.restoreCharacterEquipmentSectionStates();
+                            }
+                            updatePreloaderProgress(95);
+                        }, 50);
+                    });
+
+                    // 遅延読み込み関数
+                    function lazyLoadEquipmentData(equipmentData) {
+                        const equipmentSections = document.querySelectorAll('.data-wrap');
+
+                        if ('IntersectionObserver' in window) {
+                            const observer = new IntersectionObserver((entries) => {
+                                entries.forEach(entry => {
+                                    if (entry.isIntersecting) {
+                                        // セクションが見える時に装備データを読み込み
+                                        window.displayEquipmentData(equipmentData);
+                                        observer.disconnect();
+                                    }
+                                });
+                            }, {
+                                rootMargin: '100px' // 100px手前で読み込み開始
+                            });
+
+                            equipmentSections.forEach(section => {
+                                observer.observe(section);
+                            });
+                        } else {
+                            // Intersection Observer未対応の場合は即座に読み込み
+                            window.displayEquipmentData(equipmentData);
+                        }
+                    }
+                }
+
+                // character.html用のアコーディオントグル関数
+                function toggleCharacterEquipmentSection(sectionId) {
+                    const content = document.getElementById(`${sectionId}-content-display`);
+                    const icon = document.getElementById(`${sectionId}-toggle-icon-display`);
+
+                    if (!content || !icon) return;
+
+                    const isCollapsed = content.classList.contains("collapsed");
+
+                    if (isCollapsed) {
+                        // 展開
+                        content.classList.remove("collapsed");
+                        icon.style.transform = "rotate(0deg)";
+                    } else {
+                        // 折りたたみ
+                        content.classList.add("collapsed");
+                        icon.style.transform = "rotate(180deg)";
+                    }
+
+                    // トグル後の状態を取得
+                    const afterToggle = content.classList.contains("collapsed");
+                    const newState = !afterToggle;
+
+                    saveCharacterEquipmentSectionState(sectionId, newState);
+                }
+
+                // character.html用の装備セクション状態保存関数
+                function saveCharacterEquipmentSectionState(sectionId, isOpen) {
+                    const states = getCharacterEquipmentStates();
+                    states[sectionId] = isOpen;
+                    localStorage.setItem('characterEquipmentSectionStates', JSON.stringify(states));
+                }
+
+                // character.html用の装備セクション状態取得関数
+                function getCharacterEquipmentStates() {
+                    const saved = localStorage.getItem('characterEquipmentSectionStates');
+                    return saved ? JSON.parse(saved) : {};
+                }
+
+                // character.html用の装備セクション状態復元関数
+                function restoreCharacterEquipmentSectionStates() {
+                    const states = getCharacterEquipmentStates();
+                    const sections = ['weapons', 'items', 'disorders', 'books', 'spells', 'artifacts', 'entities'];
+
+                    sections.forEach(sectionId => {
+                        const content = document.getElementById(`${sectionId}-content-display`);
+                        const icon = document.getElementById(`${sectionId}-toggle-icon-display`);
+
+                        if (content && icon) {
+                            // デフォルトは開いた状態、保存された状態があればそれを使用
+                            const isOpen = states[sectionId] !== undefined ? states[sectionId] : true;
+
+                            if (isOpen) {
+                                content.classList.remove("collapsed");
+                                icon.style.transform = "rotate(0deg)";
+                            } else {
+                                content.classList.add("collapsed");
+                                icon.style.transform = "rotate(180deg)";
+                            }
+                        }
+                    });
+                }
+
+                // デバッグ用：ローカルストレージをクリアする関数
+                function clearEquipmentStates() {
+                    localStorage.removeItem('characterEquipmentSectionStates');
+                }
+
+                // デバッグ用にグローバルに公開
+                window.clearEquipmentStates = clearEquipmentStates;
+
+                // 装備データ表示完了後にアコーディオン状態を復元（最適化版）
+                function waitForEquipmentAndRestore() {
+                    // 装備セクションが存在するかチェック
+                    const weaponsSection = document.querySelector('.data-wrap.buki');
+                    if (weaponsSection) {
+                        // 即座にアコーディオン状態を復元
+                        restoreCharacterEquipmentSectionStates();
+
+                        // レンダリング完了後にもう一度確認（保険）
+                        requestAnimationFrame(() => {
+                            setTimeout(() => {
+                                restoreCharacterEquipmentSectionStates();
+                            }, 50);
+                        });
+                    } else {
+                        // まだ装備セクションが存在しない場合は短い間隔で再試行
+                        setTimeout(waitForEquipmentAndRestore, 50);
+                    }
+                }
+
+                // 初回試行を早める
+                setTimeout(waitForEquipmentAndRestore, 200); // 500ms -> 200ms に短縮
+
+                // グローバルスコープに関数を公開
+                window.toggleCharacterEquipmentSection = toggleCharacterEquipmentSection;
+                window.restoreCharacterEquipmentSectionStates = restoreCharacterEquipmentSectionStates;
+        </script>
+
+
+</body>
+
+</html>

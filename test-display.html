@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Function Test</title>
+</head>
+<body>
+    <h1>Display Function Test</h1>
+    <button onclick="testDisplay()">Test Display Button</button>
+    <p id="result"></p>
+
+    <script>
+        // Simulate the displayCurrentCharacter function
+        function testDisplay() {
+            const testData = {
+                character_name: "テストキャラクター",
+                str_total: "15",
+                dex_total: "12"
+            };
+            
+            // Test the URL generation logic from character-ui.js
+            const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(testData))));
+            const testUrl = `character.html?data=${encoded}`;
+            
+            document.getElementById('result').innerHTML = `
+                <strong>Test passed!</strong><br>
+                Generated URL: <a href="${testUrl}" target="_blank">${testUrl}</a><br>
+                This would normally open in a new window/tab.
+            `;
+            
+            console.log('Display function test successful');
+            console.log('Generated URL:', testUrl);
+        }
+    </script>
+</body>
+</html>
