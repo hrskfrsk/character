@@ -11,6 +11,7 @@ import CharacterInfo from '../components/character-form/CharacterInfo';
 import AbilityAndDerivedStats from '../components/character-form/AbilityAndDerivedStats';
 import SkillSections from '../components/character-form/SkillSections';
 import Equipment from '../components/character-form/Equipment';
+import MemoSection from '../components/character-form/MemoSection';
 
 export default function CreateCharacterPage() {
   const [mounted, setMounted] = useState(false);
@@ -66,9 +67,40 @@ export default function CreateCharacterPage() {
     books: true,
     spells: true,
     artifacts: true,
-    entities: true,
-    secretMemos: true
+    entities: true
   });
+
+  // メモセクション用の独立した状態
+  const [showMemoSection, setShowMemoSection] = useState(true);
+
+  // localStorage から UI 状態を復元
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedHideInitialSkills = localStorage.getItem('character-form-hideInitialSkills');
+      const savedEquipmentSections = localStorage.getItem('character-form-equipmentSections');
+      
+      if (savedHideInitialSkills !== null) {
+        setHideInitialSkills(JSON.parse(savedHideInitialSkills));
+      }
+      
+      if (savedEquipmentSections !== null) {
+        setEquipmentSections(JSON.parse(savedEquipmentSections));
+      }
+    }
+  }, []);
+
+  // UI 状態を localStorage に保存
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('character-form-hideInitialSkills', JSON.stringify(hideInitialSkills));
+    }
+  }, [hideInitialSkills]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('character-form-equipmentSections', JSON.stringify(equipmentSections));
+    }
+  }, [equipmentSections]);
 
   const router = useRouter();
   const { edit } = router.query;
@@ -325,11 +357,103 @@ export default function CreateCharacterPage() {
   }, [updateCalculations]);
 
   // フォーム値の更新
+  // 職業ポイントの使用量を計算
+  const calculateJobPointsUsed = (data: CharacterData): number => {
+    let total = 0;
+    
+    // 固定技能の職業ポイント
+    const fixedSkills = [
+      'dodge', 'kick', 'grapple', 'punch', 'headbutt', 'throw',
+      'first_aid', 'locksmith', 'conceal', 'hide', 'listen', 'sneak',
+      'photography', 'psychoanalysis', 'climb', 'jump', 'swim',
+      'throw_skill', 'fast_talk', 'credit_rating', 'disguise',
+      'dodge_skill', 'intimidate', 'persuade', 'psychology',
+      'accounting', 'anthropology', 'archeology', 'art', 'astronomy',
+      'biology', 'chemistry', 'computer_use', 'craft', 'demolitions',
+      'economics', 'electrical_repair', 'electronics', 'engineering',
+      'forensics', 'geology', 'history', 'law', 'library_use',
+      'linguistics', 'locksmith_skill', 'mathematics', 'mechanical_repair',
+      'medicine', 'natural_world', 'navigate', 'occult', 'operate_heavy_machinery',
+      'pharmacy', 'physics', 'pilot', 'psychotherapy', 'ride', 'spot_hidden',
+      'survival', 'track'
+    ];
+    
+    fixedSkills.forEach(skill => {
+      const jobValue = (data as any)[`${skill}_job`];
+      if (jobValue && !isNaN(Number(jobValue))) {
+        total += Number(jobValue);
+      }
+    });
+    
+    // 追加技能の職業ポイント
+    for (let i = 1; i <= 50; i++) {
+      ['additional_combat', 'additional_exploration', 'additional_action', 'additional_negotiation', 'additional_knowledge'].forEach(category => {
+        const jobValue = (data as any)[`${category}_${i}_job`];
+        if (jobValue && !isNaN(Number(jobValue))) {
+          total += Number(jobValue);
+        }
+      });
+    }
+    
+    return total;
+  };
+
+  // 興味ポイントの使用量を計算
+  const calculateInterestPointsUsed = (data: CharacterData): number => {
+    let total = 0;
+    
+    // 固定技能の興味ポイント
+    const fixedSkills = [
+      'dodge', 'kick', 'grapple', 'punch', 'headbutt', 'throw',
+      'first_aid', 'locksmith', 'conceal', 'hide', 'listen', 'sneak',
+      'photography', 'psychoanalysis', 'climb', 'jump', 'swim',
+      'throw_skill', 'fast_talk', 'credit_rating', 'disguise',
+      'dodge_skill', 'intimidate', 'persuade', 'psychology',
+      'accounting', 'anthropology', 'archeology', 'art', 'astronomy',
+      'biology', 'chemistry', 'computer_use', 'craft', 'demolitions',
+      'economics', 'electrical_repair', 'electronics', 'engineering',
+      'forensics', 'geology', 'history', 'law', 'library_use',
+      'linguistics', 'locksmith_skill', 'mathematics', 'mechanical_repair',
+      'medicine', 'natural_world', 'navigate', 'occult', 'operate_heavy_machinery',
+      'pharmacy', 'physics', 'pilot', 'psychotherapy', 'ride', 'spot_hidden',
+      'survival', 'track'
+    ];
+    
+    fixedSkills.forEach(skill => {
+      const interestValue = (data as any)[`${skill}_interest`];
+      if (interestValue && !isNaN(Number(interestValue))) {
+        total += Number(interestValue);
+      }
+    });
+    
+    // 追加技能の興味ポイント
+    for (let i = 1; i <= 50; i++) {
+      ['additional_combat', 'additional_exploration', 'additional_action', 'additional_negotiation', 'additional_knowledge'].forEach(category => {
+        const interestValue = (data as any)[`${category}_${i}_interest`];
+        if (interestValue && !isNaN(Number(interestValue))) {
+          total += Number(interestValue);
+        }
+      });
+    }
+    
+    return total;
+  };
+
   const handleInputChange = (field: string, value: any) => {
-    setCharacterData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setCharacterData(prev => {
+      const newData = {
+        ...prev,
+        [field]: value
+      };
+
+      // 職業ポイントや興味ポイントに関連する変更の場合、使用量を再計算
+      if (field.includes('_job') || field.includes('_interest')) {
+        newData.job_points_used = calculateJobPointsUsed(newData);
+        newData.interest_points_used = calculateInterestPointsUsed(newData);
+      }
+
+      return newData;
+    });
   };
 
   // 職業ポイント計算式の更新
@@ -533,6 +657,11 @@ export default function CreateCharacterPage() {
       ...prev,
       [sectionId]: !prev[sectionId]
     }));
+  };
+
+  // メモセクションのトグル関数
+  const toggleMemoSection = () => {
+    setShowMemoSection(prev => !prev);
   };
 
   // 武器を追加
@@ -991,9 +1120,13 @@ export default function CreateCharacterPage() {
                     additionalKnowledgeSkills={additionalKnowledgeSkills}
                     addKnowledgeSkill={addKnowledgeSkill}
                     removeKnowledgeSkill={removeKnowledgeSkill}
+                    jobPointsUsed={Number(characterData.job_points_used) || 0}
+                    jobPointsTotal={Number(characterData.job_points_formula === 'manual' ? (characterData.job_points_total || 0) : (calculatedStats.job_points_total || 0))}
+                    interestPointsUsed={Number(characterData.interest_points_used) || 0}
+                    interestPointsTotal={Number(calculatedStats.interest_points_total) || 0}
                   />
 
-                  {/* 装備・所持品・メモセクション */}
+                  {/* 装備・所持品セクション */}
                   <Equipment
                     characterData={characterData}
                     handleInputChange={handleInputChange}
@@ -1020,6 +1153,14 @@ export default function CreateCharacterPage() {
                     entities={entities}
                     addEntity={addEntity}
                     removeEntity={removeEntity}
+                  />
+
+                  {/* メモセクション */}
+                  <MemoSection
+                    characterData={characterData}
+                    handleInputChange={handleInputChange}
+                    showMemoSection={showMemoSection}
+                    toggleMemoSection={toggleMemoSection}
                     secretMemos={secretMemos}
                     addSecretMemo={addSecretMemo}
                     removeSecretMemo={removeSecretMemo}

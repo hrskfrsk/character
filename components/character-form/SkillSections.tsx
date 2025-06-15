@@ -34,6 +34,11 @@ interface SkillSectionsProps {
   additionalKnowledgeSkills: Array<{ id: string, counter: number }>;
   addKnowledgeSkill: () => void;
   removeKnowledgeSkill: (id: string) => void;
+  // ポイント情報
+  jobPointsUsed: number;
+  jobPointsTotal: number;
+  interestPointsUsed: number;
+  interestPointsTotal: number;
 }
 
 export default function SkillSections({
@@ -57,7 +62,11 @@ export default function SkillSections({
   removeNegotiationSkill,
   additionalKnowledgeSkills,
   addKnowledgeSkill,
-  removeKnowledgeSkill
+  removeKnowledgeSkill,
+  jobPointsUsed,
+  jobPointsTotal,
+  interestPointsUsed,
+  interestPointsTotal
 }: SkillSectionsProps) {
   return (
     <>
@@ -81,7 +90,13 @@ export default function SkillSections({
         </div>
       </div>
 
-      <div className="skill">
+      <div 
+        className="skill" 
+        style={{
+          backgroundColor: (jobPointsUsed > jobPointsTotal || interestPointsUsed > interestPointsTotal) ? '#ffe6e6' : 'inherit',
+          transition: 'background-color 0.3s ease'
+        }}
+      >
         <CombatSkills
           characterData={characterData}
           calculatedStats={calculatedStats}

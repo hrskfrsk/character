@@ -492,6 +492,7 @@ export interface CharacterData {
   history_total?: number | string;
   
   // メモフィールド
+  default_memo?: string;
   other_memo?: string;
   secret_memo?: string;
   

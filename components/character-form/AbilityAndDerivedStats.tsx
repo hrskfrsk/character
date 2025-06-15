@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CharacterData } from '../../lib/character-calculations';
+import { rollAllAbilities, rollSingleAbility, AbilityRollResult } from '../../lib/ability-dice';
 
 interface AbilityAndDerivedStatsProps {
   characterData: CharacterData;
@@ -26,13 +27,118 @@ export default function AbilityAndDerivedStats({
   hideInitialSkills,
   toggleSkillDisplay
 }: AbilityAndDerivedStatsProps) {
+  const [lastRolls, setLastRolls] = useState<{ [key: string]: AbilityRollResult } | null>(null);
+
+  // 能力値合計を計算
+  const calculateAbilityTotal = () => {
+    const abilities = ['str_total', 'con_total', 'pow_total', 'dex_total', 'app_total', 'siz_total', 'int_total', 'edu_total'];
+    return abilities.reduce((total, ability) => {
+      const value = calculatedStats[ability];
+      return total + (value && !isNaN(value) ? parseInt(value) : 0);
+    }, 0);
+  };
+
+  const handleRollAllAbilities = () => {
+    const rolls = rollAllAbilities();
+    setLastRolls(rolls);
+
+    // 各能力値を設定
+    handleInputChange('str_base', rolls.str.total);
+    handleInputChange('con_base', rolls.con.total);
+    handleInputChange('pow_base', rolls.pow.total);
+    handleInputChange('dex_base', rolls.dex.total);
+    handleInputChange('app_base', rolls.app.total);
+    handleInputChange('siz_base', rolls.siz.total);
+    handleInputChange('int_base', rolls.int.total);
+    handleInputChange('edu_base', rolls.edu.total);
+  };
+
+  const handleRollSingleAbility = (ability: 'str' | 'con' | 'pow' | 'dex' | 'app' | 'siz' | 'int' | 'edu') => {
+    const roll = rollSingleAbility(ability);
+    handleInputChange(`${ability}_base`, roll.total);
+
+    // 個別ロール結果を保存
+    setLastRolls(prev => ({
+      ...prev,
+      [ability]: roll
+    }));
+  };
+
+  // 小さなダイスボタンコンポーネント
+  const DiceButton = ({ ability, formula }: { ability: 'str' | 'con' | 'pow' | 'dex' | 'app' | 'siz' | 'int' | 'edu', formula: string }) => (
+    <button
+      type="button"
+      onClick={() => handleRollSingleAbility(ability)}
+      style={{
+        marginLeft: '5px',
+        padding: '2px 6px',
+        fontSize: '10px',
+        backgroundColor: '#f0f0f0',
+        border: '1px solid #ccc',
+        borderRadius: '3px',
+        cursor: 'pointer',
+        color: '#666'
+      }}
+      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e0e0e0'}
+      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'}
+      title={`${formula}で振り直し`}
+    >
+      🎲
+    </button>
+  );
+
   return (
     <>
+      {/* STATUS */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '0',
+        borderBottom: '2px solid #ddd',
+        paddingBottom: '5px',
+
+      }}>
+        <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 'bold' }}>STATUS</h2>
+        <button
+          type="button"
+          onClick={handleRollAllAbilities}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#4CAF50',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#45a049'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4CAF50'}
+        >
+          🎲 ALL
+        </button>
+      </div>
+
       {/* 能力値セクション */}
       <div className="scores d-flex">
         <ul className="basic-score d-flex ul-score">
           <li className="name">
-            <div className="score-sum"></div>
+            <h3>TOTAL</h3>
+            <div className="score-sum">
+              <input
+                type="text"
+                className="readonly"
+                value={calculateAbilityTotal()}
+                readOnly
+                style={{
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  fontSize: '12px',
+                  width: '20px'
+                }}
+                title="能力値合計"
+              />
+            </div>
             <ul className="score-detail">
               <li>基礎能力</li>
               <li className="ages">年齢修正</li>
@@ -42,7 +148,7 @@ export default function AbilityAndDerivedStats({
 
           {/* STR */}
           <li className="str score-li">
-            <h3>STR</h3>
+            <h3>STR <DiceButton ability="str" formula="3D6" /></h3>
             <div className="score-sum">
               <input type="text" className="readonly" id="str_total" value={calculatedStats.str_total || ''} readOnly />
             </div>
@@ -85,7 +191,7 @@ export default function AbilityAndDerivedStats({
 
           {/* CON */}
           <li className="con score-li">
-            <h3>CON</h3>
+            <h3>CON <DiceButton ability="con" formula="3D6" /></h3>
             <div className="score-sum">
               <input type="text" className="readonly" id="con_total" value={calculatedStats.con_total || ''} readOnly />
             </div>
@@ -128,7 +234,7 @@ export default function AbilityAndDerivedStats({
 
           {/* POW */}
           <li className="pow score-li">
-            <h3>POW</h3>
+            <h3>POW <DiceButton ability="pow" formula="3D6" /></h3>
             <div className="score-sum">
               <input type="text" className="readonly" id="pow_total" value={calculatedStats.pow_total || ''} readOnly />
             </div>
@@ -171,7 +277,7 @@ export default function AbilityAndDerivedStats({
 
           {/* DEX */}
           <li className="dex score-li">
-            <h3>DEX</h3>
+            <h3>DEX <DiceButton ability="dex" formula="3D6" /></h3>
             <div className="score-sum">
               <input type="text" className="readonly" id="dex_total" value={calculatedStats.dex_total || ''} readOnly />
             </div>
@@ -214,7 +320,7 @@ export default function AbilityAndDerivedStats({
 
           {/* APP */}
           <li className="app score-li">
-            <h3>APP</h3>
+            <h3>APP <DiceButton ability="app" formula="3D6" /></h3>
             <div className="score-sum">
               <input type="text" className="readonly" id="app_total" value={calculatedStats.app_total || ''} readOnly />
             </div>
@@ -257,7 +363,7 @@ export default function AbilityAndDerivedStats({
 
           {/* SIZ */}
           <li className="siz score-li">
-            <h3>SIZ</h3>
+            <h3>SIZ <DiceButton ability="siz" formula="2D6+6" /></h3>
             <div className="score-sum">
               <input type="text" className="readonly" id="siz_total" value={calculatedStats.siz_total || ''} readOnly />
             </div>
@@ -300,7 +406,7 @@ export default function AbilityAndDerivedStats({
 
           {/* INT */}
           <li className="int score-li">
-            <h3>INT</h3>
+            <h3>INT <DiceButton ability="int" formula="2D6+6" /></h3>
             <div className="score-sum">
               <input type="text" className="readonly" id="int_total" value={calculatedStats.int_total || ''} readOnly />
             </div>
@@ -343,7 +449,7 @@ export default function AbilityAndDerivedStats({
 
           {/* EDU */}
           <li className="edu score-li">
-            <h3>EDU</h3>
+            <h3>EDU <DiceButton ability="edu" formula="3D6+3" /></h3>
             <div className="score-sum">
               <input type="text" className="readonly" id="edu_total" value={calculatedStats.edu_total || ''} readOnly />
             </div>
@@ -728,18 +834,22 @@ export default function AbilityAndDerivedStats({
             <input type="text" className="readonly _02" id="damage_bonus" value={calculatedStats.damage_bonus || ''} readOnly />
           </div>
         </div>
-        <div className="jobp slot">
+        <div className="jobp slot" style={{
+          backgroundColor: (characterData.job_points_used || 0) > (characterData.job_points_formula === 'manual' ? (characterData.job_points_total || 0) : (calculatedStats.job_points_total || 0)) ? '#ffe6e6' : 'inherit'
+        }}>
           <h3>職業P</h3>
           <div className="slot-txt">
             <input
-              type="number"
+              type="text"
               id="job_points_used"
               name="job_points_used"
               className="readonly auto-resize _02"
               value={characterData.job_points_used || 0}
-              onChange={(e) => handleInputChange('job_points_used', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
+              readOnly
               style={{
-                width: `${Math.max(2, String(characterData.job_points_used || 0).length)}ch`
+                width: `${Math.max(2, String(characterData.job_points_used || 0).length)}ch`,
+                color: (characterData.job_points_used || 0) > (characterData.job_points_formula === 'manual' ? (characterData.job_points_total || 0) : (calculatedStats.job_points_total || 0)) ? '#d32f2f' : 'inherit',
+                fontWeight: (characterData.job_points_used || 0) > (characterData.job_points_formula === 'manual' ? (characterData.job_points_total || 0) : (calculatedStats.job_points_total || 0)) ? 'bold' : 'normal'
               }}
             />
             <span>/</span>
@@ -792,18 +902,22 @@ export default function AbilityAndDerivedStats({
             </select>
           </div>
         </div>
-        <div className="intp slot">
+        <div className="intp slot" style={{
+          backgroundColor: (characterData.interest_points_used || 0) > (calculatedStats.interest_points_total || 0) ? '#ffe6e6' : 'inherit'
+        }}>
           <h3>興味P</h3>
           <div className="slot-txt">
             <input
-              type="number"
+              type="text"
               id="interest_points_used"
               name="interest_points_used"
               className="readonly auto-resize _02"
               value={characterData.interest_points_used || 0}
-              onChange={(e) => handleInputChange('interest_points_used', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
+              readOnly
               style={{
-                width: `${Math.max(2, String(characterData.interest_points_used || 0).length)}ch`
+                width: `${Math.max(2, String(characterData.interest_points_used || 0).length)}ch`,
+                color: (characterData.interest_points_used || 0) > (calculatedStats.interest_points_total || 0) ? '#d32f2f' : 'inherit',
+                fontWeight: (characterData.interest_points_used || 0) > (calculatedStats.interest_points_total || 0) ? 'bold' : 'normal'
               }}
             />
             <span>/</span>

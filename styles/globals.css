@@ -59,6 +59,9 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+:focus {
+  outline: none;
+}
 /*form
 ---------------------------------------------------*/
 .character-input input,
@@ -89,7 +92,7 @@ input[type="number"] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: #e5e5e5;
+  background: transparent;
   color: #888;
   border: none;
   -webkit-box-shadow: none;
@@ -103,7 +106,7 @@ input[type="number"] {
 }
 .character-input .readonly._02 {
   color: #aaa;
-  background: #ececec;
+  background: transparent;
   font-size: 0.8rem;
   line-height: 1;
   font-weight: 400;
@@ -164,9 +167,6 @@ input[type="number"] {
   -ms-flex-pack: center;
   justify-content: center;
 }
-.character-input .chara-seet .scores .ul-score .score-li {
-  width: 69.5px;
-}
 .character-input .chara-seet .scores .ul-score .score-sum {
   padding: 0;
 }
@@ -215,6 +215,11 @@ input[type="number"] {
   padding: 0 10px;
 }
 @media only screen and (max-width: 400px) {
+  .character-input .add-slill-li .title {
+    padding: 0 2px;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 1029px) {
   .character-input .add-slill-li .title {
     padding: 0 2px;
   }
@@ -385,9 +390,7 @@ input[type="number"] {
 /* Equipment Accordion Styles
 ---------------------------------------------------*/
 .equipment-content {
-  overflow: hidden;
   transition: max-height 0.1s ease-out, opacity 0.1s ease-out;
-  max-height: 1000px;
   opacity: 1;
 }
 
@@ -491,7 +494,7 @@ li {
   text-align: center;
 }
 .chara-seet .scores .ul-score .score-li {
-  width: 67px;
+  width: 69.5px;
   margin: 0 0.5px;
 }
 @media only screen and (max-width: 1029px) {
@@ -517,7 +520,6 @@ li {
   }
 }
 .chara-seet .scores .ul-score li.name {
-  border-right: solid 1px #ccc;
   font-family: "Kosugi";
 }
 .chara-seet .scores .ul-score li.name .score-sum {
@@ -526,18 +528,23 @@ li {
 }
 .chara-seet .scores .ul-score li.name h3 {
   padding: 10px 0 0;
-  color: #aaa;
+  color: #7b7b7b;
   background: none;
+  font-size: 0.8em;
+  font-weight: bold;
+  border-bottom: solid 1px #aaa;
 }
 .chara-seet .scores .ul-score .score-sum {
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.6;
   padding-bottom: 2px;
-  background: #e5e5e5;
 }
 .chara-seet .scores .ul-score .score-detail {
   border-top: solid 1px #aaa;
+}
+.chara-seet .scores .ul-score .name .score-detail {
+  border-right: solid 1px #d2d2d2;
 }
 .chara-seet .scores .ul-score .score-detail li {
   min-height: 10px;
@@ -909,7 +916,7 @@ li {
   margin-top: 5%;
 }
 .chara-seet .data-wrap .o-memos {
-  padding: 10px;
+  padding: 0 10px 10px;
 }
 .chara-seet .data-wrap .memo-title {
   border-bottom: solid 1px #ccc;

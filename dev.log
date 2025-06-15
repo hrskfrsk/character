@@ -1,0 +1,274 @@
+
+> coc-character-sheet@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.30
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+  - Experiments (use with caution):
+    · esmExternals
+    · forceSwcTransforms
+
+ ✓ Starting...
+ ✓ Ready in 626ms
+ ✓ Compiled /character/[id] in 249ms (335 modules)
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document (webpack-internal:///./node_modules/next/dist/pages/_document.js:798:1)
+ GET /character/9fkpumqFQLsN4VlZSe6o 200 in 1592ms
+ ✓ Compiled /404 in 123ms (339 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 135ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document (webpack-internal:///./node_modules/next/dist/pages/_document.js:798:1)
+ GET /character/9fkpumqFQLsN4VlZSe6o 200 in 420ms
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 10ms
+ ✓ Compiled in 571ms (335 modules)
+ ✓ Compiled in 603ms (335 modules)
+ ✓ Compiled /create in 368ms (377 modules)
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 70ms
+ ✓ Compiled in 601ms (377 modules)
+ ✓ Compiled in 598ms (379 modules)
+ ✓ Compiled in 381ms (379 modules)
+ ✓ Compiled in 356ms (379 modules)
+ ✓ Compiled in 347ms (248 modules)
+ ✓ Compiled in 350ms (131 modules)
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 42ms
+ ✓ Compiled in 383ms (248 modules)
+ ✓ Compiled in 378ms (131 modules)
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 32ms
+ ✓ Compiled in 394ms (379 modules)
+ ✓ Compiled in 374ms (248 modules)
+ ✓ Compiled in 362ms (131 modules)
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 41ms
+ ✓ Compiled in 677ms (379 modules)
+ ✓ Compiled in 348ms (248 modules)
+ ✓ Compiled in 360ms (131 modules)
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 36ms
+ ✓ Compiled in 389ms (248 modules)
+ ✓ Compiled in 352ms (131 modules)
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 34ms
+ ✓ Compiled in 662ms (379 modules)
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 43ms
+ ✓ Compiled /404 in 150ms (383 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 159ms
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 70ms
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 10ms
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 11ms
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 12ms
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 9ms
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 7ms
+ ✓ Compiled in 468ms (379 modules)
+ ✓ Compiled in 392ms (379 modules)
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document (webpack-internal:///./node_modules/next/dist/pages/_document.js:798:1)
+ GET /character/9fkpumqFQLsN4VlZSe6o 200 in 474ms
+ ✓ Compiled /404 in 78ms (383 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 93ms
+ ✓ Compiled in 470ms (379 modules)
+ ✓ Compiled in 443ms (379 modules)
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 51ms
+ ✓ Compiled /404 in 67ms (383 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 83ms
+ ✓ Compiled in 446ms (379 modules)
+ ✓ Compiled in 383ms (379 modules)
+ ✓ Compiled in 445ms (379 modules)
+ ✓ Compiled in 439ms (379 modules)
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 45ms
+ ✓ Compiled /404 in 135ms (383 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 143ms
+ ✓ Compiled in 392ms (379 modules)
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 30ms
+ ✓ Compiled /404 in 84ms (383 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 90ms
+ ✓ Compiled in 364ms (383 modules)
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 43ms
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 6ms
+ ✓ Compiled in 425ms (379 modules)
+ ✓ Compiled in 399ms (379 modules)
+ ✓ Compiled in 411ms (379 modules)
+ ✓ Compiled in 380ms (379 modules)
+ ✓ Compiled in 381ms (379 modules)
+ ✓ Compiled in 787ms (379 modules)
+ ✓ Compiled in 689ms (379 modules)
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document (webpack-internal:///./node_modules/next/dist/pages/_document.js:798:1)
+ GET /character/9fkpumqFQLsN4VlZSe6o 200 in 485ms
+ ✓ Compiled /404 in 135ms (383 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 144ms
+ ✓ Compiled in 558ms (379 modules)
+ ✓ Compiled in 427ms (379 modules)
+ ✓ Compiled in 387ms (379 modules)
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 56ms
+ ✓ Compiled /404 in 59ms (383 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 67ms
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 46ms
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 3ms
+ ✓ Compiled in 373ms (379 modules)
+ ✓ Compiled in 357ms (379 modules)
+ ✓ Compiled in 379ms (379 modules)
+ ✓ Compiled in 353ms (379 modules)
+ ✓ Compiled in 356ms (379 modules)
+ ✓ Compiled in 385ms (379 modules)
+ ✓ Compiled in 385ms (379 modules)
+ ✓ Compiled in 374ms (379 modules)
+ ✓ Compiled in 376ms (379 modules)
+ ✓ Compiled in 362ms (379 modules)
+ ✓ Compiled in 362ms (379 modules)
+ ✓ Compiled in 355ms (379 modules)
+ ✓ Compiled in 361ms (379 modules)
+ ✓ Compiled in 378ms (379 modules)
+ ✓ Compiled in 348ms (379 modules)
+ ✓ Compiled in 404ms (381 modules)
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 52ms
+ ✓ Compiled /404 in 121ms (385 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 131ms
+ ✓ Compiled in 450ms (381 modules)
+ ✓ Compiled in 386ms (381 modules)
+ ✓ Compiled in 367ms (381 modules)
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document (webpack-internal:///./node_modules/next/dist/pages/_document.js:798:1)
+ GET /_next/data/development/character/9fkpumqFQLsN4VlZSe6o.json?id=9fkpumqFQLsN4VlZSe6o 200 in 438ms
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 39ms
+ ✓ Compiled /404 in 44ms (385 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 52ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document (webpack-internal:///./node_modules/next/dist/pages/_document.js:798:1)
+ GET /_next/data/development/character/9fkpumqFQLsN4VlZSe6o.json?id=9fkpumqFQLsN4VlZSe6o 200 in 121ms
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 38ms
+ ✓ Compiled in 403ms (379 modules)
+ ✓ Compiled in 357ms (379 modules)
+ ✓ Compiled in 349ms (379 modules)
+ ✓ Compiled in 372ms (379 modules)
+ ✓ Compiled in 487ms (379 modules)
+ ✓ Compiled in 403ms (381 modules)
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document (webpack-internal:///./node_modules/next/dist/pages/_document.js:798:1)
+ GET /_next/data/development/character/9fkpumqFQLsN4VlZSe6o.json?id=9fkpumqFQLsN4VlZSe6o 200 in 373ms
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 42ms
+Warning: A title element received an array with more than 1 element as children. In browsers title Elements can only have Text Nodes as children. If the children being rendered output more than a single text node in aggregate the browser will display markup and comments as text in the title and hydration will likely fail and fall back to client rendering
+    at title
+    at head
+    at Head (webpack-internal:///./node_modules/next/dist/pages/_document.js:308:1)
+    at html
+    at Html (webpack-internal:///./node_modules/next/dist/pages/_document.js:782:132)
+    at Document (webpack-internal:///./node_modules/next/dist/pages/_document.js:798:1)
+ GET /_next/data/development/character/9fkpumqFQLsN4VlZSe6o.json?id=9fkpumqFQLsN4VlZSe6o 200 in 92ms
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 10ms
+ ✓ Compiled in 413ms (381 modules)
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 45ms
+ ✓ Compiled /404 in 94ms (385 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 101ms
+ ✓ Compiled in 385ms (385 modules)
+ ✓ Compiled in 373ms (385 modules)
+ ✓ Compiled in 363ms (381 modules)
+ ✓ Compiled in 342ms (381 modules)
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 50ms
+ ✓ Compiled /404 in 112ms (385 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 122ms
+ ✓ Compiled in 345ms (385 modules)
+ ✓ Compiled in 368ms (381 modules)
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 42ms
+ ✓ Compiled /404 in 119ms (385 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 125ms
+ GET /_next/data/development/create.json 200 in 34ms
+ ✓ Compiled in 383ms (381 modules)
+ ✓ Compiled in 413ms (381 modules)
+ ✓ Compiled in 319ms (132 modules)
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 44ms
+ GET /_next/data/development/create.json 200 in 45ms
+ ✓ Compiled in 323ms (249 modules)
+ ✓ Compiled in 469ms (381 modules)
+ ✓ Compiled in 475ms (381 modules)
+ ✓ Compiled in 484ms (381 modules)
+ ✓ Compiled in 316ms (132 modules)
+ GET /_next/data/development/create.json 200 in 29ms
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 30ms
+ ✓ Compiled in 342ms (249 modules)
+ ✓ Compiled in 518ms (381 modules)
+ GET /create 200 in 43ms
+ ✓ Compiled /404 in 103ms (385 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 111ms
+ ✓ Compiled in 528ms (385 modules)
+ GET /create 200 in 37ms
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 5ms
+ ✓ Compiled in 566ms (385 modules)
+ ✓ Compiled in 580ms (381 modules)
+ ✓ Compiled in 591ms (381 modules)
+ ✓ Compiled in 586ms (381 modules)
+ ✓ Compiled in 325ms (132 modules)
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 31ms
+ GET /_next/data/development/create.json 200 in 4ms
+ ✓ Compiled in 321ms (249 modules)
+ ✓ Compiled in 316ms (132 modules)
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 23ms
+ GET /_next/data/development/create.json 200 in 23ms
+ ✓ Compiled in 321ms (249 modules)
+ ✓ Compiled in 615ms (381 modules)
+ ✓ Compiled in 381ms (381 modules)
+ ✓ Compiled in 322ms (132 modules)
+ GET /_next/data/development/create.json 200 in 27ms
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 27ms
+ ✓ Compiled in 339ms (249 modules)
+ ✓ Compiled in 566ms (381 modules)
+ ✓ Compiled in 575ms (381 modules)
+ ✓ Compiled in 579ms (381 modules)
+ ✓ Compiled in 318ms (132 modules)
+ GET /_next/data/development/create.json 200 in 24ms
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 27ms
+ ✓ Compiled in 327ms (249 modules)
+ ✓ Compiled in 594ms (381 modules)
+ ✓ Compiled in 321ms (132 modules)
+ GET /_next/data/development/create.json 200 in 24ms
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 24ms
+ ✓ Compiled in 329ms (249 modules)
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 7ms
+ ✓ Compiled /404 in 93ms (385 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 100ms
+ ✓ Compiled in 321ms (132 modules)
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 27ms
+ GET /_next/data/development/create.json 200 in 27ms
+ ✓ Compiled in 348ms (249 modules)
+ ✓ Compiled in 319ms (132 modules)
+ GET /_next/data/development/create.json?edit=9fkpumqFQLsN4VlZSe6o 200 in 44ms
+ GET /_next/data/development/create.json 200 in 45ms
+ ✓ Compiled in 340ms (249 modules)
+ ✓ Compiled in 574ms (381 modules)
+ ✓ Compiled in 576ms (381 modules)
+ GET /create?edit=9fkpumqFQLsN4VlZSe6o 200 in 38ms
+ ✓ Compiled /404 in 139ms (385 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 145ms
+ ✓ Compiled in 549ms (385 modules)
