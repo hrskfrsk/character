@@ -1,1 +1,0 @@
-self.__SSG_MANIFEST=new Set(["\u002Fcharacter\u002F[id]","\u002Fcreate","\u002Fcreate_backup"]);self.__SSG_MANIFEST_CB&&self.__SSG_MANIFEST_CB()
