@@ -9,6 +9,7 @@ type EquipmentSections = {
   spells: boolean;
   artifacts: boolean;
   entities: boolean;
+  secretMemos: boolean;
 };
 
 interface EquipmentProps {
@@ -45,6 +46,10 @@ interface EquipmentProps {
   entities: Array<{ id: string, counter: number }>;
   addEntity: () => void;
   removeEntity: (id: string) => void;
+  // 秘匿関連
+  secretMemos: Array<{ id: string, counter: number }>;
+  addSecretMemo: () => void;
+  removeSecretMemo: (id: string) => void;
 }
 
 export default function Equipment({
@@ -72,7 +77,10 @@ export default function Equipment({
   removeArtifact,
   entities,
   addEntity,
-  removeEntity
+  removeEntity,
+  secretMemos,
+  addSecretMemo,
+  removeSecretMemo
 }: EquipmentProps) {
   return (
     <>
@@ -605,36 +613,146 @@ export default function Equipment({
 
       {/* メモセクション */}
       <div className="memo-section" style={{ marginTop: '30px' }}>
-        {/* その他の作成時メモ */}
-        <div className="data-wrap o-memo">
-          <h3 className="memo-title">
-            <i className="fas fa-scroll"></i> その他の作成時メモ
+        {/* 統合メモシステム */}
+        <div className="data-wrap">
+          <h3
+            className="memo-title"
+            onClick={() => toggleEquipmentSection('secretMemos')}
+            style={{ cursor: 'pointer', userSelect: 'none' }}
+          >
+            <i className={`fas ${equipmentSections.secretMemos ? 'fa-chevron-down' : 'fa-chevron-right'}`}></i>
+            <i className="fas fa-sticky-note" style={{ marginLeft: '5px' }}></i> メモ
           </h3>
-          <div className="o-memos">
-            <textarea
-              name="other_memo"
-              rows={5}
-              value={characterData.other_memo || ''}
-              onChange={(e) => handleInputChange('other_memo', e.target.value)}
-              placeholder="キャラクター作成時のメモや設定など..."
-            />
-          </div>
-        </div>
+          {equipmentSections.secretMemos && (
+            <div className="equipment-content" style={{ padding: '10px 0' }}>
+              <ul style={{ listStyle: 'none', padding: '0' }}>
+                {secretMemos.map((memo) => (
+                  <li key={memo.id} className="memo-item" style={{ 
+                    display: 'block',
+                    marginBottom: '25px',
+                    padding: '15px',
+                    border: '1px solid #ddd',
+                    borderRadius: '5px',
+                    backgroundColor: '#f9f9f9',
+                    position: 'relative',
+                    minHeight: '150px'
+                  }}>
+                    {/* 第一行：チェックボックスと項目名 */}
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', marginRight: '15px', fontSize: '14px' }}>
+                        <input
+                          type="checkbox"
+                          name={`${memo.id}_hidden`}
+                          checked={(characterData as any)[`${memo.id}_hidden`] || false}
+                          onChange={(e) => handleInputChange(`${memo.id}_hidden`, e.target.checked)}
+                          style={{ marginRight: '5px' }}
+                        />
+                        隠す
+                      </label>
+                      <input
+                        type="text"
+                        name={`${memo.id}_title`}
+                        value={(characterData as any)[`${memo.id}_title`] || ''}
+                        onChange={(e) => handleInputChange(`${memo.id}_title`, e.target.value)}
+                        placeholder="項目名"
+                        style={{
+                          flex: '1',
+                          padding: '5px',
+                          border: '1px solid #ccc',
+                          borderRadius: '3px'
+                        }}
+                      />
+                    </div>
 
-        {/* 秘匿関連 */}
-        <div className="data-wrap o-memo" style={{ marginTop: '20px' }}>
-          <h3 className="memo-title">
-            <i className="fas fa-scroll"></i> 秘匿関連
-          </h3>
-          <div className="o-memos">
-            <textarea
-              name="secret_memo"
-              rows={5}
-              value={characterData.secret_memo || ''}
-              onChange={(e) => handleInputChange('secret_memo', e.target.value)}
-              placeholder="GM専用情報、秘匿設定など..."
-            />
-          </div>
+                    {/* 第二行：パスワード設定 */}
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', marginRight: '15px', fontSize: '14px' }}>
+                        <input
+                          type="checkbox"
+                          name={`${memo.id}_password_protected`}
+                          checked={(characterData as any)[`${memo.id}_password_protected`] || false}
+                          onChange={(e) => handleInputChange(`${memo.id}_password_protected`, e.target.checked)}
+                          style={{ marginRight: '5px' }}
+                        />
+                        パスワード保護
+                      </label>
+                      {(characterData as any)[`${memo.id}_password_protected`] && (
+                        <input
+                          type="password"
+                          name={`${memo.id}_password`}
+                          value={(characterData as any)[`${memo.id}_password`] || ''}
+                          onChange={(e) => handleInputChange(`${memo.id}_password`, e.target.value)}
+                          placeholder="パスワードを入力"
+                          style={{
+                            padding: '5px',
+                            border: '1px solid #ccc',
+                            borderRadius: '3px',
+                            width: '200px'
+                          }}
+                        />
+                      )}
+                    </div>
+
+                    {/* 第三行：内容 */}
+                    <div style={{ marginBottom: '10px' }}>
+                      <textarea
+                        name={`${memo.id}_content`}
+                        value={(characterData as any)[`${memo.id}_content`] || ''}
+                        onChange={(e) => handleInputChange(`${memo.id}_content`, e.target.value)}
+                        placeholder="メモの内容..."
+                        rows={4}
+                        style={{
+                          width: '100%',
+                          padding: '8px',
+                          border: '1px solid #ccc',
+                          borderRadius: '3px',
+                          resize: 'vertical',
+                          fontSize: '14px'
+                        }}
+                      />
+                    </div>
+
+                    {/* 削除ボタン */}
+                    <div style={{ textAlign: 'right' }}>
+                      <button
+                        type="button"
+                        onClick={() => removeSecretMemo(memo.id)}
+                        className="remove-btn"
+                        style={{
+                          padding: '5px 15px',
+                          backgroundColor: '#dc3545',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '3px',
+                          cursor: 'pointer',
+                          fontSize: '12px'
+                        }}
+                      >
+                        <i className="fas fa-trash" style={{ marginRight: '5px' }}></i>
+                        削除
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <button
+                type="button"
+                onClick={addSecretMemo}
+                className="add-btn"
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#28a745',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '3px',
+                  cursor: 'pointer'
+                }}
+              >
+                <i className="fas fa-plus" style={{ marginRight: '5px' }}></i>
+                メモを追加
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>

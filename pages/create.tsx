@@ -2,7 +2,7 @@ import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase-client';
 import { calculateAllStats, CharacterData } from '../lib/character-calculations';
 
@@ -48,6 +48,13 @@ export default function CreateCharacterPage() {
   const [traits, setTraits] = useState<Array<{ id: string, counter: number }>>([]);
   const [traitCounter, setTraitCounter] = useState(0);
 
+  // 秘匿関連の状態管理
+  const [secretMemos, setSecretMemos] = useState<Array<{ id: string, counter: number }>>([]);
+  const [secretMemoCounter, setSecretMemoCounter] = useState(0);
+
+  // 元々データベースに存在していた動的フィールドを追跡
+  const [originalDynamicFields, setOriginalDynamicFields] = useState<Set<string>>(new Set());
+
   // 技能表示切替の状態管理
   const [hideInitialSkills, setHideInitialSkills] = useState(false);
 
@@ -59,14 +66,253 @@ export default function CreateCharacterPage() {
     books: true,
     spells: true,
     artifacts: true,
-    entities: true
+    entities: true,
+    secretMemos: true
   });
 
   const router = useRouter();
+  const { edit } = router.query;
+  const isEditMode = !!edit;
+
+  // 動的フィールドかどうかを判定するヘルパー関数
+  const isDynamicField = (key: string): boolean => {
+    const dynamicPatterns = [
+      /^weapon_\d+_/,
+      /^item_\d+_/,
+      /^disorder_\d+_/,
+      /^book_\d+_/,
+      /^spell_\d+_/,
+      /^artifact_\d+_/,
+      /^entity_\d+_/,
+      /^trait_\d+_/,
+      /^memo_\d+_/,
+      /^additional_combat_\d+_/,
+      /^additional_exploration_\d+_/,
+      /^additional_action_\d+_/,
+      /^additional_negotiation_\d+_/,
+      /^additional_knowledge_\d+_/
+    ];
+    return dynamicPatterns.some(pattern => pattern.test(key));
+  };
+
+  // 動的リストを復元する関数
+  const restoreDynamicLists = (data: any) => {
+    // 武器の復元
+    const weaponList: Array<{ id: string, counter: number }> = [];
+    let maxWeaponCounter = 0;
+    for (let i = 1; i <= 50; i++) {
+      if (data[`weapon_${i}_name`]) {
+        weaponList.push({ id: `weapon_${i}`, counter: i });
+        maxWeaponCounter = Math.max(maxWeaponCounter, i);
+      }
+    }
+    setWeapons(weaponList);
+    setWeaponCounter(maxWeaponCounter);
+
+    // アイテムの復元
+    const itemList: Array<{ id: string, counter: number }> = [];
+    let maxItemCounter = 0;
+    for (let i = 1; i <= 50; i++) {
+      if (data[`item_${i}_name`]) {
+        itemList.push({ id: `item_${i}`, counter: i });
+        maxItemCounter = Math.max(maxItemCounter, i);
+      }
+    }
+    setItems(itemList);
+    setItemCounter(maxItemCounter);
+
+    // 精神的障害の復元
+    const disorderList: Array<{ id: string, counter: number }> = [];
+    let maxDisorderCounter = 0;
+    for (let i = 1; i <= 50; i++) {
+      if (data[`disorder_${i}_name`]) {
+        disorderList.push({ id: `disorder_${i}`, counter: i });
+        maxDisorderCounter = Math.max(maxDisorderCounter, i);
+      }
+    }
+    setDisorders(disorderList);
+    setDisorderCounter(maxDisorderCounter);
+
+    // 魔道書の復元
+    const bookList: Array<{ id: string, counter: number }> = [];
+    let maxBookCounter = 0;
+    for (let i = 1; i <= 50; i++) {
+      if (data[`book_${i}_name`]) {
+        bookList.push({ id: `book_${i}`, counter: i });
+        maxBookCounter = Math.max(maxBookCounter, i);
+      }
+    }
+    setBooks(bookList);
+    setBookCounter(maxBookCounter);
+
+    // 呪文の復元
+    const spellList: Array<{ id: string, counter: number }> = [];
+    let maxSpellCounter = 0;
+    for (let i = 1; i <= 50; i++) {
+      if (data[`spell_${i}_name`]) {
+        spellList.push({ id: `spell_${i}`, counter: i });
+        maxSpellCounter = Math.max(maxSpellCounter, i);
+      }
+    }
+    setSpells(spellList);
+    setSpellCounter(maxSpellCounter);
+
+    // アーティファクトの復元
+    const artifactList: Array<{ id: string, counter: number }> = [];
+    let maxArtifactCounter = 0;
+    for (let i = 1; i <= 50; i++) {
+      if (data[`artifact_${i}_name`]) {
+        artifactList.push({ id: `artifact_${i}`, counter: i });
+        maxArtifactCounter = Math.max(maxArtifactCounter, i);
+      }
+    }
+    setArtifacts(artifactList);
+    setArtifactCounter(maxArtifactCounter);
+
+    // 超常的存在の復元
+    const entityList: Array<{ id: string, counter: number }> = [];
+    let maxEntityCounter = 0;
+    for (let i = 1; i <= 50; i++) {
+      if (data[`entity_${i}_name`]) {
+        entityList.push({ id: `entity_${i}`, counter: i });
+        maxEntityCounter = Math.max(maxEntityCounter, i);
+      }
+    }
+    setEntities(entityList);
+    setEntityCounter(maxEntityCounter);
+
+    // 特徴の復元
+    const traitList: Array<{ id: string, counter: number }> = [];
+    let maxTraitCounter = 0;
+    for (let i = 1; i <= 50; i++) {
+      if (data[`trait_${i}_name`]) {
+        traitList.push({ id: `trait_${i}`, counter: i });
+        maxTraitCounter = Math.max(maxTraitCounter, i);
+      }
+    }
+    setTraits(traitList);
+    setTraitCounter(maxTraitCounter);
+
+    // メモの復元（新形式）
+    const memoList: Array<{ id: string, counter: number }> = [];
+    let maxMemoCounter = 0;
+    for (let i = 1; i <= 50; i++) {
+      if (data[`memo_${i}_title`] || data[`memo_${i}_content`] || 
+          data[`secret_memo_${i}_title`] || data[`secret_memo_${i}_content`]) {
+        // 新形式または旧形式のデータがある場合
+        const memoId = data[`memo_${i}_title`] || data[`memo_${i}_content`] ? `memo_${i}` : `secret_memo_${i}`;
+        memoList.push({ id: memoId, counter: i });
+        maxMemoCounter = Math.max(maxMemoCounter, i);
+      }
+    }
+    setSecretMemos(memoList);
+    setSecretMemoCounter(maxMemoCounter);
+
+    // 追加技能の復元
+    // 戦闘技能
+    const combatSkillList: Array<{ id: string, counter: number }> = [];
+    let maxCombatCounter = 0;
+    for (let i = 1; i <= 50; i++) {
+      if (data[`additional_combat_${i}_name`]) {
+        combatSkillList.push({ id: `additional_combat_${i}`, counter: i });
+        maxCombatCounter = Math.max(maxCombatCounter, i);
+      }
+    }
+    setAdditionalCombatSkills(combatSkillList);
+    setCombatSkillCounter(maxCombatCounter);
+
+    // 探索技能
+    const explorationSkillList: Array<{ id: string, counter: number }> = [];
+    let maxExplorationCounter = 0;
+    for (let i = 1; i <= 50; i++) {
+      if (data[`additional_exploration_${i}_name`]) {
+        explorationSkillList.push({ id: `additional_exploration_${i}`, counter: i });
+        maxExplorationCounter = Math.max(maxExplorationCounter, i);
+      }
+    }
+    setAdditionalExplorationSkills(explorationSkillList);
+    setExplorationSkillCounter(maxExplorationCounter);
+
+    // 行動技能
+    const actionSkillList: Array<{ id: string, counter: number }> = [];
+    let maxActionCounter = 0;
+    for (let i = 1; i <= 50; i++) {
+      if (data[`additional_action_${i}_name`]) {
+        actionSkillList.push({ id: `additional_action_${i}`, counter: i });
+        maxActionCounter = Math.max(maxActionCounter, i);
+      }
+    }
+    setAdditionalActionSkills(actionSkillList);
+    setActionSkillCounter(maxActionCounter);
+
+    // 交渉技能
+    const negotiationSkillList: Array<{ id: string, counter: number }> = [];
+    let maxNegotiationCounter = 0;
+    for (let i = 1; i <= 50; i++) {
+      if (data[`additional_negotiation_${i}_name`]) {
+        negotiationSkillList.push({ id: `additional_negotiation_${i}`, counter: i });
+        maxNegotiationCounter = Math.max(maxNegotiationCounter, i);
+      }
+    }
+    setAdditionalNegotiationSkills(negotiationSkillList);
+    setNegotiationSkillCounter(maxNegotiationCounter);
+
+    // 知識技能
+    const knowledgeSkillList: Array<{ id: string, counter: number }> = [];
+    let maxKnowledgeCounter = 0;
+    for (let i = 1; i <= 50; i++) {
+      if (data[`additional_knowledge_${i}_name`]) {
+        knowledgeSkillList.push({ id: `additional_knowledge_${i}`, counter: i });
+        maxKnowledgeCounter = Math.max(maxKnowledgeCounter, i);
+      }
+    }
+    setAdditionalKnowledgeSkills(knowledgeSkillList);
+    setKnowledgeSkillCounter(maxKnowledgeCounter);
+  };
+
+  // キャラクターデータを読み込む関数
+  const loadExistingCharacter = async (characterId: string) => {
+    try {
+      if (!db) return;
+      
+      const docRef = doc(db, 'characters', characterId);
+      const docSnap = await getDoc(docRef);
+      
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setCharacterData(data as CharacterData);
+        
+        // 元々データベースに存在していた動的フィールドを追跡
+        const originalFields = new Set<string>();
+        Object.keys(data).forEach(key => {
+          if (isDynamicField(key)) {
+            originalFields.add(key);
+          }
+        });
+        setOriginalDynamicFields(originalFields);
+        
+        // 動的リストの復元ロジック
+        restoreDynamicLists(data);
+      } else {
+        alert('キャラクターが見つかりません');
+        router.push('/create');
+      }
+    } catch (error) {
+      console.error('キャラクター読み込みエラー:', error);
+      alert('キャラクターの読み込みに失敗しました');
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // 編集モードの場合、キャラクターデータを読み込む
+  useEffect(() => {
+    if (mounted && edit && typeof edit === 'string') {
+      loadExistingCharacter(edit);
+    }
+  }, [mounted, edit]);
 
   // 計算を実行
   const updateCalculations = useCallback(() => {
@@ -526,6 +772,52 @@ export default function CreateCharacterPage() {
     });
   };
 
+  // メモを追加
+  const addSecretMemo = () => {
+    const newCounter = secretMemoCounter + 1;
+    const memoId = `memo_${newCounter}`;
+
+    setSecretMemoCounter(newCounter);
+    setSecretMemos(prev => [...prev, { id: memoId, counter: newCounter }]);
+
+    setCharacterData(prev => ({
+      ...prev,
+      [`${memoId}_title`]: '',
+      [`${memoId}_content`]: '',
+      [`${memoId}_hidden`]: false,
+      [`${memoId}_password_protected`]: false,
+      [`${memoId}_password`]: ''
+    }));
+
+    // 新しい要素にスクロール
+    setTimeout(() => {
+      const newElement = document.querySelector(`[name="${memoId}_title"]`);
+      if (newElement) {
+        newElement.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        });
+        // フォーカスも設定
+        (newElement as HTMLInputElement).focus();
+      }
+    }, 100);
+  };
+
+  // メモを削除
+  const removeSecretMemo = (memoId: string) => {
+    setSecretMemos(prev => prev.filter(memo => memo.id !== memoId));
+
+    setCharacterData(prev => {
+      const newData = { ...prev } as any;
+      delete newData[`${memoId}_title`];
+      delete newData[`${memoId}_content`];
+      delete newData[`${memoId}_hidden`];
+      delete newData[`${memoId}_password_protected`];
+      delete newData[`${memoId}_password`];
+      return newData;
+    });
+  };
+
   // 技能表示切替
   const toggleSkillDisplay = () => {
     setHideInitialSkills(!hideInitialSkills);
@@ -551,16 +843,53 @@ export default function CreateCharacterPage() {
 
     setSaving(true);
     try {
-      const finalData = {
-        ...characterData,
-        ...calculatedStats,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+      if (isEditMode && edit) {
+        // 編集モード：既存キャラクターを更新
+        const finalData = {
+          ...characterData,
+          ...calculatedStats,
+          updatedAt: new Date(),
+        };
 
-      const docRef = await addDoc(collection(db, 'characters'), finalData);
-      alert('キャラクターが保存されました！');
-      router.push(`/character/${docRef.id}`);
+        // 削除された動的フィールドを検出して明示的にnullに設定
+        const currentDynamicFields = new Set<string>();
+        Object.keys(characterData).forEach(key => {
+          if (isDynamicField(key)) {
+            currentDynamicFields.add(key);
+          }
+        });
+
+        // 元々存在していたが現在は存在しない動的フィールドを特定
+        const removedFields: { [key: string]: null } = {};
+        originalDynamicFields.forEach(originalField => {
+          if (!currentDynamicFields.has(originalField)) {
+            removedFields[originalField] = null;
+          }
+        });
+
+        // 削除されたフィールドをfinalDataに追加
+        const finalDataWithDeletions = {
+          ...finalData,
+          ...removedFields
+        };
+
+        const docRef = doc(db, 'characters', edit as string);
+        await updateDoc(docRef, finalDataWithDeletions);
+        alert('キャラクターが更新されました！');
+        router.push(`/character/${edit}`);
+      } else {
+        // 作成モード：新しいキャラクターを作成
+        const finalData = {
+          ...characterData,
+          ...calculatedStats,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+
+        const docRef = await addDoc(collection(db, 'characters'), finalData);
+        alert('キャラクターが保存されました！');
+        router.push(`/character/${docRef.id}`);
+      }
     } catch (error) {
       console.error('保存エラー:', error);
       alert('保存に失敗しました');
@@ -691,6 +1020,9 @@ export default function CreateCharacterPage() {
                     entities={entities}
                     addEntity={addEntity}
                     removeEntity={removeEntity}
+                    secretMemos={secretMemos}
+                    addSecretMemo={addSecretMemo}
+                    removeSecretMemo={removeSecretMemo}
                   />
 
                   {/* 保存・表示ボタン */}
@@ -701,7 +1033,7 @@ export default function CreateCharacterPage() {
                       style={{ marginRight: '15px', padding: '10px 30px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                       disabled={saving}
                     >
-                      <i className="fas fa-save"></i> {saving ? '保存中...' : 'キャラクターを保存'}
+                      <i className="fas fa-save"></i> {saving ? '保存中...' : (isEditMode ? 'キャラクターを更新' : 'キャラクターを保存')}
                     </button>
                     <button
                       type="button"

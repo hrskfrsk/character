@@ -705,73 +705,185 @@ export function calculateAllSkills(data: CharacterData) {
     dodge_initial: dex_total * 2,
     dodge_total: calculateSkillTotal(dex_total * 2, data.dodge_job || '', data.dodge_interest || '', data.dodge_growth || '', data.dodge_other || ''),
     
+    kick_initial: 25,
     kick_total: calculateSkillTotal(25, data.kick_job || '', data.kick_interest || '', data.kick_growth || '', data.kick_other || ''),
+    
+    grapple_initial: 25,
     grapple_total: calculateSkillTotal(25, data.grapple_job || '', data.grapple_interest || '', data.grapple_growth || '', data.grapple_other || ''),
+    
+    punch_initial: 50,
     punch_total: calculateSkillTotal(50, data.punch_job || '', data.punch_interest || '', data.punch_growth || '', data.punch_other || ''),
+    
+    headbutt_initial: 10,
     headbutt_total: calculateSkillTotal(10, data.headbutt_job || '', data.headbutt_interest || '', data.headbutt_growth || '', data.headbutt_other || ''),
+    
+    throw_initial: 25,
     throw_total: calculateSkillTotal(25, data.throw_job || '', data.throw_interest || '', data.throw_growth || '', data.throw_other || ''),
+    
+    martial_arts_initial: 1,
     martial_arts_total: calculateSkillTotal(1, data.martial_arts_job || '', data.martial_arts_interest || '', data.martial_arts_growth || '', data.martial_arts_other || ''),
+    
+    handgun_initial: 20,
     handgun_total: calculateSkillTotal(20, data.handgun_job || '', data.handgun_interest || '', data.handgun_growth || '', data.handgun_other || ''),
+    
+    submachine_gun_initial: 15,
     submachine_gun_total: calculateSkillTotal(15, data.submachine_gun_job || '', data.submachine_gun_interest || '', data.submachine_gun_growth || '', data.submachine_gun_other || ''),
+    
+    shotgun_initial: 30,
     shotgun_total: calculateSkillTotal(30, data.shotgun_job || '', data.shotgun_interest || '', data.shotgun_growth || '', data.shotgun_other || ''),
+    
+    machine_gun_initial: 15,
     machine_gun_total: calculateSkillTotal(15, data.machine_gun_job || '', data.machine_gun_interest || '', data.machine_gun_growth || '', data.machine_gun_other || ''),
+    
+    rifle_initial: 25,
     rifle_total: calculateSkillTotal(25, data.rifle_job || '', data.rifle_interest || '', data.rifle_growth || '', data.rifle_other || ''),
     
     // 探索技能
+    first_aid_initial: 30,
     first_aid_total: calculateSkillTotal(30, data.first_aid_job || '', data.first_aid_interest || '', data.first_aid_growth || '', data.first_aid_other || ''),
+    
+    locksmith_initial: 1,
     locksmith_total: calculateSkillTotal(1, data.locksmith_job || '', data.locksmith_interest || '', data.locksmith_growth || '', data.locksmith_other || ''),
+    
+    conceal_initial: 15,
     conceal_total: calculateSkillTotal(15, data.conceal_job || '', data.conceal_interest || '', data.conceal_growth || '', data.conceal_other || ''),
+    
+    hide_initial: 10,
     hide_total: calculateSkillTotal(10, data.hide_job || '', data.hide_interest || '', data.hide_growth || '', data.hide_other || ''),
+    
+    listen_initial: 25,
     listen_total: calculateSkillTotal(25, data.listen_job || '', data.listen_interest || '', data.listen_growth || '', data.listen_other || ''),
+    
+    sneak_initial: 10,
     sneak_total: calculateSkillTotal(10, data.sneak_job || '', data.sneak_interest || '', data.sneak_growth || '', data.sneak_other || ''),
+    
+    photography_initial: 10,
     photography_total: calculateSkillTotal(10, data.photography_job || '', data.photography_interest || '', data.photography_growth || '', data.photography_other || ''),
+    
+    psychoanalysis_initial: 1,
     psychoanalysis_total: calculateSkillTotal(1, data.psychoanalysis_job || '', data.psychoanalysis_interest || '', data.psychoanalysis_growth || '', data.psychoanalysis_other || ''),
+    
+    track_initial: 10,
     track_total: calculateSkillTotal(10, data.track_job || '', data.track_interest || '', data.track_growth || '', data.track_other || ''),
+    
+    climb_initial: 40,
     climb_total: calculateSkillTotal(40, data.climb_job || '', data.climb_interest || '', data.climb_growth || '', data.climb_other || ''),
+    
+    library_use_initial: 25,
     library_use_total: calculateSkillTotal(25, data.library_use_job || '', data.library_use_interest || '', data.library_use_growth || '', data.library_use_other || ''),
+    
+    spot_hidden_initial: 25,
     spot_hidden_total: calculateSkillTotal(25, data.spot_hidden_job || '', data.spot_hidden_interest || '', data.spot_hidden_growth || '', data.spot_hidden_other || ''),
     
     // 行動技能
+    drive_initial: 20,
     drive_total: calculateSkillTotal(20, data.drive_job || '', data.drive_interest || '', data.drive_growth || '', data.drive_other || ''),
+    
+    mechanical_repair_initial: 20,
     mechanical_repair_total: calculateSkillTotal(20, data.mechanical_repair_job || '', data.mechanical_repair_interest || '', data.mechanical_repair_growth || '', data.mechanical_repair_other || ''),
+    
+    heavy_machinery_initial: 1,
     heavy_machinery_total: calculateSkillTotal(1, data.heavy_machinery_job || '', data.heavy_machinery_interest || '', data.heavy_machinery_growth || '', data.heavy_machinery_other || ''),
+    
+    ride_initial: 5,
     ride_total: calculateSkillTotal(5, data.ride_job || '', data.ride_interest || '', data.ride_growth || '', data.ride_other || ''),
+    
+    swim_initial: 25,
     swim_total: calculateSkillTotal(25, data.swim_job || '', data.swim_interest || '', data.swim_growth || '', data.swim_other || ''),
+    
+    craft_initial: 5,
     craft_total: calculateSkillTotal(5, data.craft_job || '', data.craft_interest || '', data.craft_growth || '', data.craft_other || ''),
+    
+    pilot_initial: 1,
     pilot_total: calculateSkillTotal(1, data.pilot_job || '', data.pilot_interest || '', data.pilot_growth || '', data.pilot_other || ''),
+    
+    jump_initial: 25,
     jump_total: calculateSkillTotal(25, data.jump_job || '', data.jump_interest || '', data.jump_growth || '', data.jump_other || ''),
+    
+    electrical_repair_initial: 10,
     electrical_repair_total: calculateSkillTotal(10, data.electrical_repair_job || '', data.electrical_repair_interest || '', data.electrical_repair_growth || '', data.electrical_repair_other || ''),
+    
+    navigate_initial: 10,
     navigate_total: calculateSkillTotal(10, data.navigate_job || '', data.navigate_interest || '', data.navigate_growth || '', data.navigate_other || ''),
+    
+    disguise_initial: 1,
     disguise_total: calculateSkillTotal(1, data.disguise_job || '', data.disguise_interest || '', data.disguise_growth || '', data.disguise_other || ''),
     
     // 交渉技能（母国語は EDU×5）
+    fast_talk_initial: 5,
     fast_talk_total: calculateSkillTotal(5, data.fast_talk_job || '', data.fast_talk_interest || '', data.fast_talk_growth || '', data.fast_talk_other || ''),
+    
+    persuade_initial: 15,
     persuade_total: calculateSkillTotal(15, data.persuade_job || '', data.persuade_interest || '', data.persuade_growth || '', data.persuade_other || ''),
+    
+    credit_rating_initial: 15,
     credit_rating_total: calculateSkillTotal(15, data.credit_rating_job || '', data.credit_rating_interest || '', data.credit_rating_growth || '', data.credit_rating_other || ''),
+    
+    bargain_initial: 5,
     bargain_total: calculateSkillTotal(5, data.bargain_job || '', data.bargain_interest || '', data.bargain_growth || '', data.bargain_other || ''),
+    
     mother_tongue_initial: edu_total * 5,
     mother_tongue_total: calculateSkillTotal(edu_total * 5, data.mother_tongue_job || '', data.mother_tongue_interest || '', data.mother_tongue_growth || '', data.mother_tongue_other || ''),
+    
+    language_initial: 1,
     language_total: calculateSkillTotal(1, data.language_job || '', data.language_interest || '', data.language_growth || '', data.language_other || ''),
     
     // 知識技能
+    medicine_initial: 5,
     medicine_total: calculateSkillTotal(5, data.medicine_job || '', data.medicine_interest || '', data.medicine_growth || '', data.medicine_other || ''),
+    
+    occult_initial: 5,
     occult_total: calculateSkillTotal(5, data.occult_job || '', data.occult_interest || '', data.occult_growth || '', data.occult_other || ''),
+    
+    chemistry_initial: 1,
     chemistry_total: calculateSkillTotal(1, data.chemistry_job || '', data.chemistry_interest || '', data.chemistry_growth || '', data.chemistry_other || ''),
+    
+    cthulhu_mythos_initial: 0,
     cthulhu_mythos_total: calculateSkillTotal(0, data.cthulhu_mythos_job || '', data.cthulhu_mythos_interest || '', data.cthulhu_mythos_growth || '', data.cthulhu_mythos_other || ''),
+    
+    art_initial: 5,
     art_total: calculateSkillTotal(5, data.art_job || '', data.art_interest || '', data.art_growth || '', data.art_other || ''),
+    
+    accounting_initial: 10,
     accounting_total: calculateSkillTotal(10, data.accounting_job || '', data.accounting_interest || '', data.accounting_growth || '', data.accounting_other || ''),
+    
+    archaeology_initial: 1,
     archaeology_total: calculateSkillTotal(1, data.archaeology_job || '', data.archaeology_interest || '', data.archaeology_growth || '', data.archaeology_other || ''),
+    
+    computer_use_initial: 1,
     computer_use_total: calculateSkillTotal(1, data.computer_use_job || '', data.computer_use_interest || '', data.computer_use_growth || '', data.computer_use_other || ''),
+    
+    psychology_initial: 5,
     psychology_total: calculateSkillTotal(5, data.psychology_job || '', data.psychology_interest || '', data.psychology_growth || '', data.psychology_other || ''),
+    
+    anthropology_initial: 1,
     anthropology_total: calculateSkillTotal(1, data.anthropology_job || '', data.anthropology_interest || '', data.anthropology_growth || '', data.anthropology_other || ''),
+    
+    biology_initial: 1,
     biology_total: calculateSkillTotal(1, data.biology_job || '', data.biology_interest || '', data.biology_growth || '', data.biology_other || ''),
+    
+    geology_initial: 1,
     geology_total: calculateSkillTotal(1, data.geology_job || '', data.geology_interest || '', data.geology_growth || '', data.geology_other || ''),
+    
+    electronics_initial: 1,
     electronics_total: calculateSkillTotal(1, data.electronics_job || '', data.electronics_interest || '', data.electronics_growth || '', data.electronics_other || ''),
+    
+    astronomy_initial: 1,
     astronomy_total: calculateSkillTotal(1, data.astronomy_job || '', data.astronomy_interest || '', data.astronomy_growth || '', data.astronomy_other || ''),
+    
+    natural_history_initial: 10,
     natural_history_total: calculateSkillTotal(10, data.natural_history_job || '', data.natural_history_interest || '', data.natural_history_growth || '', data.natural_history_other || ''),
+    
+    physics_initial: 1,
     physics_total: calculateSkillTotal(1, data.physics_job || '', data.physics_interest || '', data.physics_growth || '', data.physics_other || ''),
+    
+    law_initial: 5,
     law_total: calculateSkillTotal(5, data.law_job || '', data.law_interest || '', data.law_growth || '', data.law_other || ''),
+    
+    pharmacy_initial: 1,
     pharmacy_total: calculateSkillTotal(1, data.pharmacy_job || '', data.pharmacy_interest || '', data.pharmacy_growth || '', data.pharmacy_other || ''),
+    
+    history_initial: 20,
     history_total: calculateSkillTotal(20, data.history_job || '', data.history_interest || '', data.history_growth || '', data.history_other || ''),
   };
 }

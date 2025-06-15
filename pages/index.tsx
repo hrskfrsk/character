@@ -1,19 +1,43 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { db } from '../lib/firebase-client';
 
 export default function Home() {
   const [characters, setCharacters] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // クライアントサイドでFirebaseからキャラクター一覧を取得
-    // TODO: この部分は後でサーバーサイドに移行
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+    const fetchCharacters = async () => {
+      try {
+        if (!db) {
+          console.error('Firebase not initialized');
+          setLoading(false);
+          return;
+        }
 
-    return () => clearTimeout(timer);
+        // キャラクター一覧を更新日時の降順で取得
+        const q = query(
+          collection(db, 'characters'), 
+          orderBy('updatedAt', 'desc')
+        );
+        
+        const querySnapshot = await getDocs(q);
+        const characterList = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        
+        setCharacters(characterList);
+      } catch (error) {
+        console.error('キャラクター取得エラー:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCharacters();
   }, []);
 
   return (
@@ -43,11 +67,27 @@ export default function Home() {
             ) : (
               characters.map((character) => (
                 <div key={character.id} className="character-card">
-                  <h3>{character.character_name || '無名のキャラクター'}</h3>
-                  <p>職業: {character.job || '-'} | 年齢: {character.age || '-'}</p>
-                  <Link href={`/character/${character.id}`} className="btn btn-secondary">
-                    表示
-                  </Link>
+                  <div className="character-info">
+                    <h3>{character.character_name || '無名のキャラクター'}</h3>
+                    <div className="character-details">
+                      <span className="detail-item">職業: {character.job || '-'}</span>
+                      <span className="detail-item">年齢: {character.age || '-'}</span>
+                      <span className="detail-item">性別: {character.gender || '-'}</span>
+                    </div>
+                    {character.updatedAt && (
+                      <div className="last-updated">
+                        最終更新: {new Date(character.updatedAt.seconds * 1000).toLocaleDateString('ja-JP')}
+                      </div>
+                    )}
+                  </div>
+                  <div className="character-actions">
+                    <Link href={`/character/${character.id}`} className="btn btn-secondary">
+                      <i className="fas fa-eye"></i> 表示
+                    </Link>
+                    <Link href={`/create?edit=${character.id}`} className="btn btn-edit">
+                      <i className="fas fa-edit"></i> 編集
+                    </Link>
+                  </div>
                 </div>
               ))
             )}
@@ -60,18 +100,33 @@ export default function Home() {
           max-width: 1200px;
           margin: 0 auto;
           padding: 20px;
+          font-family: 'Kosugi', 'Varela Round', sans-serif;
+        }
+        
+        h1 {
+          color: #333;
+          text-align: center;
+          margin-bottom: 30px;
         }
         
         .actions {
           margin: 20px 0;
+          text-align: center;
         }
         
         .btn {
           display: inline-block;
-          padding: 10px 20px;
+          padding: 12px 24px;
           text-decoration: none;
-          border-radius: 4px;
+          border-radius: 6px;
           font-weight: bold;
+          margin: 0 5px;
+          transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
         .btn-primary {
@@ -84,18 +139,95 @@ export default function Home() {
           color: white;
         }
         
+        .btn-edit {
+          background-color: #FF9800;
+          color: white;
+        }
+        
+        .character-list {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 20px;
+          margin-top: 20px;
+        }
+        
         .character-card {
           border: 1px solid #ddd;
-          padding: 15px;
+          padding: 20px;
+          border-radius: 8px;
+          background: white;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          transition: all 0.3s ease;
+        }
+        
+        .character-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        
+        .character-info h3 {
+          margin: 0 0 10px 0;
+          color: #333;
+          font-size: 1.2em;
+        }
+        
+        .character-details {
           margin: 10px 0;
-          border-radius: 4px;
+        }
+        
+        .detail-item {
+          display: block;
+          margin: 5px 0;
+          color: #666;
+          font-size: 0.9em;
+        }
+        
+        .last-updated {
+          font-size: 0.8em;
+          color: #999;
+          margin-top: 10px;
+        }
+        
+        .character-actions {
+          margin-top: 15px;
+          display: flex;
+          gap: 10px;
+        }
+        
+        .character-actions .btn {
+          flex: 1;
+          text-align: center;
+          padding: 8px 16px;
+          font-size: 0.9em;
         }
         
         .loading {
           text-align: center;
           padding: 40px;
+          color: #666;
+        }
+        
+        @media (max-width: 768px) {
+          .character-list {
+            grid-template-columns: 1fr;
+          }
+          
+          .container {
+            padding: 10px;
+          }
         }
       `}</style>
+      
+      <Head>
+        <link 
+          rel="stylesheet" 
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
+        />
+        <link 
+          href="https://fonts.googleapis.com/css2?family=Kosugi&family=Varela+Round&display=swap" 
+          rel="stylesheet"
+        />
+      </Head>
     </>
   );
 }

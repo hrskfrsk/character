@@ -11,6 +11,10 @@ const nextConfig = {
         aggregateTimeout: 300,
         ignored: /node_modules/,
       }
+      // ホットリロード対策
+      config.infrastructureLogging = {
+        level: 'warn',
+      }
       return config
     }
   }),
@@ -36,7 +40,11 @@ const nextConfig = {
   
   // 静的エクスポート時の設定
   experimental: {
-    esmExternals: false
+    esmExternals: false,
+    // 開発時のみFast Refresh調整を適用
+    ...(process.env.NODE_ENV === 'development' && {
+      forceSwcTransforms: true,
+    })
   },
   
   // Firebase関連の設定
