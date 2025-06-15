@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CharacterData } from '../../lib/character-calculations';
 
 interface MemoSectionProps {
@@ -25,6 +25,46 @@ export default function MemoSection({
 
   // 各メモ項目の開閉状態を管理
   const [memoCollapsedStates, setMemoCollapsedStates] = useState<Record<string, boolean>>({});
+
+  // localStorage からメモの開閉状態を復元
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedMemoStates = localStorage.getItem('character-form-memoCollapsedStates');
+      if (savedMemoStates !== null) {
+        setMemoCollapsedStates(JSON.parse(savedMemoStates));
+      }
+    }
+  }, []);
+
+  // メモの開閉状態を localStorage に保存
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('character-form-memoCollapsedStates', JSON.stringify(memoCollapsedStates));
+    }
+  }, [memoCollapsedStates]);
+
+  // リロード時にテキストエリアの高さを調整
+  useEffect(() => {
+    const adjustAllTextareas = () => {
+      // デフォルトメモの調整
+      const defaultMemoTextarea = document.querySelector('textarea[name="default_memo"]') as HTMLTextAreaElement;
+      if (defaultMemoTextarea) {
+        adjustTextareaHeight(defaultMemoTextarea);
+      }
+
+      // 追加メモの調整
+      secretMemos.forEach(memo => {
+        const textarea = document.querySelector(`textarea[name="${memo.id}_content"]`) as HTMLTextAreaElement;
+        if (textarea) {
+          adjustTextareaHeight(textarea);
+        }
+      });
+    };
+
+    // DOM要素が確実に存在するまで少し待つ
+    const timer = setTimeout(adjustAllTextareas, 100);
+    return () => clearTimeout(timer);
+  }, [secretMemos, characterData.default_memo]);
 
   // メモ項目のトグル関数
   const toggleMemoItem = (memoId: string) => {
@@ -86,6 +126,7 @@ export default function MemoSection({
                   width: '100%',
                   padding: '10px',
                   borderRadius: '5px',
+                  textAlign: 'left',
                   resize: 'none', // 自動リサイズのため手動リサイズを無効化
                   fontSize: '14px',
                   fontFamily: 'inherit',
