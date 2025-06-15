@@ -34,6 +34,24 @@ export default function MemoSection({
     }));
   };
 
+  // テキストエリアの高さを自動調整する関数
+  const adjustTextareaHeight = (textarea: HTMLTextAreaElement) => {
+    textarea.style.height = 'auto';
+    textarea.style.height = `${Math.max(textarea.scrollHeight, 60)}px`; // 最小高さ60px
+  };
+
+  // テキストエリアの変更ハンドラー
+  const handleTextareaChange = (memoId: string, value: string, e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    handleInputChange(`${memoId}_content`, value);
+    adjustTextareaHeight(e.target);
+  };
+
+  // デフォルトメモの変更ハンドラー
+  const handleDefaultMemoChange = (value: string, e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    handleInputChange('default_memo', value);
+    adjustTextareaHeight(e.target);
+  };
+
   // パスワード保護の変更ハンドラー
   const handlePasswordProtectedChange = (memoId: string, checked: boolean) => {
     handleInputChange(`${memoId}_password_protected`, checked);
@@ -62,16 +80,19 @@ export default function MemoSection({
               <textarea
                 name="default_memo"
                 value={characterData.default_memo || ''}
-                onChange={(e) => handleInputChange('default_memo', e.target.value)}
+                onChange={(e) => handleDefaultMemoChange(e.target.value, e)}
                 placeholder="キャラクターに関する基本的なメモを記入してください..."
-                rows={4}
                 style={{
                   width: '100%',
                   padding: '10px',
                   borderRadius: '5px',
-                  resize: 'vertical',
-                  fontSize: '14px'
+                  resize: 'none', // 自動リサイズのため手動リサイズを無効化
+                  fontSize: '14px',
+                  fontFamily: 'inherit',
+                  minHeight: '80px', // デフォルトメモは少し高めに
+                  overflow: 'hidden' // スクロールバーを隠す
                 }}
+                onInput={(e) => adjustTextareaHeight(e.target as HTMLTextAreaElement)}
               />
             </div>
 
@@ -117,6 +138,7 @@ export default function MemoSection({
                             padding: '4px 6px',
                             fontSize: '14px',
                             fontWeight: '500',
+                            fontFamily: 'inherit',
                             border: 'none',
                             background: 'transparent',
                             color: '#333',
@@ -154,21 +176,24 @@ export default function MemoSection({
                           <textarea
                             name={`${memo.id}_content`}
                             value={(characterData as any)[`${memo.id}_content`] || ''}
-                            onChange={(e) => handleInputChange(`${memo.id}_content`, e.target.value)}
+                            onChange={(e) => handleTextareaChange(memo.id, e.target.value, e)}
                             placeholder="メモの内容..."
-                            rows={3}
                             style={{
                               width: '100%',
                               padding: '10px 8px 6px',
-                              resize: 'vertical',
+                              resize: 'none', // 自動リサイズのため手動リサイズを無効化
                               fontSize: '14px',
+                              fontFamily: 'inherit',
                               boxShadow: 'none',
                               borderBottom: '1px solid #ccc',
                               borderTop: '1px solid #ccc',
                               textAlign: 'left',
                               marginBottom: '0',
                               borderRadius: '0',
+                              minHeight: '60px',
+                              overflow: 'hidden' // スクロールバーを隠す
                             }}
+                            onInput={(e) => adjustTextareaHeight(e.target as HTMLTextAreaElement)}
                           />
 
                           {/* 設定 */}
