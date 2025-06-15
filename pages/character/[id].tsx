@@ -9,6 +9,7 @@ import SkillDisplay from '../../components/SkillDisplay';
 import CharacterHeader from '../../components/character-display/CharacterHeader';
 import EquipmentDisplay from '../../components/character-display/EquipmentDisplay';
 import StatDisplay from '../../components/character-display/StatDisplay';
+import MemoDisplay from '../../components/character-display/MemoDisplay';
 
 interface CharacterPageProps {
   character: any;
@@ -1770,12 +1771,18 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                     character={character}
                     equipmentSections={equipmentSections}
                     toggleEquipmentSection={toggleEquipmentSection}
+                    handleSkillClick={handleSkillClick}
+                  />
+                  
+                  <MemoDisplay
+                    character={character}
+                    equipmentSections={equipmentSections}
+                    toggleEquipmentSection={toggleEquipmentSection}
                     secretMemoVisibility={secretMemoVisibility}
                     memoPasswordStates={memoPasswordStates}
                     toggleSecretMemoVisibility={toggleSecretMemoVisibility}
                     handlePasswordInput={handlePasswordInput}
                     handlePasswordSubmit={handlePasswordSubmit}
-                    handleSkillClick={handleSkillClick}
                   />
 
                   {/* 編集ボタン */}
