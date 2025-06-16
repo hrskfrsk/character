@@ -12,6 +12,9 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     progress: 0,
     isUploading: false
   });
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+  const [isBasicDataOpen, setIsBasicDataOpen] = useState(true);
+  const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
 
   // 画像の縦横比を計算する関数
   const calculateImageAspectRatio = (img: HTMLImageElement): string => {
@@ -247,8 +250,23 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
           />
         </div>
 
-        {/* 2カラムレイアウト */}
-        <div className="character-main-info">
+        {/* アコーディオントグル（見出し風） */}
+        <div className="accordion-toggle">
+          <button
+            type="button"
+            onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+            className="accordion-toggle-btn"
+          >
+            <div className="title-text">
+              <i className="fas fa-palette"></i>
+              立ち絵/カラー設定
+            </div>
+            <i className={`fas chevron ${isAccordionOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+          </button>
+        </div>
+
+        {/* 2カラムレイアウト（アコーディオンコンテンツ） */}
+        <div className={`character-main-info ${isAccordionOpen ? 'accordion-open' : 'accordion-closed'}`}>
           {/* 左カラム：キャラクター画像 */}
           <div className="character-left-column">
             <div className="character-image-section">
@@ -524,14 +542,25 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             </div>
           </div>
         </div>
-      </div>
 
-      {/* 基本情報セクション */}
-      <div className="info-section">
-        <h3 className="subsection-title">
-          <i className="fas fa-id-card"></i> 基本データ
-        </h3>
-        <div className="info-grid basic-info">
+        {/* 基本情報セクション */}
+        {/* 基本データ アコーディオントグル */}
+        <div className="accordion-toggle">
+          <button
+            type="button"
+            onClick={() => setIsBasicDataOpen(!isBasicDataOpen)}
+            className="accordion-toggle-btn"
+          >
+            <div className="title-text">
+              <i className="fas fa-id-card"></i>
+              基本データ
+            </div>
+            <i className={`fas chevron ${isBasicDataOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+          </button>
+        </div>
+        
+        <div className={`accordion-content ${isBasicDataOpen ? 'accordion-open' : 'accordion-closed'}`}>
+          <div className="info-grid basic-info">
 
 
 
@@ -681,16 +710,26 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             </select>
           </div>
         </div>
-      </div>
+        </div>
 
-
-
-      {/* 説明・設定セクション */}
-      <div className="info-section">
-        <h3 className="subsection-title">
-          <i className="fas fa-file-alt"></i> 説明・設定
-        </h3>
-        <div className="info-grid description-info">
+        {/* 説明・設定セクション */}
+        {/* 説明・設定 アコーディオントグル */}
+        <div className="accordion-toggle">
+          <button
+            type="button"
+            onClick={() => setIsDescriptionOpen(!isDescriptionOpen)}
+            className="accordion-toggle-btn"
+          >
+            <div className="title-text">
+              <i className="fas fa-file-alt"></i>
+              説明・設定
+            </div>
+            <i className={`fas chevron ${isDescriptionOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+          </button>
+        </div>
+        
+        <div className={`accordion-content ${isDescriptionOpen ? 'accordion-open' : 'accordion-closed'}`}>
+          <div className="info-grid description-info">
 
           <div className="info-item full-width">
             <label htmlFor="introduction">
@@ -723,7 +762,11 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
           </div>
 
         </div>
+        </div>
       </div>
+
+
+
     </div>
   );
 }

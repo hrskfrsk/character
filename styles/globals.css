@@ -411,12 +411,86 @@ textarea,
   }
 }
 
+/* アコーディオントグル（見出し風） */
+.character-info .accordion-toggle {
+  margin-top: 25px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.character-info .accordion-toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 0;
+  transition: all 0.2s ease;
+}
+
+.character-info .accordion-toggle-btn:hover {
+  color: #22c6d8;
+}
+
+.character-info .accordion-toggle-btn .title-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.character-info .accordion-toggle-btn .title-text i {
+  color: #22c6d8;
+  font-size: 1em;
+}
+
+.character-info .accordion-toggle-btn .chevron {
+  color: #999;
+  font-size: 0.8em;
+  transition: transform 0.2s ease;
+}
+
 /* 2カラムレイアウト */
 .character-info .character-main-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 30px;
-  margin-top: 20px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.character-info .character-main-info.accordion-open {
+  max-height: 2000px;
+  opacity: 1;
+}
+
+.character-info .character-main-info.accordion-closed {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* アコーディオンコンテンツ（汎用） */
+.character-info .accordion-content {
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.character-info .accordion-content.accordion-open {
+  max-height: 2000px;
+  opacity: 1;
+}
+
+.character-info .accordion-content.accordion-closed {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .character-info .character-left-column {
@@ -449,7 +523,7 @@ textarea,
   margin-bottom: 15px;
   display: flex;
   justify-content: center;
-  max-height: 236px;
+  max-height: 240px;
 }
 
 .character-info .character-image-section .image-preview {
@@ -820,6 +894,17 @@ textarea,
     align-self: center;
     height: 30px;
     padding: 0 2px;
+  }
+
+  /* アコーディオンボタンのモバイル対応 */
+  .character-info .accordion-toggle-btn {
+    padding: 10px 0;
+    font-size: 1em;
+  }
+
+  .character-info .accordion-toggle {
+    margin-top: 20px;
+    margin-bottom: 12px;
   }
 
   /* 2カラムレイアウトをモバイルでは1カラムに */
@@ -1828,7 +1913,6 @@ li {
 
 .character .pc-image {
   width: calc(45% - 10px);
-  height: 800px;
   margin-top: 5%;
 }
 
@@ -2011,6 +2095,9 @@ li {
     position: relative;
     left: -85%;
     width: 185%;
+  }
+  .character .spec h2 {
+    text-align: right;
   }
 }
 
