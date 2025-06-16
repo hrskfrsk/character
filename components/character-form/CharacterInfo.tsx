@@ -297,6 +297,48 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
         </div>
       </div>
 
+      {/* UIカラー設定セクション */}
+      <div className="info-section">
+        <h3 className="subsection-title">
+          <i className="fas fa-paint-brush"></i> UIカラー設定
+        </h3>
+        <div className="info-grid appearance-info">
+          <div className="color-pair">
+            <div className="info-item">
+              <label htmlFor="ui_theme_color">
+                <i className="fas fa-palette"></i> UIテーマカラー
+              </label>
+              <div className="color-input-group">
+                <input
+                  type="color"
+                  id="ui_theme_color_picker"
+                  value={characterData.ui_theme_color || '#22c6d8'}
+                  onChange={(e) => handleInputChange('ui_theme_color', e.target.value)}
+                  className="color-picker"
+                />
+                <input
+                  type="text"
+                  id="ui_theme_color"
+                  name="ui_theme_color"
+                  placeholder="#22c6d8"
+                  value={characterData.ui_theme_color || ''}
+                  onChange={(e) => handleInputChange('ui_theme_color', e.target.value)}
+                  className="color-text-input"
+                />
+              </div>
+            </div>
+            <div className="info-item">
+              <label>
+                <i className="fas fa-info-circle"></i> 説明
+              </label>
+              <div style={{ fontSize: '0.9em', color: '#666', padding: '8px 0' }}>
+                表示ページの見出しやボーダーの色に使用されます
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* 外見情報セクション */}
       <div className="info-section">
         <h3 className="subsection-title">
@@ -541,21 +583,6 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
           <i className="fas fa-file-alt"></i> 説明・設定
         </h3>
         <div className="info-grid description-info">
-
-          <div className="info-item full-width catch-phrase">
-            <label htmlFor="catch_phrase">
-              <i className="fas fa-quote-left"></i> キャッチフレーズ
-            </label>
-            <input
-              type="text"
-              id="catch_phrase"
-              name="catch_phrase"
-              placeholder="まだ来ていないその時を65年引き延ばしているジジイ。"
-              value={characterData.catch_phrase || ''}
-              onChange={(e) => handleInputChange('catch_phrase', e.target.value)}
-              className="catch-phrase-input"
-            />
-          </div>
 
           <div className="info-item full-width">
             <label htmlFor="introduction">

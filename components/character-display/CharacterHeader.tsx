@@ -5,50 +5,12 @@ interface CharacterHeaderProps {
   calculateAbilityTotal: () => number;
 }
 
-export default function CharacterHeader({ 
-  character, 
+export default function CharacterHeader({
+  character,
   calculateAbilityTotal
 }: CharacterHeaderProps) {
   return (
     <>
-
-      {/* 特徴セクション */}
-      <div className="features">
-        <ul>
-          {(() => {
-            const traitElements = [];
-            // trait_1からtrait_50まで確認して存在するもののみ表示
-            for (let i = 1; i <= 50; i++) {
-              const traitNumber = character[`trait_${i}_number`];
-              const traitName = character[`trait_${i}_name`];
-              const traitDescription = character[`trait_${i}_description`];
-
-              if (traitName) {
-                traitElements.push(
-                  <li key={i} className="d-flex f-list">
-                    <div className="f-label">
-                      <span className="num">{traitNumber || '0-0'}</span>
-                      <span className="name">{traitName}</span>
-                    </div>
-                    <div className="contents">
-                      {traitDescription || '-'}
-                    </div>
-                  </li>
-                );
-              }
-            }
-            return traitElements.length > 0 ? traitElements : (
-              <li className="d-flex f-list">
-                <div className="f-label">
-                  <span className="num">-</span>
-                  <span className="name">特徴なし</span>
-                </div>
-                <div className="contents">-</div>
-              </li>
-            );
-          })()}
-        </ul>
-      </div>
 
       <div className="scores d-flex">
         {/* 能力値 */}
@@ -77,7 +39,7 @@ export default function CharacterHeader({
 
           {/* STR */}
           <li className="str score-li">
-            <h3>STR</h3>
+            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>STR</h3>
             <div className="score-sum">
               <span id="str_total">{character.str_total || '-'}</span>
             </div>
@@ -96,7 +58,7 @@ export default function CharacterHeader({
 
           {/* CON */}
           <li className="con score-li">
-            <h3>CON</h3>
+            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>CON</h3>
             <div className="score-sum">
               <span id="con_total">{character.con_total || '-'}</span>
             </div>
@@ -115,7 +77,7 @@ export default function CharacterHeader({
 
           {/* POW */}
           <li className="pow score-li">
-            <h3>POW</h3>
+            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>POW</h3>
             <div className="score-sum">
               <span id="pow_total">{character.pow_total || '-'}</span>
             </div>
@@ -134,7 +96,7 @@ export default function CharacterHeader({
 
           {/* DEX */}
           <li className="dex score-li">
-            <h3>DEX</h3>
+            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>DEX</h3>
             <div className="score-sum">
               <span id="dex_total">{character.dex_total || '-'}</span>
             </div>
@@ -153,7 +115,7 @@ export default function CharacterHeader({
 
           {/* APP */}
           <li className="app score-li">
-            <h3>APP</h3>
+            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>APP</h3>
             <div className="score-sum">
               <span id="app_total">{character.app_total || '-'}</span>
             </div>
@@ -172,7 +134,7 @@ export default function CharacterHeader({
 
           {/* SIZ */}
           <li className="siz score-li">
-            <h3>SIZ</h3>
+            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>SIZ</h3>
             <div className="score-sum">
               <span id="siz_total">{character.siz_total || '-'}</span>
             </div>
@@ -191,7 +153,7 @@ export default function CharacterHeader({
 
           {/* INT */}
           <li className="int score-li">
-            <h3>INT</h3>
+            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>INT</h3>
             <div className="score-sum">
               <span id="int_total">{character.int_total || '-'}</span>
             </div>
@@ -210,7 +172,7 @@ export default function CharacterHeader({
 
           {/* EDU */}
           <li className="edu score-li">
-            <h3>EDU</h3>
+            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>EDU</h3>
             <div className="score-sum">
               <span id="edu_total">{character.edu_total || '-'}</span>
             </div>

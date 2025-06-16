@@ -40,12 +40,25 @@ export default function BasicDataDisplay({ character }: BasicDataDisplayProps) {
       </div>
 
       <div className="pc-data">
-        {/* キャッチフレーズ */}
-        {character.catch_phrase && (
-          <div className="catch-phrase" style={{ color: character.character_color_code || '#22c6d8' }}>
-            {character.catch_phrase}
-          </div>
-        )}
+        {/* キャラクター名 */}
+        <div className="catch-phrase" style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+          <span style={{ display: 'inline-block', marginRight: '10px', lineHeight: '1.3' }}>
+            {character.character_name || '無名のキャラクター'}
+          </span>
+          {character.character_name_kana && (
+            <span
+              style={{
+                fontSize: '10px',
+                fontWeight: 'bold',
+                display: 'block',
+                whiteSpace: 'nowrap',
+                marginTop: '3px',
+              }}
+            >
+              {character.character_name_kana}
+            </span>
+          )}
+        </div>
 
         {/* 紹介文 */}
         {character.introduction && (
@@ -69,95 +82,85 @@ export default function BasicDataDisplay({ character }: BasicDataDisplayProps) {
           </div>
         )}
 
-        {/* 能力値セクション */}
-        <section className="score">
-          <h2 style={{ background: character.character_color_code || '#22c6d8' }}>能力値</h2>
-
-          {/* レーダーチャートエリア - 後で実装 */}
-          <div id="chartdiv" style={{ width: '100%', height: '400px', overflow: 'hidden', textAlign: 'left' }}>
-            {/* レーダーチャートが入る予定 */}
-          </div>
-        </section>
-
         {/* 基本データ */}
         <div className="spec dai-topic">
-          <h2 style={{ color: character.character_color_code || '#22c6d8' }}>
+          <h2 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
             <i className="fas fa-address-card"></i> Basic data
           </h2>
           <div className="spec-wrap">
             {character.gender && (
-              <section className="line01 personal" style={{ borderColor: character.character_color_code || '#22c6d8' }}>
-                <h3 style={{ color: character.character_color_code || '#22c6d8', borderColor: character.character_color_code || '#22c6d8' }}>性別</h3>
+              <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+                <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>性別</h3>
                 <div>{character.gender}</div>
               </section>
             )}
 
             {character.age && (
-              <section className="line01 personal" style={{ borderColor: character.character_color_code || '#22c6d8' }}>
-                <h3 style={{ color: character.character_color_code || '#22c6d8', borderColor: character.character_color_code || '#22c6d8' }}>年齢</h3>
+              <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+                <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>年齢</h3>
                 <div>{character.age}歳</div>
               </section>
             )}
 
             {character.height && (
-              <section className="line01 personal" style={{ borderColor: character.character_color_code || '#22c6d8' }}>
-                <h3 style={{ color: character.character_color_code || '#22c6d8', borderColor: character.character_color_code || '#22c6d8' }}>身長</h3>
+              <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+                <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>身長</h3>
                 <div>{character.height}cm</div>
               </section>
             )}
 
             {character.weight && (
-              <section className="line01 personal" style={{ borderColor: character.character_color_code || '#22c6d8' }}>
-                <h3 style={{ color: character.character_color_code || '#22c6d8', borderColor: character.character_color_code || '#22c6d8' }}>体重</h3>
+              <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+                <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>体重</h3>
                 <div>{character.weight}kg</div>
               </section>
             )}
 
             {character.occupation && (
-              <section className="line01 personal" style={{ borderColor: character.character_color_code || '#22c6d8' }}>
-                <h3 style={{ color: character.character_color_code || '#22c6d8', borderColor: character.character_color_code || '#22c6d8' }}>職業</h3>
+              <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+                <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>職業</h3>
                 <div>{character.occupation}</div>
               </section>
             )}
 
             {character.birthplace && (
-              <section className="line01 personal" style={{ borderColor: character.character_color_code || '#22c6d8' }}>
-                <h3 style={{ color: character.character_color_code || '#22c6d8', borderColor: character.character_color_code || '#22c6d8' }}>出身地</h3>
+              <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+                <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>出身地</h3>
                 <div>{character.birthplace}</div>
               </section>
             )}
 
             {character.era && (
-              <section className="line01 personal" style={{ borderColor: character.character_color_code || '#22c6d8' }}>
-                <h3 style={{ color: character.character_color_code || '#22c6d8', borderColor: character.character_color_code || '#22c6d8' }}>時代</h3>
+              <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+                <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>時代</h3>
                 <div>{character.era}</div>
               </section>
             )}
 
             {character.birthday && (
-              <section className="line01 personal" style={{ borderColor: character.character_color_code || '#22c6d8' }}>
-                <h3 style={{ color: character.character_color_code || '#22c6d8', borderColor: character.character_color_code || '#22c6d8' }}>誕生日</h3>
+              <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+                <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>誕生日</h3>
                 <div>{character.birthday}</div>
               </section>
             )}
 
             {character.zodiac_sign && (
-              <section className="line01 personal" style={{ borderColor: character.character_color_code || '#22c6d8' }}>
-                <h3 style={{ color: character.character_color_code || '#22c6d8', borderColor: character.character_color_code || '#22c6d8' }}>星座</h3>
+              <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+                <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>星座</h3>
                 <div>{character.zodiac_sign}</div>
               </section>
             )}
 
             {character.blood_type && (
-              <section className="line01 personal" style={{ borderColor: character.character_color_code || '#22c6d8' }}>
-                <h3 style={{ color: character.character_color_code || '#22c6d8', borderColor: character.character_color_code || '#22c6d8' }}>血液型</h3>
+              <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+                <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>血液型</h3>
                 <div>{character.blood_type}</div>
               </section>
             )}
 
             {(character.character_color || character.character_color_code) && (
-              <section className="line01 personal" style={{ borderColor: character.character_color_code || '#22c6d8' }}>
-                <h3 style={{ color: character.character_color_code || '#22c6d8', borderColor: character.character_color_code || '#22c6d8' }}>カラー</h3>
+              <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+                <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>カラー</h3>
                 <div>
                   {character.character_color && character.character_color}
                   {character.character_color_code && (
@@ -175,8 +178,8 @@ export default function BasicDataDisplay({ character }: BasicDataDisplayProps) {
             )}
 
             {(character.hair_color || character.hair_color_code) && (
-              <section className="line01 personal" style={{ borderColor: character.character_color_code || '#22c6d8' }}>
-                <h3 style={{ color: character.character_color_code || '#22c6d8', borderColor: character.character_color_code || '#22c6d8' }}>髪の色</h3>
+              <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+                <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>髪の色</h3>
                 <div>
                   {character.hair_color && character.hair_color}
                   {character.hair_color_code && (
@@ -194,8 +197,8 @@ export default function BasicDataDisplay({ character }: BasicDataDisplayProps) {
             )}
 
             {(character.eye_color || character.eye_color_code) && (
-              <section className="line01 personal" style={{ borderColor: character.character_color_code || '#22c6d8' }}>
-                <h3 style={{ color: character.character_color_code || '#22c6d8', borderColor: character.character_color_code || '#22c6d8' }}>目の色</h3>
+              <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+                <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>目の色</h3>
                 <div>
                   {character.eye_color && character.eye_color}
                   {character.eye_color_code && (
@@ -213,8 +216,8 @@ export default function BasicDataDisplay({ character }: BasicDataDisplayProps) {
             )}
 
             {(character.skin_color || character.skin_color_code) && (
-              <section className="line01 personal" style={{ borderColor: character.character_color_code || '#22c6d8' }}>
-                <h3 style={{ color: character.character_color_code || '#22c6d8', borderColor: character.character_color_code || '#22c6d8' }}>肌の色</h3>
+              <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+                <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>肌の色</h3>
                 <div>
                   {character.skin_color && character.skin_color}
                   {character.skin_color_code && (

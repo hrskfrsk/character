@@ -18,6 +18,7 @@ export default function CreateCharacterPage() {
   const [characterData, setCharacterData] = useState<CharacterData>({});
   const [calculatedStats, setCalculatedStats] = useState<any>({});
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [additionalCombatSkills, setAdditionalCombatSkills] = useState<Array<{ id: string, counter: number }>>([]);
   const [combatSkillCounter, setCombatSkillCounter] = useState(0);
   const [additionalExplorationSkills, setAdditionalExplorationSkills] = useState<Array<{ id: string, counter: number }>>([]);
@@ -1043,6 +1044,36 @@ export default function CreateCharacterPage() {
     window.open('/character/preview', '_blank');
   };
 
+  const handleDelete = async () => {
+    if (!isEditMode || !edit) return;
+    
+    const characterName = characterData.character_name || '無名のキャラクター';
+    if (!confirm(`本当に「${characterName}」を削除しますか？\nこの操作は取り消せません。`)) {
+      return;
+    }
+
+    setDeleting(true);
+
+    try {
+      const response = await fetch(`/api/characters/${edit}/delete`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        alert('キャラクターを削除しました');
+        router.push('/');
+      } else {
+        const error = await response.json();
+        alert(`削除に失敗しました: ${error.error || '不明なエラー'}`);
+      }
+    } catch (error) {
+      console.error('削除エラー:', error);
+      alert('削除中にエラーが発生しました');
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   const pageTitle = "キャラクター作成 - クトゥルフ神話TRPG第6版";
 
   return (
@@ -1168,6 +1199,17 @@ export default function CreateCharacterPage() {
                     >
                       <i className="fas fa-eye"></i> キャラクターシートを表示
                     </button>
+                    {isEditMode && (
+                      <button
+                        type="button"
+                        onClick={handleDelete}
+                        className="btn delete-btn"
+                        style={{ marginLeft: '15px', padding: '10px 30px', backgroundColor: '#f44336', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                        disabled={deleting}
+                      >
+                        <i className="fas fa-trash"></i> {deleting ? '削除中...' : 'キャラクターを削除'}
+                      </button>
+                    )}
                   </div>
 
                 </section>

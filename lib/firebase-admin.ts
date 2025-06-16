@@ -30,6 +30,7 @@ try {
 }
 
 export { adminDb };
+export const db = adminDb;
 
 // キャラクターデータ取得関数
 export async function getCharacterData(characterId: string) {

@@ -7,6 +7,7 @@ import { db } from '../lib/firebase-client';
 export default function Home() {
   const [characters, setCharacters] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCharacters = async () => {
@@ -39,6 +40,34 @@ export default function Home() {
 
     fetchCharacters();
   }, []);
+
+  const handleDelete = async (characterId: string, characterName: string) => {
+    if (!confirm(`本当に「${characterName}」を削除しますか？\nこの操作は取り消せません。`)) {
+      return;
+    }
+
+    setDeletingId(characterId);
+
+    try {
+      const response = await fetch(`/api/characters/${characterId}/delete`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        // 削除成功したらリストから削除
+        setCharacters(characters.filter(char => char.id !== characterId));
+        alert('キャラクターを削除しました');
+      } else {
+        const error = await response.json();
+        alert(`削除に失敗しました: ${error.error || '不明なエラー'}`);
+      }
+    } catch (error) {
+      console.error('削除エラー:', error);
+      alert('削除中にエラーが発生しました');
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   return (
     <>
@@ -87,6 +116,13 @@ export default function Home() {
                     <Link href={`/create?edit=${character.id}`} className="btn btn-edit">
                       <i className="fas fa-edit"></i> 編集
                     </Link>
+                    <button 
+                      onClick={() => handleDelete(character.id, character.character_name || '無名のキャラクター')}
+                      className="btn btn-danger"
+                      disabled={deletingId === character.id}
+                    >
+                      <i className="fas fa-trash"></i> {deletingId === character.id ? '削除中...' : '削除'}
+                    </button>
                   </div>
                 </div>
               ))
@@ -142,6 +178,20 @@ export default function Home() {
         .btn-edit {
           background-color: #FF9800;
           color: white;
+        }
+        
+        .btn-danger {
+          background-color: #f44336;
+          color: white;
+        }
+        
+        .btn-danger:hover {
+          background-color: #d32f2f;
+        }
+        
+        .btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
         }
         
         .character-list {
