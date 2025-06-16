@@ -106,6 +106,553 @@ textarea,
   background: #ececec;
   height: 25px;
 }
+
+/* キャラクター基本情報のスタイリング - 調整版 */
+.character-info {
+  background: #f5f5f5;
+  padding: 20px;
+}
+
+.character-info .section-header {
+  text-align: center;
+  margin-bottom: 30px;
+  background: #fff;
+  padding: 25px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.character-info .section-header h2 {
+  color: #333;
+  font-size: 1.6em;
+  margin-bottom: 8px;
+  font-weight: 600;
+  border-left: 4px solid #22c6d8;
+  padding-left: 12px;
+  display: inline-block;
+}
+
+.character-info .section-header .section-description {
+  color: #666;
+  font-size: 0.9em;
+  margin: 0;
+}
+
+.character-info .info-section {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.character-info .subsection-title {
+  color: #444;
+  font-size: 1.1em;
+  margin-bottom: 16px;
+  padding: 8px 0 8px 16px;
+  border-left: 4px solid #22c6d8;
+  font-weight: 600;
+  background: rgba(34, 198, 216, 0.05);
+  border-radius: 4px;
+}
+
+.character-info .subsection-title i {
+  margin-right: 8px;
+  color: #22c6d8;
+}
+
+/* Basic Data セクション - グリッドレイアウト */
+.character-info .basic-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.character-info .basic-info .info-item {
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.character-info .basic-info .info-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.character-info .basic-info .info-item.featured {
+  grid-column: 1 / -1;
+  background: #f8feff;
+  border: 2px solid #22c6d8;
+}
+
+.character-info .basic-info .info-item.compact {
+  /* 通常のサイズのまま */
+}
+
+.character-info .basic-info .info-item label {
+  background: rgba(34, 198, 216, 0.1);
+  color: #444;
+  font-size: 0.85em;
+  font-weight: 600;
+  padding: 10px 8px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #e0e0e0;
+  min-height: 40px;
+}
+
+.character-info .basic-info .info-item label i {
+  margin-right: 6px;
+  color: #22c6d8;
+}
+
+.character-info .basic-info .info-item input,
+.character-info .basic-info .info-item select {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 12px 10px;
+  font-size: 0.9em;
+  text-align: center;
+  min-height: 44px;
+  box-sizing: border-box;
+}
+
+.character-info .basic-info .info-item input:focus,
+.character-info .basic-info .info-item select:focus {
+  outline: none;
+  background: rgba(34, 198, 216, 0.05);
+}
+
+.character-info .basic-info .info-item.featured input {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #22c6d8;
+  min-height: 50px;
+}
+
+.character-info .input-with-unit {
+  position: relative;
+}
+
+.character-info .input-with-unit input {
+  padding-right: 35px !important;
+}
+
+.character-info .input-with-unit .unit {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  font-size: 0.8em;
+  pointer-events: none;
+}
+
+/* カラー設定とその他のセクション */
+.character-info .appearance-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.character-info .description-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.character-info .color-pair {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+  background: #fafafa;
+  padding: 16px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  align-items: end;
+}
+
+.character-info .color-pair .info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.character-info .color-pair .info-item label {
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 8px;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+}
+
+.character-info .color-pair .info-item label i {
+  margin-right: 6px;
+  color: #22c6d8;
+}
+
+.character-info .color-pair .info-item input {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-size: 0.9em;
+  background: #fff;
+  transition: border-color 0.2s ease;
+}
+
+.character-info .color-pair .info-item input:focus {
+  outline: none;
+  border-color: #22c6d8;
+  box-shadow: 0 0 0 2px rgba(34, 198, 216, 0.1);
+}
+
+.character-info .color-input-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.character-info .color-picker {
+  width: 40px;
+  height: 38px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.character-info .color-text-input {
+  flex: 1;
+  font-family: 'Courier New', monospace;
+}
+
+/* フル幅アイテム（説明・設定セクション用） */
+.character-info .info-item.full-width {
+  margin-bottom: 16px;
+}
+
+.character-info .info-item.full-width label {
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 8px;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+}
+
+.character-info .info-item.full-width label i {
+  margin-right: 6px;
+  color: #22c6d8;
+}
+
+.character-info .info-item.full-width input,
+.character-info .info-item.full-width textarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 0.9em;
+  background: #fff;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.character-info .info-item.full-width textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.character-info .info-item.full-width input:focus,
+.character-info .info-item.full-width textarea:focus {
+  outline: none;
+  border-color: #22c6d8;
+  box-shadow: 0 0 0 2px rgba(34, 198, 216, 0.1);
+}
+
+.character-info .label-hint {
+  font-size: 0.75em;
+  color: #888;
+  margin-left: 8px;
+  font-weight: normal;
+}
+
+.character-info .secret-info {
+  border: 2px dashed #ffa500;
+  border-radius: 6px;
+  padding: 16px;
+  background: #fffaf0;
+}
+
+.character-info .secret-info label {
+  color: #e65100 !important;
+}
+
+.character-info .secret-info label i {
+  color: #ffa500 !important;
+}
+
+/* 画像アップロードセクション */
+.character-info .image-upload-section {
+  background: #fafafa;
+  border-radius: 6px;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+}
+
+.character-info .image-upload-section > label {
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 12px;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+}
+
+.character-info .image-upload-section > label i {
+  margin-right: 6px;
+  color: #22c6d8;
+}
+
+.character-info .image-preview-container {
+  margin-bottom: 16px;
+}
+
+.character-info .image-preview {
+  position: relative;
+  display: inline-block;
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 250px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e0e0e0;
+}
+
+.character-info .image-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.character-info .remove-image-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(231, 76, 60, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.character-info .remove-image-btn:hover {
+  background: #e74c3c;
+  transform: scale(1.1);
+}
+
+.character-info .image-upload-area {
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  background: #fff;
+  transition: all 0.2s ease;
+}
+
+.character-info .image-upload-area:hover {
+  border-color: #22c6d8;
+  background: #f8feff;
+}
+
+.character-info .upload-options {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.character-info .upload-option {
+  width: 100%;
+  max-width: 350px;
+}
+
+.character-info .upload-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #22c6d8 0%, #1ba1b5 100%);
+  color: white;
+  padding: 14px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  border: none;
+  width: 100%;
+  font-size: 0.95em;
+}
+
+.character-info .upload-btn:hover {
+  background: linear-gradient(135deg, #1ba1b5 0%, #158a9a 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(34, 198, 216, 0.3);
+}
+
+.character-info .upload-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.character-info .upload-progress {
+  width: 100%;
+  height: 6px;
+  background: #eee;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.character-info .upload-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #22c6d8, #1ba1b5);
+  transition: width 0.3s ease;
+}
+
+.character-info .upload-divider {
+  color: #888;
+  font-size: 0.9em;
+  position: relative;
+  margin: 16px 0;
+  font-weight: 500;
+}
+
+.character-info .upload-divider::before,
+.character-info .upload-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 50px;
+  height: 1px;
+  background: #ddd;
+}
+
+.character-info .upload-divider::before {
+  left: -60px;
+}
+
+.character-info .upload-divider::after {
+  right: -60px;
+}
+
+.character-info .url-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9em;
+  text-align: center;
+  transition: border-color 0.2s ease;
+}
+
+.character-info .url-input:focus {
+  outline: none;
+  border-color: #22c6d8;
+  box-shadow: 0 0 0 2px rgba(34, 198, 216, 0.1);
+}
+
+.character-info .upload-info {
+  margin-top: 12px;
+}
+
+.character-info .upload-info small {
+  color: #888;
+  font-size: 0.8em;
+}
+
+.character-info .upload-info i {
+  margin-right: 4px;
+  color: #22c6d8;
+}
+
+@media (max-width: 768px) {
+  .character-info {
+    padding: 10px;
+  }
+  
+  .character-info .section-header {
+    padding: 20px 15px;
+    margin-bottom: 20px;
+  }
+  
+  .character-info .section-header h2 {
+    font-size: 1.4em;
+  }
+  
+  .character-info .info-section {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .character-info .subsection-title {
+    font-size: 1em;
+    padding: 6px 0 6px 12px;
+  }
+  
+  .character-info .basic-info {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .character-info .basic-info .info-item.compact {
+    /* モバイルでは全て1カラム */
+  }
+  
+  .character-info .color-pair {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .character-info .upload-options {
+    gap: 12px;
+  }
+  
+  .character-info .upload-option {
+    max-width: 100%;
+  }
+  
+  .character-info .upload-divider::before,
+  .character-info .upload-divider::after {
+    width: 40px;
+  }
+  
+  .character-info .upload-divider::before {
+    left: -50px;
+  }
+  
+  .character-info .upload-divider::after {
+    right: -50px;
+  }
+  
+  .character-info .image-preview {
+    max-width: 200px;
+  }
+}
 .character-input textarea {
   height: auto;
   resize: vertical;
@@ -1589,8 +2136,10 @@ li {
 
 .character .pc-image {
   width: calc(45% - 10px);
-  height: auto;
+  height: 800px;
   margin-top: 5%;
+  display: flex;
+  justify-content: center;
 }
 
 @media only screen and (max-width: 768px) {
@@ -1607,12 +2156,58 @@ li {
   filter: drop-shadow(42px 25px 2px rgba(142, 134, 146, 0.4));
   display: block;
   margin: 0 auto;
-  max-height: 800px;
+  max-height: 750px;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  transition: all 0.15s ease-out;
+  opacity: 1;
+}
+
+/* 横長画像（landscape）用のスタイル */
+.character .pc-image.aspect-landscape img,
+.character .pc-image img.img-landscape {
+  position: relative;
+  left: 15%;
+  display: block;
+  margin: 0 auto;
+  max-height: 750px;
+  max-width: 140%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  object-position: center top;
+}
+
+/* 縦長画像（portrait）用のスタイル */
+.character .pc-image.aspect-portrait img,
+.character .pc-image img.img-portrait {
+  max-height: 750px;
+  width: 100%;
+  height: auto;
+}
+
+/* 正方形画像（square）用のスタイル */
+.character .pc-image.aspect-square img,
+.character .pc-image img.img-square {
+  position: relative;
+  left: 10%;
+  display: block;
+  margin: 0 auto;
+  max-height: 750px;
+  max-width: 140%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  object-position: center top;
 }
 
 .character .pc-data {
   width: calc(55% - 10px);
   margin: 7% 0 0 auto;
+  position: relative;
 }
 
 @media only screen and (max-width: 1029px) {
@@ -1637,23 +2232,15 @@ li {
   font-size: 1.9rem;
   margin-bottom: 25px;
   line-height: 1;
-  padding-bottom: 10px;
+  padding-bottom: 12px;
   text-align: center;
   border-bottom: dotted 1px #000;
-}
-
-/* 読み仮名の改行制御 */
-@media (max-width: 600px) {
-  .character .catch-phrase span:last-child {
-    display: block !important;
-    margin-top: 6px;
-  }
 }
 
 .character .introduction {
   font-size: 0.9rem;
   line-height: 1.5;
-  margin-bottom: 50px;
+  margin-bottom: 55px;
 }
 
 .character .score {
@@ -1732,8 +2319,8 @@ li {
 @media only screen and (max-width: 1029px) {
   .character .spec {
     position: relative;
-    left: -100%;
-    width: 200%;
+    left: -85%;
+    width: 185%;
   }
 }
 
@@ -1774,7 +2361,7 @@ li {
 }
 
 .character .spec .spec-wrap section {
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.7);
   font-size: 0.8rem;
   margin: 3px 0;
   width: calc(50% - 2px);

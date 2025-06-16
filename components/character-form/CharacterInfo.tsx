@@ -13,6 +13,19 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     isUploading: false 
   });
 
+  // 画像の縦横比を計算する関数
+  const calculateImageAspectRatio = (img: HTMLImageElement): string => {
+    const aspectRatio = img.naturalWidth / img.naturalHeight;
+    
+    if (aspectRatio > 1.2) {
+      return 'landscape';
+    } else if (aspectRatio < 0.8) {
+      return 'portrait';
+    } else {
+      return 'square';
+    }
+  };
+
   // 画像圧縮関数
   const compressImage = (file: File, maxSizeInBytes: number = 5 * 1024 * 1024): Promise<File> => {
     return new Promise((resolve, reject) => {
@@ -139,8 +152,15 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
       // Firebase Storageにアップロード
       const result = await uploadImage(processedFile, setUploadProgress);
       
-      // 成功したら新しいURLを保存
-      handleInputChange('character_image_url', result.url);
+      // 縦横比を計算
+      const img = new Image();
+      img.onload = () => {
+        const aspectRatio = calculateImageAspectRatio(img);
+        // 画像URLと縦横比の両方を保存
+        handleInputChange('character_image_url', result.url);
+        handleInputChange('image_aspect_ratio', aspectRatio);
+      };
+      img.src = result.url;
       
       // 古い画像を削除（新しい画像のアップロード成功後）
       if (oldImagePath) {
@@ -714,19 +734,6 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             ></textarea>
           </div>
 
-          <div className="info-item full-width">
-            <label htmlFor="backstory">
-              <i className="fas fa-book"></i> 設定・バックストーリー
-            </label>
-            <textarea
-              id="backstory"
-              name="backstory"
-              rows={4}
-              placeholder="キャラクターの背景や過去の出来事..."
-              value={characterData.backstory || ''}
-              onChange={(e) => handleInputChange('backstory', e.target.value)}
-            ></textarea>
-          </div>
         </div>
       </div>
     </div>

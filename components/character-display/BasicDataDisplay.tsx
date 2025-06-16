@@ -6,6 +6,9 @@ interface BasicDataDisplayProps {
 
 export default function BasicDataDisplay({ character }: BasicDataDisplayProps) {
   const [toastMessage, setToastMessage] = useState<string>('');
+  
+  // データベースから縦横比を取得、なければフォールバック
+  const imageAspectRatio = character.image_aspect_ratio || null;
 
   // トースト通知を表示
   const showToast = (message: string) => {
@@ -30,12 +33,17 @@ export default function BasicDataDisplay({ character }: BasicDataDisplayProps) {
       showToast('コピーしました');
     });
   };
+
   return (
     <div className="content-wrap">
       {/* キャラクター画像 */}
-      <div className="pc-image">
+      <div className={`pc-image ${imageAspectRatio ? `aspect-${imageAspectRatio}` : ''}`}>
         {character.character_image_url && (
-          <img src={character.character_image_url} alt={character.character_name || 'キャラクター画像'} />
+          <img 
+            src={character.character_image_url} 
+            alt={character.character_name || 'キャラクター画像'}
+            className={imageAspectRatio ? `img-${imageAspectRatio}` : ''}
+          />
         )}
       </div>
 
@@ -63,9 +71,10 @@ export default function BasicDataDisplay({ character }: BasicDataDisplayProps) {
         {/* 紹介文 */}
         {character.introduction && (
           <div className="introduction">
-            <div style={{ whiteSpace: 'pre-wrap' }}>
-              {character.introduction}
-            </div>
+            <div 
+              style={{ whiteSpace: 'pre-wrap' }}
+              dangerouslySetInnerHTML={{ __html: character.introduction }}
+            />
 
             {/* 秘匿情報 */}
             {character.secret_information && (
@@ -73,9 +82,10 @@ export default function BasicDataDisplay({ character }: BasicDataDisplayProps) {
                 <input id="acd-check-rsc" className="acd-check" type="checkbox" />
                 <label className="acd-label more-secret" htmlFor="acd-check-rsc">秘匿情報込…</label>
                 <div className="o-memos acd-content">
-                  <div style={{ whiteSpace: 'pre-wrap' }}>
-                    {character.secret_information}
-                  </div>
+                  <div 
+                    style={{ whiteSpace: 'pre-wrap' }}
+                    dangerouslySetInnerHTML={{ __html: character.secret_information }}
+                  />
                 </div>
               </div>
             )}
