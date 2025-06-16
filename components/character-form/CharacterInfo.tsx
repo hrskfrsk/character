@@ -13,16 +13,106 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     isUploading: false 
   });
 
+  // 画像圧縮関数
+  const compressImage = (file: File, maxSizeInBytes: number = 5 * 1024 * 1024): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+
+      img.onload = () => {
+        // 最大幅・高さを設定（アスペクト比を保持）
+        const MAX_WIDTH = 1920;
+        const MAX_HEIGHT = 1920;
+        
+        let { width, height } = img;
+        
+        // アスペクト比を保持しながらリサイズ
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height = (height * MAX_WIDTH) / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width = (width * MAX_HEIGHT) / height;
+            height = MAX_HEIGHT;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        if (!ctx) {
+          reject(new Error('Canvas context not available'));
+          return;
+        }
+
+        // 透過画像（PNG）の場合は背景を透明に保持
+        const isPNG = file.type === 'image/png';
+        if (!isPNG) {
+          // JPEG等の場合は白背景を設定
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, width, height);
+        }
+
+        // 画像を描画
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // 元の画像形式に応じて圧縮形式を決定
+        const outputType = isPNG ? 'image/png' : 'image/jpeg';
+        let quality = 0.9;
+        
+        const tryCompress = () => {
+          if (isPNG) {
+            // PNGの場合は品質設定なしで圧縮
+            canvas.toBlob((blob) => {
+              if (!blob) {
+                reject(new Error('Failed to compress image'));
+                return;
+              }
+
+              const compressedFile = new File([blob], file.name, {
+                type: 'image/png',
+                lastModified: Date.now(),
+              });
+              resolve(compressedFile);
+            }, 'image/png');
+          } else {
+            // JPEG等の場合は品質を調整しながら圧縮
+            canvas.toBlob((blob) => {
+              if (!blob) {
+                reject(new Error('Failed to compress image'));
+                return;
+              }
+
+              if (blob.size <= maxSizeInBytes || quality <= 0.1) {
+                // 目標サイズ以下になったか、品質が最低値になったら完了
+                const compressedFile = new File([blob], file.name, {
+                  type: 'image/jpeg',
+                  lastModified: Date.now(),
+                });
+                resolve(compressedFile);
+              } else {
+                // まだ大きい場合は品質を下げて再試行
+                quality -= 0.1;
+                tryCompress();
+              }
+            }, 'image/jpeg', quality);
+          }
+        };
+
+        tryCompress();
+      };
+
+      img.onerror = () => reject(new Error('Failed to load image'));
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-
-    // ファイルサイズチェック (5MB以下)
-    const maxSize = 5 * 1024 * 1024; // 5MB
-    if (file.size > maxSize) {
-      alert('ファイルサイズは5MB以下にしてください');
-      return;
-    }
 
     // ファイル形式チェック
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
@@ -32,12 +122,22 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     }
 
     try {
+      let processedFile = file;
+      const maxSize = 5 * 1024 * 1024; // 5MB
+
+      // ファイルサイズが5MBを超える場合は圧縮
+      if (file.size > maxSize) {
+        console.log(`画像サイズが${(file.size / 1024 / 1024).toFixed(2)}MBのため、圧縮します...`);
+        processedFile = await compressImage(file, maxSize);
+        console.log(`圧縮後のサイズ: ${(processedFile.size / 1024 / 1024).toFixed(2)}MB`);
+      }
+
       // 既存の画像を削除（Firebase Storageの画像の場合）
       const currentImageUrl = characterData.character_image_url;
       const oldImagePath = currentImageUrl ? getImagePathFromUrl(currentImageUrl) : null;
 
       // Firebase Storageにアップロード
-      const result = await uploadImage(file, setUploadProgress);
+      const result = await uploadImage(processedFile, setUploadProgress);
       
       // 成功したら新しいURLを保存
       handleInputChange('character_image_url', result.url);
