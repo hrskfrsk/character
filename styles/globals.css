@@ -103,7 +103,7 @@ textarea,
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.5) inset;
   border-radius: 2px;
   text-align: center;
-  background: #ececec;
+  background: transparent;
   height: 25px;
 }
 
@@ -121,10 +121,11 @@ textarea,
 /* ロストトグル（右上） */
 .character-info .character-lost-toggle-header {
   position: absolute;
-  top: 20px;
+  top: 15px;
   right: 20px;
   align-items: center;
   gap: 8px;
+  display: flex;
 }
 
 .character-info .character-lost-toggle-header > label {
@@ -215,9 +216,7 @@ textarea,
   font-weight: 500;
   text-align: left;
   padding: 16px 20px;
-  border: 2px solid #22c6d8;
-  border-radius: 8px;
-  background: #f8feff;
+  border-radius: 5px;
   transition: all 0.2s ease;
 }
 
@@ -234,11 +233,11 @@ textarea,
 }
 
 .character-info .character-kana-input label {
-  display: block;
-  font-size: 0.9em;
-  font-weight: 500;
-  color: #666;
-  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 10px 0;
+  display: flex;
+  align-items: center;
 }
 
 .character-info .character-kana-input label i {
@@ -247,17 +246,7 @@ textarea,
 }
 
 .character-info .character-kana-input input {
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  display: block;
-  font-size: 1em;
-  text-align: center;
-  padding: 10px 16px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background: #fafafa;
-  transition: all 0.2s ease;
+  border-radius: 5px;
 }
 
 .character-info .character-kana-input input:focus {
@@ -269,8 +258,6 @@ textarea,
 
 /* UIカラー設定 */
 .character-info .ui-color-setting {
-  border-radius: 8px;
-  padding: 20px;
   margin-top: 20px;
 }
 
@@ -279,7 +266,6 @@ textarea,
   font-size: 1em;
   font-weight: 600;
   color: #333;
-  margin-bottom: 12px;
 }
 
 .character-info .ui-color-setting > label i {
@@ -306,12 +292,8 @@ textarea,
 
 .character-info .ui-color-setting .color-text-input {
   flex: 1;
-  font-family: "Courier New", monospace;
   padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.9em;
-  background: #fff;
+  border-radius: 5px;
   transition: border-color 0.2s ease;
 }
 
@@ -326,11 +308,107 @@ textarea,
   color: #666;
   display: flex;
   align-items: center;
+  margin-bottom: 5px;
 }
 
 .character-info .ui-color-setting .ui-color-description i {
   margin-right: 6px;
   color: #22c6d8;
+}
+
+/* 外見・カラー設定 */
+.character-info .appearance-color-setting {
+  border-top: 1px solid #e0e0e0;
+  padding-top: 15px;
+}
+
+.character-info .appearance-color-setting .appearance-title {
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 10px 0;
+  display: flex;
+  align-items: center;
+}
+
+.character-info .appearance-color-setting .appearance-title i {
+  margin-right: 8px;
+  color: #22c6d8;
+}
+
+.character-info .appearance-color-setting .appearance-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.character-info .appearance-color-setting .color-pair {
+  display: grid;
+  grid-template-columns: 1fr 130px;
+  gap: 10px;
+  align-items: start;
+}
+
+.character-info .appearance-color-setting .info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.character-info .appearance-color-setting .info-item label {
+  font-size: 0.9em;
+  font-weight: 500;
+  color: #555;
+  display: flex;
+  align-items: center;
+}
+
+.character-info .appearance-color-setting .info-item label i {
+  margin-right: 6px;
+  font-size: 12px;
+}
+
+.character-info .appearance-color-setting .info-item input[type="text"] {
+  padding: 8px 12px;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+}
+
+.character-info .appearance-color-setting .info-item input[type="text"]:focus {
+  outline: none;
+  border-color: #22c6d8;
+  box-shadow: 0 0 0 2px rgba(34, 198, 216, 0.1);
+}
+
+.character-info .appearance-color-setting .color-code .color-input-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.character-info .appearance-color-setting .color-code .color-picker {
+  width: 32px;
+  height: 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0 2px;
+}
+
+.character-info .appearance-color-setting .color-code .color-text-input {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 0.85em;
+  font-family: monospace;
+}
+
+@media (max-width: 768px) {
+  .character-info .appearance-color-setting .color-pair {
+    grid-template-columns: 1fr 104px;
+    gap: 10px;
+  }
+
+  .character-info .appearance-color-setting .color-code .color-input-group {
+    justify-content: flex-start;
+  }
 }
 
 /* 2カラムレイアウト */
@@ -369,6 +447,9 @@ textarea,
 
 .character-info .character-image-section .image-preview-container {
   margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  max-height: 236px;
 }
 
 .character-info .character-image-section .image-preview {
@@ -383,7 +464,7 @@ textarea,
 
 .character-info .character-image-section .image-preview img {
   width: 100%;
-  height: auto;
+  height: 100%;
   max-height: 300px;
   object-fit: contain;
   display: block !important;
@@ -550,90 +631,13 @@ textarea,
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.5) inset;
   height: auto;
 }
-
+.info-item select {
+  padding: 7px 10px;
+}
 .character-info .basic-info .info-item input:focus,
 .character-info .basic-info .info-item select:focus {
   outline: none;
   background: rgba(34, 198, 216, 0.05);
-}
-
-/* カラー設定とその他のセクション */
-.character-info .appearance-info {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.character-info .description-info {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.character-info .color-pair {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 16px;
-  background: #fafafa;
-  padding: 16px;
-  border-radius: 6px;
-  border: 1px solid #e0e0e0;
-  align-items: end;
-}
-
-.character-info .color-pair .info-item {
-  display: flex;
-  flex-direction: column;
-}
-
-.character-info .color-pair .info-item label {
-  font-weight: 500;
-  color: #555;
-  margin-bottom: 8px;
-  font-size: 0.9em;
-  display: flex;
-  align-items: center;
-}
-
-.character-info .color-pair .info-item label i {
-  margin-right: 6px;
-  color: #22c6d8;
-}
-
-.character-info .color-pair .info-item input {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 10px 12px;
-  font-size: 0.9em;
-  background: #fff;
-  transition: border-color 0.2s ease;
-}
-
-.character-info .color-pair .info-item input:focus {
-  outline: none;
-  border-color: #22c6d8;
-  box-shadow: 0 0 0 2px rgba(34, 198, 216, 0.1);
-}
-
-.character-info .color-input-group {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.character-info .color-picker {
-  width: 40px;
-  height: 38px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-  padding: 2px;
-  flex-shrink: 0;
-}
-
-.character-info .color-text-input {
-  flex: 1;
-  font-family: "Courier New", monospace;
 }
 
 /* フル幅アイテム（説明・設定セクション用） */
@@ -724,44 +728,6 @@ textarea,
   color: #22c6d8;
 }
 
-.character-info .image-preview-container {
-  margin-bottom: 16px;
-}
-
-.character-info .image-preview {
-  position: relative;
-  display: inline-block;
-  border-radius: 8px;
-  overflow: hidden;
-  max-width: 250px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: 2px solid #e0e0e0;
-}
-
-.character-info .image-preview img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.character-info .remove-image-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: rgba(231, 76, 60, 0.9);
-  border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: white;
-  transition: all 0.2s ease;
-  font-size: 14px;
-}
-
 @media (max-width: 768px) {
   .character-info {
     padding: 10px;
@@ -778,7 +744,7 @@ textarea,
 
   .character-info .character-name-input input {
     font-size: 1.2em;
-    padding: 12px 16px;
+    padding: 18px 10px;
   }
 
   .character-info .character-kana-input {
@@ -848,21 +814,12 @@ textarea,
     max-width: 200px;
   }
 
-  .character-info .ui-color-setting {
-    padding: 16px;
-    margin-top: 16px;
-  }
-
-  .character-info .ui-color-setting .color-input-group {
-    flex-direction: column;
-    gap: 8px;
-    align-items: stretch;
-  }
-
   .character-info .ui-color-setting .color-picker {
     width: 100%;
     max-width: 80px;
     align-self: center;
+    height: 30px;
+    padding: 0 2px;
   }
 
   /* 2カラムレイアウトをモバイルでは1カラムに */
@@ -1110,24 +1067,6 @@ textarea,
   .character-input .free {
     width: 80%;
   }
-}
-
-/* Character Info Styles
----------------------------------------------------*/
-
-.color-picker {
-  width: 50px !important;
-  height: 40px !important;
-  padding: 2px !important;
-  border: 2px solid #ecf0f1 !important;
-  border-radius: 6px !important;
-  cursor: pointer;
-  background: none !important;
-  flex-shrink: 0;
-}
-
-.color-picker:focus {
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1) !important;
 }
 
 /* Skill Toggle Styles
@@ -1891,8 +1830,6 @@ li {
   width: calc(45% - 10px);
   height: 800px;
   margin-top: 5%;
-  display: flex;
-  justify-content: center;
 }
 
 @media only screen and (max-width: 768px) {
@@ -1946,7 +1883,7 @@ li {
 .character .pc-image.aspect-square img,
 .character .pc-image img.img-square {
   position: relative;
-  left: 10%;
+  left: -20%;
   display: block;
   margin: 0 auto;
   max-height: 750px;

@@ -246,7 +246,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             placeholder="キャラクターの名前を入力"
           />
         </div>
-        
+
         {/* 2カラムレイアウト */}
         <div className="character-main-info">
           {/* 左カラム：キャラクター画像 */}
@@ -319,7 +319,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
               </div>
             </div>
           </div>
-          
+
           {/* 右カラム：基本情報 */}
           <div className="character-right-column">
             <div className="character-kana-input">
@@ -335,12 +335,16 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
                 placeholder="カタカナで入力"
               />
             </div>
-            
+
             {/* UIカラー設定 */}
             <div className="ui-color-setting">
               <label htmlFor="ui_theme_color">
                 <i className="fas fa-paint-brush"></i> UIテーマカラー
               </label>
+              <div className="ui-color-description">
+                <i className="fas fa-info-circle"></i>
+                表示ページの見出しに使用されます。
+              </div>
               <div className="color-input-group">
                 <input
                   type="color"
@@ -359,9 +363,163 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
                   className="color-text-input"
                 />
               </div>
-              <div className="ui-color-description">
-                <i className="fas fa-info-circle"></i>
-                表示ページの見出しやボーダーの色に使用されます
+            </div>
+
+            {/* 外見・カラー設定 */}
+            <div className="appearance-color-setting">
+              <h4 className="appearance-title">
+                <i className="fas fa-palette"></i> 外見・カラー
+              </h4>
+              <div className="appearance-grid">
+
+                <div className="color-pair">
+                  <div className="info-item">
+                    <label htmlFor="character_color">
+                      <i className="fas fa-circle" style={{ color: characterData.character_color_code || '#22c6d8' }}></i> イメージカラー
+                    </label>
+                    <input
+                      type="text"
+                      id="character_color"
+                      name="character_color"
+                      placeholder="ベビーブルーなど"
+                      value={characterData.character_color || ''}
+                      onChange={(e) => handleInputChange('character_color', e.target.value)}
+                    />
+                  </div>
+                  <div className="info-item color-code">
+                    <label htmlFor="character_color_code">カラーコード</label>
+                    <div className="color-input-group">
+                      <input
+                        type="color"
+                        id="character_color_picker"
+                        value={characterData.character_color_code || '#22c6d8'}
+                        onChange={(e) => handleInputChange('character_color_code', e.target.value)}
+                        className="color-picker"
+                      />
+                      <input
+                        type="text"
+                        id="character_color_code"
+                        name="character_color_code"
+                        placeholder="#abe5ed"
+                        value={characterData.character_color_code || ''}
+                        onChange={(e) => handleInputChange('character_color_code', e.target.value)}
+                        className="color-text-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="color-pair">
+                  <div className="info-item">
+                    <label htmlFor="hair_color">
+                      <i className="fas fa-circle" style={{ color: characterData.hair_color_code || '#8B4513' }}></i> 髪の色
+                    </label>
+                    <input
+                      type="text"
+                      id="hair_color"
+                      name="hair_color"
+                      placeholder="白髪など"
+                      value={characterData.hair_color || ''}
+                      onChange={(e) => handleInputChange('hair_color', e.target.value)}
+                    />
+                  </div>
+                  <div className="info-item color-code">
+                    <label htmlFor="hair_color_code">カラーコード</label>
+                    <div className="color-input-group">
+                      <input
+                        type="color"
+                        id="hair_color_picker"
+                        value={characterData.hair_color_code || '#8B4513'}
+                        onChange={(e) => handleInputChange('hair_color_code', e.target.value)}
+                        className="color-picker"
+                      />
+                      <input
+                        type="text"
+                        id="hair_color_code"
+                        name="hair_color_code"
+                        placeholder="#ffffff"
+                        value={characterData.hair_color_code || ''}
+                        onChange={(e) => handleInputChange('hair_color_code', e.target.value)}
+                        className="color-text-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="color-pair">
+                  <div className="info-item">
+                    <label htmlFor="eye_color">
+                      <i className="fas fa-circle" style={{ color: characterData.eye_color_code || '#4169E1' }}></i> 目の色
+                    </label>
+                    <input
+                      type="text"
+                      id="eye_color"
+                      name="eye_color"
+                      placeholder="スカイブルーなど"
+                      value={characterData.eye_color || ''}
+                      onChange={(e) => handleInputChange('eye_color', e.target.value)}
+                    />
+                  </div>
+                  <div className="info-item color-code">
+                    <label htmlFor="eye_color_code">カラーコード</label>
+                    <div className="color-input-group">
+                      <input
+                        type="color"
+                        id="eye_color_picker"
+                        value={characterData.eye_color_code || '#4169E1'}
+                        onChange={(e) => handleInputChange('eye_color_code', e.target.value)}
+                        className="color-picker"
+                      />
+                      <input
+                        type="text"
+                        id="eye_color_code"
+                        name="eye_color_code"
+                        placeholder="#a0d8ef"
+                        value={characterData.eye_color_code || ''}
+                        onChange={(e) => handleInputChange('eye_color_code', e.target.value)}
+                        className="color-text-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="color-pair">
+                  <div className="info-item">
+                    <label htmlFor="skin_color">
+                      <i className="fas fa-circle" style={{ color: characterData.skin_color_code || '#FDBCB4' }}></i> 肌の色
+                    </label>
+                    <input
+                      type="text"
+                      id="skin_color"
+                      name="skin_color"
+                      placeholder="小麦色など"
+                      value={characterData.skin_color || ''}
+                      onChange={(e) => handleInputChange('skin_color', e.target.value)}
+                    />
+                  </div>
+                  <div className="info-item color-code">
+                    <label htmlFor="skin_color_code">カラーコード</label>
+                    <div className="color-input-group">
+                      <input
+                        type="color"
+                        id="skin_color_picker"
+                        value={characterData.skin_color_code || '#FDBCB4'}
+                        onChange={(e) => handleInputChange('skin_color_code', e.target.value)}
+                        className="color-picker"
+                      />
+                      <input
+                        type="text"
+                        id="skin_color_code"
+                        name="skin_color_code"
+                        placeholder="#f4c2a1"
+                        value={characterData.skin_color_code || ''}
+                        onChange={(e) => handleInputChange('skin_color_code', e.target.value)}
+                        className="color-text-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -526,163 +684,6 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
       </div>
 
 
-      {/* 外見情報セクション */}
-      <div className="info-section">
-        <h3 className="subsection-title">
-          <i className="fas fa-palette"></i> 外見・カラー
-        </h3>
-        <div className="info-grid appearance-info">
-
-          <div className="color-pair">
-            <div className="info-item">
-              <label htmlFor="character_color">
-                <i className="fas fa-circle" style={{ color: characterData.character_color_code || '#22c6d8' }}></i> イメージカラー
-              </label>
-              <input
-                type="text"
-                id="character_color"
-                name="character_color"
-                placeholder="ベビーブルーなど"
-                value={characterData.character_color || ''}
-                onChange={(e) => handleInputChange('character_color', e.target.value)}
-              />
-            </div>
-            <div className="info-item color-code">
-              <label htmlFor="character_color_code">カラーコード</label>
-              <div className="color-input-group">
-                <input
-                  type="color"
-                  id="character_color_picker"
-                  value={characterData.character_color_code || '#22c6d8'}
-                  onChange={(e) => handleInputChange('character_color_code', e.target.value)}
-                  className="color-picker"
-                />
-                <input
-                  type="text"
-                  id="character_color_code"
-                  name="character_color_code"
-                  placeholder="#abe5ed"
-                  value={characterData.character_color_code || ''}
-                  onChange={(e) => handleInputChange('character_color_code', e.target.value)}
-                  className="color-text-input"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="color-pair">
-            <div className="info-item">
-              <label htmlFor="hair_color">
-                <i className="fas fa-circle" style={{ color: characterData.hair_color_code || '#8B4513' }}></i> 髪の色
-              </label>
-              <input
-                type="text"
-                id="hair_color"
-                name="hair_color"
-                placeholder="白髪など"
-                value={characterData.hair_color || ''}
-                onChange={(e) => handleInputChange('hair_color', e.target.value)}
-              />
-            </div>
-            <div className="info-item color-code">
-              <label htmlFor="hair_color_code">カラーコード</label>
-              <div className="color-input-group">
-                <input
-                  type="color"
-                  id="hair_color_picker"
-                  value={characterData.hair_color_code || '#8B4513'}
-                  onChange={(e) => handleInputChange('hair_color_code', e.target.value)}
-                  className="color-picker"
-                />
-                <input
-                  type="text"
-                  id="hair_color_code"
-                  name="hair_color_code"
-                  placeholder="#ffffff"
-                  value={characterData.hair_color_code || ''}
-                  onChange={(e) => handleInputChange('hair_color_code', e.target.value)}
-                  className="color-text-input"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="color-pair">
-            <div className="info-item">
-              <label htmlFor="eye_color">
-                <i className="fas fa-circle" style={{ color: characterData.eye_color_code || '#4169E1' }}></i> 目の色
-              </label>
-              <input
-                type="text"
-                id="eye_color"
-                name="eye_color"
-                placeholder="スカイブルーなど"
-                value={characterData.eye_color || ''}
-                onChange={(e) => handleInputChange('eye_color', e.target.value)}
-              />
-            </div>
-            <div className="info-item color-code">
-              <label htmlFor="eye_color_code">カラーコード</label>
-              <div className="color-input-group">
-                <input
-                  type="color"
-                  id="eye_color_picker"
-                  value={characterData.eye_color_code || '#4169E1'}
-                  onChange={(e) => handleInputChange('eye_color_code', e.target.value)}
-                  className="color-picker"
-                />
-                <input
-                  type="text"
-                  id="eye_color_code"
-                  name="eye_color_code"
-                  placeholder="#a0d8ef"
-                  value={characterData.eye_color_code || ''}
-                  onChange={(e) => handleInputChange('eye_color_code', e.target.value)}
-                  className="color-text-input"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="color-pair">
-            <div className="info-item">
-              <label htmlFor="skin_color">
-                <i className="fas fa-circle" style={{ color: characterData.skin_color_code || '#FDBCB4' }}></i> 肌の色
-              </label>
-              <input
-                type="text"
-                id="skin_color"
-                name="skin_color"
-                placeholder="小麦色など"
-                value={characterData.skin_color || ''}
-                onChange={(e) => handleInputChange('skin_color', e.target.value)}
-              />
-            </div>
-            <div className="info-item color-code">
-              <label htmlFor="skin_color_code">カラーコード</label>
-              <div className="color-input-group">
-                <input
-                  type="color"
-                  id="skin_color_picker"
-                  value={characterData.skin_color_code || '#FDBCB4'}
-                  onChange={(e) => handleInputChange('skin_color_code', e.target.value)}
-                  className="color-picker"
-                />
-                <input
-                  type="text"
-                  id="skin_color_code"
-                  name="skin_color_code"
-                  placeholder="#f4c2a1"
-                  value={characterData.skin_color_code || ''}
-                  onChange={(e) => handleInputChange('skin_color_code', e.target.value)}
-                  className="color-text-input"
-                />
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
 
       {/* 説明・設定セクション */}
       <div className="info-section">
