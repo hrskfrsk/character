@@ -4,12 +4,61 @@ export interface CharacterData {
   // キャラクター基本情報
   character_name?: string;
   character_name_kana?: string;
+  is_lost?: boolean;
   job?: string;
   age?: number | string;
   sex?: string;
+  gender?: string;
   height?: string;
   weight?: string;
   backstory?: string;
+  occupation?: string;
+  birthplace?: string;
+  era?: string;
+  birthday?: string;
+  zodiac_sign?: string;
+  blood_type?: string;
+  
+  // カラー設定
+  ui_theme_color?: string;
+  character_color?: string;
+  character_color_code?: string;
+  hair_color?: string;
+  hair_color_code?: string;
+  eye_color?: string;
+  eye_color_code?: string;
+  skin_color?: string;
+  skin_color_code?: string;
+  
+  // 画像
+  character_image_url?: string;
+  image_aspect_ratio?: string;
+  
+  // 説明文
+  introduction?: string;
+  secret_information?: string;
+  special_notes?: string;
+  
+  // 特徴
+  trait_1_number?: string;
+  trait_1_name?: string;
+  trait_1_description?: string;
+  trait_2_number?: string;
+  trait_2_name?: string;
+  trait_2_description?: string;
+  trait_3_number?: string;
+  trait_3_name?: string;
+  trait_3_description?: string;
+  trait_4_number?: string;
+  trait_4_name?: string;
+  trait_4_description?: string;
+  trait_5_number?: string;
+  trait_5_name?: string;
+  trait_5_description?: string;
+  // 必要に応じて trait_6〜trait_50 も追加可能
+  [key: `trait_${number}_number`]: string | undefined;
+  [key: `trait_${number}_name`]: string | undefined;
+  [key: `trait_${number}_description`]: string | undefined;
   
   // 基礎能力値
   str_base?: number | string;

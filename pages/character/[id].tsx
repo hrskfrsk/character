@@ -170,7 +170,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
       </Head>
 
       <div className="works-template-default single single-works postid-6531 custom-background">
-        <div id="content" className="chara-coc character">
+        <div id="content" className={`chara-coc character ${character?.is_lost ? 'is-lost' : ''}`}>
           <div id="inner-content" className="wrap cf">
             <main id="main" role="main" itemScope itemProp="mainContentOfPage" itemType="http://schema.org/Blog">
               <article id="post-6531"

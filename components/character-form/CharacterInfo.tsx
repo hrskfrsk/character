@@ -8,15 +8,15 @@ interface CharacterInfoProps {
 }
 
 export default function CharacterInfo({ characterData, handleInputChange }: CharacterInfoProps) {
-  const [uploadProgress, setUploadProgress] = useState<UploadProgress>({ 
-    progress: 0, 
-    isUploading: false 
+  const [uploadProgress, setUploadProgress] = useState<UploadProgress>({
+    progress: 0,
+    isUploading: false
   });
 
   // 画像の縦横比を計算する関数
   const calculateImageAspectRatio = (img: HTMLImageElement): string => {
     const aspectRatio = img.naturalWidth / img.naturalHeight;
-    
+
     if (aspectRatio > 1.2) {
       return 'landscape';
     } else if (aspectRatio < 0.8) {
@@ -37,9 +37,9 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
         // 最大幅・高さを設定（アスペクト比を保持）
         const MAX_WIDTH = 1920;
         const MAX_HEIGHT = 1920;
-        
+
         let { width, height } = img;
-        
+
         // アスペクト比を保持しながらリサイズ
         if (width > height) {
           if (width > MAX_WIDTH) {
@@ -75,7 +75,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
         // 元の画像形式に応じて圧縮形式を決定
         const outputType = isPNG ? 'image/png' : 'image/jpeg';
         let quality = 0.9;
-        
+
         const tryCompress = () => {
           if (isPNG) {
             // PNGの場合は品質設定なしで圧縮
@@ -151,7 +151,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
 
       // Firebase Storageにアップロード
       const result = await uploadImage(processedFile, setUploadProgress);
-      
+
       // 縦横比を計算
       const img = new Image();
       img.onload = () => {
@@ -161,17 +161,17 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
         handleInputChange('image_aspect_ratio', aspectRatio);
       };
       img.src = result.url;
-      
+
       // 古い画像を削除（新しい画像のアップロード成功後）
       if (oldImagePath) {
         await deleteImage(oldImagePath);
       }
-      
+
       console.log('Image uploaded successfully:', result.url);
-      
+
       // 入力フィールドをクリア
       event.target.value = '';
-      
+
     } catch (error) {
       console.error('Upload error:', error);
       alert(`画像のアップロードに失敗しました: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -192,14 +192,14 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
       // Firebase Storageの画像の場合は削除
       const imagePath = getImagePathFromUrl(currentImageUrl);
       console.log('Extracted image path:', imagePath);
-      
+
       if (imagePath) {
         await deleteImage(imagePath);
         console.log('Image deletion completed');
       } else {
         console.log('Could not extract image path from URL');
       }
-      
+
       handleInputChange('character_image_url', '');
     } catch (error) {
       console.error('Failed to delete image:', error);
@@ -210,34 +210,23 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
 
   return (
     <div className="character-info">
-      <div className="section-header">
-        <h2>
-          <i className="fas fa-user"></i> キャラクター基本情報
-        </h2>
-        <p className="section-description">キャラクターの基本的な情報を入力してください</p>
-      </div>
-
-      {/* 基本情報セクション */}
-      <div className="info-section">
-        <h3 className="subsection-title">
-          <i className="fas fa-id-card"></i> 基本データ
-        </h3>
-        <div className="info-grid basic-info">
-          <div className="info-item featured">
-            <label htmlFor="character_name">
-              <i className="fas fa-signature"></i> キャラクター名 *
-            </label>
-            <input
-              type="text"
-              id="character_name"
-              name="character_name"
-              value={characterData.character_name || ''}
-              onChange={(e) => handleInputChange('character_name', e.target.value)}
-              className="primary-input"
-            />
-          </div>
-
-          <div className="info-item">
+      {/* キャラクター名セクション */}
+      <div className="character-name-section">
+        <div className="character-name-input">
+          <label htmlFor="character_name">
+            <i className="fas fa-signature"></i> キャラクター名
+          </label>
+          <input
+            type="text"
+            id="character_name"
+            name="character_name"
+            value={characterData.character_name || ''}
+            onChange={(e) => handleInputChange('character_name', e.target.value)}
+            placeholder="キャラクターの名前を入力"
+          />
+        </div>
+        <div className="character-sub-info">
+          <div className="character-kana-input">
             <label htmlFor="character_name_kana">
               <i className="fas fa-font"></i> フリガナ
             </label>
@@ -247,21 +236,39 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
               name="character_name_kana"
               value={characterData.character_name_kana || ''}
               onChange={(e) => handleInputChange('character_name_kana', e.target.value)}
+              placeholder="カタカナで入力"
             />
           </div>
-
-          <div className="info-item">
-            <label htmlFor="job">
-              <i className="fas fa-briefcase"></i> 職業
+          <div className="character-lost-toggle">
+            <label htmlFor="is_lost">
+              <i className="fas fa-skull-crossbones"></i> ロスト
             </label>
-            <input
-              type="text"
-              id="job"
-              name="job"
-              value={characterData.job || ''}
-              onChange={(e) => handleInputChange('job', e.target.value)}
-            />
+            <div className="toggle-wrapper">
+              <input
+                type="checkbox"
+                id="is_lost"
+                name="is_lost"
+                checked={characterData.is_lost || false}
+                onChange={(e) => handleInputChange('is_lost', e.target.checked)}
+                className="toggle-checkbox"
+              />
+              <label htmlFor="is_lost" className="toggle-label">
+                <span className="toggle-inner"></span>
+                <span className="toggle-switch"></span>
+              </label>
+            </div>
           </div>
+        </div>
+      </div>
+
+      {/* 基本情報セクション */}
+      <div className="info-section">
+        <h3 className="subsection-title">
+          <i className="fas fa-id-card"></i> 基本データ
+        </h3>
+        <div className="info-grid basic-info">
+
+
 
           <div className="info-item compact">
             <label htmlFor="age">
@@ -299,39 +306,33 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             <label htmlFor="height">
               <i className="fas fa-ruler-vertical"></i> 身長
             </label>
-            <div className="input-with-unit">
-              <input
-                type="text"
-                id="height"
-                name="height"
-                placeholder="170"
-                value={characterData.height || ''}
-                onChange={(e) => handleInputChange('height', e.target.value)}
-              />
-              <span className="unit">cm</span>
-            </div>
+            <input
+              type="text"
+              id="height"
+              name="height"
+              placeholder="170"
+              value={characterData.height || ''}
+              onChange={(e) => handleInputChange('height', e.target.value)}
+            />
           </div>
 
           <div className="info-item compact">
             <label htmlFor="weight">
               <i className="fas fa-weight"></i> 体重
             </label>
-            <div className="input-with-unit">
-              <input
-                type="text"
-                id="weight"
-                name="weight"
-                placeholder="65"
-                value={characterData.weight || ''}
-                onChange={(e) => handleInputChange('weight', e.target.value)}
-              />
-              <span className="unit">kg</span>
-            </div>
+            <input
+              type="text"
+              id="weight"
+              name="weight"
+              placeholder="65"
+              value={characterData.weight || ''}
+              onChange={(e) => handleInputChange('weight', e.target.value)}
+            />
           </div>
 
           <div className="info-item">
             <label htmlFor="occupation">
-              <i className="fas fa-user-tie"></i> 職業（表示用）
+              <i className="fas fa-briefcase"></i> 職業
             </label>
             <input
               type="text"
@@ -618,14 +619,14 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             <label>
               <i className="fas fa-image"></i> キャラクター画像
             </label>
-            
+
             {/* 画像プレビュー */}
             {characterData.character_image_url && (
               <div className="image-preview-container">
                 <div className="image-preview">
-                  <img 
-                    src={characterData.character_image_url} 
-                    alt="キャラクター画像プレビュー" 
+                  <img
+                    src={characterData.character_image_url}
+                    alt="キャラクター画像プレビュー"
                     onError={(e) => {
                       console.log('Image load error');
                       e.currentTarget.style.display = 'none';
@@ -659,20 +660,20 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
                     disabled={uploadProgress.isUploading}
                     style={{ display: 'none' }}
                   />
-                  
+
                   {/* プログレスバー */}
                   {uploadProgress.isUploading && (
                     <div className="upload-progress">
-                      <div 
-                        className="upload-progress-bar" 
+                      <div
+                        className="upload-progress-bar"
                         style={{ width: `${uploadProgress.progress}%` }}
                       ></div>
                     </div>
                   )}
                 </div>
-                
+
                 <div className="upload-divider">または</div>
-                
+
                 <div className="upload-option">
                   <input
                     type="url"
@@ -685,7 +686,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
                   />
                 </div>
               </div>
-              
+
               <div className="upload-info">
                 <small>
                   <i className="fas fa-info-circle"></i>

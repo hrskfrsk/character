@@ -50,8 +50,13 @@ export default function BasicDataDisplay({ character }: BasicDataDisplayProps) {
       <div className="pc-data">
         {/* キャラクター名 */}
         <div className="catch-phrase" style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
-          <span style={{ display: 'inline-block', marginRight: '10px', lineHeight: '1.3' }}>
+          <span style={{ display: 'inline-block', marginRight: '10px', lineHeight: '1.3', position: 'relative' }}>
             {character.character_name || '無名のキャラクター'}
+            {character.is_lost && (
+              <span className="lost-mark" title="このキャラクターはロストしています">
+                <i className="fas fa-skull-crossbones"></i>
+              </span>
+            )}
           </span>
           {character.character_name_kana && (
             <span

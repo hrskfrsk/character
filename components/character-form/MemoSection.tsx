@@ -92,11 +92,11 @@ export default function MemoSection({
     // 一時的にトランジションを無効化してジャンプを防ぐ
     const originalTransition = textarea.style.transition;
     textarea.style.transition = 'none';
-    
+
     textarea.style.height = 'auto';
     const newHeight = Math.max(textarea.scrollHeight, 60);
     textarea.style.height = `${newHeight}px`;
-    
+
     // トランジションを復元
     requestAnimationFrame(() => {
       textarea.style.transition = originalTransition;
@@ -244,7 +244,7 @@ export default function MemoSection({
                             placeholder="メモの内容..."
                             style={{
                               width: '100%',
-                              padding: '10px 8px 6px',
+                              padding: '10px 8px',
                               resize: 'none', // 自動リサイズのため手動リサイズを無効化
                               fontSize: '14px',
                               fontFamily: 'inherit',
