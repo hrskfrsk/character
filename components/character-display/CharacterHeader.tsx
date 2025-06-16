@@ -11,60 +11,6 @@ export default function CharacterHeader({
 }: CharacterHeaderProps) {
   return (
     <>
-      {/* キャラクター基本情報 */}
-      <div className="character-info">
-        <h2><i className="fas fa-user"></i> キャラクター情報</h2>
-        <div className="info-grid">
-          <div className="info-item">
-            <label>名前</label>
-            <span>{character.character_name || '未設定'}</span>
-          </div>
-          <div className="info-item">
-            <label>フリガナ</label>
-            <span>{character.character_name_kana || '未設定'}</span>
-          </div>
-          <div className="info-item">
-            <label>年齢</label>
-            <span>{character.age || '未設定'}</span>
-          </div>
-          <div className="info-item">
-            <label>性別</label>
-            <span>{character.gender || '未設定'}</span>
-          </div>
-          <div className="info-item">
-            <label>職業</label>
-            <span>{character.job || '未設定'}</span>
-          </div>
-          <div className="info-item">
-            <label>出身</label>
-            <span>{character.birthplace || '未設定'}</span>
-          </div>
-          <div className="info-item">
-            <label>学校・学位</label>
-            <span>{character.school || '未設定'}</span>
-          </div>
-          <div className="info-item full-width">
-            <label>外見・特徴</label>
-            <span>{character.appearance || '未設定'}</span>
-          </div>
-          <div className="info-item full-width">
-            <label>イデオロギー・信念</label>
-            <span>{character.ideology || '未設定'}</span>
-          </div>
-          <div className="info-item full-width">
-            <label>重要な人物</label>
-            <span>{character.important_person || '未設定'}</span>
-          </div>
-          <div className="info-item full-width">
-            <label>意味のある場所</label>
-            <span>{character.meaningful_location || '未設定'}</span>
-          </div>
-          <div className="info-item full-width">
-            <label>宝物</label>
-            <span>{character.treasure || '未設定'}</span>
-          </div>
-        </div>
-      </div>
 
       {/* 特徴セクション */}
       <div className="features">

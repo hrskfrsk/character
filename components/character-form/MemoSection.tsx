@@ -68,16 +68,39 @@ export default function MemoSection({
 
   // メモ項目のトグル関数
   const toggleMemoItem = (memoId: string) => {
-    setMemoCollapsedStates(prev => ({
-      ...prev,
-      [memoId]: !prev[memoId]
-    }));
+    setMemoCollapsedStates(prev => {
+      const newState = !prev[memoId];
+      // アコーディオンを開く場合、次のレンダー後にテキストエリアの高さを調整
+      if (!newState) { // newStateがfalse = 開く状態
+        // requestAnimationFrameでスムーズな処理
+        requestAnimationFrame(() => {
+          const textarea = document.querySelector(`textarea[name="${memoId}_content"]`) as HTMLTextAreaElement;
+          if (textarea) {
+            adjustTextareaHeight(textarea);
+          }
+        });
+      }
+      return {
+        ...prev,
+        [memoId]: newState
+      };
+    });
   };
 
   // テキストエリアの高さを自動調整する関数
   const adjustTextareaHeight = (textarea: HTMLTextAreaElement) => {
+    // 一時的にトランジションを無効化してジャンプを防ぐ
+    const originalTransition = textarea.style.transition;
+    textarea.style.transition = 'none';
+    
     textarea.style.height = 'auto';
-    textarea.style.height = `${Math.max(textarea.scrollHeight, 60)}px`; // 最小高さ60px
+    const newHeight = Math.max(textarea.scrollHeight, 60);
+    textarea.style.height = `${newHeight}px`;
+    
+    // トランジションを復元
+    requestAnimationFrame(() => {
+      textarea.style.transition = originalTransition;
+    });
   };
 
   // テキストエリアの変更ハンドラー
@@ -235,6 +258,13 @@ export default function MemoSection({
                               overflow: 'hidden' // スクロールバーを隠す
                             }}
                             onInput={(e) => adjustTextareaHeight(e.target as HTMLTextAreaElement)}
+                            onFocus={(e) => adjustTextareaHeight(e.target as HTMLTextAreaElement)}
+                            ref={(textarea) => {
+                              if (textarea) {
+                                // 初回レンダー時のみ高さを調整
+                                requestAnimationFrame(() => adjustTextareaHeight(textarea));
+                              }
+                            }}
                           />
 
                           {/* 設定 */}

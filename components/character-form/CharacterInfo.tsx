@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CharacterData } from '../../lib/character-calculations';
+import { uploadImage, deleteImage, getImagePathFromUrl, UploadProgress } from '../../lib/upload-image';
 
 interface CharacterInfoProps {
   characterData: CharacterData;
@@ -7,105 +8,588 @@ interface CharacterInfoProps {
 }
 
 export default function CharacterInfo({ characterData, handleInputChange }: CharacterInfoProps) {
+  const [uploadProgress, setUploadProgress] = useState<UploadProgress>({ 
+    progress: 0, 
+    isUploading: false 
+  });
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // ファイルサイズチェック (5MB以下)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      alert('ファイルサイズは5MB以下にしてください');
+      return;
+    }
+
+    // ファイル形式チェック
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('JPEG、PNG、GIF、WebP形式の画像をアップロードしてください');
+      return;
+    }
+
+    try {
+      // 既存の画像を削除（Firebase Storageの画像の場合）
+      const currentImageUrl = characterData.character_image_url;
+      const oldImagePath = currentImageUrl ? getImagePathFromUrl(currentImageUrl) : null;
+
+      // Firebase Storageにアップロード
+      const result = await uploadImage(file, setUploadProgress);
+      
+      // 成功したら新しいURLを保存
+      handleInputChange('character_image_url', result.url);
+      
+      // 古い画像を削除（新しい画像のアップロード成功後）
+      if (oldImagePath) {
+        await deleteImage(oldImagePath);
+      }
+      
+      console.log('Image uploaded successfully:', result.url);
+      
+      // 入力フィールドをクリア
+      event.target.value = '';
+      
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert(`画像のアップロードに失敗しました: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setUploadProgress({ progress: 0, isUploading: false });
+    }
+  };
+
+  const removeImage = async () => {
+    const currentImageUrl = characterData.character_image_url;
+    if (!currentImageUrl) return;
+
+    try {
+      // Firebase Storageの画像の場合は削除
+      const imagePath = getImagePathFromUrl(currentImageUrl);
+      if (imagePath) {
+        await deleteImage(imagePath);
+      }
+      
+      handleInputChange('character_image_url', '');
+    } catch (error) {
+      console.error('Failed to delete image:', error);
+      // エラーが出ても画像URLは削除する
+      handleInputChange('character_image_url', '');
+    }
+  };
+
   return (
     <div className="character-info">
-      <h2>
-        <i className="fas fa-user"></i> キャラクター基本情報
-      </h2>
+      <div className="section-header">
+        <h2>
+          <i className="fas fa-user"></i> キャラクター基本情報
+        </h2>
+        <p className="section-description">キャラクターの基本的な情報を入力してください</p>
+      </div>
 
-      <div className="info-grid">
-        <div className="info-item">
-          <label htmlFor="character_name">キャラクター名</label>
-          <input
-            type="text"
-            id="character_name"
-            name="character_name"
-            value={characterData.character_name || ''}
-            onChange={(e) => handleInputChange('character_name', e.target.value)}
-          />
+      {/* 基本情報セクション */}
+      <div className="info-section">
+        <h3 className="subsection-title">
+          <i className="fas fa-id-card"></i> 基本データ
+        </h3>
+        <div className="info-grid basic-info">
+          <div className="info-item featured">
+            <label htmlFor="character_name">
+              <i className="fas fa-signature"></i> キャラクター名 *
+            </label>
+            <input
+              type="text"
+              id="character_name"
+              name="character_name"
+              value={characterData.character_name || ''}
+              onChange={(e) => handleInputChange('character_name', e.target.value)}
+              className="primary-input"
+            />
+          </div>
+
+          <div className="info-item">
+            <label htmlFor="character_name_kana">
+              <i className="fas fa-font"></i> フリガナ
+            </label>
+            <input
+              type="text"
+              id="character_name_kana"
+              name="character_name_kana"
+              value={characterData.character_name_kana || ''}
+              onChange={(e) => handleInputChange('character_name_kana', e.target.value)}
+            />
+          </div>
+
+          <div className="info-item">
+            <label htmlFor="job">
+              <i className="fas fa-briefcase"></i> 職業
+            </label>
+            <input
+              type="text"
+              id="job"
+              name="job"
+              value={characterData.job || ''}
+              onChange={(e) => handleInputChange('job', e.target.value)}
+            />
+          </div>
+
+          <div className="info-item compact">
+            <label htmlFor="age">
+              <i className="fas fa-calendar-alt"></i> 年齢
+            </label>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              value={characterData.age || ''}
+              onChange={(e) => handleInputChange('age', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
+              min="1"
+              max="200"
+            />
+          </div>
+
+          <div className="info-item compact">
+            <label htmlFor="gender">
+              <i className="fas fa-venus-mars"></i> 性別
+            </label>
+            <select
+              id="gender"
+              name="gender"
+              value={characterData.gender || ''}
+              onChange={(e) => handleInputChange('gender', e.target.value)}
+            >
+              <option value="">選択してください</option>
+              <option value="男">男</option>
+              <option value="女">女</option>
+              <option value="その他">その他</option>
+            </select>
+          </div>
+
+          <div className="info-item compact">
+            <label htmlFor="height">
+              <i className="fas fa-ruler-vertical"></i> 身長
+            </label>
+            <div className="input-with-unit">
+              <input
+                type="text"
+                id="height"
+                name="height"
+                placeholder="170"
+                value={characterData.height || ''}
+                onChange={(e) => handleInputChange('height', e.target.value)}
+              />
+              <span className="unit">cm</span>
+            </div>
+          </div>
+
+          <div className="info-item compact">
+            <label htmlFor="weight">
+              <i className="fas fa-weight"></i> 体重
+            </label>
+            <div className="input-with-unit">
+              <input
+                type="text"
+                id="weight"
+                name="weight"
+                placeholder="65"
+                value={characterData.weight || ''}
+                onChange={(e) => handleInputChange('weight', e.target.value)}
+              />
+              <span className="unit">kg</span>
+            </div>
+          </div>
+
+          <div className="info-item">
+            <label htmlFor="occupation">
+              <i className="fas fa-user-tie"></i> 職業（表示用）
+            </label>
+            <input
+              type="text"
+              id="occupation"
+              name="occupation"
+              value={characterData.occupation || ''}
+              onChange={(e) => handleInputChange('occupation', e.target.value)}
+            />
+          </div>
+
+          <div className="info-item">
+            <label htmlFor="birthplace">
+              <i className="fas fa-map-marker-alt"></i> 出身地
+            </label>
+            <input
+              type="text"
+              id="birthplace"
+              name="birthplace"
+              value={characterData.birthplace || ''}
+              onChange={(e) => handleInputChange('birthplace', e.target.value)}
+            />
+          </div>
+
+          <div className="info-item">
+            <label htmlFor="era">
+              <i className="fas fa-history"></i> 時代
+            </label>
+            <input
+              type="text"
+              id="era"
+              name="era"
+              placeholder="1920年代、現代など"
+              value={characterData.era || ''}
+              onChange={(e) => handleInputChange('era', e.target.value)}
+            />
+          </div>
+
+          <div className="info-item">
+            <label htmlFor="birthday">
+              <i className="fas fa-birthday-cake"></i> 誕生日
+            </label>
+            <input
+              type="text"
+              id="birthday"
+              name="birthday"
+              placeholder="3月15日など"
+              value={characterData.birthday || ''}
+              onChange={(e) => handleInputChange('birthday', e.target.value)}
+            />
+          </div>
+
+          <div className="info-item">
+            <label htmlFor="zodiac_sign">
+              <i className="fas fa-star"></i> 星座
+            </label>
+            <input
+              type="text"
+              id="zodiac_sign"
+              name="zodiac_sign"
+              placeholder="うお座など"
+              value={characterData.zodiac_sign || ''}
+              onChange={(e) => handleInputChange('zodiac_sign', e.target.value)}
+            />
+          </div>
+
+          <div className="info-item">
+            <label htmlFor="blood_type">
+              <i className="fas fa-tint"></i> 血液型
+            </label>
+            <select
+              id="blood_type"
+              name="blood_type"
+              value={characterData.blood_type || ''}
+              onChange={(e) => handleInputChange('blood_type', e.target.value)}
+            >
+              <option value="">選択してください</option>
+              <option value="A型">A型</option>
+              <option value="B型">B型</option>
+              <option value="O型">O型</option>
+              <option value="AB型">AB型</option>
+            </select>
+          </div>
         </div>
+      </div>
 
-        <div className="info-item">
-          <label htmlFor="character_name_kana">フリガナ</label>
-          <input
-            type="text"
-            id="character_name_kana"
-            name="character_name_kana"
-            value={characterData.character_name_kana || ''}
-            onChange={(e) => handleInputChange('character_name_kana', e.target.value)}
-          />
+      {/* 外見情報セクション */}
+      <div className="info-section">
+        <h3 className="subsection-title">
+          <i className="fas fa-palette"></i> 外見・カラー
+        </h3>
+        <div className="info-grid appearance-info">
+
+          <div className="color-pair">
+            <div className="info-item">
+              <label htmlFor="character_color">
+                <i className="fas fa-circle" style={{ color: characterData.character_color_code || '#22c6d8' }}></i> イメージカラー
+              </label>
+              <input
+                type="text"
+                id="character_color"
+                name="character_color"
+                placeholder="ベビーブルーなど"
+                value={characterData.character_color || ''}
+                onChange={(e) => handleInputChange('character_color', e.target.value)}
+              />
+            </div>
+            <div className="info-item color-code">
+              <label htmlFor="character_color_code">カラーコード</label>
+              <div className="color-input-group">
+                <input
+                  type="color"
+                  id="character_color_picker"
+                  value={characterData.character_color_code || '#22c6d8'}
+                  onChange={(e) => handleInputChange('character_color_code', e.target.value)}
+                  className="color-picker"
+                />
+                <input
+                  type="text"
+                  id="character_color_code"
+                  name="character_color_code"
+                  placeholder="#abe5ed"
+                  value={characterData.character_color_code || ''}
+                  onChange={(e) => handleInputChange('character_color_code', e.target.value)}
+                  className="color-text-input"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="color-pair">
+            <div className="info-item">
+              <label htmlFor="hair_color">
+                <i className="fas fa-circle" style={{ color: characterData.hair_color_code || '#8B4513' }}></i> 髪の色
+              </label>
+              <input
+                type="text"
+                id="hair_color"
+                name="hair_color"
+                placeholder="白髪など"
+                value={characterData.hair_color || ''}
+                onChange={(e) => handleInputChange('hair_color', e.target.value)}
+              />
+            </div>
+            <div className="info-item color-code">
+              <label htmlFor="hair_color_code">カラーコード</label>
+              <div className="color-input-group">
+                <input
+                  type="color"
+                  id="hair_color_picker"
+                  value={characterData.hair_color_code || '#8B4513'}
+                  onChange={(e) => handleInputChange('hair_color_code', e.target.value)}
+                  className="color-picker"
+                />
+                <input
+                  type="text"
+                  id="hair_color_code"
+                  name="hair_color_code"
+                  placeholder="#ffffff"
+                  value={characterData.hair_color_code || ''}
+                  onChange={(e) => handleInputChange('hair_color_code', e.target.value)}
+                  className="color-text-input"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="color-pair">
+            <div className="info-item">
+              <label htmlFor="eye_color">
+                <i className="fas fa-circle" style={{ color: characterData.eye_color_code || '#4169E1' }}></i> 目の色
+              </label>
+              <input
+                type="text"
+                id="eye_color"
+                name="eye_color"
+                placeholder="スカイブルーなど"
+                value={characterData.eye_color || ''}
+                onChange={(e) => handleInputChange('eye_color', e.target.value)}
+              />
+            </div>
+            <div className="info-item color-code">
+              <label htmlFor="eye_color_code">カラーコード</label>
+              <div className="color-input-group">
+                <input
+                  type="color"
+                  id="eye_color_picker"
+                  value={characterData.eye_color_code || '#4169E1'}
+                  onChange={(e) => handleInputChange('eye_color_code', e.target.value)}
+                  className="color-picker"
+                />
+                <input
+                  type="text"
+                  id="eye_color_code"
+                  name="eye_color_code"
+                  placeholder="#a0d8ef"
+                  value={characterData.eye_color_code || ''}
+                  onChange={(e) => handleInputChange('eye_color_code', e.target.value)}
+                  className="color-text-input"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="color-pair">
+            <div className="info-item">
+              <label htmlFor="skin_color">
+                <i className="fas fa-circle" style={{ color: characterData.skin_color_code || '#FDBCB4' }}></i> 肌の色
+              </label>
+              <input
+                type="text"
+                id="skin_color"
+                name="skin_color"
+                placeholder="小麦色など"
+                value={characterData.skin_color || ''}
+                onChange={(e) => handleInputChange('skin_color', e.target.value)}
+              />
+            </div>
+            <div className="info-item color-code">
+              <label htmlFor="skin_color_code">カラーコード</label>
+              <div className="color-input-group">
+                <input
+                  type="color"
+                  id="skin_color_picker"
+                  value={characterData.skin_color_code || '#FDBCB4'}
+                  onChange={(e) => handleInputChange('skin_color_code', e.target.value)}
+                  className="color-picker"
+                />
+                <input
+                  type="text"
+                  id="skin_color_code"
+                  name="skin_color_code"
+                  placeholder="#f4c2a1"
+                  value={characterData.skin_color_code || ''}
+                  onChange={(e) => handleInputChange('skin_color_code', e.target.value)}
+                  className="color-text-input"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="info-item full-width image-upload-section">
+            <label>
+              <i className="fas fa-image"></i> キャラクター画像
+            </label>
+            
+            {/* 画像プレビュー */}
+            {characterData.character_image_url && (
+              <div className="image-preview-container">
+                <div className="image-preview">
+                  <img 
+                    src={characterData.character_image_url} 
+                    alt="キャラクター画像プレビュー" 
+                    onError={(e) => {
+                      console.log('Image load error');
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="remove-image-btn"
+                    onClick={removeImage}
+                    title="画像を削除"
+                  >
+                    <i className="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* アップロードエリア */}
+            <div className="image-upload-area">
+              <div className="upload-options">
+                <div className="upload-option">
+                  <label htmlFor="character_image_upload" className="upload-btn">
+                    <i className={uploadProgress.isUploading ? "fas fa-spinner fa-spin" : "fas fa-upload"}></i>
+                    {uploadProgress.isUploading ? `アップロード中... ${uploadProgress.progress}%` : '画像をアップロード'}
+                  </label>
+                  <input
+                    type="file"
+                    id="character_image_upload"
+                    accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+                    onChange={handleImageUpload}
+                    disabled={uploadProgress.isUploading}
+                    style={{ display: 'none' }}
+                  />
+                  
+                  {/* プログレスバー */}
+                  {uploadProgress.isUploading && (
+                    <div className="upload-progress">
+                      <div 
+                        className="upload-progress-bar" 
+                        style={{ width: `${uploadProgress.progress}%` }}
+                      ></div>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="upload-divider">または</div>
+                
+                <div className="upload-option">
+                  <input
+                    type="url"
+                    id="character_image_url"
+                    name="character_image_url"
+                    placeholder="画像URLを入力 (https://example.com/image.png)"
+                    value={characterData.character_image_url || ''}
+                    onChange={(e) => handleInputChange('character_image_url', e.target.value)}
+                    className="url-input"
+                  />
+                </div>
+              </div>
+              
+              <div className="upload-info">
+                <small>
+                  <i className="fas fa-info-circle"></i>
+                  JPEG、PNG、GIF、WebP形式対応 (最大5MB)
+                </small>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div className="info-item">
-          <label htmlFor="job">職業</label>
-          <input
-            type="text"
-            id="job"
-            name="job"
-            value={characterData.job || ''}
-            onChange={(e) => handleInputChange('job', e.target.value)}
-          />
-        </div>
+      {/* 説明・設定セクション */}
+      <div className="info-section">
+        <h3 className="subsection-title">
+          <i className="fas fa-file-alt"></i> 説明・設定
+        </h3>
+        <div className="info-grid description-info">
 
-        <div className="info-item">
-          <label htmlFor="age">年齢</label>
-          <input
-            type="number"
-            id="age"
-            name="age"
-            value={characterData.age || ''}
-            onChange={(e) => handleInputChange('age', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
-          />
-        </div>
+          <div className="info-item full-width catch-phrase">
+            <label htmlFor="catch_phrase">
+              <i className="fas fa-quote-left"></i> キャッチフレーズ
+            </label>
+            <input
+              type="text"
+              id="catch_phrase"
+              name="catch_phrase"
+              placeholder="まだ来ていないその時を65年引き延ばしているジジイ。"
+              value={characterData.catch_phrase || ''}
+              onChange={(e) => handleInputChange('catch_phrase', e.target.value)}
+              className="catch-phrase-input"
+            />
+          </div>
 
-        <div className="info-item">
-          <label htmlFor="sex">性別</label>
-          <select
-            id="sex"
-            name="sex"
-            value={characterData.sex || ''}
-            onChange={(e) => handleInputChange('sex', e.target.value)}
-          >
-            <option value="">選択してください</option>
-            <option value="男性">男性</option>
-            <option value="女性">女性</option>
-            <option value="その他">その他</option>
-          </select>
-        </div>
+          <div className="info-item full-width">
+            <label htmlFor="introduction">
+              <i className="fas fa-user-edit"></i> 紹介文
+              <span className="label-hint">HTMLタグが使用できます</span>
+            </label>
+            <textarea
+              id="introduction"
+              name="introduction"
+              rows={6}
+              placeholder="キャラクターの詳細な紹介文を記入してください..."
+              value={characterData.introduction || ''}
+              onChange={(e) => handleInputChange('introduction', e.target.value)}
+            ></textarea>
+          </div>
 
-        <div className="info-item">
-          <label htmlFor="height">身長</label>
-          <input
-            type="text"
-            id="height"
-            name="height"
-            placeholder="cm"
-            value={characterData.height || ''}
-            onChange={(e) => handleInputChange('height', e.target.value)}
-          />
-        </div>
+          <div className="info-item full-width secret-info">
+            <label htmlFor="secret_information">
+              <i className="fas fa-lock"></i> 秘匿情報
+              <span className="label-hint">HTMLタグが使用できます</span>
+            </label>
+            <textarea
+              id="secret_information"
+              name="secret_information"
+              rows={6}
+              placeholder="他のプレイヤーに見せたくない秘密の情報..."
+              value={characterData.secret_information || ''}
+              onChange={(e) => handleInputChange('secret_information', e.target.value)}
+            ></textarea>
+          </div>
 
-        <div className="info-item">
-          <label htmlFor="weight">体重</label>
-          <input
-            type="text"
-            id="weight"
-            name="weight"
-            placeholder="kg"
-            value={characterData.weight || ''}
-            onChange={(e) => handleInputChange('weight', e.target.value)}
-          />
-        </div>
-
-        <div className="info-item full-width">
-          <label htmlFor="backstory">設定・バックストーリー</label>
-          <textarea
-            id="backstory"
-            name="backstory"
-            rows={4}
-            value={characterData.backstory || ''}
-            onChange={(e) => handleInputChange('backstory', e.target.value)}
-          ></textarea>
+          <div className="info-item full-width">
+            <label htmlFor="backstory">
+              <i className="fas fa-book"></i> 設定・バックストーリー
+            </label>
+            <textarea
+              id="backstory"
+              name="backstory"
+              rows={4}
+              placeholder="キャラクターの背景や過去の出来事..."
+              value={characterData.backstory || ''}
+              onChange={(e) => handleInputChange('backstory', e.target.value)}
+            ></textarea>
+          </div>
         </div>
       </div>
     </div>

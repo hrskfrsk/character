@@ -11,6 +11,7 @@ import EquipmentDisplay from '../../components/character-display/EquipmentDispla
 import StatDisplay from '../../components/character-display/StatDisplay';
 import MemoDisplay from '../../components/character-display/MemoDisplay';
 import SkillsDisplay from '../../components/character-display/SkillsDisplay';
+import BasicDataDisplay from '../../components/character-display/BasicDataDisplay';
 
 interface CharacterPageProps {
   character: any;
@@ -109,6 +110,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
   };
 
 
+
   useEffect(() => {
     setMounted(true);
 
@@ -197,9 +199,11 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
               <article id="post-6531"
                 className="cf post-6531 works type-works status-publish has-post-thumbnail hentry custom_cat-character custom_cat-chara-coc custom_tag-1072"
                 role="article">
+                {/* 基本データ */}
+                <BasicDataDisplay character={character} />
 
                 <section className="chara-seet">
-                  <CharacterHeader 
+                  <CharacterHeader
                     character={character}
                     calculateAbilityTotal={calculateAbilityTotal}
                   />
@@ -221,7 +225,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                     toggleEquipmentSection={toggleEquipmentSection}
                     handleSkillClick={handleSkillClick}
                   />
-                  
+
                   <MemoDisplay
                     character={character}
                     equipmentSections={equipmentSections}
@@ -328,8 +332,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         character,
         characterId: params.id,
       },
-      // ISRを無効化してstatic exportと互換性を保つ
-      // revalidate: 3600,
+      revalidate: 3600, // 1時間ごとに再生成
     };
   } catch (error) {
     console.error('getStaticProps error:', error);
@@ -338,3 +341,4 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     };
   }
 };
+
