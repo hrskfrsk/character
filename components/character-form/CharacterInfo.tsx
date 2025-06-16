@@ -61,13 +61,23 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
 
   const removeImage = async () => {
     const currentImageUrl = characterData.character_image_url;
-    if (!currentImageUrl) return;
+    if (!currentImageUrl) {
+      console.log('No image URL to delete');
+      return;
+    }
+
+    console.log('Attempting to delete image:', currentImageUrl);
 
     try {
       // Firebase Storageの画像の場合は削除
       const imagePath = getImagePathFromUrl(currentImageUrl);
+      console.log('Extracted image path:', imagePath);
+      
       if (imagePath) {
         await deleteImage(imagePath);
+        console.log('Image deletion completed');
+      } else {
+        console.log('Could not extract image path from URL');
       }
       
       handleInputChange('character_image_url', '');

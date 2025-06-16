@@ -100,14 +100,21 @@ export const getImagePathFromUrl = (url: string): string | null => {
   try {
     // Firebase Storage URLからパスを抽出
     const urlObj = new URL(url);
+    console.log('URL hostname:', urlObj.hostname);
+    
     if (urlObj.hostname.includes('firebasestorage.googleapis.com')) {
       const pathMatch = url.match(/o\/(.+?)\?/);
+      console.log('Path match result:', pathMatch);
+      
       if (pathMatch) {
-        return decodeURIComponent(pathMatch[1]);
+        const decodedPath = decodeURIComponent(pathMatch[1]);
+        console.log('Decoded path:', decodedPath);
+        return decodedPath;
       }
     }
     return null;
-  } catch {
+  } catch (error) {
+    console.error('Error parsing URL:', error);
     return null;
   }
 };
