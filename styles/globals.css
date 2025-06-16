@@ -413,8 +413,7 @@ textarea,
 
 /* アコーディオントグル（見出し風） */
 .character-info .accordion-toggle {
-  margin-top: 25px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   border-bottom: 2px solid #e0e0e0;
 }
 
@@ -461,6 +460,7 @@ textarea,
   gap: 30px;
   overflow: hidden;
   transition: all 0.3s ease;
+  margin-bottom: 25px;
 }
 
 .character-info .character-main-info.accordion-open {
@@ -661,7 +661,8 @@ textarea,
 .character-info .basic-info {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 10px;
+  margin-bottom: 25px;
 }
 
 .character-info .basic-info .info-item {
@@ -705,7 +706,7 @@ textarea,
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.5) inset;
   height: auto;
 }
-.info-item select {
+.character-info .basic-info .info-item select {
   padding: 7px 10px;
 }
 .character-info .basic-info .info-item input:focus,
@@ -749,6 +750,7 @@ textarea,
   min-height: 120px;
   resize: vertical;
   line-height: 1.5;
+  text-align: left;
 }
 
 .character-info .info-item.full-width input:focus,
@@ -765,46 +767,9 @@ textarea,
   font-weight: normal;
 }
 
-.character-info .secret-info {
-  border: 2px dashed #ffa500;
-  border-radius: 6px;
-  padding: 16px;
-  background: #fffaf0;
-}
-
-.character-info .secret-info label {
-  color: #e65100 !important;
-}
-
-.character-info .secret-info label i {
-  color: #ffa500 !important;
-}
-
-/* 画像アップロードセクション */
-.character-info .image-upload-section {
-  background: #fafafa;
-  border-radius: 6px;
-  padding: 16px;
-  border: 1px solid #e0e0e0;
-}
-
-.character-info .image-upload-section > label {
-  font-weight: 500;
-  color: #555;
-  margin-bottom: 12px;
-  font-size: 0.9em;
-  display: flex;
-  align-items: center;
-}
-
-.character-info .image-upload-section > label i {
-  margin-right: 6px;
-  color: #22c6d8;
-}
-
 @media (max-width: 768px) {
   .character-info {
-    padding: 10px;
+    padding: 10px 0;
   }
 
   .character-info .character-name-section {
@@ -903,8 +868,8 @@ textarea,
   }
 
   .character-info .accordion-toggle {
-    margin-top: 20px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
+    margin-top: -5px;
   }
 
   /* 2カラムレイアウトをモバイルでは1カラムに */
@@ -1217,18 +1182,6 @@ textarea,
   border-bottom: 1px solid #ddd;
   cursor: pointer;
   user-select: none;
-}
-
-.fa-chevron-up {
-  float: right;
-  transition: transform 0.3s;
-  background: #dddddd;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 25px;
-  height: 25px;
 }
 
 /*charaseet

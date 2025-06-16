@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CharacterData } from '../../lib/character-calculations';
 import { uploadImage, deleteImage, getImagePathFromUrl, UploadProgress } from '../../lib/upload-image';
 
@@ -12,9 +12,49 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     progress: 0,
     isUploading: false
   });
-  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-  const [isBasicDataOpen, setIsBasicDataOpen] = useState(true);
-  const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
+  // アコーディオン状態の初期化（localStorageから読み込み）
+  const [isAccordionOpen, setIsAccordionOpen] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('accordion-portrait-color');
+      return saved ? JSON.parse(saved) : false;
+    }
+    return false;
+  });
+  
+  const [isBasicDataOpen, setIsBasicDataOpen] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('accordion-basic-data');
+      return saved ? JSON.parse(saved) : true;
+    }
+    return true;
+  });
+  
+  const [isDescriptionOpen, setIsDescriptionOpen] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('accordion-description');
+      return saved ? JSON.parse(saved) : false;
+    }
+    return false;
+  });
+
+  // アコーディオン状態が変更されたときにlocalStorageに保存
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('accordion-portrait-color', JSON.stringify(isAccordionOpen));
+    }
+  }, [isAccordionOpen]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('accordion-basic-data', JSON.stringify(isBasicDataOpen));
+    }
+  }, [isBasicDataOpen]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('accordion-description', JSON.stringify(isDescriptionOpen));
+    }
+  }, [isDescriptionOpen]);
 
   // 画像の縦横比を計算する関数
   const calculateImageAspectRatio = (img: HTMLImageElement): string => {
@@ -558,158 +598,158 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             <i className={`fas chevron ${isBasicDataOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
           </button>
         </div>
-        
+
         <div className={`accordion-content ${isBasicDataOpen ? 'accordion-open' : 'accordion-closed'}`}>
           <div className="info-grid basic-info">
 
 
 
-          <div className="info-item compact">
-            <label htmlFor="age">
-              <i className="fas fa-calendar-alt"></i> 年齢
-            </label>
-            <input
-              type="number"
-              id="age"
-              name="age"
-              value={characterData.age || ''}
-              onChange={(e) => handleInputChange('age', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
-              min="1"
-              max="200"
-            />
-          </div>
+            <div className="info-item compact">
+              <label htmlFor="gender">
+                <i className="fas fa-venus-mars"></i> 性別
+              </label>
+              <select
+                id="gender"
+                name="gender"
+                value={characterData.gender || ''}
+                onChange={(e) => handleInputChange('gender', e.target.value)}
+              >
+                <option value="">選択してください</option>
+                <option value="男">男</option>
+                <option value="女">女</option>
+                <option value="その他">その他</option>
+              </select>
+            </div>
 
-          <div className="info-item compact">
-            <label htmlFor="gender">
-              <i className="fas fa-venus-mars"></i> 性別
-            </label>
-            <select
-              id="gender"
-              name="gender"
-              value={characterData.gender || ''}
-              onChange={(e) => handleInputChange('gender', e.target.value)}
-            >
-              <option value="">選択してください</option>
-              <option value="男">男</option>
-              <option value="女">女</option>
-              <option value="その他">その他</option>
-            </select>
-          </div>
+            <div className="info-item compact">
+              <label htmlFor="age">
+                <i className="fas fa-calendar-alt"></i> 年齢
+              </label>
+              <input
+                type="number"
+                id="age"
+                name="age"
+                value={characterData.age || ''}
+                onChange={(e) => handleInputChange('age', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
+                min="1"
+                max="200"
+              />
+            </div>
 
-          <div className="info-item compact">
-            <label htmlFor="height">
-              <i className="fas fa-ruler-vertical"></i> 身長
-            </label>
-            <input
-              type="text"
-              id="height"
-              name="height"
-              placeholder="170"
-              value={characterData.height || ''}
-              onChange={(e) => handleInputChange('height', e.target.value)}
-            />
-          </div>
+            <div className="info-item compact">
+              <label htmlFor="height">
+                <i className="fas fa-ruler-vertical"></i> 身長
+              </label>
+              <input
+                type="text"
+                id="height"
+                name="height"
+                placeholder="170"
+                value={characterData.height || ''}
+                onChange={(e) => handleInputChange('height', e.target.value)}
+              />
+            </div>
 
-          <div className="info-item compact">
-            <label htmlFor="weight">
-              <i className="fas fa-weight"></i> 体重
-            </label>
-            <input
-              type="text"
-              id="weight"
-              name="weight"
-              placeholder="65"
-              value={characterData.weight || ''}
-              onChange={(e) => handleInputChange('weight', e.target.value)}
-            />
-          </div>
+            <div className="info-item compact">
+              <label htmlFor="weight">
+                <i className="fas fa-weight"></i> 体重
+              </label>
+              <input
+                type="text"
+                id="weight"
+                name="weight"
+                placeholder="65"
+                value={characterData.weight || ''}
+                onChange={(e) => handleInputChange('weight', e.target.value)}
+              />
+            </div>
 
-          <div className="info-item">
-            <label htmlFor="occupation">
-              <i className="fas fa-briefcase"></i> 職業
-            </label>
-            <input
-              type="text"
-              id="occupation"
-              name="occupation"
-              value={characterData.occupation || ''}
-              onChange={(e) => handleInputChange('occupation', e.target.value)}
-            />
-          </div>
+            <div className="info-item">
+              <label htmlFor="occupation">
+                <i className="fas fa-briefcase"></i> 職業
+              </label>
+              <input
+                type="text"
+                id="occupation"
+                name="occupation"
+                value={characterData.occupation || ''}
+                onChange={(e) => handleInputChange('occupation', e.target.value)}
+              />
+            </div>
 
-          <div className="info-item">
-            <label htmlFor="birthplace">
-              <i className="fas fa-map-marker-alt"></i> 出身地
-            </label>
-            <input
-              type="text"
-              id="birthplace"
-              name="birthplace"
-              value={characterData.birthplace || ''}
-              onChange={(e) => handleInputChange('birthplace', e.target.value)}
-            />
-          </div>
+            <div className="info-item">
+              <label htmlFor="birthplace">
+                <i className="fas fa-map-marker-alt"></i> 出身地
+              </label>
+              <input
+                type="text"
+                id="birthplace"
+                name="birthplace"
+                value={characterData.birthplace || ''}
+                onChange={(e) => handleInputChange('birthplace', e.target.value)}
+              />
+            </div>
 
-          <div className="info-item">
-            <label htmlFor="era">
-              <i className="fas fa-history"></i> 時代
-            </label>
-            <input
-              type="text"
-              id="era"
-              name="era"
-              placeholder="1920年代、現代など"
-              value={characterData.era || ''}
-              onChange={(e) => handleInputChange('era', e.target.value)}
-            />
-          </div>
+            <div className="info-item">
+              <label htmlFor="birthday">
+                <i className="fas fa-birthday-cake"></i> 誕生日
+              </label>
+              <input
+                type="text"
+                id="birthday"
+                name="birthday"
+                placeholder="3月15日など"
+                value={characterData.birthday || ''}
+                onChange={(e) => handleInputChange('birthday', e.target.value)}
+              />
+            </div>
 
-          <div className="info-item">
-            <label htmlFor="birthday">
-              <i className="fas fa-birthday-cake"></i> 誕生日
-            </label>
-            <input
-              type="text"
-              id="birthday"
-              name="birthday"
-              placeholder="3月15日など"
-              value={characterData.birthday || ''}
-              onChange={(e) => handleInputChange('birthday', e.target.value)}
-            />
-          </div>
+            <div className="info-item">
+              <label htmlFor="zodiac_sign">
+                <i className="fas fa-star"></i> 星座
+              </label>
+              <input
+                type="text"
+                id="zodiac_sign"
+                name="zodiac_sign"
+                placeholder="うお座など"
+                value={characterData.zodiac_sign || ''}
+                onChange={(e) => handleInputChange('zodiac_sign', e.target.value)}
+              />
+            </div>
 
-          <div className="info-item">
-            <label htmlFor="zodiac_sign">
-              <i className="fas fa-star"></i> 星座
-            </label>
-            <input
-              type="text"
-              id="zodiac_sign"
-              name="zodiac_sign"
-              placeholder="うお座など"
-              value={characterData.zodiac_sign || ''}
-              onChange={(e) => handleInputChange('zodiac_sign', e.target.value)}
-            />
-          </div>
+            <div className="info-item">
+              <label htmlFor="blood_type">
+                <i className="fas fa-tint"></i> 血液型
+              </label>
+              <select
+                id="blood_type"
+                name="blood_type"
+                value={characterData.blood_type || ''}
+                onChange={(e) => handleInputChange('blood_type', e.target.value)}
+              >
+                <option value="">選択してください</option>
+                <option value="A型">A型</option>
+                <option value="B型">B型</option>
+                <option value="O型">O型</option>
+                <option value="AB型">AB型</option>
+              </select>
+            </div>
 
-          <div className="info-item">
-            <label htmlFor="blood_type">
-              <i className="fas fa-tint"></i> 血液型
-            </label>
-            <select
-              id="blood_type"
-              name="blood_type"
-              value={characterData.blood_type || ''}
-              onChange={(e) => handleInputChange('blood_type', e.target.value)}
-            >
-              <option value="">選択してください</option>
-              <option value="A型">A型</option>
-              <option value="B型">B型</option>
-              <option value="O型">O型</option>
-              <option value="AB型">AB型</option>
-            </select>
+            <div className="info-item">
+              <label htmlFor="era">
+                <i className="fas fa-history"></i> 時代
+              </label>
+              <input
+                type="text"
+                id="era"
+                name="era"
+                placeholder="1920年代、現代など"
+                value={characterData.era || ''}
+                onChange={(e) => handleInputChange('era', e.target.value)}
+              />
+            </div>
           </div>
-        </div>
         </div>
 
         {/* 説明・設定セクション */}
@@ -722,46 +762,46 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
           >
             <div className="title-text">
               <i className="fas fa-file-alt"></i>
-              説明・設定
+              キャラクター紹介
             </div>
             <i className={`fas chevron ${isDescriptionOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
           </button>
         </div>
-        
+
         <div className={`accordion-content ${isDescriptionOpen ? 'accordion-open' : 'accordion-closed'}`}>
           <div className="info-grid description-info">
 
-          <div className="info-item full-width">
-            <label htmlFor="introduction">
-              <i className="fas fa-user-edit"></i> 紹介文
-              <span className="label-hint">HTMLタグが使用できます</span>
-            </label>
-            <textarea
-              id="introduction"
-              name="introduction"
-              rows={6}
-              placeholder="キャラクターの詳細な紹介文を記入してください..."
-              value={characterData.introduction || ''}
-              onChange={(e) => handleInputChange('introduction', e.target.value)}
-            ></textarea>
-          </div>
+            <div className="info-item full-width">
+              <label htmlFor="introduction">
+                <i className="fas fa-user-edit"></i> 紹介文
+                <span className="label-hint">HTMLタグが使用できます</span>
+              </label>
+              <textarea
+                id="introduction"
+                name="introduction"
+                rows={6}
+                placeholder="キャラクターの詳細な紹介文を記入してください..."
+                value={characterData.introduction || ''}
+                onChange={(e) => handleInputChange('introduction', e.target.value)}
+              ></textarea>
+            </div>
 
-          <div className="info-item full-width secret-info">
-            <label htmlFor="secret_information">
-              <i className="fas fa-lock"></i> 秘匿情報
-              <span className="label-hint">HTMLタグが使用できます</span>
-            </label>
-            <textarea
-              id="secret_information"
-              name="secret_information"
-              rows={6}
-              placeholder="他のプレイヤーに見せたくない秘密の情報..."
-              value={characterData.secret_information || ''}
-              onChange={(e) => handleInputChange('secret_information', e.target.value)}
-            ></textarea>
-          </div>
+            <div className="info-item full-width secret-info">
+              <label htmlFor="secret_information">
+                <i className="fas fa-lock"></i> 秘匿情報
+                <span className="label-hint">HTMLタグが使用できます</span>
+              </label>
+              <textarea
+                id="secret_information"
+                name="secret_information"
+                rows={6}
+                placeholder="他のプレイヤーに見せたくない秘密の情報..."
+                value={characterData.secret_information || ''}
+                onChange={(e) => handleInputChange('secret_information', e.target.value)}
+              ></textarea>
+            </div>
 
-        </div>
+          </div>
         </div>
       </div>
 
