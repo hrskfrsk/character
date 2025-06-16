@@ -307,6 +307,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
                       </div>
                     )}
                   </div>
+
                 </div>
 
                 <div className="upload-info">

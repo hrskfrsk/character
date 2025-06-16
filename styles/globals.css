@@ -386,7 +386,7 @@ textarea,
   height: auto;
   max-height: 300px;
   object-fit: contain;
-  display: block;
+  display: block !important;
 }
 
 .character-info .character-image-section .remove-image-btn {
@@ -417,11 +417,6 @@ textarea,
   padding: 20px;
   text-align: center;
   transition: all 0.2s ease;
-}
-
-.character-info .character-image-section .image-upload-area:hover {
-  border-color: #22c6d8;
-  background: #f8feff;
 }
 
 .character-info .character-image-section .upload-options {
