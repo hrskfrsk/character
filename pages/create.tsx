@@ -1043,30 +1043,14 @@ export default function CreateCharacterPage() {
     window.open('/character/preview', '_blank');
   };
 
-  if (!mounted) {
-    return (
-      <>
-        <Head>
-          <title>キャラクター作成 - クトゥルフ神話TRPG第6版</title>
-        </Head>
-        <div>Loading...</div>
-      </>
-    );
-  }
+  const pageTitle = "キャラクター作成 - クトゥルフ神話TRPG第6版";
 
   return (
     <>
       <Head>
-        <title>キャラクター作成 - クトゥルフ神話TRPG第6版</title>
+        <title>{pageTitle}</title>
         <meta name="description" content="クトゥルフ神話TRPG第6版のキャラクターシート作成フォーム" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-        {/* Font Awesome */}
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        />
-
       </Head>
 
       <div id="content" className="character-input">

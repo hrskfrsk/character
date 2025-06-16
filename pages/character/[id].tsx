@@ -159,37 +159,14 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
     );
   }
 
-  if (!mounted) {
-    return (
-      <>
-        <Head>
-          <title>{character.character_name || 'キャラクター'} - CoC6版キャラクターシート</title>
-        </Head>
-        <div>Loading...</div>
-      </>
-    );
-  }
+  const pageTitle = `${character.character_name || 'キャラクター'} - CoC6版キャラクターシート`;
 
   return (
     <>
       <Head>
-        <title>{character.character_name || 'キャラクター'} - CoC6版キャラクターシート</title>
+        <title>{pageTitle}</title>
         <meta name="description" content={`${character.character_name}のキャラクターシート`} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-        {/* Font Awesome */}
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-        />
-
-        {/* Google Fonts */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Kosugi&family=Varela+Round&display=swap"
-          rel="stylesheet"
-        />
       </Head>
 
       <div className="works-template-default single single-works postid-6531 custom-background">
