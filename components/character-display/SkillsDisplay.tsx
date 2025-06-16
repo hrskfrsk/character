@@ -4,6 +4,7 @@ import ExplorationSkills from './skills/ExplorationSkills';
 import ActionSkills from './skills/ActionSkills';
 import NegotiationSkills from './skills/NegotiationSkills';
 import KnowledgeSkills from './skills/KnowledgeSkills';
+import ChatPalette from './ChatPalette';
 
 interface SkillsDisplayProps {
   character: any;
@@ -111,6 +112,7 @@ export default function SkillsDisplay({ character, characterId, handleSkillClick
             isSkillInitialOnly={isSkillInitialOnly}
             handleSkillClick={handleSkillClick}
           />
+          <ChatPalette character={character} />
         </ul>
       </div>
     </>
