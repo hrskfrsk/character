@@ -212,6 +212,27 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     <div className="character-info">
       {/* キャラクター名セクション */}
       <div className="character-name-section">
+        {/* ロストトグル（右上） */}
+        <div className="character-lost-toggle-header">
+          <label htmlFor="is_lost">
+            <i className="fas fa-skull-crossbones"></i> ロスト
+          </label>
+          <div className="toggle-wrapper">
+            <input
+              type="checkbox"
+              id="is_lost"
+              name="is_lost"
+              checked={characterData.is_lost || false}
+              onChange={(e) => handleInputChange('is_lost', e.target.checked)}
+              className="toggle-checkbox"
+            />
+            <label htmlFor="is_lost" className="toggle-label">
+              <span className="toggle-inner"></span>
+              <span className="toggle-switch"></span>
+            </label>
+          </div>
+        </div>
+
         <div className="character-name-input">
           <label htmlFor="character_name">
             <i className="fas fa-signature"></i> キャラクター名
@@ -225,37 +246,122 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             placeholder="キャラクターの名前を入力"
           />
         </div>
-        <div className="character-sub-info">
-          <div className="character-kana-input">
-            <label htmlFor="character_name_kana">
-              <i className="fas fa-font"></i> フリガナ
-            </label>
-            <input
-              type="text"
-              id="character_name_kana"
-              name="character_name_kana"
-              value={characterData.character_name_kana || ''}
-              onChange={(e) => handleInputChange('character_name_kana', e.target.value)}
-              placeholder="カタカナで入力"
-            />
-          </div>
-          <div className="character-lost-toggle">
-            <label htmlFor="is_lost">
-              <i className="fas fa-skull-crossbones"></i> ロスト
-            </label>
-            <div className="toggle-wrapper">
-              <input
-                type="checkbox"
-                id="is_lost"
-                name="is_lost"
-                checked={characterData.is_lost || false}
-                onChange={(e) => handleInputChange('is_lost', e.target.checked)}
-                className="toggle-checkbox"
-              />
-              <label htmlFor="is_lost" className="toggle-label">
-                <span className="toggle-inner"></span>
-                <span className="toggle-switch"></span>
+        
+        {/* 2カラムレイアウト */}
+        <div className="character-main-info">
+          {/* 左カラム：キャラクター画像 */}
+          <div className="character-left-column">
+            <div className="character-image-section">
+              <label>
+                <i className="fas fa-image"></i> キャラクター画像
               </label>
+
+              {/* 画像プレビュー */}
+              {characterData.character_image_url && (
+                <div className="image-preview-container">
+                  <div className="image-preview">
+                    <img
+                      src={characterData.character_image_url}
+                      alt="キャラクター画像プレビュー"
+                      onError={(e) => {
+                        console.log('Image load error');
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                    <button
+                      type="button"
+                      className="remove-image-btn"
+                      onClick={removeImage}
+                      title="画像を削除"
+                    >
+                      <i className="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* アップロードエリア */}
+              <div className="image-upload-area">
+                <div className="upload-options">
+                  <div className="upload-option">
+                    <label htmlFor="character_image_upload" className="upload-btn">
+                      <i className={uploadProgress.isUploading ? "fas fa-spinner fa-spin" : "fas fa-upload"}></i>
+                      {uploadProgress.isUploading ? `アップロード中... ${uploadProgress.progress}%` : '画像をアップロード'}
+                    </label>
+                    <input
+                      type="file"
+                      id="character_image_upload"
+                      accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+                      onChange={handleImageUpload}
+                      disabled={uploadProgress.isUploading}
+                      style={{ display: 'none' }}
+                    />
+
+                    {/* プログレスバー */}
+                    {uploadProgress.isUploading && (
+                      <div className="upload-progress">
+                        <div
+                          className="upload-progress-bar"
+                          style={{ width: `${uploadProgress.progress}%` }}
+                        ></div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="upload-info">
+                  <small>
+                    <i className="fas fa-info-circle"></i>
+                    JPEG、PNG、GIF、WebP形式対応 (最大5MB)
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* 右カラム：基本情報 */}
+          <div className="character-right-column">
+            <div className="character-kana-input">
+              <label htmlFor="character_name_kana">
+                <i className="fas fa-font"></i> フリガナ
+              </label>
+              <input
+                type="text"
+                id="character_name_kana"
+                name="character_name_kana"
+                value={characterData.character_name_kana || ''}
+                onChange={(e) => handleInputChange('character_name_kana', e.target.value)}
+                placeholder="カタカナで入力"
+              />
+            </div>
+            
+            {/* UIカラー設定 */}
+            <div className="ui-color-setting">
+              <label htmlFor="ui_theme_color">
+                <i className="fas fa-paint-brush"></i> UIテーマカラー
+              </label>
+              <div className="color-input-group">
+                <input
+                  type="color"
+                  id="ui_theme_color_picker"
+                  value={characterData.ui_theme_color || '#22c6d8'}
+                  onChange={(e) => handleInputChange('ui_theme_color', e.target.value)}
+                  className="color-picker"
+                />
+                <input
+                  type="text"
+                  id="ui_theme_color"
+                  name="ui_theme_color"
+                  placeholder="#22c6d8"
+                  value={characterData.ui_theme_color || ''}
+                  onChange={(e) => handleInputChange('ui_theme_color', e.target.value)}
+                  className="color-text-input"
+                />
+              </div>
+              <div className="ui-color-description">
+                <i className="fas fa-info-circle"></i>
+                表示ページの見出しやボーダーの色に使用されます
+              </div>
             </div>
           </div>
         </div>
@@ -418,47 +524,6 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
         </div>
       </div>
 
-      {/* UIカラー設定セクション */}
-      <div className="info-section">
-        <h3 className="subsection-title">
-          <i className="fas fa-paint-brush"></i> UIカラー設定
-        </h3>
-        <div className="info-grid appearance-info">
-          <div className="color-pair">
-            <div className="info-item">
-              <label htmlFor="ui_theme_color">
-                <i className="fas fa-palette"></i> UIテーマカラー
-              </label>
-              <div className="color-input-group">
-                <input
-                  type="color"
-                  id="ui_theme_color_picker"
-                  value={characterData.ui_theme_color || '#22c6d8'}
-                  onChange={(e) => handleInputChange('ui_theme_color', e.target.value)}
-                  className="color-picker"
-                />
-                <input
-                  type="text"
-                  id="ui_theme_color"
-                  name="ui_theme_color"
-                  placeholder="#22c6d8"
-                  value={characterData.ui_theme_color || ''}
-                  onChange={(e) => handleInputChange('ui_theme_color', e.target.value)}
-                  className="color-text-input"
-                />
-              </div>
-            </div>
-            <div className="info-item">
-              <label>
-                <i className="fas fa-info-circle"></i> 説明
-              </label>
-              <div style={{ fontSize: '0.9em', color: '#666', padding: '8px 0' }}>
-                表示ページの見出しやボーダーの色に使用されます
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* 外見情報セクション */}
       <div className="info-section">
@@ -615,86 +680,6 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             </div>
           </div>
 
-          <div className="info-item full-width image-upload-section">
-            <label>
-              <i className="fas fa-image"></i> キャラクター画像
-            </label>
-
-            {/* 画像プレビュー */}
-            {characterData.character_image_url && (
-              <div className="image-preview-container">
-                <div className="image-preview">
-                  <img
-                    src={characterData.character_image_url}
-                    alt="キャラクター画像プレビュー"
-                    onError={(e) => {
-                      console.log('Image load error');
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                  <button
-                    type="button"
-                    className="remove-image-btn"
-                    onClick={removeImage}
-                    title="画像を削除"
-                  >
-                    <i className="fas fa-times"></i>
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* アップロードエリア */}
-            <div className="image-upload-area">
-              <div className="upload-options">
-                <div className="upload-option">
-                  <label htmlFor="character_image_upload" className="upload-btn">
-                    <i className={uploadProgress.isUploading ? "fas fa-spinner fa-spin" : "fas fa-upload"}></i>
-                    {uploadProgress.isUploading ? `アップロード中... ${uploadProgress.progress}%` : '画像をアップロード'}
-                  </label>
-                  <input
-                    type="file"
-                    id="character_image_upload"
-                    accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
-                    onChange={handleImageUpload}
-                    disabled={uploadProgress.isUploading}
-                    style={{ display: 'none' }}
-                  />
-
-                  {/* プログレスバー */}
-                  {uploadProgress.isUploading && (
-                    <div className="upload-progress">
-                      <div
-                        className="upload-progress-bar"
-                        style={{ width: `${uploadProgress.progress}%` }}
-                      ></div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="upload-divider">または</div>
-
-                <div className="upload-option">
-                  <input
-                    type="url"
-                    id="character_image_url"
-                    name="character_image_url"
-                    placeholder="画像URLを入力 (https://example.com/image.png)"
-                    value={characterData.character_image_url || ''}
-                    onChange={(e) => handleInputChange('character_image_url', e.target.value)}
-                    className="url-input"
-                  />
-                </div>
-              </div>
-
-              <div className="upload-info">
-                <small>
-                  <i className="fas fa-info-circle"></i>
-                  JPEG、PNG、GIF、WebP形式対応 (最大5MB)
-                </small>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
