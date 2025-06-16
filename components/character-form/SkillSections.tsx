@@ -1,10 +1,10 @@
 import React from 'react';
 import { CharacterData } from '../../lib/character-calculations';
-import CombatSkills from './CombatSkills';
-import ExplorationSkills from './ExplorationSkills';
-import ActionSkills from './ActionSkills';
-import NegotiationSkills from './NegotiationSkills';
-import KnowledgeSkills from './KnowledgeSkills';
+import CombatSkills from './skills/CombatSkills';
+import ExplorationSkills from './skills/ExplorationSkills';
+import ActionSkills from './skills/ActionSkills';
+import NegotiationSkills from './skills/NegotiationSkills';
+import KnowledgeSkills from './skills/KnowledgeSkills';
 
 interface SkillSectionsProps {
   characterData: CharacterData;

@@ -811,7 +811,7 @@ export default function AbilityAndDerivedStats({
               value={characterData.current_san || 0}
               onChange={(e) => handleInputChange('current_san', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
             />
-            <span>/</span>
+            <span style={{ margin: '0 3px' }}>/</span>
             <input
               type="number"
               id="max_san"
@@ -848,8 +848,7 @@ export default function AbilityAndDerivedStats({
               readOnly
               style={{
                 width: `${Math.max(2, String(characterData.job_points_used || 0).length)}ch`,
-                color: (characterData.job_points_used || 0) > (characterData.job_points_formula === 'manual' ? (characterData.job_points_total || 0) : (calculatedStats.job_points_total || 0)) ? '#d32f2f' : 'inherit',
-                fontWeight: (characterData.job_points_used || 0) > (characterData.job_points_formula === 'manual' ? (characterData.job_points_total || 0) : (calculatedStats.job_points_total || 0)) ? 'bold' : 'normal'
+                color: (characterData.job_points_used || 0) > (characterData.job_points_formula === 'manual' ? (characterData.job_points_total || 0) : (calculatedStats.job_points_total || 0)) ? '#d32f2f' : 'inherit'
               }}
             />
             <span>/</span>
@@ -916,8 +915,7 @@ export default function AbilityAndDerivedStats({
               readOnly
               style={{
                 width: `${Math.max(2, String(characterData.interest_points_used || 0).length)}ch`,
-                color: (characterData.interest_points_used || 0) > (calculatedStats.interest_points_total || 0) ? '#d32f2f' : 'inherit',
-                fontWeight: (characterData.interest_points_used || 0) > (calculatedStats.interest_points_total || 0) ? 'bold' : 'normal'
+                color: (characterData.interest_points_used || 0) > (calculatedStats.interest_points_total || 0) ? '#d32f2f' : 'inherit'
               }}
             />
             <span>/</span>
