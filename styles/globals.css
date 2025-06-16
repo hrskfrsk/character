@@ -623,18 +623,38 @@ li {
   font-family: BlinkMacSystemFont, -apple-system, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, Helvetica, Arial,
     sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 @media only screen and (max-width: 768px) {
   .chara-seet .slots .slot-txt {
     text-align: center;
     line-height: 1.2;
     margin-top: 1px;
+    flex-direction: column;
   }
+}
+.character-input .chara-seet .slots .slot-txt {
+  flex-direction: column;
+  padding-top: 3px;
 }
 .chara-seet .slots .slot-txt span {
   font-size: 0.8rem;
   font-weight: 400;
   color: #888;
+  margin: 0 1px;
+}
+#job_points_formula_text,
+#interest_points_extra {
+  margin: 0;
+}
+@media only screen and (max-width: 768px) {
+  #job_points_formula_text,
+  #interest_points_extra {
+    margin: 2px 0;
+  }
 }
 #job_points_used,
 #interest_points_used,

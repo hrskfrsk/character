@@ -10,9 +10,11 @@ export default function StatDisplay({ character }: StatDisplayProps) {
       <div className="now-san slot">
         <h3>現在SAN値</h3>
         <div className="slot-txt">
-          <span id="current_san">{character.current_san || '-'}</span>
-          <span>/
-            <span id="max_san">{character.max_san_value || '-'}</span>
+          <span>
+            <span id="current_san">{character.current_san || '-'}</span>
+            <span>/
+              <span id="max_san">{character.max_san_value || '-'}</span>
+            </span>
           </span>
         </div>
       </div>
@@ -25,41 +27,41 @@ export default function StatDisplay({ character }: StatDisplayProps) {
       <div className="jobp slot">
         <h3>職業P</h3>
         <div className="slot-txt">
-          <span id="job_points_used">{character.job_points_used || '-'}</span>
-          <span>/
-            <span id="job_points_total">{character.job_points_total || '-'}</span>
-            <br className="sp-only" />
-            (
-            <span id="job_points_formula_text">
-              {(() => {
-                const formula = character.job_points_formula || 'edu20';
-                switch (formula) {
-                  case 'edu20': return 'EDU×20';
-                  case 'edu10_str10': return 'EDU×10+STR×10';
-                  case 'edu10_con10': return 'EDU×10+CON×10';
-                  case 'edu10_pow10': return 'EDU×10+POW×10';
-                  case 'edu10_dex10': return 'EDU×10+DEX×10';
-                  case 'edu10_app10': return 'EDU×10+APP×10';
-                  case 'edu10_siz10': return 'EDU×10+SIZ×10';
-                  case 'edu10_int10': return 'EDU×10+INT×10';
-                  case 'manual': return '手動入力';
-                  default: return 'EDU×20';
-                }
-              })()}
-            </span>
-            )</span>
+          <span><span id="job_points_used">{character.job_points_used || '-'}</span>
+            <span>/</span>
+            <span id="job_points_total">{character.job_points_total || '-'}</span></span>
+
+          <span id="job_points_formula_text">
+            ( {(() => {
+              const formula = character.job_points_formula || 'edu20';
+              switch (formula) {
+                case 'edu20': return 'EDU×20';
+                case 'edu10_str10': return 'EDU×10+STR×10';
+                case 'edu10_con10': return 'EDU×10+CON×10';
+                case 'edu10_pow10': return 'EDU×10+POW×10';
+                case 'edu10_dex10': return 'EDU×10+DEX×10';
+                case 'edu10_app10': return 'EDU×10+APP×10';
+                case 'edu10_siz10': return 'EDU×10+SIZ×10';
+                case 'edu10_int10': return 'EDU×10+INT×10';
+                case 'manual': return '手動入力';
+                default: return 'EDU×20';
+              }
+            })()} )
+          </span>
+
         </div>
       </div>
       <div className="intp slot">
         <h3>興味P</h3>
         <div className="slot-txt">
-          <span id="interest_points_used">{character.interest_points_used || '-'}</span>
-          <span>/
+          <span>
+            <span id="interest_points_used">{character.interest_points_used || '-'}</span>
+            <span>/</span>
             <span id="interest_points_total">{character.interest_points_total || '-'}</span>
-            <br className="sp-only" />
+          </span>
+          <span id="interest_points_extra">
             ( 追加分 ：
-            <span id="interest_points_extra">{character.interest_points_extra || '-'}</span>
-            )</span>
+            {character.interest_points_extra || '-'} )</span>
         </div>
       </div>
     </div>

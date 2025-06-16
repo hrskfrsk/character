@@ -803,29 +803,31 @@ export default function AbilityAndDerivedStats({
         <div className="now-san slot">
           <h3>現在SAN値</h3>
           <div className="slot-txt">
-            <input
-              type="number"
-              className="current_san"
-              id="current_san"
-              name="current_san"
-              value={characterData.current_san || 0}
-              onChange={(e) => handleInputChange('current_san', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
-            />
-            <span style={{ margin: '0 3px' }}>/</span>
-            <input
-              type="number"
-              id="max_san"
-              name="max_san"
-              className="max_san readonly auto-resize _02"
-              value={characterData.max_san || calculatedStats.max_san_value || 0}
-              onChange={(e) => handleInputChange('max_san', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
-              style={{
-                width: `${Math.max(2, String(characterData.max_san || calculatedStats.max_san_value || 0).length)}ch`,
-                fontSize: '0.8rem',
-                fontWeight: '400',
-                color: '#888'
-              }}
-            />
+            <span>
+              <input
+                type="number"
+                className="current_san"
+                id="current_san"
+                name="current_san"
+                value={characterData.current_san || 0}
+                onChange={(e) => handleInputChange('current_san', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
+              />
+              <span>/</span>
+              <input
+                type="number"
+                id="max_san"
+                name="max_san"
+                className="max_san readonly auto-resize _02"
+                value={characterData.max_san || calculatedStats.max_san_value || 0}
+                onChange={(e) => handleInputChange('max_san', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
+                style={{
+                  width: `${Math.max(2, String(characterData.max_san || calculatedStats.max_san_value || 0).length)}ch`,
+                  fontSize: '0.8rem',
+                  fontWeight: '400',
+                  color: '#888'
+                }}
+              />
+            </span>
           </div>
         </div>
         <div className="db slot">
@@ -839,50 +841,51 @@ export default function AbilityAndDerivedStats({
         }}>
           <h3>職業P</h3>
           <div className="slot-txt">
-            <input
-              type="text"
-              id="job_points_used"
-              name="job_points_used"
-              className="readonly auto-resize _02"
-              value={characterData.job_points_used || 0}
-              readOnly
-              style={{
-                width: `${Math.max(2, String(characterData.job_points_used || 0).length)}ch`,
-                color: (characterData.job_points_used || 0) > (characterData.job_points_formula === 'manual' ? (characterData.job_points_total || 0) : (calculatedStats.job_points_total || 0)) ? '#d32f2f' : 'inherit'
-              }}
-            />
-            <span>/</span>
-            {characterData.job_points_formula === 'manual' ? (
-              <input
-                type="number"
-                id="job_points_total_manual"
-                name="job_points_total"
-                className="readonly auto-resize _02"
-                value={characterData.job_points_total || 0}
-                onChange={(e) => handleInputChange('job_points_total', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
-                style={{
-                  width: `${Math.max(2, String(characterData.job_points_total || 0).length)}ch`,
-                  fontSize: '0.8rem',
-                  fontWeight: '400',
-                  color: '#888'
-                }}
-              />
-            ) : (
+            <span>
               <input
                 type="text"
+                id="job_points_used"
+                name="job_points_used"
                 className="readonly auto-resize _02"
-                id="job_points_total"
-                value={calculatedStats.job_points_total || 0}
+                value={characterData.job_points_used || 0}
                 readOnly
                 style={{
-                  width: `${Math.max(2, String(calculatedStats.job_points_total || 0).length)}ch`,
-                  fontSize: '0.8rem',
-                  fontWeight: '400',
-                  color: '#888'
+                  width: `${Math.max(2, String(characterData.job_points_used || 0).length)}ch`,
+                  color: (characterData.job_points_used || 0) > (characterData.job_points_formula === 'manual' ? (characterData.job_points_total || 0) : (calculatedStats.job_points_total || 0)) ? '#d32f2f' : 'inherit'
                 }}
               />
-            )}
-            <br className="sp-only" />
+              <span>/</span>
+              {characterData.job_points_formula === 'manual' ? (
+                <input
+                  type="number"
+                  id="job_points_total_manual"
+                  name="job_points_total"
+                  className="readonly auto-resize _02"
+                  value={characterData.job_points_total || 0}
+                  onChange={(e) => handleInputChange('job_points_total', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
+                  style={{
+                    width: `${Math.max(2, String(characterData.job_points_total || 0).length)}ch`,
+                    fontSize: '0.8rem',
+                    fontWeight: '400',
+                    color: '#888'
+                  }}
+                />
+              ) : (
+                <input
+                  type="text"
+                  className="readonly auto-resize _02"
+                  id="job_points_total"
+                  value={calculatedStats.job_points_total || 0}
+                  readOnly
+                  style={{
+                    width: `${Math.max(2, String(calculatedStats.job_points_total || 0).length)}ch`,
+                    fontSize: '0.8rem',
+                    fontWeight: '400',
+                    color: '#888'
+                  }}
+                />
+              )}
+            </span>
             <select
               name="job_points_formula"
               value={characterData.job_points_formula || 'edu20'}
@@ -906,33 +909,34 @@ export default function AbilityAndDerivedStats({
         }}>
           <h3>興味P</h3>
           <div className="slot-txt">
-            <input
-              type="text"
-              id="interest_points_used"
-              name="interest_points_used"
-              className="readonly auto-resize _02"
-              value={characterData.interest_points_used || 0}
-              readOnly
-              style={{
-                width: `${Math.max(2, String(characterData.interest_points_used || 0).length)}ch`,
-                color: (characterData.interest_points_used || 0) > (calculatedStats.interest_points_total || 0) ? '#d32f2f' : 'inherit'
-              }}
-            />
-            <span>/</span>
-            <input
-              type="text"
-              className="readonly auto-resize _02"
-              id="interest_points_total"
-              value={calculatedStats.interest_points_total || 0}
-              readOnly
-              style={{
-                width: `${Math.max(2, String(calculatedStats.interest_points_total || 0).length)}ch`,
-                fontSize: '0.8rem',
-                fontWeight: '400',
-                color: '#888'
-              }}
-            />
-            <br className="sp-only" />
+            <span>
+              <input
+                type="text"
+                id="interest_points_used"
+                name="interest_points_used"
+                className="readonly auto-resize _02"
+                value={characterData.interest_points_used || 0}
+                readOnly
+                style={{
+                  width: `${Math.max(2, String(characterData.interest_points_used || 0).length)}ch`,
+                  color: (characterData.interest_points_used || 0) > (calculatedStats.interest_points_total || 0) ? '#d32f2f' : 'inherit'
+                }}
+              />
+              <span>/</span>
+              <input
+                type="text"
+                className="readonly auto-resize _02"
+                id="interest_points_total"
+                value={calculatedStats.interest_points_total || 0}
+                readOnly
+                style={{
+                  width: `${Math.max(2, String(calculatedStats.interest_points_total || 0).length)}ch`,
+                  fontSize: '0.8rem',
+                  fontWeight: '400',
+                  color: '#888'
+                }}
+              />
+            </span>
             <span className="interest-point">追加分 ：
               <input
                 type="number"
