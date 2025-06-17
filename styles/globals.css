@@ -1616,13 +1616,14 @@ li {
 .chara-seet .slots h3 {
   margin: 0;
   position: absolute;
-  -webkit-transform: translateY(-17px);
-  transform: translateY(-17px);
+  -webkit-transform: translateY(-10px);
+  transform: translateY(-10px);
   background: #ececec;
   padding: 0 10px;
   font-size: 0.7rem;
   color: #888;
   font-weight: 500;
+  line-height: 1;
 }
 .chara-seet .slots .slot {
   border-radius: 4px;

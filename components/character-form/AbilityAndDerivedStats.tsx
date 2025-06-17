@@ -17,6 +17,9 @@ interface AbilityAndDerivedStatsProps {
   // 技能表示切替
   hideInitialSkills: boolean;
   toggleSkillDisplay: () => void;
+  // 技能セクション折りたたみ
+  isSkillSectionCollapsed?: boolean;
+  onSkillSectionToggle?: () => void;
 }
 
 export default function AbilityAndDerivedStats({
@@ -28,7 +31,9 @@ export default function AbilityAndDerivedStats({
   addTrait,
   removeTrait,
   hideInitialSkills,
-  toggleSkillDisplay
+  toggleSkillDisplay,
+  isSkillSectionCollapsed = false,
+  onSkillSectionToggle
 }: AbilityAndDerivedStatsProps) {
   return (
     <>
@@ -56,6 +61,8 @@ export default function AbilityAndDerivedStats({
         calculatedStats={calculatedStats}
         handleInputChange={handleInputChange}
         handleJobPointsFormulaChange={handleJobPointsFormulaChange}
+        isSkillSectionCollapsed={isSkillSectionCollapsed}
+        onSkillSectionToggle={onSkillSectionToggle}
       />
     </>
   );

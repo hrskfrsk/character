@@ -10,7 +10,7 @@ export default function JobBaseInfo({
   characterData,
   handleInputChange
 }: JobBaseInfoProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   return (
     <div className="character-section">

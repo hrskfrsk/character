@@ -14,6 +14,8 @@ interface SkillSectionsProps {
   hideInitialSkills: boolean;
   toggleSkillDisplay: () => void;
   isSkillInitialOnly: (skillName: string, initialValue?: number) => boolean;
+  // 技能セクション折りたたみ
+  isSkillSectionCollapsed?: boolean;
   // 戦闘技能
   additionalCombatSkills: Array<{ id: string, counter: number }>;
   addCombatSkill: () => void;
@@ -48,6 +50,7 @@ export default function SkillSections({
   hideInitialSkills,
   toggleSkillDisplay,
   isSkillInitialOnly,
+  isSkillSectionCollapsed = false,
   additionalCombatSkills,
   addCombatSkill,
   removeCombatSkill,
@@ -68,6 +71,10 @@ export default function SkillSections({
   interestPointsUsed,
   interestPointsTotal
 }: SkillSectionsProps) {
+  if (isSkillSectionCollapsed) {
+    return null;
+  }
+
   return (
     <>
       {/* 技能表示切替ボタン */}

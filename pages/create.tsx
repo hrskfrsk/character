@@ -59,6 +59,9 @@ export default function CreateCharacterPage() {
 
   // 技能表示切替の状態管理
   const [hideInitialSkills, setHideInitialSkills] = useState(false);
+  
+  // 技能セクション全体の折りたたみ状態
+  const [isSkillSectionCollapsed, setIsSkillSectionCollapsed] = useState(false);
 
   // アコーディオンの開閉状態
   const [equipmentSections, setEquipmentSections] = useState({
@@ -79,6 +82,7 @@ export default function CreateCharacterPage() {
     if (typeof window !== 'undefined') {
       const savedHideInitialSkills = localStorage.getItem('character-form-hideInitialSkills');
       const savedEquipmentSections = localStorage.getItem('character-form-equipmentSections');
+      const savedShowMemoSection = localStorage.getItem('character-form-showMemoSection');
       
       if (savedHideInitialSkills !== null) {
         setHideInitialSkills(JSON.parse(savedHideInitialSkills));
@@ -86,6 +90,10 @@ export default function CreateCharacterPage() {
       
       if (savedEquipmentSections !== null) {
         setEquipmentSections(JSON.parse(savedEquipmentSections));
+      }
+      
+      if (savedShowMemoSection !== null) {
+        setShowMemoSection(JSON.parse(savedShowMemoSection));
       }
     }
   }, []);
@@ -102,6 +110,12 @@ export default function CreateCharacterPage() {
       localStorage.setItem('character-form-equipmentSections', JSON.stringify(equipmentSections));
     }
   }, [equipmentSections]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('character-form-showMemoSection', JSON.stringify(showMemoSection));
+    }
+  }, [showMemoSection]);
 
   const router = useRouter();
   const { edit } = router.query;
@@ -1110,6 +1124,8 @@ export default function CreateCharacterPage() {
                     removeTrait={removeTrait}
                     hideInitialSkills={hideInitialSkills}
                     toggleSkillDisplay={toggleSkillDisplay}
+                    isSkillSectionCollapsed={isSkillSectionCollapsed}
+                    onSkillSectionToggle={() => setIsSkillSectionCollapsed(!isSkillSectionCollapsed)}
                   />
 
                   {/* 技能セクション */}
@@ -1120,6 +1136,7 @@ export default function CreateCharacterPage() {
                     hideInitialSkills={hideInitialSkills}
                     toggleSkillDisplay={toggleSkillDisplay}
                     isSkillInitialOnly={isSkillInitialOnly}
+                    isSkillSectionCollapsed={isSkillSectionCollapsed}
                     additionalCombatSkills={additionalCombatSkills}
                     addCombatSkill={addCombatSkill}
                     removeCombatSkill={removeCombatSkill}

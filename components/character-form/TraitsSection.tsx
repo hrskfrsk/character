@@ -16,7 +16,7 @@ export default function TraitsSection({
   addTrait,
   removeTrait
 }: TraitsSectionProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   return (
     <div className="traits-section character-section">
