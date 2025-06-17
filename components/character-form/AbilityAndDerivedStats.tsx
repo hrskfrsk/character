@@ -150,7 +150,7 @@ export default function AbilityAndDerivedStats({
           <li className="str score-li">
             <h3>STR <DiceButton ability="str" formula="3D6" /></h3>
             <div className="score-sum">
-              <input type="text" className="readonly" id="str_total" value={calculatedStats.str_total || ''} readOnly />
+              <input type="text" className="readonly" id="str_total" value={calculatedStats.str_total || ''} readOnly style={{ color: '#57595d' }} />
             </div>
             <ul className="score-detail">
               <li>
@@ -193,7 +193,7 @@ export default function AbilityAndDerivedStats({
           <li className="con score-li">
             <h3>CON <DiceButton ability="con" formula="3D6" /></h3>
             <div className="score-sum">
-              <input type="text" className="readonly" id="con_total" value={calculatedStats.con_total || ''} readOnly />
+              <input type="text" className="readonly" id="con_total" value={calculatedStats.con_total || ''} readOnly style={{ color: '#57595d' }} />
             </div>
             <ul className="score-detail">
               <li>
@@ -236,7 +236,7 @@ export default function AbilityAndDerivedStats({
           <li className="pow score-li">
             <h3>POW <DiceButton ability="pow" formula="3D6" /></h3>
             <div className="score-sum">
-              <input type="text" className="readonly" id="pow_total" value={calculatedStats.pow_total || ''} readOnly />
+              <input type="text" className="readonly" id="pow_total" value={calculatedStats.pow_total || ''} readOnly style={{ color: '#57595d' }} />
             </div>
             <ul className="score-detail">
               <li>
@@ -279,7 +279,7 @@ export default function AbilityAndDerivedStats({
           <li className="dex score-li">
             <h3>DEX <DiceButton ability="dex" formula="3D6" /></h3>
             <div className="score-sum">
-              <input type="text" className="readonly" id="dex_total" value={calculatedStats.dex_total || ''} readOnly />
+              <input type="text" className="readonly" id="dex_total" value={calculatedStats.dex_total || ''} readOnly style={{ color: '#57595d' }} />
             </div>
             <ul className="score-detail">
               <li>
@@ -322,7 +322,7 @@ export default function AbilityAndDerivedStats({
           <li className="app score-li">
             <h3>APP <DiceButton ability="app" formula="3D6" /></h3>
             <div className="score-sum">
-              <input type="text" className="readonly" id="app_total" value={calculatedStats.app_total || ''} readOnly />
+              <input type="text" className="readonly" id="app_total" value={calculatedStats.app_total || ''} readOnly style={{ color: '#57595d' }} />
             </div>
             <ul className="score-detail">
               <li>
@@ -365,7 +365,7 @@ export default function AbilityAndDerivedStats({
           <li className="siz score-li">
             <h3>SIZ <DiceButton ability="siz" formula="2D6+6" /></h3>
             <div className="score-sum">
-              <input type="text" className="readonly" id="siz_total" value={calculatedStats.siz_total || ''} readOnly />
+              <input type="text" className="readonly" id="siz_total" value={calculatedStats.siz_total || ''} readOnly style={{ color: '#57595d' }} />
             </div>
             <ul className="score-detail">
               <li>
@@ -408,7 +408,7 @@ export default function AbilityAndDerivedStats({
           <li className="int score-li">
             <h3>INT <DiceButton ability="int" formula="2D6+6" /></h3>
             <div className="score-sum">
-              <input type="text" className="readonly" id="int_total" value={calculatedStats.int_total || ''} readOnly />
+              <input type="text" className="readonly" id="int_total" value={calculatedStats.int_total || ''} readOnly style={{ color: '#57595d' }} />
             </div>
             <ul className="score-detail">
               <li>
@@ -451,7 +451,7 @@ export default function AbilityAndDerivedStats({
           <li className="edu score-li">
             <h3>EDU <DiceButton ability="edu" formula="3D6+3" /></h3>
             <div className="score-sum">
-              <input type="text" className="readonly" id="edu_total" value={calculatedStats.edu_total || ''} readOnly />
+              <input type="text" className="readonly" id="edu_total" value={calculatedStats.edu_total || ''} readOnly style={{ color: '#57595d' }} />
             </div>
             <ul className="score-detail">
               <li>
@@ -650,6 +650,19 @@ export default function AbilityAndDerivedStats({
 
       {/* 特徴・ベース職業セクション */}
       <div className="traits-section" style={{ marginTop: '10px' }}>
+
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '10px',
+          borderBottom: '2px solid #ddd',
+          paddingBottom: '5px',
+
+        }}>
+          <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 'bold' }}>特徴表</h2>
+        </div>
+
         <div className="features">
           {/* 特徴リスト */}
           <ul>
@@ -661,7 +674,7 @@ export default function AbilityAndDerivedStats({
                       name={`${trait.id}_number`}
                       value={(characterData as any)[`${trait.id}_number`] || ''}
                       onChange={(e) => handleInputChange(`${trait.id}_number`, e.target.value)}
-                      style={{ width: '7ch', border: 'none', background: 'transparent', textAlign: 'center' }}
+                      style={{ width: '7ch', border: 'none', background: '#ddd', textAlign: 'center', fontSize: '0.8rem', fontWeight: 'bold', letterSpacing: '0.1em', fontFamily: 'monospace', borderRadius: '5px', padding: '2px 5px' }}
                     >
                       <option value="">0-0</option>
                       <option value="1-1">1-1</option>
@@ -731,22 +744,31 @@ export default function AbilityAndDerivedStats({
                       <option value="6-10">6-10</option>
                     </select>
                   </span>
-                  <span className="name" style={{ width: 'auto' }}>
+                  <span className="name">
                     <input
                       type="text"
                       name={`${trait.id}_name`}
+                      style={{ borderRadius: '5px', padding: '2px 5px' }}
                       value={(characterData as any)[`${trait.id}_name`] || ''}
                       onChange={(e) => handleInputChange(`${trait.id}_name`, e.target.value)}
                       placeholder="特徴名" />
                   </span>
                 </div>
                 <div className="contents">
-                  <input
-                    type="text"
+                  <textarea
                     name={`${trait.id}_description`}
                     value={(characterData as any)[`${trait.id}_description`] || ''}
                     onChange={(e) => handleInputChange(`${trait.id}_description`, e.target.value)}
                     placeholder="特徴表説明"
+                    style={{
+                      width: '100%',
+                      minHeight: '60px',
+                      resize: 'vertical',
+                      padding: '8px',
+                      borderRadius: '5px',
+                      fontFamily: 'inherit',
+                      fontSize: 'inherit'
+                    }}
                   />
                 </div>
                 <div style={{
@@ -770,29 +792,40 @@ export default function AbilityAndDerivedStats({
             type="button"
             onClick={addTrait}
             className="add-btn"
-            style={{ margin: '10px auto 30px' }}>
+            style={{ margin: '-10px 0 10px auto' }}>
             <i className="fas fa-plus"></i> 特徴を追加
           </button>
 
           {/* ベース職業情報 */}
-          <div className="d-flex job-base">
-            <div style={{ flex: '1 1 auto' }}>
-              <span>ベース</span>
+          <div className="job-base-responsive">
+            <div>
+              <span>ベース職業</span>
               <input
                 type="text"
                 name="base_job"
+                style={{ minHeight: '50px', borderRadius: '5px' }}
                 value={characterData.base_job || ''}
                 onChange={(e) => handleInputChange('base_job', e.target.value)}
                 placeholder="職業名" />
             </div>
-            <div style={{ flex: '2 1 auto', marginRight: '0' }}>
-              <span>特記</span>
-              <input
-                type="text"
+            <div>
+              <span>職業特記</span>
+              <textarea
                 name="special_notes"
                 value={characterData.special_notes || ''}
                 onChange={(e) => handleInputChange('special_notes', e.target.value)}
-                placeholder="特記事項" />
+                placeholder="特記事項"
+                style={{
+                  width: '100%',
+                  minHeight: '50px',
+                  resize: 'vertical',
+                  padding: '5px',
+                  borderRadius: '5px',
+                  fontFamily: 'inherit',
+                  fontSize: 'inherit',
+                  lineHeight: '1.4'
+                }}
+              />
             </div>
           </div>
         </div>
@@ -809,6 +842,7 @@ export default function AbilityAndDerivedStats({
                 className="current_san"
                 id="current_san"
                 name="current_san"
+                style={{ color: '#57595d' }}
                 value={characterData.current_san || 0}
                 onChange={(e) => handleInputChange('current_san', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
               />
@@ -851,7 +885,7 @@ export default function AbilityAndDerivedStats({
                 readOnly
                 style={{
                   width: `${Math.max(2, String(characterData.job_points_used || 0).length)}ch`,
-                  color: (characterData.job_points_used || 0) > (characterData.job_points_formula === 'manual' ? (characterData.job_points_total || 0) : (calculatedStats.job_points_total || 0)) ? '#d32f2f' : 'inherit'
+                  color: (characterData.job_points_used || 0) > (characterData.job_points_formula === 'manual' ? (characterData.job_points_total || 0) : (calculatedStats.job_points_total || 0)) ? '#d32f2f' : '#57595d'
                 }}
               />
               <span>/</span>
@@ -919,7 +953,7 @@ export default function AbilityAndDerivedStats({
                 readOnly
                 style={{
                   width: `${Math.max(2, String(characterData.interest_points_used || 0).length)}ch`,
-                  color: (characterData.interest_points_used || 0) > (calculatedStats.interest_points_total || 0) ? '#d32f2f' : 'inherit'
+                  color: (characterData.interest_points_used || 0) > (calculatedStats.interest_points_total || 0) ? '#d32f2f' : '#57595d'
                 }}
               />
               <span>/</span>

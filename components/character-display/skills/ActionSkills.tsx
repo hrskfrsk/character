@@ -16,7 +16,7 @@ export default function ActionSkills({
   isSkillInitialOnly,
   handleSkillClick
 }: ActionSkillsProps) {
-  
+
   const getSkillRowClass = (skillPrefix: string) => {
     return `d-flex skill-li skill-body${isSkillInitialOnly(skillPrefix) ? ' skill-initial-only' : ''}`;
   };
@@ -26,7 +26,7 @@ export default function ActionSkills({
       <ul>
         <li className="d-flex skill-li skill-head">
           <div className="title">技能名</div>
-          <div className="total">-合計<span className="pc-only">値</span></div>
+          <div className="total">合計<span className="pc-only">値</span></div>
           <div className="breakdown">
             <span className="pc-only">初期値</span><span className="sp-only">初期</span>|
             <span className="pc-only">職業P</span><span className="sp-only">職業</span>|
@@ -273,7 +273,7 @@ export default function ActionSkills({
           for (let i = 1; i <= 50; i++) {
             const skillName = character[`additional_action_${i}_name`];
             if (skillName && (showAllSkills || !isSkillInitialOnly(`additional_action_${i}`))) {
-              const calculatedTotal = 
+              const calculatedTotal =
                 (parseInt(character[`additional_action_${i}_initial`] as string) || 1) +
                 (parseInt(character[`additional_action_${i}_job`] as string) || 0) +
                 (parseInt(character[`additional_action_${i}_interest`] as string) || 0) +

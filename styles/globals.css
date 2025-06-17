@@ -38,6 +38,44 @@ h2 {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
+
+/* ベース職業情報 - レスポンシブ対応 */
+.job-base-responsive {
+  display: flex;
+  gap: 20px;
+  border-top: 2px solid #ddd;
+  padding-top: 20px;
+}
+
+.job-base-responsive > div:first-child {
+  flex: 1 1 80px;
+}
+
+.job-base-responsive > div:last-child {
+  flex: 2 1 auto;
+  margin-right: 0;
+}
+
+@media only screen and (max-width: 768px) {
+  .job-base-responsive {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .job-base-responsive > div:first-child {
+    flex: none;
+  }
+
+  .job-base-responsive > div:last-child {
+    flex: none;
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
+  .job-base-responsive input {
+    min-height: 26px !important;
+  }
+}
+
 @media only screen and (min-width: 768px) {
   .wrap {
     width: 760px;
@@ -105,6 +143,7 @@ textarea,
   text-align: center;
   background: transparent;
   height: 25px;
+  color: #57595d;
 }
 
 /* キャラクター名セクション - タイトル風 */
@@ -1071,6 +1110,7 @@ textarea,
   resize: vertical;
   max-width: 100%;
   line-height: 1.4;
+  text-align: left;
 }
 .character-input .base-select {
   background: #fff;
@@ -1382,8 +1422,9 @@ li {
 .chara-seet .job-base {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  margin-top: 15px;
   margin-bottom: 3%;
+  border-top: 2px solid #ddd;
+  padding-top: 15px;
 }
 .chara-seet .job-base > div {
   margin-right: 15px;
@@ -1588,7 +1629,7 @@ li {
   text-align: center;
   font-size: 1rem;
   font-weight: 600;
-  color: inherit;
+  color: #57595d;
 }
 .chara-seet .features {
   margin: 3% 0 0;
@@ -1634,14 +1675,18 @@ li {
 .chara-seet .features .f-list .f-label .name {
   padding: 2px 0;
   font-weight: 600;
-  width: 79%;
+  width: 90%;
   display: inline-block;
   font-size: 0.9rem;
   text-align: center;
+  display: block;
+  margin: 0 auto;
 }
 @media only screen and (max-width: 768px) {
   .chara-seet .features .f-list .f-label .name {
     text-align: left;
+    width: 98.5%;
+    transform: translateX(5px);
   }
 }
 .chara-seet .features .f-list .contents {

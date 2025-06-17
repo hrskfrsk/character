@@ -254,7 +254,7 @@ export default function MemoSection({
                               textAlign: 'left',
                               marginBottom: '0',
                               borderRadius: '0',
-                              minHeight: '60px',
+                              minHeight: '80px',
                               overflow: 'hidden' // スクロールバーを隠す
                             }}
                             onInput={(e) => adjustTextareaHeight(e.target as HTMLTextAreaElement)}
