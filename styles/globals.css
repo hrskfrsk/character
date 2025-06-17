@@ -1577,6 +1577,15 @@ li {
   font-size: 0.8rem;
   font-family: "Kosugi";
 }
+.character-display.character-display {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 30px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  position: relative;
+}
 .chara-seet ul {
   margin: 0;
   padding: 0;
@@ -1623,7 +1632,7 @@ li {
   text-align: center;
 }
 .chara-seet .scores .ul-score .score-li {
-  width: 69.5px;
+  width: 65.2px;
   margin: 0 0.5px;
 }
 .character-input .chara-seet .scores .ul-score .score-li {

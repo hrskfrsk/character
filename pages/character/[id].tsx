@@ -37,6 +37,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
     memos: true
   });
 
+
   // 初期値を表示するヘルパー関数（初期値は必ず数字を表示）
   const displayInitial = (value: any, defaultValue: number = 0): string => {
     if (value !== undefined && value !== null && value !== '') {
@@ -179,40 +180,43 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                 {/* 基本データ */}
                 <BasicDataDisplay character={character} />
 
-                <section className="chara-seet">
+                <section className="chara-seet character-display">
                   <CharacterHeader
                     character={character}
                     calculateAbilityTotal={calculateAbilityTotal}
                   />
 
-                  {/* スペック */}
-                  <StatDisplay character={character} />
+                  {/* プレイシートセクション */}
+                  <div className="character-info character-name-section">
+                    {/* スペック */}
+                    <StatDisplay character={character} />
 
-                  {/* 技能セクション */}
-                  <SkillsDisplay
-                    character={character}
-                    characterId={characterId}
-                    handleSkillClick={handleSkillClick}
-                  />
+                    {/* 技能セクション */}
+                    <SkillsDisplay
+                      character={character}
+                      characterId={characterId}
+                      handleSkillClick={handleSkillClick}
+                    />
 
-                  {/* 装備表示コンポーネント */}
-                  <EquipmentDisplay
-                    character={character}
-                    equipmentSections={equipmentSections}
-                    toggleEquipmentSection={toggleEquipmentSection}
-                    handleSkillClick={handleSkillClick}
-                  />
+                    {/* 装備表示コンポーネント */}
+                    <EquipmentDisplay
+                      character={character}
+                      equipmentSections={equipmentSections}
+                      toggleEquipmentSection={toggleEquipmentSection}
+                      handleSkillClick={handleSkillClick}
+                    />
 
-                  <MemoDisplay
-                    character={character}
-                    equipmentSections={equipmentSections}
-                    toggleEquipmentSection={toggleEquipmentSection}
-                    secretMemoVisibility={secretMemoVisibility}
-                    memoPasswordStates={memoPasswordStates}
-                    toggleSecretMemoVisibility={toggleSecretMemoVisibility}
-                    handlePasswordInput={handlePasswordInput}
-                    handlePasswordSubmit={handlePasswordSubmit}
-                  />
+                    <MemoDisplay
+                      character={character}
+                      equipmentSections={equipmentSections}
+                      toggleEquipmentSection={toggleEquipmentSection}
+                      secretMemoVisibility={secretMemoVisibility}
+                      memoPasswordStates={memoPasswordStates}
+                      toggleSecretMemoVisibility={toggleSecretMemoVisibility}
+                      handlePasswordInput={handlePasswordInput}
+                      handlePasswordSubmit={handlePasswordSubmit}
+                    />
+                  </div>
 
                   {/* 編集ボタン */}
                   <div className="edit-button-container" style={{ textAlign: 'center', marginTop: '30px', paddingTop: '20px', borderTop: '2px solid #ddd' }}>
