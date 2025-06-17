@@ -33,7 +33,7 @@ CBRB(${character.headbutt_total || 0},${character.martial_arts_total || 0}) 頭�
     for (let i = 1; i <= 50; i++) {
       const skillName = character[`additional_combat_${i}_name`];
       if (skillName) {
-        const skillTotal = 
+        const skillTotal =
           (parseInt(character[`additional_combat_${i}_initial`] as string) || 1) +
           (parseInt(character[`additional_combat_${i}_job`] as string) || 0) +
           (parseInt(character[`additional_combat_${i}_interest`] as string) || 0) +
@@ -44,6 +44,7 @@ CBRB(${character.headbutt_total || 0},${character.martial_arts_total || 0}) 頭�
     }
 
     palette += `
+
 ▼探索技能-------------------------------------
 CCB<=${character.first_aid_total || 0} 応急手当
 CCB<=${character.locksmith_total || 0} 鍵開け
@@ -62,7 +63,7 @@ CCB<=${character.spot_hidden_total || 0} 目星`;
     for (let i = 1; i <= 50; i++) {
       const skillName = character[`additional_exploration_${i}_name`];
       if (skillName) {
-        const skillTotal = 
+        const skillTotal =
           (parseInt(character[`additional_exploration_${i}_initial`] as string) || 1) +
           (parseInt(character[`additional_exploration_${i}_job`] as string) || 0) +
           (parseInt(character[`additional_exploration_${i}_interest`] as string) || 0) +
@@ -73,6 +74,7 @@ CCB<=${character.spot_hidden_total || 0} 目星`;
     }
 
     palette += `
+
 ▼行動技能-------------------------------------
 CCB<=${character.drive_total || 0} 運転
 CCB<=${character.mechanical_repair_total || 0} 機械修理
@@ -90,7 +92,7 @@ CCB<=${character.disguise_total || 0} 変装`;
     for (let i = 1; i <= 50; i++) {
       const skillName = character[`additional_action_${i}_name`];
       if (skillName) {
-        const skillTotal = 
+        const skillTotal =
           (parseInt(character[`additional_action_${i}_initial`] as string) || 1) +
           (parseInt(character[`additional_action_${i}_job`] as string) || 0) +
           (parseInt(character[`additional_action_${i}_interest`] as string) || 0) +
@@ -101,6 +103,7 @@ CCB<=${character.disguise_total || 0} 変装`;
     }
 
     palette += `
+
 ▼交渉技能-------------------------------------
 CCB<=${character.fast_talk_total || 0} 言いくるめ
 CCB<=${character.credit_rating_total || 0} 信用
@@ -112,7 +115,7 @@ CCB<=${character.mother_tongue_total || 0} 母国語`;
     for (let i = 1; i <= 50; i++) {
       const skillName = character[`additional_negotiation_${i}_name`];
       if (skillName) {
-        const skillTotal = 
+        const skillTotal =
           (parseInt(character[`additional_negotiation_${i}_initial`] as string) || 1) +
           (parseInt(character[`additional_negotiation_${i}_job`] as string) || 0) +
           (parseInt(character[`additional_negotiation_${i}_interest`] as string) || 0) +
@@ -123,6 +126,7 @@ CCB<=${character.mother_tongue_total || 0} 母国語`;
     }
 
     palette += `
+
 ▼知識技能-------------------------------------
 CCB<=${character.medicine_total || 0} 医学
 CCB<=${character.occult_total || 0} オカルト
@@ -148,7 +152,7 @@ CCB<=${character.history_total || 0} 歴史`;
     for (let i = 1; i <= 50; i++) {
       const skillName = character[`additional_knowledge_${i}_name`];
       if (skillName) {
-        const skillTotal = 
+        const skillTotal =
           (parseInt(character[`additional_knowledge_${i}_initial`] as string) || 1) +
           (parseInt(character[`additional_knowledge_${i}_job`] as string) || 0) +
           (parseInt(character[`additional_knowledge_${i}_interest`] as string) || 0) +
@@ -225,6 +229,7 @@ RESB({EDU}-対抗値) EDU対抗
     }
 
     palette += `
+
 ▼回復-------------------------------------
 1D3応急手当回復
 1D3 SAN回復
