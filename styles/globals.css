@@ -1139,7 +1139,6 @@ textarea,
   }
 }
 .character-input textarea {
-  height: auto;
   resize: vertical;
   max-width: 100%;
   line-height: 1.4;
@@ -1868,6 +1867,18 @@ li {
 }
 .chara-seet .data-wrap .data-li div {
   padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.chara-seet .data-wrap .data-li div.kazu {
+  display: block;
+}
+.chara-seet .data-wrap .data-li div div {
+  flex-direction: row;
+}
+.chara-seet .data-wrap .data-li div div span {
+  margin-top: 5px;
 }
 
 .character-input .chara-seet .data-wrap .data-li div {
@@ -1929,8 +1940,8 @@ li {
 @media only screen and (max-width: 768px) {
   .chara-seet .data-wrap .data-li .term {
     -webkit-box-flex: 1;
-    -ms-flex: 1 0 auto;
-    flex: 1 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
   }
 }
 .chara-seet .data-wrap .data-li .label {

@@ -199,15 +199,10 @@ export default function Equipment({
                       placeholder="--"
                       style={{
                         width: '100%',
-                        border: 'none',
-                        background: 'transparent',
-                        textAlign: 'center',
                         resize: 'vertical',
                         minHeight: '15px',
-                        fontFamily: 'inherit',
-                        fontSize: 'inherit',
                         marginTop: '5px',
-                        height: '25px'
+                        padding: '3px 5px',
                       }}
                     />
                   </div>
@@ -274,13 +269,17 @@ export default function Equipment({
                     />
                   </div>
                   <div className="content">
-                    <input
-                      type="text"
+                    <textarea
                       name={`${item.id}_details`}
                       value={(characterData as any)[`${item.id}_details`] || ''}
                       onChange={(e) => handleInputChange(`${item.id}_details`, e.target.value)}
                       placeholder="詳細"
-                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center' }}
+                      style={{
+                        width: '100%',
+                        resize: 'vertical',
+                        minHeight: '25px',
+                        padding: '3px 5px',
+                      }}
                     />
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', width: '40px', justifyContent: 'center' }}>
@@ -336,23 +335,58 @@ export default function Equipment({
                     />
                   </div>
                   <div className="term">
-                    <input
-                      type="text"
-                      name={`${disorder.id}_period`}
-                      value={(characterData as any)[`${disorder.id}_period`] || ''}
-                      onChange={(e) => handleInputChange(`${disorder.id}_period`, e.target.value)}
-                      placeholder="YYYY/MM/DD～YYYY/MM/DD"
-                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center' }}
-                    />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      <input
+                        type="date"
+                        name={`${disorder.id}_period_start`}
+                        value={(characterData as any)[`${disorder.id}_period`]?.split('～')[0] || ''}
+                        onChange={(e) => {
+                          const endDate = (characterData as any)[`${disorder.id}_period`]?.split('～')[1] || '';
+                          const newPeriod = e.target.value + (endDate ? '～' + endDate : '');
+                          handleInputChange(`${disorder.id}_period`, newPeriod);
+                        }}
+                        style={{ 
+                          width: '45%', 
+                          border: 'none', 
+                          background: 'transparent', 
+                          textAlign: 'center',
+                          fontSize: 'inherit',
+                          fontFamily: 'inherit'
+                        }}
+                      />
+                      <span>～</span>
+                      <input
+                        type="date"
+                        name={`${disorder.id}_period_end`}
+                        value={(characterData as any)[`${disorder.id}_period`]?.split('～')[1] || ''}
+                        onChange={(e) => {
+                          const startDate = (characterData as any)[`${disorder.id}_period`]?.split('～')[0] || '';
+                          const newPeriod = startDate + '～' + e.target.value;
+                          handleInputChange(`${disorder.id}_period`, newPeriod);
+                        }}
+                        style={{ 
+                          width: '45%', 
+                          border: 'none', 
+                          background: 'transparent', 
+                          textAlign: 'center',
+                          fontSize: 'inherit',
+                          fontFamily: 'inherit'
+                        }}
+                      />
+                    </div>
                   </div>
                   <div className="content">
-                    <input
-                      type="text"
+                    <textarea
                       name={`${disorder.id}_details`}
                       value={(characterData as any)[`${disorder.id}_details`] || ''}
                       onChange={(e) => handleInputChange(`${disorder.id}_details`, e.target.value)}
                       placeholder="詳細"
-                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center' }}
+                      style={{
+                        width: '100%',
+                        resize: 'vertical',
+                        minHeight: '25px',
+                        padding: '3px 5px',
+                      }}
                     />
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', width: '40px', justifyContent: 'center' }}>
@@ -408,13 +442,17 @@ export default function Equipment({
                     />
                   </div>
                   <div className="content">
-                    <input
-                      type="text"
+                    <textarea
                       name={`${book.id}_details`}
                       value={(characterData as any)[`${book.id}_details`] || ''}
                       onChange={(e) => handleInputChange(`${book.id}_details`, e.target.value)}
                       placeholder="詳細・効果"
-                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center' }}
+                      style={{
+                        width: '100%',
+                        resize: 'vertical',
+                        minHeight: '25px',
+                        padding: '3px 5px',
+                      }}
                     />
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', width: '40px', justifyContent: 'center' }}>
@@ -470,13 +508,17 @@ export default function Equipment({
                     />
                   </div>
                   <div className="content">
-                    <input
-                      type="text"
+                    <textarea
                       name={`${spell.id}_details`}
                       value={(characterData as any)[`${spell.id}_details`] || ''}
                       onChange={(e) => handleInputChange(`${spell.id}_details`, e.target.value)}
                       placeholder="効果・詳細"
-                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center' }}
+                      style={{
+                        width: '100%',
+                        resize: 'vertical',
+                        minHeight: '25px',
+                        padding: '3px 5px',
+                      }}
                     />
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', width: '40px', justifyContent: 'center' }}>
@@ -532,13 +574,17 @@ export default function Equipment({
                     />
                   </div>
                   <div className="content">
-                    <input
-                      type="text"
+                    <textarea
                       name={`${artifact.id}_details`}
                       value={(characterData as any)[`${artifact.id}_details`] || ''}
                       onChange={(e) => handleInputChange(`${artifact.id}_details`, e.target.value)}
                       placeholder="効果・詳細"
-                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center' }}
+                      style={{
+                        width: '100%',
+                        resize: 'vertical',
+                        minHeight: '25px',
+                        padding: '3px 5px',
+                      }}
                     />
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', width: '40px', justifyContent: 'center' }}>
@@ -594,13 +640,17 @@ export default function Equipment({
                     />
                   </div>
                   <div className="content">
-                    <input
-                      type="text"
+                    <textarea
                       name={`${entity.id}_details`}
                       value={(characterData as any)[`${entity.id}_details`] || ''}
                       onChange={(e) => handleInputChange(`${entity.id}_details`, e.target.value)}
                       placeholder="詳細・状況"
-                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center' }}
+                      style={{
+                        width: '100%',
+                        resize: 'vertical',
+                        minHeight: '25px',
+                        padding: '3px 5px',
+                      }}
                     />
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', width: '40px', justifyContent: 'center' }}>
