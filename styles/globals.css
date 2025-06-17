@@ -1626,6 +1626,9 @@ li {
   width: 69.5px;
   margin: 0 0.5px;
 }
+.character-input .chara-seet .scores .ul-score .score-li {
+  width: 65.2px;
+}
 @media only screen and (max-width: 1029px) {
   .chara-seet .scores .ul-score .score-li {
     -webkit-box-flex: 1;
@@ -1642,6 +1645,10 @@ li {
   color: #fff;
   border-radius: 4px 4px 0 0;
   line-height: 1.6;
+}
+.character-input .chara-seet .scores .ul-score h3 {
+  font-size: 0.75rem;
+  min-height: 20px;
 }
 
 /* 初期SAN、HP、MP、知識、アイデア、幸運はテーマカラー40% */
@@ -1831,7 +1838,7 @@ li {
   align-items: center;
   line-height: 1.5;
   padding: 0px;
-  border-left: solid 2px;
+  border-left: solid 2px var(--ui-theme-color);
   margin-bottom: 15px;
 }
 @media only screen and (max-width: 768px) {
