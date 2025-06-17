@@ -1387,6 +1387,7 @@ li {
 .chara-seet .job-base {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
+  margin-top: 15px;
 }
 .chara-seet .job-base > div {
   margin-right: 15px;
@@ -1948,8 +1949,8 @@ li {
   display: block;
   font-family: "Font Awesome 5 Free";
   position: absolute;
-  right: 15px;
-  top: 5px;
+  right: 5px;
+  top: 3px;
   font-weight: 600;
 }
 
@@ -2297,6 +2298,7 @@ li {
 
 .character .data-wrap {
   margin-bottom: 15px;
+  margin-top: 20px;
 }
 
 .character .data-wrap .acd-check {
@@ -2326,8 +2328,8 @@ li {
   transition: all 0.3s;
   cursor: pointer;
   border-bottom: dotted 1px;
-  width: 150px;
-  padding: 3px 10px;
+  width: 140px;
+  padding: 3px 5px;
   color: #888;
   font-size: 0.9rem;
   margin-bottom: 10px;

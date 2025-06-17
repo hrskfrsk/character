@@ -67,43 +67,39 @@ export default function StatDisplay({ character }: StatDisplayProps) {
         </div>
       </div>
 
-      {/* 特徴セクション */}
-      <div className="features">
-        <ul>
-          {(() => {
-            const traitElements = [];
-            // trait_1からtrait_50まで確認して存在するもののみ表示
-            for (let i = 1; i <= 50; i++) {
-              const traitNumber = character[`trait_${i}_number`];
-              const traitName = character[`trait_${i}_name`];
-              const traitDescription = character[`trait_${i}_description`];
+      {/* 特徴セクション - 入力がある場合のみ表示 */}
+      {(() => {
+        const traitElements = [];
+        // trait_1からtrait_50まで確認して存在するもののみ表示
+        for (let i = 1; i <= 50; i++) {
+          const traitNumber = character[`trait_${i}_number`];
+          const traitName = character[`trait_${i}_name`];
+          const traitDescription = character[`trait_${i}_description`];
 
-              if (traitName) {
-                traitElements.push(
-                  <li key={i} className="d-flex f-list" style={{ borderLeftColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
-                    <div className="f-label" style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
-                      <span className="num">{traitNumber || '0-0'}</span>
-                      <span className="name">{traitName}</span>
-                    </div>
-                    <div className="contents">
-                      {traitDescription || '-'}
-                    </div>
-                  </li>
-                );
-              }
-            }
-            return traitElements.length > 0 ? traitElements : (
-              <li className="d-flex f-list" style={{ borderLeftColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+          if (traitName) {
+            traitElements.push(
+              <li key={i} className="d-flex f-list" style={{ borderLeftColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
                 <div className="f-label" style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
-                  <span className="num">-</span>
-                  <span className="name">特徴なし</span>
+                  <span className="num">{traitNumber || '0-0'}</span>
+                  <span className="name">{traitName}</span>
                 </div>
-                <div className="contents">-</div>
+                <div className="contents">
+                  {traitDescription || '-'}
+                </div>
               </li>
             );
-          })()}
-        </ul>
-      </div>
+          }
+        }
+        
+        // 特徴が1つでもある場合のみセクション全体を表示
+        return traitElements.length > 0 ? (
+          <div className="features">
+            <ul>
+              {traitElements}
+            </ul>
+          </div>
+        ) : null;
+      })()}
 
       {/* ベース職業と特記事項 */}
       <div className="d-flex job-base">
