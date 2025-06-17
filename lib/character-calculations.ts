@@ -545,6 +545,7 @@ export interface CharacterData {
   default_memo?: string;
   other_memo?: string;
   secret_memo?: string;
+  memo_order?: string; // JSON文字列として保存
   
   // 特徴・ベース職業フィールド
   base_job?: string;

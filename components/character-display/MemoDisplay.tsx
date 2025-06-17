@@ -60,14 +60,38 @@ export default function MemoDisplay({
           {/* 新しいメモシステム */}
           {(() => {
             const memoElements = [];
-            for (let i = 1; i <= 50; i++) {
+            
+            // メモの順序を取得（データベースから、なければ作成順）
+            let memoOrder: string[] = [];
+            if (character.memo_order) {
+              try {
+                memoOrder = JSON.parse(character.memo_order);
+              } catch (e) {
+                console.warn('Failed to parse memo_order:', e);
+              }
+            }
+            
+            // 順序が設定されていない場合は、既存のメモIDを作成順で取得
+            if (memoOrder.length === 0) {
+              for (let i = 1; i <= 50; i++) {
+                if (character[`memo_${i}_title`] || character[`memo_${i}_content`]) {
+                  memoOrder.push(`memo_${i}`);
+                }
+              }
+            }
+            
+            // 順序に従ってメモを表示
+            memoOrder.forEach((memoId) => {
+              const match = memoId.match(/memo_(\d+)/);
+              if (!match) return;
+              
+              const i = parseInt(match[1]);
               const title = character[`memo_${i}_title`];
               const content = character[`memo_${i}_content`];
               const hidden = character[`memo_${i}_hidden`];
               const passwordProtected = character[`memo_${i}_password_protected`];
 
               if (title || content) {
-                const memoId = `memo_${i}`;
                 // デフォルトの表示状態：「隠す」がチェックされていない場合は表示
                 const defaultVisible = !hidden;
                 const isVisible = secretMemoVisibility[memoId] !== undefined
@@ -170,7 +194,7 @@ export default function MemoDisplay({
                   </div>
                 );
               }
-            }
+            });
             return memoElements;
           })()}
 

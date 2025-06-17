@@ -126,6 +126,11 @@ export default function CreateCharacterPage() {
     if (typeof window !== 'undefined') {
       localStorage.setItem('character-form-memoOrder', JSON.stringify(memoOrder));
     }
+    // キャラクターデータにも保存
+    setCharacterData(prev => ({
+      ...prev,
+      memo_order: JSON.stringify(memoOrder)
+    }));
   }, [memoOrder]);
 
   const router = useRouter();
@@ -266,12 +271,33 @@ export default function CreateCharacterPage() {
     setSecretMemos(memoList);
     setSecretMemoCounter(maxMemoCounter);
     
-    // localStorageに保存された順序があれば、それを優先使用
-    const savedMemoOrder = localStorage.getItem('character-form-memoOrder');
-    if (savedMemoOrder) {
-      const parsedOrder = JSON.parse(savedMemoOrder);
+    // データベースから保存された順序を優先、次にlocalStorage、最後に作成順
+    let savedOrder: string[] | null = null;
+    
+    // まずデータベースの順序を確認
+    if (data.memo_order) {
+      try {
+        savedOrder = JSON.parse(data.memo_order);
+      } catch (e) {
+        console.warn('Failed to parse memo_order from database:', e);
+      }
+    }
+    
+    // データベースにない場合はlocalStorageを確認
+    if (!savedOrder) {
+      const localStorageOrder = localStorage.getItem('character-form-memoOrder');
+      if (localStorageOrder) {
+        try {
+          savedOrder = JSON.parse(localStorageOrder);
+        } catch (e) {
+          console.warn('Failed to parse memo_order from localStorage:', e);
+        }
+      }
+    }
+    
+    if (savedOrder) {
       // 既存のメモIDと照合して、存在するもののみを保持
-      const validOrder = parsedOrder.filter((id: string) => 
+      const validOrder = savedOrder.filter((id: string) => 
         memoList.some(memo => memo.id === id)
       );
       // 新しく追加されたメモ（順序にないもの）を末尾に追加
@@ -280,7 +306,7 @@ export default function CreateCharacterPage() {
         .map(memo => memo.id);
       setMemoOrder([...validOrder, ...newMemos]);
     } else {
-      // localStorageに順序がない場合は作成順を使用
+      // 保存された順序がない場合は作成順を使用
       const initialMemoOrder = memoList.map(memo => memo.id);
       setMemoOrder(initialMemoOrder);
     }

@@ -33,7 +33,7 @@ export default function MemoSection({
 
   // ドラッグ&ドロップ用の状態
   const [draggedItem, setDraggedItem] = useState<string | null>(null);
-  const [dragOverItem, setDragOverItem] = useState<string | null>(null);
+  const [, setDragOverItem] = useState<string | null>(null);
   // リアルタイムプレビュー用の順序
   const [previewOrder, setPreviewOrder] = useState<string[]>([]);
   // ドロップが成功したかを追跡
