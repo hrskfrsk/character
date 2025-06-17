@@ -22,9 +22,9 @@ export default function StatusSlots({
   return (
     <div className="character-section">
       <div className="section-header" style={{ marginBottom: '20px' }} onClick={onSkillSectionToggle}>
-        <h2>
+        <h3>
           <i className="fas fa-cogs section-icon"></i>技能
-        </h2>
+        </h3>
         <i className={`fas ${isSkillSectionCollapsed ? 'fa-chevron-up' : 'fa-chevron-down'} section-toggle-icon`}></i>
       </div>
 

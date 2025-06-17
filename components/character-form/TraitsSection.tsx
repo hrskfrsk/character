@@ -21,9 +21,9 @@ export default function TraitsSection({
   return (
     <div className="traits-section character-section">
       <div className="section-header" onClick={() => setIsCollapsed(!isCollapsed)}>
-        <h2>
+        <h3>
           <i className="fas fa-list-alt section-icon"></i>特徴表
-        </h2>
+        </h3>
         <i className={`fas ${isCollapsed ? 'fa-chevron-up' : 'fa-chevron-down'} section-toggle-icon`}></i>
       </div>
 

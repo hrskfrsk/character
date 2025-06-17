@@ -15,9 +15,9 @@ export default function JobBaseInfo({
   return (
     <div className="character-section">
       <div className="section-header" onClick={() => setIsCollapsed(!isCollapsed)}>
-        <h2>
+        <h3>
           <i className="fas fa-briefcase section-icon"></i>ベース職業
-        </h2>
+        </h3>
         <i className={`fas ${isCollapsed ? 'fa-chevron-up' : 'fa-chevron-down'} section-toggle-icon`}></i>
       </div>
       <div className={`section-content ${isCollapsed ? 'collapsed' : ''}`} style={{ maxHeight: isCollapsed ? '0' : '1000px' }}>
