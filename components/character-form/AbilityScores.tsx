@@ -59,14 +59,14 @@ export default function AbilityScores({
         marginLeft: '5px',
         padding: '2px 6px',
         fontSize: '10px',
-        backgroundColor: '#f0f0f0',
-        border: '1px solid #ccc',
+        backgroundColor: 'var(--ui-theme-color)',
+        border: '1px solid var(--ui-theme-color)',
         borderRadius: '3px',
         cursor: 'pointer',
-        color: '#666'
+        color: 'white'
       }}
-      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e0e0e0'}
-      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'}
+      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--ui-theme-color-hover)'}
+      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--ui-theme-color)'}
       title={`${formula}で振り直し`}
     >
       🎲
@@ -85,15 +85,15 @@ export default function AbilityScores({
           onClick={handleRollAllAbilities}
           style={{
             padding: '8px 16px',
-            backgroundColor: '#4CAF50',
+            backgroundColor: 'var(--ui-theme-color)',
             color: 'white',
             border: 'none',
             borderRadius: '4px',
             cursor: 'pointer',
             fontSize: '14px'
           }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#45a049'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4CAF50'}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--ui-theme-color-hover)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--ui-theme-color)'}
         >
           🎲 ALL
         </button>

@@ -1633,8 +1633,7 @@ li {
 .chara-seet .scores .ul-score .mp.score-li h3,
 .chara-seet .scores .ul-score .knowledge.score-li h3,
 .chara-seet .scores .ul-score .idea.score-li h3,
-.chara-seet .scores .ul-score .luck.score-li h3,
-.chara-seet .slots .db.slot h3 {
+.chara-seet .scores .ul-score .luck.score-li h3 {
   background: #aaa !important;
 }
 @media only screen and (max-width: 768px) {
