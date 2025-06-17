@@ -1649,6 +1649,9 @@ li {
 .character-input .chara-seet .scores .ul-score h3 {
   font-size: 0.75rem;
   min-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 初期SAN、HP、MP、知識、アイデア、幸運はテーマカラー40% */
@@ -1862,7 +1865,7 @@ li {
   }
 }
 .chara-seet .features .f-list .f-label .num {
-  padding: 4px 10px;
+  padding: 4px 3px 4px 10px;
   font-weight: 600;
 }
 .chara-seet .features .f-list .f-label .name {
