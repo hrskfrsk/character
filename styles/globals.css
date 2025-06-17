@@ -1291,34 +1291,29 @@ textarea,
 
 .segmented-toggle {
   display: inline-flex;
-  border: 2px solid #607d8b;
-  border-radius: 6px;
+  border: 1px solid #666;
+  border-radius: 5px;
   overflow: hidden;
-  background-color: white;
 }
 
 .segmented-toggle button {
-  padding: 8px 16px;
+  padding: 2px 9px;
   border: none;
   background-color: transparent;
-  color: #607d8b;
+  color: #666;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 0.85rem;
+  font-size: 0.7rem;
   min-width: 100px;
 }
 
-.segmented-toggle button:hover {
-  background-color: #f0f0f0;
-}
-
 .segmented-toggle button.active {
-  background-color: #607d8b;
+  background-color: #666;
   color: white;
 }
 
 .segmented-toggle button:not(:last-child) {
-  border-right: 1px solid #607d8b;
+  border-right: 1px solid #666;
 }
 
 /* Equipment Accordion Styles
@@ -2705,6 +2700,12 @@ li {
 .font-size-input:focus {
   outline: none;
   border-color: #007bff;
+}
+
+/* 初期値のみの技能スタイル */
+.skill-initial-only {
+  background-color: #e4e4e4 !important;
+  color: #888 !important;
 }
 
 /*# sourceMappingURL=style.css.map */

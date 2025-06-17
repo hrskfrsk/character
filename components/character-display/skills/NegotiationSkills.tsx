@@ -16,6 +16,10 @@ export default function NegotiationSkills({
   isSkillInitialOnly,
   handleSkillClick
 }: NegotiationSkillsProps) {
+  
+  const getSkillRowClass = (skillPrefix: string) => {
+    return `d-flex skill-li skill-body${isSkillInitialOnly(skillPrefix) ? ' skill-initial-only' : ''}`;
+  };
   return (
     <li className="skill-group">
       <h3><i className="fas fa-comments"></i> 交渉技能</h3>
@@ -33,7 +37,7 @@ export default function NegotiationSkills({
         </li>
 
         {(showAllSkills || !isSkillInitialOnly('fast_talk')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('fast_talk')}>
             <div className="title">言いくるめ</div>
             <div className="total">
               <SkillDisplay
@@ -54,7 +58,7 @@ export default function NegotiationSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('credit_rating')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('credit_rating')}>
             <div className="title">信用</div>
             <div className="total">
               <SkillDisplay
@@ -75,7 +79,7 @@ export default function NegotiationSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('persuade')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('persuade')}>
             <div className="title">説得</div>
             <div className="total">
               <SkillDisplay
@@ -96,7 +100,7 @@ export default function NegotiationSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('bargain')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('bargain')}>
             <div className="title">値切り</div>
             <div className="total">
               <SkillDisplay
@@ -117,7 +121,7 @@ export default function NegotiationSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('mother_tongue')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('mother_tongue')}>
             <div className="title">母国語</div>
             <div className="total">
               <SkillDisplay
@@ -138,7 +142,7 @@ export default function NegotiationSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('language')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('language')}>
             <div className="title">外国語{character.language_specialty ? `(${character.language_specialty})` : ''}</div>
             <div className="total">
               <SkillDisplay
@@ -172,7 +176,7 @@ export default function NegotiationSkills({
                 (parseInt(character[`additional_negotiation_${i}_other`] as string) || 0);
 
               additionalNegotiationSkills.push(
-                <li key={i} className="d-flex skill-li skill-body">
+                <li key={i} className={getSkillRowClass(`additional_negotiation_${i}`)}>
                   <div className="title">{skillName}</div>
                   <div className="total">
                     <SkillDisplay

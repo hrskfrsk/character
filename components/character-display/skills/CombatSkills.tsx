@@ -16,6 +16,10 @@ export default function CombatSkills({
   isSkillInitialOnly,
   handleSkillClick
 }: CombatSkillsProps) {
+  
+  const getSkillRowClass = (skillPrefix: string) => {
+    return `d-flex skill-li skill-body${isSkillInitialOnly(skillPrefix) ? ' skill-initial-only' : ''}`;
+  };
   return (
     <li className="skill-group">
       <h3><i className="fas fa-fist-raised"></i> 戦闘技能</h3>
@@ -33,7 +37,7 @@ export default function CombatSkills({
         </li>
 
         {(showAllSkills || !isSkillInitialOnly('dodge')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('dodge')}>
             <div className="title">回避</div>
             <div className="total">
               <SkillDisplay
@@ -54,7 +58,7 @@ export default function CombatSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('kick')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('kick')}>
             <div className="title">キック</div>
             <div className="total">
               <SkillDisplay
@@ -75,7 +79,7 @@ export default function CombatSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('grapple')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('grapple')}>
             <div className="title">組み付き</div>
             <div className="total">
               <SkillDisplay
@@ -96,7 +100,7 @@ export default function CombatSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('punch')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('punch')}>
             <div className="title">こぶし</div>
             <div className="total">
               <SkillDisplay
@@ -117,7 +121,7 @@ export default function CombatSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('headbutt')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('headbutt')}>
             <div className="title">頭突き</div>
             <div className="total">
               <SkillDisplay
@@ -138,7 +142,7 @@ export default function CombatSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('throw')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('throw')}>
             <div className="title">投擲</div>
             <div className="total">
               <SkillDisplay
@@ -159,7 +163,7 @@ export default function CombatSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('martial_arts')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('martial_arts')}>
             <div className="title">マーシャルアーツ</div>
             <div className="total">
               <SkillDisplay
@@ -180,7 +184,7 @@ export default function CombatSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('handgun')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('handgun')}>
             <div className="title">拳銃</div>
             <div className="total">
               <SkillDisplay
@@ -201,7 +205,7 @@ export default function CombatSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('submachine_gun')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('submachine_gun')}>
             <div className="title">サブマシンガン</div>
             <div className="total">
               <SkillDisplay
@@ -222,7 +226,7 @@ export default function CombatSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('shotgun')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('shotgun')}>
             <div className="title">ショットガン</div>
             <div className="total">
               <SkillDisplay
@@ -243,7 +247,7 @@ export default function CombatSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('machine_gun')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('machine_gun')}>
             <div className="title">マシンガン</div>
             <div className="total">
               <SkillDisplay
@@ -264,7 +268,7 @@ export default function CombatSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('rifle')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('rifle')}>
             <div className="title">ライフル</div>
             <div className="total">
               <SkillDisplay
@@ -298,7 +302,7 @@ export default function CombatSkills({
                 (parseInt(character[`additional_combat_${i}_other`] as string) || 0);
 
               additionalCombatSkills.push(
-                <li key={i} className="d-flex skill-li skill-body">
+                <li key={i} className={getSkillRowClass(`additional_combat_${i}`)}>
                   <div className="title">{skillName}</div>
                   <div className="total">
                     <SkillDisplay

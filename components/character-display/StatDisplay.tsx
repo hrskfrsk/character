@@ -90,7 +90,7 @@ export default function StatDisplay({ character }: StatDisplayProps) {
             );
           }
         }
-        
+
         // 特徴が1つでもある場合のみセクション全体を表示
         return traitElements.length > 0 ? (
           <div className="features">

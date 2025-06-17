@@ -16,6 +16,10 @@ export default function ActionSkills({
   isSkillInitialOnly,
   handleSkillClick
 }: ActionSkillsProps) {
+  
+  const getSkillRowClass = (skillPrefix: string) => {
+    return `d-flex skill-li skill-body${isSkillInitialOnly(skillPrefix) ? ' skill-initial-only' : ''}`;
+  };
   return (
     <li className="skill-group">
       <h3><i className="fas fa-running"></i> 行動技能</h3>
@@ -33,7 +37,7 @@ export default function ActionSkills({
         </li>
 
         {(showAllSkills || !isSkillInitialOnly('drive')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('drive')}>
             <div className="title">運転{character.drive_specialty ? `(${character.drive_specialty})` : ''}</div>
             <div className="total">
               <SkillDisplay
@@ -54,7 +58,7 @@ export default function ActionSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('mechanical_repair')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('mechanical_repair')}>
             <div className="title">機械修理</div>
             <div className="total">
               <SkillDisplay
@@ -75,7 +79,7 @@ export default function ActionSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('heavy_machinery')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('heavy_machinery')}>
             <div className="title">重機械操作</div>
             <div className="total">
               <SkillDisplay
@@ -96,7 +100,7 @@ export default function ActionSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('ride')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('ride')}>
             <div className="title">乗馬</div>
             <div className="total">
               <SkillDisplay
@@ -117,7 +121,7 @@ export default function ActionSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('swim')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('swim')}>
             <div className="title">水泳</div>
             <div className="total">
               <SkillDisplay
@@ -138,7 +142,7 @@ export default function ActionSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('craft')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('craft')}>
             <div className="title">制作{character.craft_specialty ? `(${character.craft_specialty})` : ''}</div>
             <div className="total">
               <SkillDisplay
@@ -159,7 +163,7 @@ export default function ActionSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('pilot')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('pilot')}>
             <div className="title">操縦{character.pilot_specialty ? `(${character.pilot_specialty})` : ''}</div>
             <div className="total">
               <SkillDisplay
@@ -180,7 +184,7 @@ export default function ActionSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('jump')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('jump')}>
             <div className="title">跳躍</div>
             <div className="total">
               <SkillDisplay
@@ -201,7 +205,7 @@ export default function ActionSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('electrical_repair')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('electrical_repair')}>
             <div className="title">電気修理</div>
             <div className="total">
               <SkillDisplay
@@ -222,7 +226,7 @@ export default function ActionSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('navigate')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('navigate')}>
             <div className="title">ナビゲート</div>
             <div className="total">
               <SkillDisplay
@@ -243,7 +247,7 @@ export default function ActionSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('disguise')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('disguise')}>
             <div className="title">変装</div>
             <div className="total">
               <SkillDisplay
@@ -277,7 +281,7 @@ export default function ActionSkills({
                 (parseInt(character[`additional_action_${i}_other`] as string) || 0);
 
               additionalActionSkills.push(
-                <li key={i} className="d-flex skill-li skill-body">
+                <li key={i} className={getSkillRowClass(`additional_action_${i}`)}>
                   <div className="title">{skillName}</div>
                   <div className="total">
                     <SkillDisplay

@@ -16,6 +16,10 @@ export default function ExplorationSkills({
   isSkillInitialOnly,
   handleSkillClick
 }: ExplorationSkillsProps) {
+  
+  const getSkillRowClass = (skillPrefix: string) => {
+    return `d-flex skill-li skill-body${isSkillInitialOnly(skillPrefix) ? ' skill-initial-only' : ''}`;
+  };
   return (
     <li className="skill-group">
       <h3><i className="fas fa-search"></i> 探索技能</h3>
@@ -33,7 +37,7 @@ export default function ExplorationSkills({
         </li>
 
         {(showAllSkills || !isSkillInitialOnly('first_aid')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('first_aid')}>
             <div className="title">応急手当</div>
             <div className="total">
               <SkillDisplay
@@ -54,7 +58,7 @@ export default function ExplorationSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('locksmith')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('locksmith')}>
             <div className="title">鍵開け</div>
             <div className="total">
               <SkillDisplay
@@ -75,7 +79,7 @@ export default function ExplorationSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('hide')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('hide')}>
             <div className="title">隠す</div>
             <div className="total">
               <SkillDisplay
@@ -96,7 +100,7 @@ export default function ExplorationSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('sneak')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('sneak')}>
             <div className="title">隠れる</div>
             <div className="total">
               <SkillDisplay
@@ -117,7 +121,7 @@ export default function ExplorationSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('listen')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('listen')}>
             <div className="title">聞き耳</div>
             <div className="total">
               <SkillDisplay
@@ -138,7 +142,7 @@ export default function ExplorationSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('sneak')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('sneak')}>
             <div className="title">忍び歩き</div>
             <div className="total">
               <SkillDisplay
@@ -159,7 +163,7 @@ export default function ExplorationSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('photography')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('photography')}>
             <div className="title">写真術</div>
             <div className="total">
               <SkillDisplay
@@ -180,7 +184,7 @@ export default function ExplorationSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('psychoanalysis')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('psychoanalysis')}>
             <div className="title">精神分析</div>
             <div className="total">
               <SkillDisplay
@@ -201,7 +205,7 @@ export default function ExplorationSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('track')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('track')}>
             <div className="title">追跡</div>
             <div className="total">
               <SkillDisplay
@@ -222,7 +226,7 @@ export default function ExplorationSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('climb')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('climb')}>
             <div className="title">登攀</div>
             <div className="total">
               <SkillDisplay
@@ -243,7 +247,7 @@ export default function ExplorationSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('library_use')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('library_use')}>
             <div className="title">図書館</div>
             <div className="total">
               <SkillDisplay
@@ -264,7 +268,7 @@ export default function ExplorationSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('spot_hidden')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('spot_hidden')}>
             <div className="title">目星</div>
             <div className="total">
               <SkillDisplay
@@ -298,7 +302,7 @@ export default function ExplorationSkills({
                 (parseInt(character[`additional_exploration_${i}_other`] as string) || 0);
 
               additionalExplorationSkills.push(
-                <li key={i} className="d-flex skill-li skill-body">
+                <li key={i} className={getSkillRowClass(`additional_exploration_${i}`)}>
                   <div className="title">{skillName}</div>
                   <div className="total">
                     <SkillDisplay

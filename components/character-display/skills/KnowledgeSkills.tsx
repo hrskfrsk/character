@@ -16,6 +16,10 @@ export default function KnowledgeSkills({
   isSkillInitialOnly,
   handleSkillClick
 }: KnowledgeSkillsProps) {
+  
+  const getSkillRowClass = (skillPrefix: string) => {
+    return `d-flex skill-li skill-body${isSkillInitialOnly(skillPrefix) ? ' skill-initial-only' : ''}`;
+  };
   return (
     <li className="skill-group">
       <h3><i className="fas fa-book"></i> 知識技能</h3>
@@ -33,7 +37,7 @@ export default function KnowledgeSkills({
         </li>
 
         {(showAllSkills || !isSkillInitialOnly('medicine')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('medicine')}>
             <div className="title">医学</div>
             <div className="total">
               <SkillDisplay
@@ -54,7 +58,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('occult')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('occult')}>
             <div className="title">オカルト</div>
             <div className="total">
               <SkillDisplay
@@ -75,7 +79,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('chemistry')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('chemistry')}>
             <div className="title">化学</div>
             <div className="total">
               <SkillDisplay
@@ -96,7 +100,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('cthulhu_mythos')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('cthulhu_mythos')}>
             <div className="title">クトゥルフ神話</div>
             <div className="total">
               <SkillDisplay
@@ -117,7 +121,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('art')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('art')}>
             <div className="title">芸術{character.art_specialty ? `(${character.art_specialty})` : ''}</div>
             <div className="total">
               <SkillDisplay
@@ -138,7 +142,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('accounting')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('accounting')}>
             <div className="title">経理</div>
             <div className="total">
               <SkillDisplay
@@ -159,7 +163,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('archaeology')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('archaeology')}>
             <div className="title">考古学</div>
             <div className="total">
               <SkillDisplay
@@ -180,7 +184,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('computer_use')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('computer_use')}>
             <div className="title">コンピューター</div>
             <div className="total">
               <SkillDisplay
@@ -201,7 +205,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('psychology')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('psychology')}>
             <div className="title">心理学</div>
             <div className="total">
               <SkillDisplay
@@ -222,7 +226,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('anthropology')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('anthropology')}>
             <div className="title">人類学</div>
             <div className="total">
               <SkillDisplay
@@ -243,7 +247,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('biology')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('biology')}>
             <div className="title">生物学</div>
             <div className="total">
               <SkillDisplay
@@ -264,7 +268,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('geology')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('geology')}>
             <div className="title">地質学</div>
             <div className="total">
               <SkillDisplay
@@ -285,7 +289,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('electronics')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('electronics')}>
             <div className="title">電子工学</div>
             <div className="total">
               <SkillDisplay
@@ -306,7 +310,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('astronomy')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('astronomy')}>
             <div className="title">天文学</div>
             <div className="total">
               <SkillDisplay
@@ -327,7 +331,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('natural_history')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('natural_history')}>
             <div className="title">博物学</div>
             <div className="total">
               <SkillDisplay
@@ -348,7 +352,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('physics')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('physics')}>
             <div className="title">物理学</div>
             <div className="total">
               <SkillDisplay
@@ -369,7 +373,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('law')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('law')}>
             <div className="title">法律</div>
             <div className="total">
               <SkillDisplay
@@ -390,7 +394,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('pharmacy')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('pharmacy')}>
             <div className="title">薬学</div>
             <div className="total">
               <SkillDisplay
@@ -411,7 +415,7 @@ export default function KnowledgeSkills({
         )}
 
         {(showAllSkills || !isSkillInitialOnly('history')) && (
-          <li className="d-flex skill-li skill-body">
+          <li className={getSkillRowClass('history')}>
             <div className="title">歴史</div>
             <div className="total">
               <SkillDisplay
@@ -445,7 +449,7 @@ export default function KnowledgeSkills({
                 (parseInt(character[`additional_knowledge_${i}_other`] as string) || 0);
 
               additionalKnowledgeSkills.push(
-                <li key={i} className="d-flex skill-li skill-body">
+                <li key={i} className={getSkillRowClass(`additional_knowledge_${i}`)}>
                   <div className="title">{skillName}</div>
                   <div className="total">
                     <SkillDisplay
