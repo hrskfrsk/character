@@ -76,8 +76,6 @@ h2 {
 .job-base-responsive {
   display: flex;
   gap: 20px;
-  border-top: 2px solid #ddd;
-  padding-top: 20px;
 }
 
 .job-base-responsive > div:first-child {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { CharacterData } from '../../lib/character-calculations';
+import { CharacterData } from '../../../lib/character-calculations';
 
 interface CombatSkillsProps {
   characterData: CharacterData;

@@ -547,7 +547,6 @@ export interface CharacterData {
   
   // 特徴・ベース職業フィールド
   base_job?: string;
-  special_notes?: string;
 }
 
 // 年齢による能力値修正を計算
