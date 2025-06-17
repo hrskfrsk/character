@@ -25,6 +25,60 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
   const [memoPasswordStates, setMemoPasswordStates] = useState<Record<string, { unlocked: boolean; inputPassword: string }>>({});
   const [diceRollResult, setDiceRollResult] = useState<DiceRollResult | null>(null);
 
+  // UIテーマカラーの動的適用
+  useEffect(() => {
+    if (character?.ui_theme_color && typeof window !== 'undefined') {
+      const color = character.ui_theme_color;
+      // 明度を下げたホバーカラーを計算
+      const hoverColor = adjustBrightness(color, -20);
+      // 薄い色を計算（15%の不透明度）
+      const lightColor = hexToRgba(color, 0.15);
+      // 中間の色を計算（40%の不透明度）
+      const mediumColor = hexToRgba(color, 0.4);
+      // 濃い色を計算（70%の不透明度）
+      const darkColor = hexToRgba(color, 0.7);
+
+      document.documentElement.style.setProperty('--ui-theme-color', color);
+      document.documentElement.style.setProperty('--ui-theme-color-hover', hoverColor);
+      document.documentElement.style.setProperty('--ui-theme-color-light', lightColor);
+      document.documentElement.style.setProperty('--ui-theme-color-medium', mediumColor);
+      document.documentElement.style.setProperty('--ui-theme-color-dark', darkColor);
+    }
+  }, [character?.ui_theme_color]);
+
+  // 色の明度を調整する関数
+  const adjustBrightness = (hex: string, percent: number): string => {
+    // #を取り除く
+    const cleanHex = hex.replace('#', '');
+
+    // RGB値に変換
+    const r = parseInt(cleanHex.substring(0, 2), 16);
+    const g = parseInt(cleanHex.substring(2, 4), 16);
+    const b = parseInt(cleanHex.substring(4, 6), 16);
+
+    // 明度調整
+    const adjustedR = Math.max(0, Math.min(255, r + (r * percent / 100)));
+    const adjustedG = Math.max(0, Math.min(255, g + (g * percent / 100)));
+    const adjustedB = Math.max(0, Math.min(255, b + (b * percent / 100)));
+
+    // 16進数に戻す
+    const toHex = (n: number) => Math.round(n).toString(16).padStart(2, '0');
+    return `#${toHex(adjustedR)}${toHex(adjustedG)}${toHex(adjustedB)}`;
+  };
+
+  // HEXカラーをRGBAに変換する関数
+  const hexToRgba = (hex: string, alpha: number): string => {
+    // #を取り除く
+    const cleanHex = hex.replace('#', '');
+
+    // RGB値に変換
+    const r = parseInt(cleanHex.substring(0, 2), 16);
+    const g = parseInt(cleanHex.substring(2, 4), 16);
+    const b = parseInt(cleanHex.substring(4, 6), 16);
+
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  };
+
   // 装備セクションのアコーディオン状態
   const [equipmentSections, setEquipmentSections] = useState({
     weapons: true,
