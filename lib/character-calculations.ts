@@ -9,6 +9,7 @@ export interface CharacterData {
   age?: number | string;
   sex?: string;
   gender?: string;
+  gender_custom?: string;
   height?: string;
   weight?: string;
   backstory?: string;

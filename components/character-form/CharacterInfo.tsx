@@ -1029,17 +1029,53 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             <label htmlFor="gender">
               <i className="fas fa-venus-mars"></i> 性別
             </label>
-            <select
-              id="gender"
-              name="gender"
-              value={characterData.gender || ''}
-              onChange={(e) => handleInputChange('gender', e.target.value)}
-            >
-              <option value="">選択してください</option>
-              <option value="男">男</option>
-              <option value="女">女</option>
-              <option value="その他">その他</option>
-            </select>
+            {characterData.gender === 'その他' ? (
+              <div style={{ display: 'flex', gap: '3px', width: '100%' }}>
+                <select
+                  id="gender"
+                  name="gender"
+                  value={characterData.gender || ''}
+                  onChange={(e) => handleInputChange('gender', e.target.value)}
+                  style={{ flex: '0 0 auto', width: '80px' }}
+                >
+                  <option value="">-</option>
+                  <option value="男">男</option>
+                  <option value="女">女</option>
+                  <option value="その他">その他</option>
+                </select>
+                <input
+                  type="text"
+                  name="gender_custom"
+                  value={characterData.gender_custom || ''}
+                  onChange={(e) => handleInputChange('gender_custom', e.target.value)}
+                  placeholder="性別を入力してください"
+                  style={{
+                    flex: '1 0 calc(100% - 90px)',
+                    padding: '8px 10px',
+                    fontSize: '1em',
+                    textAlign: 'left',
+                    boxSizing: 'border-box',
+                    borderRadius: '5px',
+                    boxShadow: '0 0 2px rgba(0, 0, 0, 0.5) inset',
+                    height: 'auto',
+                    border: 'none',
+                    background: 'transparent'
+                  }}
+                />
+              </div>
+            ) : (
+              <select
+                id="gender"
+                name="gender"
+                value={characterData.gender || ''}
+                onChange={(e) => handleInputChange('gender', e.target.value)}
+              >
+                <option value="">選択してください</option>
+                <option value="男">男</option>
+                <option value="女">女</option>
+                <option value="その他">その他</option>
+              </select>
+            )}
           </div>
 
           <div className="info-item compact">
@@ -1143,18 +1179,14 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             <label htmlFor="blood_type">
               <i className="fas fa-tint"></i> 血液型
             </label>
-            <select
+            <input
+              type="text"
               id="blood_type"
               name="blood_type"
+              placeholder="A型など"
               value={characterData.blood_type || ''}
               onChange={(e) => handleInputChange('blood_type', e.target.value)}
-            >
-              <option value="">選択してください</option>
-              <option value="A型">A型</option>
-              <option value="B型">B型</option>
-              <option value="O型">O型</option>
-              <option value="AB型">AB型</option>
-            </select>
+            />
           </div>
 
           <div className="info-item">

@@ -106,7 +106,11 @@ export default function BasicDataDisplay({ character }: BasicDataDisplayProps) {
             {character.gender && (
               <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
                 <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>性別</h3>
-                <div>{character.gender}</div>
+                <div>
+                  {character.gender === 'その他' && character.gender_custom 
+                    ? character.gender_custom 
+                    : character.gender}
+                </div>
               </section>
             )}
 
