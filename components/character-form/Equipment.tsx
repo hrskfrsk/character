@@ -85,15 +85,15 @@ export default function Equipment({
             onClick={() => toggleEquipmentSection('weapons')}
             style={{ cursor: 'pointer', userSelect: 'none' }}
           >
-            <i className="fa-solid fa-gun"></i> 武器
             <i
               className={`fas fa-chevron-up`}
               style={{
-                float: 'right',
                 transition: 'transform 0.3s',
-                transform: equipmentSections.weapons ? 'rotate(0deg)' : 'rotate(180deg)'
+                transform: equipmentSections.weapons ? 'rotate(0deg)' : 'rotate(180deg)',
+                marginRight: '10px'
               }}
             />
+            <i className="fa-solid fa-gun"></i> 武器
           </h3>
           <div className={`equipment-content ${!equipmentSections.weapons ? 'collapsed' : ''}`}>
             <ul>
@@ -217,14 +217,15 @@ export default function Equipment({
             onClick={() => toggleEquipmentSection('items')}
             style={{ cursor: 'pointer', userSelect: 'none' }}
           >
-            <i className="fas fa-suitcase"></i> 所持品
             <i
               className={`fas fa-chevron-up`}
               style={{
                 transition: 'transform 0.3s',
-                transform: equipmentSections.items ? 'rotate(0deg)' : 'rotate(180deg)'
+                transform: equipmentSections.items ? 'rotate(0deg)' : 'rotate(180deg)',
+                marginRight: '10px'
               }}
             />
+            <i className="fas fa-suitcase"></i> 所持品
           </h3>
           <div className={`equipment-content ${!equipmentSections.items ? 'collapsed' : ''}`}>
             <ul>
@@ -288,15 +289,15 @@ export default function Equipment({
             onClick={() => toggleEquipmentSection('disorders')}
             style={{ cursor: 'pointer', userSelect: 'none' }}
           >
-            <i className="fas fa-bed"></i> 不定・後遺症
             <i
               className={`fas fa-chevron-up`}
               style={{
-                float: 'right',
                 transition: 'transform 0.3s',
-                transform: equipmentSections.disorders ? 'rotate(0deg)' : 'rotate(180deg)'
+                transform: equipmentSections.disorders ? 'rotate(0deg)' : 'rotate(180deg)',
+                marginRight: '10px'
               }}
             />
+            <i className="fas fa-bed"></i> 不定・後遺症
           </h3>
           <div className={`equipment-content ${!equipmentSections.disorders ? 'collapsed' : ''}`}>
             <ul>
@@ -360,15 +361,15 @@ export default function Equipment({
             onClick={() => toggleEquipmentSection('books')}
             style={{ cursor: 'pointer', userSelect: 'none' }}
           >
-            <i className="fas fa-book-dead"></i> 読んだ魔導書
             <i
               className={`fas fa-chevron-up`}
               style={{
-                float: 'right',
                 transition: 'transform 0.3s',
-                transform: equipmentSections.books ? 'rotate(0deg)' : 'rotate(180deg)'
+                transform: equipmentSections.books ? 'rotate(0deg)' : 'rotate(180deg)',
+                marginRight: '10px'
               }}
             />
+            <i className="fas fa-book-dead"></i> 読んだ魔導書
           </h3>
           <div className={`equipment-content ${!equipmentSections.books ? 'collapsed' : ''}`}>
             <ul>
@@ -422,15 +423,15 @@ export default function Equipment({
             onClick={() => toggleEquipmentSection('spells')}
             style={{ cursor: 'pointer', userSelect: 'none' }}
           >
-            <i className="fa-solid fa-hand-sparkles"></i> 覚えた呪文
             <i
               className={`fas fa-chevron-up`}
               style={{
-                float: 'right',
                 transition: 'transform 0.3s',
-                transform: equipmentSections.spells ? 'rotate(0deg)' : 'rotate(180deg)'
+                transform: equipmentSections.spells ? 'rotate(0deg)' : 'rotate(180deg)',
+                marginRight: '10px'
               }}
             />
+            <i className="fa-solid fa-hand-sparkles"></i> 覚えた呪文
           </h3>
           <div className={`equipment-content ${!equipmentSections.spells ? 'collapsed' : ''}`}>
             <ul>
@@ -484,15 +485,15 @@ export default function Equipment({
             onClick={() => toggleEquipmentSection('artifacts')}
             style={{ cursor: 'pointer', userSelect: 'none' }}
           >
-            <i className="fa-solid fa-star-of-david"></i> 所持AF
             <i
               className={`fas fa-chevron-up`}
               style={{
-                float: 'right',
                 transition: 'transform 0.3s',
-                transform: equipmentSections.artifacts ? 'rotate(0deg)' : 'rotate(180deg)'
+                transform: equipmentSections.artifacts ? 'rotate(0deg)' : 'rotate(180deg)',
+                marginRight: '10px'
               }}
             />
+            <i className="fa-solid fa-star-of-david"></i> 所持AF
           </h3>
           <div className={`equipment-content ${!equipmentSections.artifacts ? 'collapsed' : ''}`}>
             <ul>
@@ -546,15 +547,15 @@ export default function Equipment({
             onClick={() => toggleEquipmentSection('entities')}
             style={{ cursor: 'pointer', userSelect: 'none' }}
           >
-            <i className="fa-brands fa-octopus-deploy"></i> 遭遇した超自然の存在
             <i
               className={`fas fa-chevron-up`}
               style={{
-                float: 'right',
                 transition: 'transform 0.3s',
-                transform: equipmentSections.entities ? 'rotate(0deg)' : 'rotate(180deg)'
+                transform: equipmentSections.entities ? 'rotate(0deg)' : 'rotate(180deg)',
+                marginRight: '10px'
               }}
             />
+            <i className="fa-brands fa-octopus-deploy"></i> 遭遇した超自然の存在
           </h3>
           <div className={`equipment-content ${!equipmentSections.entities ? 'collapsed' : ''}`}>
             <ul>

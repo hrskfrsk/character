@@ -133,7 +133,7 @@ export default function MemoSection({
           onClick={toggleMemoSection}
           style={{ cursor: 'pointer', userSelect: 'none' }}
         >
-          <i className={`fas ${showMemoSection ? 'fa-chevron-down' : 'fa-chevron-right'}`}></i>
+          <i className={`fas ${showMemoSection ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '8px' }}></i>
           <i className="fas fa-scroll" style={{ marginRight: '5px' }}></i> メモ
         </h3>
         {showMemoSection && (
