@@ -32,23 +32,23 @@ export default function ActionSkills({
           </div>
         </li>
 
-        {(showAllSkills || !isSkillInitialOnly('drive_auto')) && (
+        {(showAllSkills || !isSkillInitialOnly('drive')) && (
           <li className="d-flex skill-li skill-body">
-            <div className="title">運転</div>
+            <div className="title">運転{character.drive_specialty ? `(${character.drive_specialty})` : ''}</div>
             <div className="total">
               <SkillDisplay
-                skillName="運転"
-                skillValue={character.drive_auto_total}
-                skillId="drive_auto_total"
+                skillName={`運転${character.drive_specialty ? `(${character.drive_specialty})` : ''}`}
+                skillValue={character.drive_total}
+                skillId="drive_total"
                 onClick={handleSkillClick}
               />
             </div>
             <div className="breakdown">
-              <span className="initial" id="drive_auto_initial">{displayInitial(character.drive_auto_initial, 20)}</span>|
-              <span className="atai" id="drive_auto_job">{character.drive_auto_job || '-'}</span>|
-              <span className="atai" id="drive_auto_interest">{character.drive_auto_interest || '-'}</span>|
-              <span className="atai" id="drive_auto_growth">{character.drive_auto_growth || '-'}</span>|
-              <span className="atai" id="drive_auto_other">{character.drive_auto_other || '-'}</span>
+              <span className="initial" id="drive_initial">{displayInitial(character.drive_initial, 20)}</span>|
+              <span className="atai" id="drive_job">{character.drive_job || '-'}</span>|
+              <span className="atai" id="drive_interest">{character.drive_interest || '-'}</span>|
+              <span className="atai" id="drive_growth">{character.drive_growth || '-'}</span>|
+              <span className="atai" id="drive_other">{character.drive_other || '-'}</span>
             </div>
           </li>
         )}
@@ -74,23 +74,23 @@ export default function ActionSkills({
           </li>
         )}
 
-        {(showAllSkills || !isSkillInitialOnly('operate_heavy_machine')) && (
+        {(showAllSkills || !isSkillInitialOnly('heavy_machinery')) && (
           <li className="d-flex skill-li skill-body">
             <div className="title">重機械操作</div>
             <div className="total">
               <SkillDisplay
                 skillName="重機械操作"
-                skillValue={character.operate_heavy_machine_total}
-                skillId="operate_heavy_machine_total"
+                skillValue={character.heavy_machinery_total}
+                skillId="heavy_machinery_total"
                 onClick={handleSkillClick}
               />
             </div>
             <div className="breakdown">
-              <span className="initial" id="operate_heavy_machine_initial">{displayInitial(character.operate_heavy_machine_initial, 1)}</span>|
-              <span className="atai" id="operate_heavy_machine_job">{character.operate_heavy_machine_job || '-'}</span>|
-              <span className="atai" id="operate_heavy_machine_interest">{character.operate_heavy_machine_interest || '-'}</span>|
-              <span className="atai" id="operate_heavy_machine_growth">{character.operate_heavy_machine_growth || '-'}</span>|
-              <span className="atai" id="operate_heavy_machine_other">{character.operate_heavy_machine_other || '-'}</span>
+              <span className="initial" id="heavy_machinery_initial">{displayInitial(character.heavy_machinery_initial, 1)}</span>|
+              <span className="atai" id="heavy_machinery_job">{character.heavy_machinery_job || '-'}</span>|
+              <span className="atai" id="heavy_machinery_interest">{character.heavy_machinery_interest || '-'}</span>|
+              <span className="atai" id="heavy_machinery_growth">{character.heavy_machinery_growth || '-'}</span>|
+              <span className="atai" id="heavy_machinery_other">{character.heavy_machinery_other || '-'}</span>
             </div>
           </li>
         )}
@@ -139,10 +139,10 @@ export default function ActionSkills({
 
         {(showAllSkills || !isSkillInitialOnly('craft')) && (
           <li className="d-flex skill-li skill-body">
-            <div className="title">制作</div>
+            <div className="title">制作{character.craft_specialty ? `(${character.craft_specialty})` : ''}</div>
             <div className="total">
               <SkillDisplay
-                skillName="制作"
+                skillName={`制作${character.craft_specialty ? `(${character.craft_specialty})` : ''}`}
                 skillValue={character.craft_total}
                 skillId="craft_total"
                 onClick={handleSkillClick}
@@ -160,10 +160,10 @@ export default function ActionSkills({
 
         {(showAllSkills || !isSkillInitialOnly('pilot')) && (
           <li className="d-flex skill-li skill-body">
-            <div className="title">操縦</div>
+            <div className="title">操縦{character.pilot_specialty ? `(${character.pilot_specialty})` : ''}</div>
             <div className="total">
               <SkillDisplay
-                skillName="操縦"
+                skillName={`操縦${character.pilot_specialty ? `(${character.pilot_specialty})` : ''}`}
                 skillValue={character.pilot_total}
                 skillId="pilot_total"
                 onClick={handleSkillClick}
@@ -269,13 +269,20 @@ export default function ActionSkills({
           for (let i = 1; i <= 50; i++) {
             const skillName = character[`additional_action_${i}_name`];
             if (skillName && (showAllSkills || !isSkillInitialOnly(`additional_action_${i}`))) {
+              const calculatedTotal = 
+                (parseInt(character[`additional_action_${i}_initial`] as string) || 1) +
+                (parseInt(character[`additional_action_${i}_job`] as string) || 0) +
+                (parseInt(character[`additional_action_${i}_interest`] as string) || 0) +
+                (parseInt(character[`additional_action_${i}_growth`] as string) || 0) +
+                (parseInt(character[`additional_action_${i}_other`] as string) || 0);
+
               additionalActionSkills.push(
                 <li key={i} className="d-flex skill-li skill-body">
                   <div className="title">{skillName}</div>
                   <div className="total">
                     <SkillDisplay
                       skillName={skillName}
-                      skillValue={character[`additional_action_${i}_total`]}
+                      skillValue={calculatedTotal}
                       skillId={`additional_action_${i}_total`}
                       onClick={handleSkillClick}
                     />

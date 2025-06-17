@@ -118,10 +118,10 @@ export default function KnowledgeSkills({
 
         {(showAllSkills || !isSkillInitialOnly('art')) && (
           <li className="d-flex skill-li skill-body">
-            <div className="title">芸術</div>
+            <div className="title">芸術{character.art_specialty ? `(${character.art_specialty})` : ''}</div>
             <div className="total">
               <SkillDisplay
-                skillName="芸術"
+                skillName={`芸術${character.art_specialty ? `(${character.art_specialty})` : ''}`}
                 skillValue={character.art_total}
                 skillId="art_total"
                 onClick={handleSkillClick}
@@ -437,13 +437,20 @@ export default function KnowledgeSkills({
           for (let i = 1; i <= 50; i++) {
             const skillName = character[`additional_knowledge_${i}_name`];
             if (skillName && (showAllSkills || !isSkillInitialOnly(`additional_knowledge_${i}`))) {
+              const calculatedTotal = 
+                (parseInt(character[`additional_knowledge_${i}_initial`] as string) || 1) +
+                (parseInt(character[`additional_knowledge_${i}_job`] as string) || 0) +
+                (parseInt(character[`additional_knowledge_${i}_interest`] as string) || 0) +
+                (parseInt(character[`additional_knowledge_${i}_growth`] as string) || 0) +
+                (parseInt(character[`additional_knowledge_${i}_other`] as string) || 0);
+
               additionalKnowledgeSkills.push(
                 <li key={i} className="d-flex skill-li skill-body">
                   <div className="title">{skillName}</div>
                   <div className="total">
                     <SkillDisplay
                       skillName={skillName}
-                      skillValue={character[`additional_knowledge_${i}_total`]}
+                      skillValue={calculatedTotal}
                       skillId={`additional_knowledge_${i}_total`}
                       onClick={handleSkillClick}
                     />

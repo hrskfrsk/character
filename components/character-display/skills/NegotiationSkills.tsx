@@ -116,23 +116,44 @@ export default function NegotiationSkills({
           </li>
         )}
 
-        {(showAllSkills || !isSkillInitialOnly('own_language')) && (
+        {(showAllSkills || !isSkillInitialOnly('mother_tongue')) && (
           <li className="d-flex skill-li skill-body">
             <div className="title">母国語</div>
             <div className="total">
               <SkillDisplay
                 skillName="母国語"
-                skillValue={character.own_language_total}
-                skillId="own_language_total"
+                skillValue={character.mother_tongue_total}
+                skillId="mother_tongue_total"
                 onClick={handleSkillClick}
               />
             </div>
             <div className="breakdown">
-              <span className="initial" id="own_language_initial">{displayInitial(character.own_language_initial, character.edu_total || 0)}</span>|
-              <span className="atai" id="own_language_job">{character.own_language_job || '-'}</span>|
-              <span className="atai" id="own_language_interest">{character.own_language_interest || '-'}</span>|
-              <span className="atai" id="own_language_growth">{character.own_language_growth || '-'}</span>|
-              <span className="atai" id="own_language_other">{character.own_language_other || '-'}</span>
+              <span className="initial" id="mother_tongue_initial">{displayInitial(character.mother_tongue_initial, character.edu_total || 0)}</span>|
+              <span className="atai" id="mother_tongue_job">{character.mother_tongue_job || '-'}</span>|
+              <span className="atai" id="mother_tongue_interest">{character.mother_tongue_interest || '-'}</span>|
+              <span className="atai" id="mother_tongue_growth">{character.mother_tongue_growth || '-'}</span>|
+              <span className="atai" id="mother_tongue_other">{character.mother_tongue_other || '-'}</span>
+            </div>
+          </li>
+        )}
+
+        {(showAllSkills || !isSkillInitialOnly('language')) && (
+          <li className="d-flex skill-li skill-body">
+            <div className="title">外国語{character.language_specialty ? `(${character.language_specialty})` : ''}</div>
+            <div className="total">
+              <SkillDisplay
+                skillName={`外国語${character.language_specialty ? `(${character.language_specialty})` : ''}`}
+                skillValue={character.language_total}
+                skillId="language_total"
+                onClick={handleSkillClick}
+              />
+            </div>
+            <div className="breakdown">
+              <span className="initial" id="language_initial">{displayInitial(character.language_initial, 1)}</span>|
+              <span className="atai" id="language_job">{character.language_job || '-'}</span>|
+              <span className="atai" id="language_interest">{character.language_interest || '-'}</span>|
+              <span className="atai" id="language_growth">{character.language_growth || '-'}</span>|
+              <span className="atai" id="language_other">{character.language_other || '-'}</span>
             </div>
           </li>
         )}
@@ -143,13 +164,20 @@ export default function NegotiationSkills({
           for (let i = 1; i <= 50; i++) {
             const skillName = character[`additional_negotiation_${i}_name`];
             if (skillName && (showAllSkills || !isSkillInitialOnly(`additional_negotiation_${i}`))) {
+              const calculatedTotal = 
+                (parseInt(character[`additional_negotiation_${i}_initial`] as string) || 1) +
+                (parseInt(character[`additional_negotiation_${i}_job`] as string) || 0) +
+                (parseInt(character[`additional_negotiation_${i}_interest`] as string) || 0) +
+                (parseInt(character[`additional_negotiation_${i}_growth`] as string) || 0) +
+                (parseInt(character[`additional_negotiation_${i}_other`] as string) || 0);
+
               additionalNegotiationSkills.push(
                 <li key={i} className="d-flex skill-li skill-body">
                   <div className="title">{skillName}</div>
                   <div className="total">
                     <SkillDisplay
                       skillName={skillName}
-                      skillValue={character[`additional_negotiation_${i}_total`]}
+                      skillValue={calculatedTotal}
                       skillId={`additional_negotiation_${i}_total`}
                       onClick={handleSkillClick}
                     />

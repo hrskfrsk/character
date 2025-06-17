@@ -290,13 +290,20 @@ export default function CombatSkills({
           for (let i = 1; i <= 50; i++) {
             const skillName = character[`additional_combat_${i}_name`];
             if (skillName && (showAllSkills || !isSkillInitialOnly(`additional_combat_${i}`))) {
+              const calculatedTotal = 
+                (parseInt(character[`additional_combat_${i}_initial`] as string) || 1) +
+                (parseInt(character[`additional_combat_${i}_job`] as string) || 0) +
+                (parseInt(character[`additional_combat_${i}_interest`] as string) || 0) +
+                (parseInt(character[`additional_combat_${i}_growth`] as string) || 0) +
+                (parseInt(character[`additional_combat_${i}_other`] as string) || 0);
+
               additionalCombatSkills.push(
                 <li key={i} className="d-flex skill-li skill-body">
                   <div className="title">{skillName}</div>
                   <div className="total">
                     <SkillDisplay
                       skillName={skillName}
-                      skillValue={character[`additional_combat_${i}_total`]}
+                      skillValue={calculatedTotal}
                       skillId={`additional_combat_${i}_total`}
                       onClick={handleSkillClick}
                     />

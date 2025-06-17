@@ -137,23 +137,23 @@ export default function ExplorationSkills({
           </li>
         )}
 
-        {(showAllSkills || !isSkillInitialOnly('stealth')) && (
+        {(showAllSkills || !isSkillInitialOnly('sneak')) && (
           <li className="d-flex skill-li skill-body">
             <div className="title">忍び歩き</div>
             <div className="total">
               <SkillDisplay
                 skillName="忍び歩き"
-                skillValue={character.stealth_total}
-                skillId="stealth_total"
+                skillValue={character.sneak_total}
+                skillId="sneak_total"
                 onClick={handleSkillClick}
               />
             </div>
             <div className="breakdown">
-              <span className="initial" id="stealth_initial">{displayInitial(character.stealth_initial, 10)}</span>|
-              <span className="atai" id="stealth_job">{character.stealth_job || '-'}</span>|
-              <span className="atai" id="stealth_interest">{character.stealth_interest || '-'}</span>|
-              <span className="atai" id="stealth_growth">{character.stealth_growth || '-'}</span>|
-              <span className="atai" id="stealth_other">{character.stealth_other || '-'}</span>
+              <span className="initial" id="sneak_initial">{displayInitial(character.sneak_initial, 10)}</span>|
+              <span className="atai" id="sneak_job">{character.sneak_job || '-'}</span>|
+              <span className="atai" id="sneak_interest">{character.sneak_interest || '-'}</span>|
+              <span className="atai" id="sneak_growth">{character.sneak_growth || '-'}</span>|
+              <span className="atai" id="sneak_other">{character.sneak_other || '-'}</span>
             </div>
           </li>
         )}
@@ -290,13 +290,20 @@ export default function ExplorationSkills({
           for (let i = 1; i <= 50; i++) {
             const skillName = character[`additional_exploration_${i}_name`];
             if (skillName && (showAllSkills || !isSkillInitialOnly(`additional_exploration_${i}`))) {
+              const calculatedTotal = 
+                (parseInt(character[`additional_exploration_${i}_initial`] as string) || 1) +
+                (parseInt(character[`additional_exploration_${i}_job`] as string) || 0) +
+                (parseInt(character[`additional_exploration_${i}_interest`] as string) || 0) +
+                (parseInt(character[`additional_exploration_${i}_growth`] as string) || 0) +
+                (parseInt(character[`additional_exploration_${i}_other`] as string) || 0);
+
               additionalExplorationSkills.push(
                 <li key={i} className="d-flex skill-li skill-body">
                   <div className="title">{skillName}</div>
                   <div className="total">
                     <SkillDisplay
                       skillName={skillName}
-                      skillValue={character[`additional_exploration_${i}_total`]}
+                      skillValue={calculatedTotal}
                       skillId={`additional_exploration_${i}_total`}
                       onClick={handleSkillClick}
                     />
