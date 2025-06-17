@@ -1930,7 +1930,7 @@ li {
   margin: 0 0 3px;
   background: var(--ui-theme-color-light);
   padding: 3px 10px 0;
-  color: #666;
+  color: var(--ui-theme-color);
   font-size: 0.9rem;
   line-height: 1.5;
   font-weight: 400;
