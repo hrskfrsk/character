@@ -101,17 +101,23 @@ export default function StatDisplay({ character }: StatDisplayProps) {
         ) : null;
       })()}
 
-      {/* ベース職業と特記事項 */}
-      <div className="d-flex job-base">
-        <div>
-          <span>ベース</span>
-          {character.job || '-'}
+      {/* ベース職業と特記事項 - 入力がある場合のみ表示 */}
+      {(character.job || character.special_notes) && (
+        <div className="d-flex job-base">
+          {character.job && (
+            <div>
+              <span>ベース</span>
+              {character.job}
+            </div>
+          )}
+          {character.special_notes && (
+            <div>
+              <span>特　記</span>
+              {character.special_notes}
+            </div>
+          )}
         </div>
-        <div>
-          <span>特　記</span>
-          {character.special_notes || ''}
-        </div>
-      </div>
+      )}
     </>
   );
 }

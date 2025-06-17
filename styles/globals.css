@@ -1388,6 +1388,7 @@ li {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   margin-top: 15px;
+  margin-bottom: 3%;
 }
 .chara-seet .job-base > div {
   margin-right: 15px;
@@ -1488,7 +1489,7 @@ li {
   color: #888;
 }
 .chara-seet .slots {
-  margin: 5px 0;
+  margin: 5px 0 15px;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   -webkit-box-pack: end;
@@ -1595,7 +1596,7 @@ li {
   color: inherit;
 }
 .chara-seet .features {
-  margin: 3% 0;
+  margin: 3% 0 0;
 }
 @media only screen and (max-width: 768px) {
   .chara-seet .features {
