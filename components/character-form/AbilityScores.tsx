@@ -76,15 +76,10 @@ export default function AbilityScores({
   return (
     <>
       {/* STATUS */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '0',
-        borderBottom: '2px solid #ddd',
-        paddingBottom: '5px',
-      }}>
-        <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 'bold' }}>能力値</h2>
+      <div className="section-header" style={{ marginBottom: '0' }}>
+        <h2>
+          <i className="fas fa-dumbbell section-icon"></i>能力値
+        </h2>
         <button
           type="button"
           onClick={handleRollAllAbilities}
