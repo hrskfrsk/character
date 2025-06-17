@@ -767,6 +767,169 @@ textarea,
   font-weight: normal;
 }
 
+/* リッチテキストエディタのツールバー */
+.rich-text-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  flex-wrap: wrap;
+}
+
+.rich-text-toolbar .toolbar-btn {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8em;
+  position: relative;
+}
+
+.rich-text-toolbar .toolbar-btn:hover {
+  background: #f0f0f0;
+  border-color: #bbb;
+}
+
+.rich-text-toolbar .toolbar-btn:active {
+  background: #e0e0e0;
+  transform: translateY(1px);
+}
+
+.rich-text-toolbar .toolbar-btn.color-red {
+  color: #dc3545;
+}
+
+.rich-text-toolbar .toolbar-btn.color-blue {
+  color: #007bff;
+}
+
+.rich-text-toolbar .toolbar-btn.color-green {
+  color: #28a745;
+}
+
+.rich-text-toolbar .toolbar-btn .btn-text {
+  font-size: 0.7em;
+  font-weight: bold;
+  margin-left: 2px;
+}
+
+.rich-text-toolbar .toolbar-divider {
+  width: 1px;
+  height: 24px;
+  background: #ddd;
+  margin: 0 4px;
+}
+
+/* ツールバー付きテキストエリアの角を調整 */
+.rich-text-toolbar + textarea {
+  border-radius: 0 0 6px 6px;
+  border-top: none;
+}
+
+/* プレビュートグルボタン */
+.preview-toggle-btn {
+  background: none;
+  border: none;
+  color: #22c6d8;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-weight: 500;
+  padding: 4px 8px;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.preview-toggle-btn:hover {
+  color: #1ba1b5;
+  background: rgba(34, 198, 216, 0.05);
+  border-radius: 4px;
+}
+
+/* プレビューコンテナ */
+.preview-container {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 16px;
+  min-height: 120px;
+  margin-top: 10px;
+}
+
+.preview-content {
+  font-size: 1em;
+  line-height: 1.6;
+  color: #333;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* プレビューでHTMLタグが正しく表示されるように */
+.preview-content b {
+  font-weight: bold;
+}
+
+.preview-content i {
+  font-style: italic;
+}
+
+.preview-content u {
+  text-decoration: underline;
+}
+
+.preview-content br {
+  display: block;
+  content: "";
+  margin-top: 0.5em;
+}
+
+/* ラベルのレイアウト調整 */
+.character-info .info-item.full-width label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .rich-text-toolbar {
+    gap: 2px;
+    padding: 6px;
+  }
+
+  .rich-text-toolbar .toolbar-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.7em;
+  }
+
+  .rich-text-toolbar .toolbar-divider {
+    height: 20px;
+    margin: 0 2px;
+  }
+
+  .preview-toggle-btn {
+    font-size: 0.8em;
+    padding: 2px 6px;
+  }
+
+  .preview-container {
+    padding: 12px;
+  }
+}
+
 @media (max-width: 768px) {
   .character-info {
     padding: 10px 0;
@@ -1966,7 +2129,7 @@ li {
 
 .character .introduction {
   font-size: 0.9rem;
-  line-height: 1.5;
+  line-height: 1.6;
   margin-bottom: 55px;
 }
 
@@ -2221,4 +2384,324 @@ li {
     opacity: 0;
     transform: translateY(-10px);
   }
-} /*# sourceMappingURL=style.css.map */
+}
+
+/* Tab container styles */
+.tab-container {
+  margin-top: 10px;
+}
+
+.tab-buttons {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f8f9fa;
+  border-radius: 6px 6px 0 0;
+  padding: 0;
+  margin: 0;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #666;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  flex: 1;
+  text-align: center;
+}
+
+.tab-btn:first-child {
+  border-radius: 6px 0 0 0;
+}
+
+.tab-btn:last-child {
+  border-radius: 0 6px 0 0;
+}
+
+.tab-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #333;
+}
+
+.tab-btn.active {
+  background: #fff;
+  color: #333;
+  font-weight: 600;
+  border-bottom-color: #007bff;
+}
+
+.tab-btn i {
+  margin-right: 5px;
+}
+
+.tab-content {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  min-height: 160px;
+}
+
+.preview-container.tab-preview {
+  background: #fff;
+  border: none;
+  border-radius: 0;
+  padding: 20px;
+  min-height: 160px;
+  position: relative;
+}
+
+.preview-container.tab-preview .preview-content {
+  line-height: 1.6;
+  min-height: 120px;
+}
+
+.preview-edit-hint {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  font-size: 11px;
+  color: #999;
+  opacity: 0.7;
+}
+
+.preview-edit-hint i {
+  margin-right: 3px;
+}
+
+.html-edit-section {
+  background: #fff;
+}
+
+.html-edit-section .rich-text-toolbar {
+  border-radius: 0;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  margin: 0;
+}
+
+.html-edit-section textarea {
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  resize: vertical;
+}
+
+.html-edit-section textarea:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 2px #007bff;
+}
+
+/* WYSIWYG Editor styles */
+.wysiwyg-container {
+  margin-top: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.wysiwyg-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  flex-wrap: wrap;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.color-group {
+  position: relative;
+}
+
+.font-size-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.wysiwyg-toolbar button {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  padding: 6px 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #666;
+  transition: all 0.2s ease;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.wysiwyg-toolbar button:focus {
+  outline: none;
+}
+
+.wysiwyg-toolbar button:hover {
+  background: #e9ecef;
+  border-color: #ced4da;
+  color: #333;
+}
+
+.wysiwyg-toolbar button:active {
+  background: #dee2e6;
+  transform: translateY(1px);
+}
+
+.wysiwyg-toolbar .toolbar-separator {
+  width: 1px;
+  height: 20px;
+  background: #dee2e6;
+  margin: 0 4px;
+}
+
+.preview-content.editable {
+  min-height: 140px;
+  padding: 16px;
+  border: none;
+  outline: none;
+  line-height: 1.6;
+  font-family: inherit;
+  cursor: text;
+}
+
+.preview-content.editable:focus {
+  box-shadow: inset 0 0 0 2px #007bff;
+  border-radius: 0 0 6px 6px;
+}
+
+.preview-content.editable:empty:before {
+  content: attr(data-placeholder);
+  color: #999;
+  font-style: italic;
+}
+
+.preview-content.editable p {
+  margin: 0 0 8px 0;
+}
+
+.preview-content.editable p:last-child {
+  margin-bottom: 0;
+}
+
+/* カラーパレット - 詳細セレクタで競合回避 */
+.wysiwyg-toolbar .color-group .color-palette {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  column-gap: 0.5px;
+  row-gap: 1px;
+  width: 200px;
+}
+
+/* スマホでのカラーパレット位置調整 */
+@media (max-width: 768px) {
+  .wysiwyg-toolbar .color-group .color-palette {
+    left: auto;
+    right: 0;
+    width: 180px;
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+
+.wysiwyg-toolbar .color-palette .color-swatch {
+  width: 16px !important;
+  height: 16px !important;
+  border: 1px solid #ddd !important;
+  border-radius: 2px !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  padding: 0 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+  min-width: auto !important;
+  display: block !important;
+  align-items: initial !important;
+  justify-content: initial !important;
+  user-select: auto !important;
+  font-size: inherit !important;
+  color: inherit !important;
+  transform: none !important;
+}
+
+.wysiwyg-toolbar .color-palette .color-swatch:hover {
+  transform: scale(1.2) !important;
+  border-color: #666 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  z-index: 1 !important;
+}
+
+.wysiwyg-toolbar .color-palette .color-swatch:active {
+  transform: scale(1.1) !important;
+}
+
+/* フォントサイズドロップダウン - 詳細セレクタで競合回避 */
+.wysiwyg-toolbar .font-size-group .font-size-select {
+  padding: 4px 8px !important;
+  border: 1px solid #ccc !important;
+  border-radius: 3px !important;
+  background: white !important;
+  font-size: 12px !important;
+  cursor: pointer !important;
+  min-width: 80px !important;
+  outline: none !important;
+  height: auto !important;
+  display: inline-block !important;
+  align-items: initial !important;
+  justify-content: initial !important;
+  user-select: auto !important;
+  color: #333 !important;
+  transform: none !important;
+}
+
+.wysiwyg-toolbar .font-size-group .font-size-select:hover {
+  border-color: #999 !important;
+  background: white !important;
+  transform: none !important;
+}
+
+.wysiwyg-toolbar .font-size-group .font-size-select:focus {
+  border-color: #007bff !important;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25) !important;
+  outline: none !important;
+  background: white !important;
+  transform: none !important;
+}
+
+/* フォントサイズ入力（削除予定） */
+.font-size-input {
+  width: 50px;
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.font-size-input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/*# sourceMappingURL=style.css.map */

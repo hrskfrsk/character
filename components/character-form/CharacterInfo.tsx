@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { CharacterData } from '../../lib/character-calculations';
 import { uploadImage, deleteImage, getImagePathFromUrl, UploadProgress } from '../../lib/upload-image';
 
@@ -36,6 +36,13 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     }
     return false;
   });
+  
+  // WYSIWYGエディタ用の状態
+  const [showColorPicker, setShowColorPicker] = useState<string | null>(null);
+  const [lastFocusedElement, setLastFocusedElement] = useState<HTMLElement | null>(null);
+  
+  // デバウンス用の状態
+  const [inputTimeouts, setInputTimeouts] = useState<{[key: string]: NodeJS.Timeout}>({});
 
   // アコーディオン状態が変更されたときにlocalStorageに保存
   useEffect(() => {
@@ -55,6 +62,368 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
       localStorage.setItem('accordion-description', JSON.stringify(isDescriptionOpen));
     }
   }, [isDescriptionOpen]);
+
+  // コンポーネントアンマウント時にタイマーをクリーンアップ
+  useEffect(() => {
+    return () => {
+      Object.values(inputTimeouts).forEach(timeout => {
+        clearTimeout(timeout);
+      });
+    };
+  }, [inputTimeouts]);
+
+  // 旧リッチテキストエディタのヘルパー関数（削除）
+
+  // WYSIWYGエディタ用のコマンド実行関数（完全に滑らかな選択範囲維持）
+  const executeCommand = (command: string, value?: string) => {
+    const activeElement = document.activeElement as HTMLElement;
+    if (activeElement && activeElement.getAttribute('contenteditable') === 'true') {
+      // フォーカスを確保
+      activeElement.focus();
+      
+      // 現在の選択範囲を保存
+      const selection = window.getSelection();
+      let savedRange: Range | null = null;
+      
+      if (selection && selection.rangeCount > 0) {
+        savedRange = selection.getRangeAt(0).cloneRange();
+      }
+      
+      // execCommandが選択範囲を変更するかどうかを事前チェック
+      const preserveSelectionCommands = ['bold', 'italic', 'underline', 'strikeThrough', 'foreColor'];
+      const shouldPreserveSelection = preserveSelectionCommands.includes(command) && savedRange && !savedRange.collapsed;
+      
+      if (shouldPreserveSelection) {
+        // ブラウザの再描画を一時的に防ぐ
+        activeElement.style.userSelect = 'none';
+        
+        // コマンドを実行
+        document.execCommand(command, false, value);
+        
+        // 次のフレームで選択範囲を復元
+        requestAnimationFrame(() => {
+          try {
+            if (savedRange && selection) {
+              selection.removeAllRanges();
+              selection.addRange(savedRange);
+            }
+          } catch (e) {
+            // 復元失敗時は何もしない
+          }
+          
+          // userSelectを元に戻す
+          activeElement.style.userSelect = '';
+        });
+      } else {
+        // 通常のコマンド実行
+        document.execCommand(command, false, value);
+      }
+    }
+  };
+
+  // フォントサイズを適用（選択範囲内のspanを統一）
+  const applyFontSize = (size: number) => {
+    const targetElement = lastFocusedElement || document.activeElement as HTMLElement;
+    if (targetElement && targetElement.getAttribute('contenteditable') === 'true') {
+      targetElement.focus();
+      
+      document.execCommand('styleWithCSS', false, 'true');
+      
+      const selection = window.getSelection();
+      if (!selection) return;
+      
+      if (selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        
+        if (!range.collapsed) {
+          // 選択範囲内の既存フォントサイズspanを削除
+          const fragment = range.extractContents();
+          const tempDiv = document.createElement('div');
+          tempDiv.appendChild(fragment);
+          
+          // 既存のフォントサイズspanを削除して内容を展開
+          const fontSpans = tempDiv.querySelectorAll('span[style*="font-size"]');
+          fontSpans.forEach(span => {
+            const parent = span.parentNode;
+            if (parent) {
+              while (span.firstChild) {
+                parent.insertBefore(span.firstChild, span);
+              }
+              parent.removeChild(span);
+            }
+          });
+          
+          // 新しいフォントサイズspanで全体を囲む
+          const newSpan = document.createElement('span');
+          newSpan.style.fontSize = `${size}pt`;
+          
+          // tempDivの内容をnewSpanに直接移動（divは含めない）
+          while (tempDiv.firstChild) {
+            newSpan.appendChild(tempDiv.firstChild);
+          }
+          
+          range.insertNode(newSpan);
+          
+          // 選択範囲を新しいspanに設定
+          const newRange = document.createRange();
+          newRange.selectNodeContents(newSpan);
+          selection.removeAllRanges();
+          selection.addRange(newRange);
+        } else {
+          // カーソル位置での処理
+          const currentNode = range.startContainer;
+          const parentSpan = currentNode.nodeType === Node.TEXT_NODE 
+            ? currentNode.parentElement 
+            : currentNode as HTMLElement;
+            
+          if (parentSpan && parentSpan.tagName === 'SPAN' && (parentSpan as HTMLElement).style.fontSize) {
+            // 既存のspan内にいる場合はそのサイズを更新
+            (parentSpan as HTMLElement).style.fontSize = `${size}pt`;
+          } else {
+            // 新しいspanを作成
+            const span = document.createElement('span');
+            span.style.fontSize = `${size}pt`;
+            span.textContent = ' ';
+            
+            range.insertNode(span);
+            
+            const newRange = document.createRange();
+            newRange.setStart(span, 1);
+            newRange.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(newRange);
+          }
+        }
+      }
+    }
+  };
+
+  // 色を適用してフォーカスと選択範囲を維持（完全に滑らか）
+  const applyColor = (color: string) => {
+    const activeElement = document.activeElement as HTMLElement;
+    if (activeElement && activeElement.getAttribute('contenteditable') === 'true') {
+      // フォーカスを確保
+      activeElement.focus();
+      
+      // 現在の選択範囲を保存
+      const selection = window.getSelection();
+      let savedRange: Range | null = null;
+      
+      if (selection && selection.rangeCount > 0) {
+        savedRange = selection.getRangeAt(0).cloneRange();
+      }
+      
+      // 選択範囲がある場合は滑らかな処理
+      if (savedRange && !savedRange.collapsed) {
+        // ブラウザの再描画を一時的に防ぐ
+        activeElement.style.userSelect = 'none';
+        
+        // コマンドを実行
+        document.execCommand('foreColor', false, color);
+        setShowColorPicker(null);
+        
+        // 次のフレームで選択範囲を復元
+        requestAnimationFrame(() => {
+          try {
+            if (savedRange && selection) {
+              selection.removeAllRanges();
+              selection.addRange(savedRange);
+            }
+          } catch (e) {
+            // 復元失敗時は何もしない
+          }
+          
+          // userSelectを元に戻す
+          activeElement.style.userSelect = '';
+        });
+      } else {
+        // カーソル位置のみの場合は通常処理
+        document.execCommand('foreColor', false, color);
+        setShowColorPicker(null);
+      }
+    }
+  };
+
+  // カラーパレット（横：色相、縦：明度）9列×6行
+  const colorPalette = [
+    '#000000', '#7F1D1D', '#EA580C', '#CA8A04', '#166534', '#0C7489', '#1E40AF', '#581C87', '#BE185D',
+    '#1F2937', '#991B1B', '#F97316', '#EAB308', '#16A34A', '#0891B2', '#2563EB', '#7C3AED', '#C2185B',
+    '#374151', '#DC2626', '#FB923C', '#FACC15', '#22C55E', '#06B6D4', '#3B82F6', '#8B5CF6', '#DB2777',
+    '#6B7280', '#EF4444', '#FDBA74', '#FDE047', '#4ADE80', '#22D3EE', '#60A5FA', '#A78BFA', '#EC4899',
+    '#9CA3AF', '#F87171', '#FED7AA', '#FEF08A', '#86EFAC', '#7DD3FC', '#93C5FD', '#C4B5FD', '#F472B6',
+    '#E5E7EB', '#FECACA', '#FEE2E2', '#FEFCE8', '#BBF7D0', '#CFFAFE', '#DBEAFE', '#DDD6FE', '#FBCFE8'
+  ];
+
+  // フォントサイズのプリセット
+  const fontSizePresets = [
+    { label: '極小', size: '8pt', value: 8 },
+    { label: '小', size: '9pt', value: 9 },
+    { label: '標準', size: '10pt', value: 10 },
+    { label: '中', size: '12pt', value: 12 },
+    { label: '大', size: '14pt', value: 14 },
+    { label: '特大', size: '16pt', value: 16 },
+    { label: '巨大', size: '20pt', value: 20 },
+    { label: '超巨大', size: '24pt', value: 24 }
+  ];
+
+  // contentEditableの参照を保持
+  const introductionRef = useRef<HTMLDivElement>(null);
+  const secretInfoRef = useRef<HTMLDivElement>(null);
+
+  // プレビューエリアでの入力時ハンドラ（選択範囲を維持）
+  const handlePreviewInput = (fieldName: string, element: HTMLElement) => {
+    const content = element.innerHTML;
+    
+    // 現在の選択範囲を即座に保存
+    const selection = window.getSelection();
+    let savedRange: Range | null = null;
+    let savedOffset = 0;
+    let savedContainer: Node | null = null;
+    
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      savedRange = range.cloneRange();
+      savedOffset = range.startOffset;
+      savedContainer = range.startContainer;
+    }
+    
+    // 既存のタイマーをクリア
+    if (inputTimeouts[fieldName]) {
+      clearTimeout(inputTimeouts[fieldName]);
+    }
+    
+    // 新しいタイマーを設定（150ms後に更新）
+    const newTimeout = setTimeout(() => {
+      // 内容が空かどうかをチェック（空白文字やHTMLタグのみの場合も空と判定）
+      const textContent = element.textContent || '';
+      const trimmedText = textContent.trim();
+      
+      // HTMLタグのみ（<br>、<p>、<div>など）で実際のテキストがない場合も空と判定
+      const htmlContent = content.replace(/<\/?[^>]+(>|$)/g, '').trim();
+      
+      // 完全に空の場合は空文字列で更新、そうでなければHTMLで更新
+      if (trimmedText === '' || htmlContent === '') {
+        handleInputChange(fieldName, '');
+        // DOMも完全にクリア
+        element.innerHTML = '';
+      } else {
+        handleInputChange(fieldName, content);
+      }
+      
+      // 選択範囲を復元
+      if (savedRange && selection && savedContainer) {
+        setTimeout(() => {
+          try {
+            // 元のノードがまだ存在するかチェック
+            if (element.contains(savedContainer) || element === savedContainer) {
+              const newRange = document.createRange();
+              const maxOffset = savedContainer.nodeType === Node.TEXT_NODE 
+                ? (savedContainer.textContent?.length || 0)
+                : savedContainer.childNodes.length;
+              
+              newRange.setStart(savedContainer, Math.min(savedOffset, maxOffset));
+              
+              // 選択範囲が折りたたまれていない場合、終了位置も設定
+              if (!savedRange.collapsed) {
+                const endOffset = savedRange.endOffset;
+                const endContainer = savedRange.endContainer;
+                if (element.contains(endContainer) || element === endContainer) {
+                  const endMaxOffset = endContainer.nodeType === Node.TEXT_NODE 
+                    ? (endContainer.textContent?.length || 0)
+                    : endContainer.childNodes.length;
+                  newRange.setEnd(endContainer, Math.min(endOffset, endMaxOffset));
+                } else {
+                  newRange.collapse(true);
+                }
+              } else {
+                newRange.collapse(true);
+              }
+              
+              selection.removeAllRanges();
+              selection.addRange(newRange);
+            } else {
+              // ノードが見つからない場合は要素の最後にカーソルを置く
+              const newRange = document.createRange();
+              newRange.selectNodeContents(element);
+              newRange.collapse(false);
+              selection.removeAllRanges();
+              selection.addRange(newRange);
+            }
+          } catch (e) {
+            // エラー時は要素の最後にカーソルを置く
+            try {
+              const newRange = document.createRange();
+              newRange.selectNodeContents(element);
+              newRange.collapse(false);
+              selection.removeAllRanges();
+              selection.addRange(newRange);
+            } catch (e2) {
+              // 何もできない場合はそのまま
+            }
+          }
+        }, 0);
+      }
+    }, 300);
+    
+    setInputTimeouts(prev => ({
+      ...prev,
+      [fieldName]: newTimeout
+    }));
+  };
+
+  // プレビューエリアでのフォーカス離脱時ハンドラ（即座に保存）
+  const handlePreviewBlur = (fieldName: string, element: HTMLElement) => {
+    // タイマーをクリア
+    if (inputTimeouts[fieldName]) {
+      clearTimeout(inputTimeouts[fieldName]);
+      setInputTimeouts(prev => {
+        const newTimeouts = { ...prev };
+        delete newTimeouts[fieldName];
+        return newTimeouts;
+      });
+    }
+    
+    const content = element.innerHTML;
+    handleInputChange(fieldName, content);
+  };
+
+  // contentEditableの初期化
+  useEffect(() => {
+    if (introductionRef.current && !introductionRef.current.innerHTML) {
+      introductionRef.current.innerHTML = characterData.introduction || '';
+    }
+  }, []);
+
+  useEffect(() => {
+    if (secretInfoRef.current && !secretInfoRef.current.innerHTML) {
+      secretInfoRef.current.innerHTML = characterData.secret_information || '';
+    }
+  }, []);
+
+  // contentEditableのデータ同期（フォーカス時以外）
+  useEffect(() => {
+    if (introductionRef.current) {
+      const currentContent = introductionRef.current.innerHTML;
+      const expectedContent = characterData.introduction || '';
+      if (currentContent !== expectedContent && document.activeElement !== introductionRef.current) {
+        introductionRef.current.innerHTML = expectedContent;
+      }
+    }
+  }, [characterData.introduction]);
+
+  useEffect(() => {
+    if (secretInfoRef.current) {
+      const currentContent = secretInfoRef.current.innerHTML;
+      const expectedContent = characterData.secret_information || '';
+      if (currentContent !== expectedContent && document.activeElement !== secretInfoRef.current) {
+        secretInfoRef.current.innerHTML = expectedContent;
+      }
+    }
+  }, [characterData.secret_information]);
+
+  // wrapSelectedText関数削除（WYSIWYG化により不要）
+
+  // RichTextToolbar削除（WYSIWYGエディタに変更）
 
   // 画像の縦横比を計算する関数
   const calculateImageAspectRatio = (img: HTMLImageElement): string => {
@@ -774,31 +1143,191 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             <div className="info-item full-width">
               <label htmlFor="introduction">
                 <i className="fas fa-user-edit"></i> 紹介文
-                <span className="label-hint">HTMLタグが使用できます</span>
+                <span className="label-hint">立ち絵画像の横に表示されます</span>
               </label>
-              <textarea
-                id="introduction"
-                name="introduction"
-                rows={6}
-                placeholder="キャラクターの詳細な紹介文を記入してください..."
-                value={characterData.introduction || ''}
-                onChange={(e) => handleInputChange('introduction', e.target.value)}
-              ></textarea>
+              
+              <div className="wysiwyg-container">
+                <div className="wysiwyg-toolbar">
+                  <div className="toolbar-group">
+                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('undo')} title="元に戻す">
+                      <i className="fas fa-undo"></i>
+                    </button>
+                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('redo')} title="進む">
+                      <i className="fas fa-redo"></i>
+                    </button>
+                  </div>
+                  <div className="toolbar-separator"></div>
+                  <div className="toolbar-group">
+                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('bold')} title="太字">
+                      <i className="fas fa-bold"></i>
+                    </button>
+                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('italic')} title="斜体">
+                      <i className="fas fa-italic"></i>
+                    </button>
+                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('underline')} title="下線">
+                      <i className="fas fa-underline"></i>
+                    </button>
+                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('strikeThrough')} title="打ち消し線">
+                      <i className="fas fa-strikethrough"></i>
+                    </button>
+                  </div>
+                  <div className="toolbar-separator"></div>
+                  <div className="toolbar-group color-group">
+                    <button 
+                      type="button" 
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => setShowColorPicker(showColorPicker === 'introduction' ? null : 'introduction')}
+                      title="文字色"
+                    >
+                      <i className="fas fa-palette"></i>
+                    </button>
+                    {showColorPicker === 'introduction' && (
+                      <div className="color-palette">
+                        {colorPalette.map((color, index) => (
+                          <button
+                            key={index}
+                            type="button"
+                            className="color-swatch"
+                            style={{ backgroundColor: color }}
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => applyColor(color)}
+                            title={color}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div className="toolbar-separator"></div>
+                  <div className="toolbar-group font-size-group">
+                    <select 
+                      className="font-size-select"
+                      onChange={(e) => {
+                        const size = parseInt(e.target.value);
+                        if (size) {
+                          applyFontSize(size);
+                        }
+                        e.target.value = '';
+                      }}
+                      defaultValue=""
+                      title="フォントサイズ"
+                    >
+                      <option value="" disabled>
+                        <i className="fas fa-text-height"></i> サイズ
+                      </option>
+                      {fontSizePresets.map((preset, index) => (
+                        <option key={index} value={preset.value}>
+                          {preset.label} ({preset.size})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div 
+                  ref={introductionRef}
+                  className="preview-content editable"
+                  contentEditable={true}
+                  suppressContentEditableWarning={true}
+                  data-placeholder="ここに入力してください..."
+                  onFocus={(e) => setLastFocusedElement(e.currentTarget)}
+                  onInput={(e) => handlePreviewInput('introduction', e.currentTarget)}
+                  onBlur={(e) => handlePreviewBlur('introduction', e.currentTarget)}
+                />
+              </div>
             </div>
 
             <div className="info-item full-width secret-info">
               <label htmlFor="secret_information">
                 <i className="fas fa-lock"></i> 秘匿情報
-                <span className="label-hint">HTMLタグが使用できます</span>
+                <span className="label-hint">立ち絵画像の横に表示されます</span>
               </label>
-              <textarea
-                id="secret_information"
-                name="secret_information"
-                rows={6}
-                placeholder="他のプレイヤーに見せたくない秘密の情報..."
-                value={characterData.secret_information || ''}
-                onChange={(e) => handleInputChange('secret_information', e.target.value)}
-              ></textarea>
+              
+              <div className="wysiwyg-container">
+                <div className="wysiwyg-toolbar">
+                  <div className="toolbar-group">
+                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('undo')} title="元に戻す">
+                      <i className="fas fa-undo"></i>
+                    </button>
+                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('redo')} title="進む">
+                      <i className="fas fa-redo"></i>
+                    </button>
+                  </div>
+                  <div className="toolbar-separator"></div>
+                  <div className="toolbar-group">
+                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('bold')} title="太字">
+                      <i className="fas fa-bold"></i>
+                    </button>
+                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('italic')} title="斜体">
+                      <i className="fas fa-italic"></i>
+                    </button>
+                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('underline')} title="下線">
+                      <i className="fas fa-underline"></i>
+                    </button>
+                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('strikeThrough')} title="打ち消し線">
+                      <i className="fas fa-strikethrough"></i>
+                    </button>
+                  </div>
+                  <div className="toolbar-separator"></div>
+                  <div className="toolbar-group color-group">
+                    <button 
+                      type="button" 
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => setShowColorPicker(showColorPicker === 'secret' ? null : 'secret')}
+                      title="文字色"
+                    >
+                      <i className="fas fa-palette"></i>
+                    </button>
+                    {showColorPicker === 'secret' && (
+                      <div className="color-palette">
+                        {colorPalette.map((color, index) => (
+                          <button
+                            key={index}
+                            type="button"
+                            className="color-swatch"
+                            style={{ backgroundColor: color }}
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => applyColor(color)}
+                            title={color}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div className="toolbar-separator"></div>
+                  <div className="toolbar-group font-size-group">
+                    <select 
+                      className="font-size-select"
+                      onChange={(e) => {
+                        const size = parseInt(e.target.value);
+                        if (size) {
+                          applyFontSize(size);
+                        }
+                        e.target.value = '';
+                      }}
+                      defaultValue=""
+                      title="フォントサイズ"
+                    >
+                      <option value="" disabled>
+                        <i className="fas fa-text-height"></i> サイズ
+                      </option>
+                      {fontSizePresets.map((preset, index) => (
+                        <option key={index} value={preset.value}>
+                          {preset.label} ({preset.size})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div 
+                  ref={secretInfoRef}
+                  className="preview-content editable"
+                  contentEditable={true}
+                  suppressContentEditableWarning={true}
+                  data-placeholder="表示ページでは折りたたまれます"
+                  onFocus={(e) => setLastFocusedElement(e.currentTarget)}
+                  onInput={(e) => handlePreviewInput('secret_information', e.currentTarget)}
+                  onBlur={(e) => handlePreviewBlur('secret_information', e.currentTarget)}
+                />
+              </div>
             </div>
 
           </div>
