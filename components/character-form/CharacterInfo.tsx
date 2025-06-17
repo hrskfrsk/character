@@ -12,6 +12,38 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     progress: 0,
     isUploading: false
   });
+
+  // UIテーマカラーの動的適用
+  useEffect(() => {
+    if (characterData.ui_theme_color && typeof window !== 'undefined') {
+      const color = characterData.ui_theme_color;
+      // 明度を下げたホバーカラーを計算
+      const hoverColor = adjustBrightness(color, -20);
+      
+      document.documentElement.style.setProperty('--ui-theme-color', color);
+      document.documentElement.style.setProperty('--ui-theme-color-hover', hoverColor);
+    }
+  }, [characterData.ui_theme_color]);
+
+  // 色の明度を調整する関数
+  const adjustBrightness = (hex: string, percent: number): string => {
+    // #を取り除く
+    const cleanHex = hex.replace('#', '');
+    
+    // RGB値に変換
+    const r = parseInt(cleanHex.substring(0, 2), 16);
+    const g = parseInt(cleanHex.substring(2, 4), 16);
+    const b = parseInt(cleanHex.substring(4, 6), 16);
+    
+    // 明度調整
+    const adjustedR = Math.max(0, Math.min(255, r + (r * percent / 100)));
+    const adjustedG = Math.max(0, Math.min(255, g + (g * percent / 100)));
+    const adjustedB = Math.max(0, Math.min(255, b + (b * percent / 100)));
+    
+    // 16進数に戻す
+    const toHex = (n: number) => Math.round(n).toString(16).padStart(2, '0');
+    return `#${toHex(adjustedR)}${toHex(adjustedG)}${toHex(adjustedB)}`;
+  };
   // アコーディオン状態の初期化（localStorageから読み込み）
   const [isAccordionOpen, setIsAccordionOpen] = useState(() => {
     if (typeof window !== 'undefined') {

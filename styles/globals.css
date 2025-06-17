@@ -1,6 +1,18 @@
 @charset "UTF-8";
 /*common
 ---------------------------------------------------*/
+
+/* テーマカラー変数定義 */
+:root {
+  --ui-theme-color: #22c6d8;
+  --ui-theme-color-hover: #1ba1b5;
+  --ui-theme-gradient: linear-gradient(
+    135deg,
+    var(--ui-theme-color) 0%,
+    var(--ui-theme-color-hover) 100%
+  );
+}
+
 * {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -50,7 +62,7 @@ h2 {
   font-size: 1.1em;
   font-weight: bold;
   color: #333;
-  padding: 8px 0;
+  padding: 0 0 5px;
 }
 
 /* プレイシート専用のh2スタイル */
@@ -85,11 +97,24 @@ h2 {
 
 .section-header .section-icon {
   margin-right: 8px;
+  color: var(--ui-theme-color);
+}
+
+.section-header:hover h2,
+.section-header:hover h3 {
+  color: var(--ui-theme-color);
+  transition: color 0.2s ease;
+}
+
+.playsheet-header .section-icon {
+  font-size: 1.2rem;
+  color: var(--ui-theme-color);
 }
 
 .section-toggle-icon {
   margin-left: auto;
-  font-size: 14px;
+  color: #999;
+  font-size: 0.8em;
   transition: transform 0.2s ease;
 }
 
@@ -356,7 +381,7 @@ textarea,
 }
 
 .character-info .character-name-input label i {
-  color: #22c6d8;
+  color: var(--ui-theme-color);
 }
 
 .character-info .character-name-input input {
@@ -373,7 +398,7 @@ textarea,
 
 .character-info .character-name-input input:focus {
   outline: none;
-  border-color: #1ba1b5;
+  border-color: var(--ui-theme-color-hover);
   box-shadow: 0 0 0 3px rgba(34, 198, 216, 0.1);
   background: #fff;
 }
@@ -402,7 +427,7 @@ textarea,
 
 .character-info .character-kana-input input:focus {
   outline: none;
-  border-color: #22c6d8;
+  border-color: var(--ui-theme-color);
   box-shadow: 0 0 0 2px rgba(34, 198, 216, 0.1);
   background: #fff;
 }
@@ -421,7 +446,7 @@ textarea,
 
 .character-info .ui-color-setting > label i {
   margin-right: 8px;
-  color: #22c6d8;
+  color: var(--ui-theme-color);
 }
 
 .character-info .ui-color-setting .color-input-group {
@@ -450,7 +475,7 @@ textarea,
 
 .character-info .ui-color-setting .color-text-input:focus {
   outline: none;
-  border-color: #22c6d8;
+  border-color: var(--ui-theme-color);
   box-shadow: 0 0 0 2px rgba(34, 198, 216, 0.1);
 }
 
@@ -464,7 +489,7 @@ textarea,
 
 .character-info .ui-color-setting .ui-color-description i {
   margin-right: 6px;
-  color: #22c6d8;
+  color: var(--ui-theme-color);
 }
 
 /* 外見・カラー設定 */
@@ -483,7 +508,7 @@ textarea,
 
 .character-info .appearance-color-setting .appearance-title i {
   margin-right: 8px;
-  color: #22c6d8;
+  color: var(--ui-theme-color);
 }
 
 .character-info .appearance-color-setting .appearance-grid {
@@ -525,7 +550,7 @@ textarea,
 
 .character-info .appearance-color-setting .info-item input[type="text"]:focus {
   outline: none;
-  border-color: #22c6d8;
+  border-color: var(--ui-theme-color);
   box-shadow: 0 0 0 2px rgba(34, 198, 216, 0.1);
 }
 
@@ -584,7 +609,7 @@ textarea,
 }
 
 .character-info .accordion-toggle-btn:hover {
-  color: #22c6d8;
+  color: var(--ui-theme-color);
 }
 
 .character-info .accordion-toggle-btn .title-text {
@@ -594,7 +619,7 @@ textarea,
 }
 
 .character-info .accordion-toggle-btn .title-text i {
-  color: #22c6d8;
+  color: var(--ui-theme-color);
   font-size: 1em;
 }
 
@@ -667,7 +692,7 @@ textarea,
 
 .character-info .character-image-section > label i {
   margin-right: 8px;
-  color: #22c6d8;
+  color: var(--ui-theme-color);
 }
 
 .character-info .character-image-section .image-preview-container {
@@ -741,7 +766,11 @@ textarea,
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: linear-gradient(135deg, #22c6d8 0%, #1ba1b5 100%);
+  background: linear-gradient(
+    135deg,
+    var(--ui-theme-color) 0%,
+    var(--ui-theme-color-hover) 100%
+  );
   color: white;
   padding: 12px 20px;
   border-radius: 6px;
@@ -754,7 +783,11 @@ textarea,
 }
 
 .character-info .character-image-section .upload-btn:hover {
-  background: linear-gradient(135deg, #1ba1b5 0%, #158a9a 100%);
+  background: linear-gradient(
+    135deg,
+    var(--ui-theme-color-hover) 0%,
+    #158a9a 100%
+  );
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(34, 198, 216, 0.3);
 }
@@ -777,7 +810,11 @@ textarea,
 
 .character-info .character-image-section .upload-progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #22c6d8, #1ba1b5);
+  background: linear-gradient(
+    90deg,
+    var(--ui-theme-color),
+    var(--ui-theme-color-hover)
+  );
   transition: width 0.3s ease;
 }
 
@@ -792,7 +829,7 @@ textarea,
 
 .character-info .character-image-section .upload-info i {
   margin-right: 4px;
-  color: #22c6d8;
+  color: var(--ui-theme-color);
 }
 
 .character-info .info-section {
@@ -805,7 +842,7 @@ textarea,
 
 .character-info .subsection-title i {
   margin-right: 8px;
-  color: #22c6d8;
+  color: var(--ui-theme-color);
 }
 
 /* Basic Data セクション - 横並びレイアウト */
@@ -882,7 +919,7 @@ textarea,
 
 .character-info .info-item.full-width label i {
   margin-right: 6px;
-  color: #22c6d8;
+  color: var(--ui-theme-color);
 }
 
 .character-info .info-item.full-width input,
@@ -907,7 +944,7 @@ textarea,
 .character-info .info-item.full-width input:focus,
 .character-info .info-item.full-width textarea:focus {
   outline: none;
-  border-color: #22c6d8;
+  border-color: var(--ui-theme-color);
   box-shadow: 0 0 0 2px rgba(34, 198, 216, 0.1);
 }
 
@@ -991,7 +1028,7 @@ textarea,
 .preview-toggle-btn {
   background: none;
   border: none;
-  color: #22c6d8;
+  color: var(--ui-theme-color);
   cursor: pointer;
   font-size: 0.85em;
   font-weight: 500;
@@ -1004,7 +1041,7 @@ textarea,
 }
 
 .preview-toggle-btn:hover {
-  color: #1ba1b5;
+  color: var(--ui-theme-color-hover);
   background: rgba(34, 198, 216, 0.05);
   border-radius: 4px;
 }
@@ -1534,8 +1571,6 @@ li {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   margin-bottom: 3%;
-  border-top: 2px solid #ddd;
-  padding-top: 15px;
 }
 .chara-seet .job-base > div {
   margin-right: 15px;
@@ -1586,10 +1621,21 @@ li {
   font-size: 0.8rem;
   font-weight: 400;
   margin: 0;
-  background: #aaa;
+  background: var(--ui-theme-color);
   color: #fff;
   border-radius: 4px 4px 0 0;
   line-height: 1.6;
+}
+
+/* 初期SAN、HP、MP、知識、アイデア、幸運、ダメージボーナスは#aaa固定 */
+.chara-seet .scores .ul-score .san.score-li h3,
+.chara-seet .scores .ul-score .hp.score-li h3,
+.chara-seet .scores .ul-score .mp.score-li h3,
+.chara-seet .scores .ul-score .knowledge.score-li h3,
+.chara-seet .scores .ul-score .idea.score-li h3,
+.chara-seet .scores .ul-score .luck.score-li h3,
+.chara-seet .slots .db.slot h3 {
+  background: #aaa !important;
 }
 @media only screen and (max-width: 768px) {
   .chara-seet .scores .ul-score h3 {
@@ -1931,7 +1977,7 @@ li {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  border-left: solid 2px #aaa;
+  border-left: solid 2px var(--ui-theme-color);
   padding: 3px 0;
   margin: 0;
   margin-bottom: 3px;

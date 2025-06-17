@@ -21,7 +21,7 @@ export default function StatusSlots({
 
   return (
     <div className="character-section">
-      <div className="section-header" style={{ marginBottom: '20px' }} onClick={onSkillSectionToggle}>
+      <div className="section-header" style={{ marginBottom: '30px' }} onClick={onSkillSectionToggle}>
         <h3>
           <i className="fas fa-cogs section-icon"></i>技能
         </h3>
