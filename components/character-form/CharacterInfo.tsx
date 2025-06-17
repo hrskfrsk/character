@@ -25,7 +25,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
       const mediumColor = hexToRgba(color, 0.4);
       // 濃い色を計算（70%の不透明度）
       const darkColor = hexToRgba(color, 0.7);
-      
+
       document.documentElement.style.setProperty('--ui-theme-color', color);
       document.documentElement.style.setProperty('--ui-theme-color-hover', hoverColor);
       document.documentElement.style.setProperty('--ui-theme-color-light', lightColor);
@@ -38,17 +38,17 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
   const adjustBrightness = (hex: string, percent: number): string => {
     // #を取り除く
     const cleanHex = hex.replace('#', '');
-    
+
     // RGB値に変換
     const r = parseInt(cleanHex.substring(0, 2), 16);
     const g = parseInt(cleanHex.substring(2, 4), 16);
     const b = parseInt(cleanHex.substring(4, 6), 16);
-    
+
     // 明度調整
     const adjustedR = Math.max(0, Math.min(255, r + (r * percent / 100)));
     const adjustedG = Math.max(0, Math.min(255, g + (g * percent / 100)));
     const adjustedB = Math.max(0, Math.min(255, b + (b * percent / 100)));
-    
+
     // 16進数に戻す
     const toHex = (n: number) => Math.round(n).toString(16).padStart(2, '0');
     return `#${toHex(adjustedR)}${toHex(adjustedG)}${toHex(adjustedB)}`;
@@ -58,12 +58,12 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
   const hexToRgba = (hex: string, alpha: number): string => {
     // #を取り除く
     const cleanHex = hex.replace('#', '');
-    
+
     // RGB値に変換
     const r = parseInt(cleanHex.substring(0, 2), 16);
     const g = parseInt(cleanHex.substring(2, 4), 16);
     const b = parseInt(cleanHex.substring(4, 6), 16);
-    
+
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   };
   // アコーディオン状態の初期化（localStorageから読み込み）
@@ -74,7 +74,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     }
     return false;
   });
-  
+
   const [isBasicDataOpen, setIsBasicDataOpen] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('accordion-basic-data');
@@ -82,7 +82,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     }
     return true;
   });
-  
+
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('accordion-description');
@@ -90,13 +90,13 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     }
     return false;
   });
-  
+
   // WYSIWYGエディタ用の状態
   const [showColorPicker, setShowColorPicker] = useState<string | null>(null);
   const [lastFocusedElement, setLastFocusedElement] = useState<HTMLElement | null>(null);
-  
+
   // デバウンス用の状態
-  const [inputTimeouts, setInputTimeouts] = useState<{[key: string]: NodeJS.Timeout}>({});
+  const [inputTimeouts, setInputTimeouts] = useState<{ [key: string]: NodeJS.Timeout }>({});
 
   // アコーディオン状態が変更されたときにlocalStorageに保存
   useEffect(() => {
@@ -134,26 +134,26 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     if (activeElement && activeElement.getAttribute('contenteditable') === 'true') {
       // フォーカスを確保
       activeElement.focus();
-      
+
       // 現在の選択範囲を保存
       const selection = window.getSelection();
       let savedRange: Range | null = null;
-      
+
       if (selection && selection.rangeCount > 0) {
         savedRange = selection.getRangeAt(0).cloneRange();
       }
-      
+
       // execCommandが選択範囲を変更するかどうかを事前チェック
       const preserveSelectionCommands = ['bold', 'italic', 'underline', 'strikeThrough', 'foreColor'];
       const shouldPreserveSelection = preserveSelectionCommands.includes(command) && savedRange && !savedRange.collapsed;
-      
+
       if (shouldPreserveSelection) {
         // ブラウザの再描画を一時的に防ぐ
         activeElement.style.userSelect = 'none';
-        
+
         // コマンドを実行
         document.execCommand(command, false, value);
-        
+
         // 次のフレームで選択範囲を復元
         requestAnimationFrame(() => {
           try {
@@ -164,7 +164,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
           } catch (e) {
             // 復元失敗時は何もしない
           }
-          
+
           // userSelectを元に戻す
           activeElement.style.userSelect = '';
         });
@@ -180,21 +180,21 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     const targetElement = lastFocusedElement || document.activeElement as HTMLElement;
     if (targetElement && targetElement.getAttribute('contenteditable') === 'true') {
       targetElement.focus();
-      
+
       document.execCommand('styleWithCSS', false, 'true');
-      
+
       const selection = window.getSelection();
       if (!selection) return;
-      
+
       if (selection.rangeCount > 0) {
         const range = selection.getRangeAt(0);
-        
+
         if (!range.collapsed) {
           // 選択範囲内の既存フォントサイズspanを削除
           const fragment = range.extractContents();
           const tempDiv = document.createElement('div');
           tempDiv.appendChild(fragment);
-          
+
           // 既存のフォントサイズspanを削除して内容を展開
           const fontSpans = tempDiv.querySelectorAll('span[style*="font-size"]');
           fontSpans.forEach(span => {
@@ -206,18 +206,18 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
               parent.removeChild(span);
             }
           });
-          
+
           // 新しいフォントサイズspanで全体を囲む
           const newSpan = document.createElement('span');
           newSpan.style.fontSize = `${size}pt`;
-          
+
           // tempDivの内容をnewSpanに直接移動（divは含めない）
           while (tempDiv.firstChild) {
             newSpan.appendChild(tempDiv.firstChild);
           }
-          
+
           range.insertNode(newSpan);
-          
+
           // 選択範囲を新しいspanに設定
           const newRange = document.createRange();
           newRange.selectNodeContents(newSpan);
@@ -226,10 +226,10 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
         } else {
           // カーソル位置での処理
           const currentNode = range.startContainer;
-          const parentSpan = currentNode.nodeType === Node.TEXT_NODE 
-            ? currentNode.parentElement 
+          const parentSpan = currentNode.nodeType === Node.TEXT_NODE
+            ? currentNode.parentElement
             : currentNode as HTMLElement;
-            
+
           if (parentSpan && parentSpan.tagName === 'SPAN' && (parentSpan as HTMLElement).style.fontSize) {
             // 既存のspan内にいる場合はそのサイズを更新
             (parentSpan as HTMLElement).style.fontSize = `${size}pt`;
@@ -238,9 +238,9 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             const span = document.createElement('span');
             span.style.fontSize = `${size}pt`;
             span.textContent = ' ';
-            
+
             range.insertNode(span);
-            
+
             const newRange = document.createRange();
             newRange.setStart(span, 1);
             newRange.collapse(true);
@@ -258,24 +258,24 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     if (activeElement && activeElement.getAttribute('contenteditable') === 'true') {
       // フォーカスを確保
       activeElement.focus();
-      
+
       // 現在の選択範囲を保存
       const selection = window.getSelection();
       let savedRange: Range | null = null;
-      
+
       if (selection && selection.rangeCount > 0) {
         savedRange = selection.getRangeAt(0).cloneRange();
       }
-      
+
       // 選択範囲がある場合は滑らかな処理
       if (savedRange && !savedRange.collapsed) {
         // ブラウザの再描画を一時的に防ぐ
         activeElement.style.userSelect = 'none';
-        
+
         // コマンドを実行
         document.execCommand('foreColor', false, color);
         setShowColorPicker(null);
-        
+
         // 次のフレームで選択範囲を復元
         requestAnimationFrame(() => {
           try {
@@ -286,7 +286,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
           } catch (e) {
             // 復元失敗時は何もしない
           }
-          
+
           // userSelectを元に戻す
           activeElement.style.userSelect = '';
         });
@@ -327,34 +327,34 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
   // プレビューエリアでの入力時ハンドラ（選択範囲を維持）
   const handlePreviewInput = (fieldName: string, element: HTMLElement) => {
     const content = element.innerHTML;
-    
+
     // 現在の選択範囲を即座に保存
     const selection = window.getSelection();
     let savedRange: Range | null = null;
     let savedOffset = 0;
     let savedContainer: Node | null = null;
-    
+
     if (selection && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
       savedRange = range.cloneRange();
       savedOffset = range.startOffset;
       savedContainer = range.startContainer;
     }
-    
+
     // 既存のタイマーをクリア
     if (inputTimeouts[fieldName]) {
       clearTimeout(inputTimeouts[fieldName]);
     }
-    
+
     // 新しいタイマーを設定（150ms後に更新）
     const newTimeout = setTimeout(() => {
       // 内容が空かどうかをチェック（空白文字やHTMLタグのみの場合も空と判定）
       const textContent = element.textContent || '';
       const trimmedText = textContent.trim();
-      
+
       // HTMLタグのみ（<br>、<p>、<div>など）で実際のテキストがない場合も空と判定
       const htmlContent = content.replace(/<\/?[^>]+(>|$)/g, '').trim();
-      
+
       // 完全に空の場合は空文字列で更新、そうでなければHTMLで更新
       if (trimmedText === '' || htmlContent === '') {
         handleInputChange(fieldName, '');
@@ -363,7 +363,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
       } else {
         handleInputChange(fieldName, content);
       }
-      
+
       // 選択範囲を復元
       if (savedRange && selection && savedContainer) {
         setTimeout(() => {
@@ -371,18 +371,18 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             // 元のノードがまだ存在するかチェック
             if (element.contains(savedContainer) || element === savedContainer) {
               const newRange = document.createRange();
-              const maxOffset = savedContainer.nodeType === Node.TEXT_NODE 
+              const maxOffset = savedContainer.nodeType === Node.TEXT_NODE
                 ? (savedContainer.textContent?.length || 0)
                 : savedContainer.childNodes.length;
-              
+
               newRange.setStart(savedContainer, Math.min(savedOffset, maxOffset));
-              
+
               // 選択範囲が折りたたまれていない場合、終了位置も設定
               if (!savedRange.collapsed) {
                 const endOffset = savedRange.endOffset;
                 const endContainer = savedRange.endContainer;
                 if (element.contains(endContainer) || element === endContainer) {
-                  const endMaxOffset = endContainer.nodeType === Node.TEXT_NODE 
+                  const endMaxOffset = endContainer.nodeType === Node.TEXT_NODE
                     ? (endContainer.textContent?.length || 0)
                     : endContainer.childNodes.length;
                   newRange.setEnd(endContainer, Math.min(endOffset, endMaxOffset));
@@ -392,7 +392,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
               } else {
                 newRange.collapse(true);
               }
-              
+
               selection.removeAllRanges();
               selection.addRange(newRange);
             } else {
@@ -418,7 +418,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
         }, 0);
       }
     }, 300);
-    
+
     setInputTimeouts(prev => ({
       ...prev,
       [fieldName]: newTimeout
@@ -436,7 +436,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
         return newTimeouts;
       });
     }
-    
+
     const content = element.innerHTML;
     handleInputChange(fieldName, content);
   };
@@ -677,718 +677,713 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
   return (
     <div className="character-info">
       {/* キャラクター名セクション */}
-      <div className="character-name-section">
-        {/* ロストトグル（右上） */}
-        <div className="character-lost-toggle-header">
-          <label htmlFor="is_lost">
-            <i className="fas fa-skull-crossbones"></i> ロスト
-          </label>
-          <div className="toggle-wrapper">
-            <input
-              type="checkbox"
-              id="is_lost"
-              name="is_lost"
-              checked={characterData.is_lost || false}
-              onChange={(e) => handleInputChange('is_lost', e.target.checked)}
-              className="toggle-checkbox"
-            />
-            <label htmlFor="is_lost" className="toggle-label">
-              <span className="toggle-inner"></span>
-              <span className="toggle-switch"></span>
-            </label>
-          </div>
-        </div>
 
-        <div className="character-name-input">
-          <label htmlFor="character_name">
-            <i className="fas fa-signature"></i> キャラクター名
-          </label>
+      {/* ロストトグル（右上） */}
+      <div className="character-lost-toggle-header">
+        <label htmlFor="is_lost">
+          <i className="fas fa-skull-crossbones"></i> ロスト
+        </label>
+        <div className="toggle-wrapper">
           <input
-            type="text"
-            id="character_name"
-            name="character_name"
-            value={characterData.character_name || ''}
-            onChange={(e) => handleInputChange('character_name', e.target.value)}
-            placeholder="キャラクターの名前を入力"
+            type="checkbox"
+            id="is_lost"
+            name="is_lost"
+            checked={characterData.is_lost || false}
+            onChange={(e) => handleInputChange('is_lost', e.target.checked)}
+            className="toggle-checkbox"
           />
+          <label htmlFor="is_lost" className="toggle-label">
+            <span className="toggle-inner"></span>
+            <span className="toggle-switch"></span>
+          </label>
         </div>
+      </div>
 
-        {/* アコーディオントグル（見出し風） */}
-        <div className="accordion-toggle">
-          <button
-            type="button"
-            onClick={() => setIsAccordionOpen(!isAccordionOpen)}
-            className="accordion-toggle-btn"
-          >
-            <div className="title-text">
-              <i className="fas fa-palette"></i>
-              立ち絵/カラー設定
-            </div>
-            <i className={`fas chevron ${isAccordionOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
-          </button>
-        </div>
+      <div className="character-name-input" style={{ marginTop: '10px' }}>
+        <input
+          type="text"
+          id="character_name"
+          name="character_name"
+          value={characterData.character_name || ''}
+          onChange={(e) => handleInputChange('character_name', e.target.value)}
+          placeholder="キャラクターの名前を入力"
+        />
+      </div>
 
-        {/* 2カラムレイアウト（アコーディオンコンテンツ） */}
-        <div className={`character-main-info ${isAccordionOpen ? 'accordion-open' : 'accordion-closed'}`}>
-          {/* 左カラム：キャラクター画像 */}
-          <div className="character-left-column">
-            <div className="character-image-section">
-              <label>
-                <i className="fas fa-image"></i> キャラクター画像
-              </label>
 
-              {/* 画像プレビュー */}
-              {characterData.character_image_url && (
-                <div className="image-preview-container">
-                  <div className="image-preview">
-                    <img
-                      src={characterData.character_image_url}
-                      alt="キャラクター画像プレビュー"
-                      onError={(e) => {
-                        console.log('Image load error');
-                        e.currentTarget.style.display = 'none';
-                      }}
-                    />
-                    <button
-                      type="button"
-                      className="remove-image-btn"
-                      onClick={removeImage}
-                      title="画像を削除"
-                    >
-                      <i className="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* アップロードエリア */}
-              <div className="image-upload-area">
-                <div className="upload-options">
-                  <div className="upload-option">
-                    <label htmlFor="character_image_upload" className="upload-btn">
-                      <i className={uploadProgress.isUploading ? "fas fa-spinner fa-spin" : "fas fa-upload"}></i>
-                      {uploadProgress.isUploading ? `アップロード中... ${uploadProgress.progress}%` : '画像をアップロード'}
-                    </label>
-                    <input
-                      type="file"
-                      id="character_image_upload"
-                      accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
-                      onChange={handleImageUpload}
-                      disabled={uploadProgress.isUploading}
-                      style={{ display: 'none' }}
-                    />
-
-                    {/* プログレスバー */}
-                    {uploadProgress.isUploading && (
-                      <div className="upload-progress">
-                        <div
-                          className="upload-progress-bar"
-                          style={{ width: `${uploadProgress.progress}%` }}
-                        ></div>
-                      </div>
-                    )}
-                  </div>
-
-                </div>
-
-                <div className="upload-info">
-                  <small>
-                    <i className="fas fa-info-circle"></i>
-                    JPEG、PNG、GIF、WebP形式対応 (最大5MB)
-                  </small>
-                </div>
-              </div>
-            </div>
+      {/* アコーディオントグル（見出し風） */}
+      <div className="accordion-toggle">
+        <button
+          type="button"
+          onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+          className="accordion-toggle-btn"
+        >
+          <div className="title-text">
+            <i className="fas fa-palette"></i>
+            立ち絵/カラー設定
           </div>
+          <i className={`fas chevron ${isAccordionOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+        </button>
+      </div>
 
-          {/* 右カラム：基本情報 */}
-          <div className="character-right-column">
-            <div className="character-kana-input">
-              <label htmlFor="character_name_kana">
-                <i className="fas fa-font"></i> フリガナ
-              </label>
-              <input
-                type="text"
-                id="character_name_kana"
-                name="character_name_kana"
-                value={characterData.character_name_kana || ''}
-                onChange={(e) => handleInputChange('character_name_kana', e.target.value)}
-                placeholder="カタカナで入力"
-              />
-            </div>
+      {/* 2カラムレイアウト（アコーディオンコンテンツ） */}
+      <div className={`character-main-info ${isAccordionOpen ? 'accordion-open' : 'accordion-closed'}`}>
+        {/* 左カラム：キャラクター画像 */}
+        <div className="character-left-column">
+          <div className="character-image-section">
+            <label>
+              <i className="fas fa-image"></i> キャラクター画像
+            </label>
 
-            {/* UIカラー設定 */}
-            <div className="ui-color-setting">
-              <label htmlFor="ui_theme_color">
-                <i className="fas fa-paint-brush"></i> UIテーマカラー
-              </label>
-              <div className="ui-color-description">
-                <i className="fas fa-info-circle"></i>
-                表示ページの見出しに使用されます。
+            {/* 画像プレビュー */}
+            {characterData.character_image_url && (
+              <div className="image-preview-container">
+                <div className="image-preview">
+                  <img
+                    src={characterData.character_image_url}
+                    alt="キャラクター画像プレビュー"
+                    onError={(e) => {
+                      console.log('Image load error');
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="remove-image-btn"
+                    onClick={removeImage}
+                    title="画像を削除"
+                  >
+                    <i className="fas fa-times"></i>
+                  </button>
+                </div>
               </div>
-              <div className="color-input-group">
-                <input
-                  type="color"
-                  id="ui_theme_color_picker"
-                  value={characterData.ui_theme_color || '#22c6d8'}
-                  onChange={(e) => handleInputChange('ui_theme_color', e.target.value)}
-                  className="color-picker"
-                />
-                <input
-                  type="text"
-                  id="ui_theme_color"
-                  name="ui_theme_color"
-                  placeholder="#22c6d8"
-                  value={characterData.ui_theme_color || ''}
-                  onChange={(e) => handleInputChange('ui_theme_color', e.target.value)}
-                  className="color-text-input"
-                />
+            )}
+
+            {/* アップロードエリア */}
+            <div className="image-upload-area">
+              <div className="upload-options">
+                <div className="upload-option">
+                  <label htmlFor="character_image_upload" className="upload-btn">
+                    <i className={uploadProgress.isUploading ? "fas fa-spinner fa-spin" : "fas fa-upload"}></i>
+                    {uploadProgress.isUploading ? `アップロード中... ${uploadProgress.progress}%` : '画像をアップロード'}
+                  </label>
+                  <input
+                    type="file"
+                    id="character_image_upload"
+                    accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+                    onChange={handleImageUpload}
+                    disabled={uploadProgress.isUploading}
+                    style={{ display: 'none' }}
+                  />
+
+                  {/* プログレスバー */}
+                  {uploadProgress.isUploading && (
+                    <div className="upload-progress">
+                      <div
+                        className="upload-progress-bar"
+                        style={{ width: `${uploadProgress.progress}%` }}
+                      ></div>
+                    </div>
+                  )}
+                </div>
+
               </div>
-            </div>
 
-            {/* 外見・カラー設定 */}
-            <div className="appearance-color-setting">
-              <h4 className="appearance-title">
-                <i className="fas fa-palette"></i> 外見・カラー
-              </h4>
-              <div className="appearance-grid">
-
-                <div className="color-pair">
-                  <div className="info-item">
-                    <label htmlFor="character_color">
-                      <i className="fas fa-circle" style={{ color: characterData.character_color_code || '#22c6d8' }}></i> イメージカラー
-                    </label>
-                    <input
-                      type="text"
-                      id="character_color"
-                      name="character_color"
-                      placeholder="ベビーブルーなど"
-                      value={characterData.character_color || ''}
-                      onChange={(e) => handleInputChange('character_color', e.target.value)}
-                    />
-                  </div>
-                  <div className="info-item color-code">
-                    <label htmlFor="character_color_code">カラーコード</label>
-                    <div className="color-input-group">
-                      <input
-                        type="color"
-                        id="character_color_picker"
-                        value={characterData.character_color_code || '#22c6d8'}
-                        onChange={(e) => handleInputChange('character_color_code', e.target.value)}
-                        className="color-picker"
-                      />
-                      <input
-                        type="text"
-                        id="character_color_code"
-                        name="character_color_code"
-                        placeholder="#abe5ed"
-                        value={characterData.character_color_code || ''}
-                        onChange={(e) => handleInputChange('character_color_code', e.target.value)}
-                        className="color-text-input"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="color-pair">
-                  <div className="info-item">
-                    <label htmlFor="hair_color">
-                      <i className="fas fa-circle" style={{ color: characterData.hair_color_code || '#8B4513' }}></i> 髪の色
-                    </label>
-                    <input
-                      type="text"
-                      id="hair_color"
-                      name="hair_color"
-                      placeholder="白髪など"
-                      value={characterData.hair_color || ''}
-                      onChange={(e) => handleInputChange('hair_color', e.target.value)}
-                    />
-                  </div>
-                  <div className="info-item color-code">
-                    <label htmlFor="hair_color_code">カラーコード</label>
-                    <div className="color-input-group">
-                      <input
-                        type="color"
-                        id="hair_color_picker"
-                        value={characterData.hair_color_code || '#8B4513'}
-                        onChange={(e) => handleInputChange('hair_color_code', e.target.value)}
-                        className="color-picker"
-                      />
-                      <input
-                        type="text"
-                        id="hair_color_code"
-                        name="hair_color_code"
-                        placeholder="#ffffff"
-                        value={characterData.hair_color_code || ''}
-                        onChange={(e) => handleInputChange('hair_color_code', e.target.value)}
-                        className="color-text-input"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="color-pair">
-                  <div className="info-item">
-                    <label htmlFor="eye_color">
-                      <i className="fas fa-circle" style={{ color: characterData.eye_color_code || '#4169E1' }}></i> 目の色
-                    </label>
-                    <input
-                      type="text"
-                      id="eye_color"
-                      name="eye_color"
-                      placeholder="スカイブルーなど"
-                      value={characterData.eye_color || ''}
-                      onChange={(e) => handleInputChange('eye_color', e.target.value)}
-                    />
-                  </div>
-                  <div className="info-item color-code">
-                    <label htmlFor="eye_color_code">カラーコード</label>
-                    <div className="color-input-group">
-                      <input
-                        type="color"
-                        id="eye_color_picker"
-                        value={characterData.eye_color_code || '#4169E1'}
-                        onChange={(e) => handleInputChange('eye_color_code', e.target.value)}
-                        className="color-picker"
-                      />
-                      <input
-                        type="text"
-                        id="eye_color_code"
-                        name="eye_color_code"
-                        placeholder="#a0d8ef"
-                        value={characterData.eye_color_code || ''}
-                        onChange={(e) => handleInputChange('eye_color_code', e.target.value)}
-                        className="color-text-input"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="color-pair">
-                  <div className="info-item">
-                    <label htmlFor="skin_color">
-                      <i className="fas fa-circle" style={{ color: characterData.skin_color_code || '#FDBCB4' }}></i> 肌の色
-                    </label>
-                    <input
-                      type="text"
-                      id="skin_color"
-                      name="skin_color"
-                      placeholder="小麦色など"
-                      value={characterData.skin_color || ''}
-                      onChange={(e) => handleInputChange('skin_color', e.target.value)}
-                    />
-                  </div>
-                  <div className="info-item color-code">
-                    <label htmlFor="skin_color_code">カラーコード</label>
-                    <div className="color-input-group">
-                      <input
-                        type="color"
-                        id="skin_color_picker"
-                        value={characterData.skin_color_code || '#FDBCB4'}
-                        onChange={(e) => handleInputChange('skin_color_code', e.target.value)}
-                        className="color-picker"
-                      />
-                      <input
-                        type="text"
-                        id="skin_color_code"
-                        name="skin_color_code"
-                        placeholder="#f4c2a1"
-                        value={characterData.skin_color_code || ''}
-                        onChange={(e) => handleInputChange('skin_color_code', e.target.value)}
-                        className="color-text-input"
-                      />
-                    </div>
-                  </div>
-                </div>
-
+              <div className="upload-info">
+                <small>
+                  <i className="fas fa-info-circle"></i>
+                  JPEG、PNG、GIF、WebP形式対応 (最大5MB)
+                </small>
               </div>
             </div>
           </div>
         </div>
 
-        {/* 基本情報セクション */}
-        {/* 基本データ アコーディオントグル */}
-        <div className="accordion-toggle">
-          <button
-            type="button"
-            onClick={() => setIsBasicDataOpen(!isBasicDataOpen)}
-            className="accordion-toggle-btn"
-          >
-            <div className="title-text">
-              <i className="fas fa-id-card"></i>
-              基本データ
+        {/* 右カラム：基本情報 */}
+        <div className="character-right-column">
+          <div className="character-kana-input">
+            <label htmlFor="character_name_kana">
+              <i className="fas fa-font"></i> フリガナ
+            </label>
+            <input
+              type="text"
+              id="character_name_kana"
+              name="character_name_kana"
+              value={characterData.character_name_kana || ''}
+              onChange={(e) => handleInputChange('character_name_kana', e.target.value)}
+              placeholder="カタカナで入力"
+            />
+          </div>
+
+          {/* UIカラー設定 */}
+          <div className="ui-color-setting">
+            <label htmlFor="ui_theme_color">
+              <i className="fas fa-paint-brush"></i> UIテーマカラー
+            </label>
+            <div className="ui-color-description">
+              <i className="fas fa-info-circle"></i>
+              表示ページの見出しに使用されます。
             </div>
-            <i className={`fas chevron ${isBasicDataOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
-          </button>
-        </div>
-
-        <div className={`accordion-content ${isBasicDataOpen ? 'accordion-open' : 'accordion-closed'}`}>
-          <div className="info-grid basic-info">
-
-
-
-            <div className="info-item compact">
-              <label htmlFor="gender">
-                <i className="fas fa-venus-mars"></i> 性別
-              </label>
-              <select
-                id="gender"
-                name="gender"
-                value={characterData.gender || ''}
-                onChange={(e) => handleInputChange('gender', e.target.value)}
-              >
-                <option value="">選択してください</option>
-                <option value="男">男</option>
-                <option value="女">女</option>
-                <option value="その他">その他</option>
-              </select>
-            </div>
-
-            <div className="info-item compact">
-              <label htmlFor="age">
-                <i className="fas fa-calendar-alt"></i> 年齢
-              </label>
+            <div className="color-input-group">
               <input
-                type="number"
-                id="age"
-                name="age"
-                value={characterData.age || ''}
-                onChange={(e) => handleInputChange('age', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
-                min="1"
-                max="200"
+                type="color"
+                id="ui_theme_color_picker"
+                value={characterData.ui_theme_color || '#22c6d8'}
+                onChange={(e) => handleInputChange('ui_theme_color', e.target.value)}
+                className="color-picker"
               />
-            </div>
-
-            <div className="info-item compact">
-              <label htmlFor="height">
-                <i className="fas fa-ruler-vertical"></i> 身長
-              </label>
               <input
                 type="text"
-                id="height"
-                name="height"
-                placeholder="170"
-                value={characterData.height || ''}
-                onChange={(e) => handleInputChange('height', e.target.value)}
-              />
-            </div>
-
-            <div className="info-item compact">
-              <label htmlFor="weight">
-                <i className="fas fa-weight"></i> 体重
-              </label>
-              <input
-                type="text"
-                id="weight"
-                name="weight"
-                placeholder="65"
-                value={characterData.weight || ''}
-                onChange={(e) => handleInputChange('weight', e.target.value)}
-              />
-            </div>
-
-            <div className="info-item">
-              <label htmlFor="occupation">
-                <i className="fas fa-briefcase"></i> 職業
-              </label>
-              <input
-                type="text"
-                id="occupation"
-                name="occupation"
-                value={characterData.occupation || ''}
-                onChange={(e) => handleInputChange('occupation', e.target.value)}
-              />
-            </div>
-
-            <div className="info-item">
-              <label htmlFor="birthplace">
-                <i className="fas fa-map-marker-alt"></i> 出身地
-              </label>
-              <input
-                type="text"
-                id="birthplace"
-                name="birthplace"
-                value={characterData.birthplace || ''}
-                onChange={(e) => handleInputChange('birthplace', e.target.value)}
-              />
-            </div>
-
-            <div className="info-item">
-              <label htmlFor="birthday">
-                <i className="fas fa-birthday-cake"></i> 誕生日
-              </label>
-              <input
-                type="text"
-                id="birthday"
-                name="birthday"
-                placeholder="3月15日など"
-                value={characterData.birthday || ''}
-                onChange={(e) => handleInputChange('birthday', e.target.value)}
-              />
-            </div>
-
-            <div className="info-item">
-              <label htmlFor="zodiac_sign">
-                <i className="fas fa-star"></i> 星座
-              </label>
-              <input
-                type="text"
-                id="zodiac_sign"
-                name="zodiac_sign"
-                placeholder="うお座など"
-                value={characterData.zodiac_sign || ''}
-                onChange={(e) => handleInputChange('zodiac_sign', e.target.value)}
-              />
-            </div>
-
-            <div className="info-item">
-              <label htmlFor="blood_type">
-                <i className="fas fa-tint"></i> 血液型
-              </label>
-              <select
-                id="blood_type"
-                name="blood_type"
-                value={characterData.blood_type || ''}
-                onChange={(e) => handleInputChange('blood_type', e.target.value)}
-              >
-                <option value="">選択してください</option>
-                <option value="A型">A型</option>
-                <option value="B型">B型</option>
-                <option value="O型">O型</option>
-                <option value="AB型">AB型</option>
-              </select>
-            </div>
-
-            <div className="info-item">
-              <label htmlFor="era">
-                <i className="fas fa-history"></i> 時代
-              </label>
-              <input
-                type="text"
-                id="era"
-                name="era"
-                placeholder="1920年代、現代など"
-                value={characterData.era || ''}
-                onChange={(e) => handleInputChange('era', e.target.value)}
+                id="ui_theme_color"
+                name="ui_theme_color"
+                placeholder="#22c6d8"
+                value={characterData.ui_theme_color || ''}
+                onChange={(e) => handleInputChange('ui_theme_color', e.target.value)}
+                className="color-text-input"
               />
             </div>
           </div>
-        </div>
 
-        {/* 説明・設定セクション */}
-        {/* 説明・設定 アコーディオントグル */}
-        <div className="accordion-toggle">
-          <button
-            type="button"
-            onClick={() => setIsDescriptionOpen(!isDescriptionOpen)}
-            className="accordion-toggle-btn"
-          >
-            <div className="title-text">
-              <i className="fas fa-file-alt"></i>
-              キャラクター紹介
-            </div>
-            <i className={`fas chevron ${isDescriptionOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
-          </button>
-        </div>
+          {/* 外見・カラー設定 */}
+          <div className="appearance-color-setting">
+            <h4 className="appearance-title">
+              <i className="fas fa-palette"></i> 外見・カラー
+            </h4>
+            <div className="appearance-grid">
 
-        <div className={`accordion-content ${isDescriptionOpen ? 'accordion-open' : 'accordion-closed'}`}>
-          <div className="info-grid description-info">
-
-            <div className="info-item full-width">
-              <label htmlFor="introduction">
-                <i className="fas fa-user-edit"></i> 紹介文
-                <span className="label-hint">立ち絵画像の横に表示されます</span>
-              </label>
-              
-              <div className="wysiwyg-container">
-                <div className="wysiwyg-toolbar">
-                  <div className="toolbar-group">
-                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('undo')} title="元に戻す">
-                      <i className="fas fa-undo"></i>
-                    </button>
-                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('redo')} title="進む">
-                      <i className="fas fa-redo"></i>
-                    </button>
-                  </div>
-                  <div className="toolbar-separator"></div>
-                  <div className="toolbar-group">
-                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('bold')} title="太字">
-                      <i className="fas fa-bold"></i>
-                    </button>
-                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('italic')} title="斜体">
-                      <i className="fas fa-italic"></i>
-                    </button>
-                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('underline')} title="下線">
-                      <i className="fas fa-underline"></i>
-                    </button>
-                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('strikeThrough')} title="打ち消し線">
-                      <i className="fas fa-strikethrough"></i>
-                    </button>
-                  </div>
-                  <div className="toolbar-separator"></div>
-                  <div className="toolbar-group color-group">
-                    <button 
-                      type="button" 
-                      onMouseDown={(e) => e.preventDefault()}
-                      onClick={() => setShowColorPicker(showColorPicker === 'introduction' ? null : 'introduction')}
-                      title="文字色"
-                    >
-                      <i className="fas fa-palette"></i>
-                    </button>
-                    {showColorPicker === 'introduction' && (
-                      <div className="color-palette">
-                        {colorPalette.map((color, index) => (
-                          <button
-                            key={index}
-                            type="button"
-                            className="color-swatch"
-                            style={{ backgroundColor: color }}
-                            onMouseDown={(e) => e.preventDefault()}
-                            onClick={() => applyColor(color)}
-                            title={color}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="toolbar-separator"></div>
-                  <div className="toolbar-group font-size-group">
-                    <select 
-                      className="font-size-select"
-                      onChange={(e) => {
-                        const size = parseInt(e.target.value);
-                        if (size) {
-                          applyFontSize(size);
-                        }
-                        e.target.value = '';
-                      }}
-                      defaultValue=""
-                      title="フォントサイズ"
-                    >
-                      <option value="" disabled>
-                        <i className="fas fa-text-height"></i> サイズ
-                      </option>
-                      {fontSizePresets.map((preset, index) => (
-                        <option key={index} value={preset.value}>
-                          {preset.label} ({preset.size})
-                        </option>
-                      ))}
-                    </select>
+              <div className="color-pair">
+                <div className="info-item">
+                  <label htmlFor="character_color">
+                    <i className="fas fa-circle" style={{ color: characterData.character_color_code || '#22c6d8' }}></i> イメージカラー
+                  </label>
+                  <input
+                    type="text"
+                    id="character_color"
+                    name="character_color"
+                    placeholder="ベビーブルーなど"
+                    value={characterData.character_color || ''}
+                    onChange={(e) => handleInputChange('character_color', e.target.value)}
+                  />
+                </div>
+                <div className="info-item color-code">
+                  <label htmlFor="character_color_code">カラーコード</label>
+                  <div className="color-input-group">
+                    <input
+                      type="color"
+                      id="character_color_picker"
+                      value={characterData.character_color_code || '#22c6d8'}
+                      onChange={(e) => handleInputChange('character_color_code', e.target.value)}
+                      className="color-picker"
+                    />
+                    <input
+                      type="text"
+                      id="character_color_code"
+                      name="character_color_code"
+                      placeholder="#abe5ed"
+                      value={characterData.character_color_code || ''}
+                      onChange={(e) => handleInputChange('character_color_code', e.target.value)}
+                      className="color-text-input"
+                    />
                   </div>
                 </div>
-                <div 
-                  ref={introductionRef}
-                  className="preview-content editable"
-                  contentEditable={true}
-                  suppressContentEditableWarning={true}
-                  data-placeholder="ここに入力してください..."
-                  onFocus={(e) => setLastFocusedElement(e.currentTarget)}
-                  onInput={(e) => handlePreviewInput('introduction', e.currentTarget)}
-                  onBlur={(e) => handlePreviewBlur('introduction', e.currentTarget)}
-                />
               </div>
-            </div>
 
-            <div className="info-item full-width secret-info">
-              <label htmlFor="secret_information">
-                <i className="fas fa-lock"></i> 秘匿情報
-                <span className="label-hint">立ち絵画像の横に表示されます</span>
-              </label>
-              
-              <div className="wysiwyg-container">
-                <div className="wysiwyg-toolbar">
-                  <div className="toolbar-group">
-                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('undo')} title="元に戻す">
-                      <i className="fas fa-undo"></i>
-                    </button>
-                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('redo')} title="進む">
-                      <i className="fas fa-redo"></i>
-                    </button>
-                  </div>
-                  <div className="toolbar-separator"></div>
-                  <div className="toolbar-group">
-                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('bold')} title="太字">
-                      <i className="fas fa-bold"></i>
-                    </button>
-                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('italic')} title="斜体">
-                      <i className="fas fa-italic"></i>
-                    </button>
-                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('underline')} title="下線">
-                      <i className="fas fa-underline"></i>
-                    </button>
-                    <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('strikeThrough')} title="打ち消し線">
-                      <i className="fas fa-strikethrough"></i>
-                    </button>
-                  </div>
-                  <div className="toolbar-separator"></div>
-                  <div className="toolbar-group color-group">
-                    <button 
-                      type="button" 
-                      onMouseDown={(e) => e.preventDefault()}
-                      onClick={() => setShowColorPicker(showColorPicker === 'secret' ? null : 'secret')}
-                      title="文字色"
-                    >
-                      <i className="fas fa-palette"></i>
-                    </button>
-                    {showColorPicker === 'secret' && (
-                      <div className="color-palette">
-                        {colorPalette.map((color, index) => (
-                          <button
-                            key={index}
-                            type="button"
-                            className="color-swatch"
-                            style={{ backgroundColor: color }}
-                            onMouseDown={(e) => e.preventDefault()}
-                            onClick={() => applyColor(color)}
-                            title={color}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="toolbar-separator"></div>
-                  <div className="toolbar-group font-size-group">
-                    <select 
-                      className="font-size-select"
-                      onChange={(e) => {
-                        const size = parseInt(e.target.value);
-                        if (size) {
-                          applyFontSize(size);
-                        }
-                        e.target.value = '';
-                      }}
-                      defaultValue=""
-                      title="フォントサイズ"
-                    >
-                      <option value="" disabled>
-                        <i className="fas fa-text-height"></i> サイズ
-                      </option>
-                      {fontSizePresets.map((preset, index) => (
-                        <option key={index} value={preset.value}>
-                          {preset.label} ({preset.size})
-                        </option>
-                      ))}
-                    </select>
+              <div className="color-pair">
+                <div className="info-item">
+                  <label htmlFor="hair_color">
+                    <i className="fas fa-circle" style={{ color: characterData.hair_color_code || '#8B4513' }}></i> 髪の色
+                  </label>
+                  <input
+                    type="text"
+                    id="hair_color"
+                    name="hair_color"
+                    placeholder="白髪など"
+                    value={characterData.hair_color || ''}
+                    onChange={(e) => handleInputChange('hair_color', e.target.value)}
+                  />
+                </div>
+                <div className="info-item color-code">
+                  <label htmlFor="hair_color_code">カラーコード</label>
+                  <div className="color-input-group">
+                    <input
+                      type="color"
+                      id="hair_color_picker"
+                      value={characterData.hair_color_code || '#8B4513'}
+                      onChange={(e) => handleInputChange('hair_color_code', e.target.value)}
+                      className="color-picker"
+                    />
+                    <input
+                      type="text"
+                      id="hair_color_code"
+                      name="hair_color_code"
+                      placeholder="#ffffff"
+                      value={characterData.hair_color_code || ''}
+                      onChange={(e) => handleInputChange('hair_color_code', e.target.value)}
+                      className="color-text-input"
+                    />
                   </div>
                 </div>
-                <div 
-                  ref={secretInfoRef}
-                  className="preview-content editable"
-                  contentEditable={true}
-                  suppressContentEditableWarning={true}
-                  data-placeholder="表示ページでは折りたたまれます"
-                  onFocus={(e) => setLastFocusedElement(e.currentTarget)}
-                  onInput={(e) => handlePreviewInput('secret_information', e.currentTarget)}
-                  onBlur={(e) => handlePreviewBlur('secret_information', e.currentTarget)}
-                />
               </div>
-            </div>
 
+              <div className="color-pair">
+                <div className="info-item">
+                  <label htmlFor="eye_color">
+                    <i className="fas fa-circle" style={{ color: characterData.eye_color_code || '#4169E1' }}></i> 目の色
+                  </label>
+                  <input
+                    type="text"
+                    id="eye_color"
+                    name="eye_color"
+                    placeholder="スカイブルーなど"
+                    value={characterData.eye_color || ''}
+                    onChange={(e) => handleInputChange('eye_color', e.target.value)}
+                  />
+                </div>
+                <div className="info-item color-code">
+                  <label htmlFor="eye_color_code">カラーコード</label>
+                  <div className="color-input-group">
+                    <input
+                      type="color"
+                      id="eye_color_picker"
+                      value={characterData.eye_color_code || '#4169E1'}
+                      onChange={(e) => handleInputChange('eye_color_code', e.target.value)}
+                      className="color-picker"
+                    />
+                    <input
+                      type="text"
+                      id="eye_color_code"
+                      name="eye_color_code"
+                      placeholder="#a0d8ef"
+                      value={characterData.eye_color_code || ''}
+                      onChange={(e) => handleInputChange('eye_color_code', e.target.value)}
+                      className="color-text-input"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="color-pair">
+                <div className="info-item">
+                  <label htmlFor="skin_color">
+                    <i className="fas fa-circle" style={{ color: characterData.skin_color_code || '#FDBCB4' }}></i> 肌の色
+                  </label>
+                  <input
+                    type="text"
+                    id="skin_color"
+                    name="skin_color"
+                    placeholder="小麦色など"
+                    value={characterData.skin_color || ''}
+                    onChange={(e) => handleInputChange('skin_color', e.target.value)}
+                  />
+                </div>
+                <div className="info-item color-code">
+                  <label htmlFor="skin_color_code">カラーコード</label>
+                  <div className="color-input-group">
+                    <input
+                      type="color"
+                      id="skin_color_picker"
+                      value={characterData.skin_color_code || '#FDBCB4'}
+                      onChange={(e) => handleInputChange('skin_color_code', e.target.value)}
+                      className="color-picker"
+                    />
+                    <input
+                      type="text"
+                      id="skin_color_code"
+                      name="skin_color_code"
+                      placeholder="#f4c2a1"
+                      value={characterData.skin_color_code || ''}
+                      onChange={(e) => handleInputChange('skin_color_code', e.target.value)}
+                      className="color-text-input"
+                    />
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
 
+      {/* 基本情報セクション */}
+      {/* 基本データ アコーディオントグル */}
+      <div className="accordion-toggle">
+        <button
+          type="button"
+          onClick={() => setIsBasicDataOpen(!isBasicDataOpen)}
+          className="accordion-toggle-btn"
+        >
+          <div className="title-text">
+            <i className="fas fa-id-card"></i>
+            基本データ
+          </div>
+          <i className={`fas chevron ${isBasicDataOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+        </button>
+      </div>
 
+      <div className={`accordion-content ${isBasicDataOpen ? 'accordion-open' : 'accordion-closed'}`}>
+        <div className="info-grid basic-info">
+
+
+
+          <div className="info-item compact">
+            <label htmlFor="gender">
+              <i className="fas fa-venus-mars"></i> 性別
+            </label>
+            <select
+              id="gender"
+              name="gender"
+              value={characterData.gender || ''}
+              onChange={(e) => handleInputChange('gender', e.target.value)}
+            >
+              <option value="">選択してください</option>
+              <option value="男">男</option>
+              <option value="女">女</option>
+              <option value="その他">その他</option>
+            </select>
+          </div>
+
+          <div className="info-item compact">
+            <label htmlFor="age">
+              <i className="fas fa-calendar-alt"></i> 年齢
+            </label>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              value={characterData.age || ''}
+              onChange={(e) => handleInputChange('age', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
+              min="1"
+              max="200"
+            />
+          </div>
+
+          <div className="info-item compact">
+            <label htmlFor="height">
+              <i className="fas fa-ruler-vertical"></i> 身長
+            </label>
+            <input
+              type="text"
+              id="height"
+              name="height"
+              placeholder="170"
+              value={characterData.height || ''}
+              onChange={(e) => handleInputChange('height', e.target.value)}
+            />
+          </div>
+
+          <div className="info-item compact">
+            <label htmlFor="weight">
+              <i className="fas fa-weight"></i> 体重
+            </label>
+            <input
+              type="text"
+              id="weight"
+              name="weight"
+              placeholder="65"
+              value={characterData.weight || ''}
+              onChange={(e) => handleInputChange('weight', e.target.value)}
+            />
+          </div>
+
+          <div className="info-item">
+            <label htmlFor="occupation">
+              <i className="fas fa-briefcase"></i> 職業
+            </label>
+            <input
+              type="text"
+              id="occupation"
+              name="occupation"
+              value={characterData.occupation || ''}
+              onChange={(e) => handleInputChange('occupation', e.target.value)}
+            />
+          </div>
+
+          <div className="info-item">
+            <label htmlFor="birthplace">
+              <i className="fas fa-map-marker-alt"></i> 出身地
+            </label>
+            <input
+              type="text"
+              id="birthplace"
+              name="birthplace"
+              value={characterData.birthplace || ''}
+              onChange={(e) => handleInputChange('birthplace', e.target.value)}
+            />
+          </div>
+
+          <div className="info-item">
+            <label htmlFor="birthday">
+              <i className="fas fa-birthday-cake"></i> 誕生日
+            </label>
+            <input
+              type="text"
+              id="birthday"
+              name="birthday"
+              placeholder="3月15日など"
+              value={characterData.birthday || ''}
+              onChange={(e) => handleInputChange('birthday', e.target.value)}
+            />
+          </div>
+
+          <div className="info-item">
+            <label htmlFor="zodiac_sign">
+              <i className="fas fa-star"></i> 星座
+            </label>
+            <input
+              type="text"
+              id="zodiac_sign"
+              name="zodiac_sign"
+              placeholder="うお座など"
+              value={characterData.zodiac_sign || ''}
+              onChange={(e) => handleInputChange('zodiac_sign', e.target.value)}
+            />
+          </div>
+
+          <div className="info-item">
+            <label htmlFor="blood_type">
+              <i className="fas fa-tint"></i> 血液型
+            </label>
+            <select
+              id="blood_type"
+              name="blood_type"
+              value={characterData.blood_type || ''}
+              onChange={(e) => handleInputChange('blood_type', e.target.value)}
+            >
+              <option value="">選択してください</option>
+              <option value="A型">A型</option>
+              <option value="B型">B型</option>
+              <option value="O型">O型</option>
+              <option value="AB型">AB型</option>
+            </select>
+          </div>
+
+          <div className="info-item">
+            <label htmlFor="era">
+              <i className="fas fa-history"></i> 時代
+            </label>
+            <input
+              type="text"
+              id="era"
+              name="era"
+              placeholder="1920年代、現代など"
+              value={characterData.era || ''}
+              onChange={(e) => handleInputChange('era', e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 説明・設定セクション */}
+      {/* 説明・設定 アコーディオントグル */}
+      <div className="accordion-toggle">
+        <button
+          type="button"
+          onClick={() => setIsDescriptionOpen(!isDescriptionOpen)}
+          className="accordion-toggle-btn"
+        >
+          <div className="title-text">
+            <i className="fas fa-file-alt"></i>
+            キャラクター紹介
+          </div>
+          <i className={`fas chevron ${isDescriptionOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+        </button>
+      </div>
+
+      <div className={`accordion-content ${isDescriptionOpen ? 'accordion-open' : 'accordion-closed'}`}>
+        <div className="info-grid description-info">
+
+          <div className="info-item full-width">
+            <label htmlFor="introduction">
+              <i className="fas fa-user-edit"></i> 紹介文
+              <span className="label-hint">立ち絵画像の横に表示されます</span>
+            </label>
+
+            <div className="wysiwyg-container">
+              <div className="wysiwyg-toolbar">
+                <div className="toolbar-group">
+                  <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('undo')} title="元に戻す">
+                    <i className="fas fa-undo"></i>
+                  </button>
+                  <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('redo')} title="進む">
+                    <i className="fas fa-redo"></i>
+                  </button>
+                </div>
+                <div className="toolbar-separator"></div>
+                <div className="toolbar-group">
+                  <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('bold')} title="太字">
+                    <i className="fas fa-bold"></i>
+                  </button>
+                  <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('italic')} title="斜体">
+                    <i className="fas fa-italic"></i>
+                  </button>
+                  <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('underline')} title="下線">
+                    <i className="fas fa-underline"></i>
+                  </button>
+                  <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('strikeThrough')} title="打ち消し線">
+                    <i className="fas fa-strikethrough"></i>
+                  </button>
+                </div>
+                <div className="toolbar-separator"></div>
+                <div className="toolbar-group color-group">
+                  <button
+                    type="button"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => setShowColorPicker(showColorPicker === 'introduction' ? null : 'introduction')}
+                    title="文字色"
+                  >
+                    <i className="fas fa-palette"></i>
+                  </button>
+                  {showColorPicker === 'introduction' && (
+                    <div className="color-palette">
+                      {colorPalette.map((color, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          className="color-swatch"
+                          style={{ backgroundColor: color }}
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => applyColor(color)}
+                          title={color}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="toolbar-separator"></div>
+                <div className="toolbar-group font-size-group">
+                  <select
+                    className="font-size-select"
+                    onChange={(e) => {
+                      const size = parseInt(e.target.value);
+                      if (size) {
+                        applyFontSize(size);
+                      }
+                      e.target.value = '';
+                    }}
+                    defaultValue=""
+                    title="フォントサイズ"
+                  >
+                    <option value="" disabled>
+                      <i className="fas fa-text-height"></i> サイズ
+                    </option>
+                    {fontSizePresets.map((preset, index) => (
+                      <option key={index} value={preset.value}>
+                        {preset.label} ({preset.size})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div
+                ref={introductionRef}
+                className="preview-content editable"
+                contentEditable={true}
+                suppressContentEditableWarning={true}
+                data-placeholder="ここに入力してください..."
+                onFocus={(e) => setLastFocusedElement(e.currentTarget)}
+                onInput={(e) => handlePreviewInput('introduction', e.currentTarget)}
+                onBlur={(e) => handlePreviewBlur('introduction', e.currentTarget)}
+              />
+            </div>
+          </div>
+
+          <div className="info-item full-width secret-info">
+            <label htmlFor="secret_information">
+              <i className="fas fa-lock"></i> 秘匿情報
+              <span className="label-hint">立ち絵画像の横に表示されます</span>
+            </label>
+
+            <div className="wysiwyg-container">
+              <div className="wysiwyg-toolbar">
+                <div className="toolbar-group">
+                  <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('undo')} title="元に戻す">
+                    <i className="fas fa-undo"></i>
+                  </button>
+                  <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('redo')} title="進む">
+                    <i className="fas fa-redo"></i>
+                  </button>
+                </div>
+                <div className="toolbar-separator"></div>
+                <div className="toolbar-group">
+                  <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('bold')} title="太字">
+                    <i className="fas fa-bold"></i>
+                  </button>
+                  <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('italic')} title="斜体">
+                    <i className="fas fa-italic"></i>
+                  </button>
+                  <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('underline')} title="下線">
+                    <i className="fas fa-underline"></i>
+                  </button>
+                  <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => executeCommand('strikeThrough')} title="打ち消し線">
+                    <i className="fas fa-strikethrough"></i>
+                  </button>
+                </div>
+                <div className="toolbar-separator"></div>
+                <div className="toolbar-group color-group">
+                  <button
+                    type="button"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => setShowColorPicker(showColorPicker === 'secret' ? null : 'secret')}
+                    title="文字色"
+                  >
+                    <i className="fas fa-palette"></i>
+                  </button>
+                  {showColorPicker === 'secret' && (
+                    <div className="color-palette">
+                      {colorPalette.map((color, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          className="color-swatch"
+                          style={{ backgroundColor: color }}
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => applyColor(color)}
+                          title={color}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="toolbar-separator"></div>
+                <div className="toolbar-group font-size-group">
+                  <select
+                    className="font-size-select"
+                    onChange={(e) => {
+                      const size = parseInt(e.target.value);
+                      if (size) {
+                        applyFontSize(size);
+                      }
+                      e.target.value = '';
+                    }}
+                    defaultValue=""
+                    title="フォントサイズ"
+                  >
+                    <option value="" disabled>
+                      <i className="fas fa-text-height"></i> サイズ
+                    </option>
+                    {fontSizePresets.map((preset, index) => (
+                      <option key={index} value={preset.value}>
+                        {preset.label} ({preset.size})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div
+                ref={secretInfoRef}
+                className="preview-content editable"
+                contentEditable={true}
+                suppressContentEditableWarning={true}
+                data-placeholder="表示ページでは折りたたまれます"
+                onFocus={(e) => setLastFocusedElement(e.currentTarget)}
+                onInput={(e) => handlePreviewInput('secret_information', e.currentTarget)}
+                onBlur={(e) => handlePreviewBlur('secret_information', e.currentTarget)}
+              />
+            </div>
+          </div>
+
+        </div>
+      </div>
 
     </div>
   );

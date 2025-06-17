@@ -3,5 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/character/[id]": "pages/character/[id].js",
-  "/create": "pages/create.js"
+  "/create": "pages/create.js",
+  "/404": "pages/404.js"
 }

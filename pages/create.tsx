@@ -7,7 +7,7 @@ import { db } from '../lib/firebase-client';
 import { calculateAllStats, CharacterData } from '../lib/character-calculations';
 
 // 新しいコンポーネントをインポート
-import CharacterInfo from '../components/character-form/CharacterInfo';
+import ProfileSheet from '../components/character-form/ProfileSheet';
 import PlaySheet from '../components/character-form/PlaySheet';
 
 export default function CreateCharacterPage() {
@@ -1104,8 +1104,8 @@ export default function CreateCharacterPage() {
                   <h1><i className="fa-brands fa-octopus-deploy"></i> クトゥルフ神話TRPG第6版</h1>
                   <p className="subtitle">キャラクター作成シート</p>
 
-                  {/* プロフィールセクション */}
-                  <CharacterInfo
+                  {/* プロフィールシート */}
+                  <ProfileSheet
                     characterData={characterData}
                     handleInputChange={handleInputChange}
                   />
