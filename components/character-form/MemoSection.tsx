@@ -131,7 +131,7 @@ export default function MemoSection({
         <h3
           className="memo-title"
           onClick={toggleMemoSection}
-          style={{ cursor: 'pointer', userSelect: 'none' }}
+          style={{ cursor: 'pointer', userSelect: 'none', position: 'relative', zIndex: 10 }}
         >
           <i className={`fas ${showMemoSection ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '8px' }}></i>
           <i className="fas fa-scroll" style={{ marginRight: '5px' }}></i> メモ
@@ -187,7 +187,9 @@ export default function MemoSection({
                             fontSize: '12px',
                             color: '#666',
                             cursor: 'pointer',
-                            userSelect: 'none'
+                            userSelect: 'none',
+                            position: 'relative',
+                            zIndex: 10
                           }}
                           onClick={() => toggleMemoItem(memo.id)}
                         />

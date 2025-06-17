@@ -83,13 +83,12 @@ export default function Equipment({
         <div className="data-wrap buki">
           <h3
             onClick={() => toggleEquipmentSection('weapons')}
-            style={{ cursor: 'pointer', userSelect: 'none' }}
+            style={{ cursor: 'pointer', userSelect: 'none', position: 'relative', zIndex: 10 }}
           >
             <i
-              className={`fas fa-chevron-up`}
+              className={`fas ${equipmentSections.weapons ? 'fa-chevron-down' : 'fa-chevron-right'}`}
               style={{
-                transition: 'transform 0.3s',
-                transform: equipmentSections.weapons ? 'rotate(0deg)' : 'rotate(180deg)',
+                transition: 'all 0.3s',
                 marginRight: '10px'
               }}
             />
@@ -232,13 +231,12 @@ export default function Equipment({
         <div className="data-wrap item">
           <h3
             onClick={() => toggleEquipmentSection('items')}
-            style={{ cursor: 'pointer', userSelect: 'none' }}
+            style={{ cursor: 'pointer', userSelect: 'none', position: 'relative', zIndex: 10 }}
           >
             <i
-              className={`fas fa-chevron-up`}
+              className={`fas ${equipmentSections.items ? 'fa-chevron-down' : 'fa-chevron-right'}`}
               style={{
-                transition: 'transform 0.3s',
-                transform: equipmentSections.items ? 'rotate(0deg)' : 'rotate(180deg)',
+                transition: 'all 0.3s',
                 marginRight: '10px'
               }}
             />
@@ -308,13 +306,12 @@ export default function Equipment({
         <div className="data-wrap hutei">
           <h3
             onClick={() => toggleEquipmentSection('disorders')}
-            style={{ cursor: 'pointer', userSelect: 'none' }}
+            style={{ cursor: 'pointer', userSelect: 'none', position: 'relative', zIndex: 10 }}
           >
             <i
-              className={`fas fa-chevron-up`}
+              className={`fas ${equipmentSections.disorders ? 'fa-chevron-down' : 'fa-chevron-right'}`}
               style={{
-                transition: 'transform 0.3s',
-                transform: equipmentSections.disorders ? 'rotate(0deg)' : 'rotate(180deg)',
+                transition: 'all 0.3s',
                 marginRight: '10px'
               }}
             />
@@ -415,13 +412,12 @@ export default function Equipment({
         <div className="data-wrap book">
           <h3
             onClick={() => toggleEquipmentSection('books')}
-            style={{ cursor: 'pointer', userSelect: 'none' }}
+            style={{ cursor: 'pointer', userSelect: 'none', position: 'relative', zIndex: 10 }}
           >
             <i
-              className={`fas fa-chevron-up`}
+              className={`fas ${equipmentSections.books ? 'fa-chevron-down' : 'fa-chevron-right'}`}
               style={{
-                transition: 'transform 0.3s',
-                transform: equipmentSections.books ? 'rotate(0deg)' : 'rotate(180deg)',
+                transition: 'all 0.3s',
                 marginRight: '10px'
               }}
             />
@@ -481,13 +477,12 @@ export default function Equipment({
         <div className="data-wrap jumon">
           <h3
             onClick={() => toggleEquipmentSection('spells')}
-            style={{ cursor: 'pointer', userSelect: 'none' }}
+            style={{ cursor: 'pointer', userSelect: 'none', position: 'relative', zIndex: 10 }}
           >
             <i
-              className={`fas fa-chevron-up`}
+              className={`fas ${equipmentSections.spells ? 'fa-chevron-down' : 'fa-chevron-right'}`}
               style={{
-                transition: 'transform 0.3s',
-                transform: equipmentSections.spells ? 'rotate(0deg)' : 'rotate(180deg)',
+                transition: 'all 0.3s',
                 marginRight: '10px'
               }}
             />
@@ -547,13 +542,12 @@ export default function Equipment({
         <div className="data-wrap af">
           <h3
             onClick={() => toggleEquipmentSection('artifacts')}
-            style={{ cursor: 'pointer', userSelect: 'none' }}
+            style={{ cursor: 'pointer', userSelect: 'none', position: 'relative', zIndex: 10 }}
           >
             <i
-              className={`fas fa-chevron-up`}
+              className={`fas ${equipmentSections.artifacts ? 'fa-chevron-down' : 'fa-chevron-right'}`}
               style={{
-                transition: 'transform 0.3s',
-                transform: equipmentSections.artifacts ? 'rotate(0deg)' : 'rotate(180deg)',
+                transition: 'all 0.3s',
                 marginRight: '10px'
               }}
             />
@@ -613,13 +607,12 @@ export default function Equipment({
         <div className="data-wrap cthulhu">
           <h3
             onClick={() => toggleEquipmentSection('entities')}
-            style={{ cursor: 'pointer', userSelect: 'none' }}
+            style={{ cursor: 'pointer', userSelect: 'none', position: 'relative', zIndex: 10 }}
           >
             <i
-              className={`fas fa-chevron-up`}
+              className={`fas ${equipmentSections.entities ? 'fa-chevron-down' : 'fa-chevron-right'}`}
               style={{
-                transition: 'transform 0.3s',
-                transform: equipmentSections.entities ? 'rotate(0deg)' : 'rotate(180deg)',
+                transition: 'all 0.3s',
                 marginRight: '10px'
               }}
             />
