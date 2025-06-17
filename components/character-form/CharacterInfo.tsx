@@ -1048,7 +1048,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
                   name="gender_custom"
                   value={characterData.gender_custom || ''}
                   onChange={(e) => handleInputChange('gender_custom', e.target.value)}
-                  placeholder="性別を入力してください"
+                  placeholder="自由入力"
                   style={{
                     flex: '1 0 calc(100% - 90px)',
                     padding: '8px 10px',
@@ -1083,13 +1083,12 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
               <i className="fas fa-calendar-alt"></i> 年齢
             </label>
             <input
-              type="number"
+              type="text"
               id="age"
               name="age"
               value={characterData.age || ''}
               onChange={(e) => handleInputChange('age', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
-              min="1"
-              max="200"
+              placeholder="20歳"
             />
           </div>
 
@@ -1101,7 +1100,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
               type="text"
               id="height"
               name="height"
-              placeholder="170"
+              placeholder="160cm"
               value={characterData.height || ''}
               onChange={(e) => handleInputChange('height', e.target.value)}
             />
@@ -1115,7 +1114,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
               type="text"
               id="weight"
               name="weight"
-              placeholder="65"
+              placeholder="50kg"
               value={characterData.weight || ''}
               onChange={(e) => handleInputChange('weight', e.target.value)}
             />
@@ -1155,7 +1154,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
               type="text"
               id="birthday"
               name="birthday"
-              placeholder="3月15日など"
+              placeholder=""
               value={characterData.birthday || ''}
               onChange={(e) => handleInputChange('birthday', e.target.value)}
             />
@@ -1169,7 +1168,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
               type="text"
               id="zodiac_sign"
               name="zodiac_sign"
-              placeholder="うお座など"
+              placeholder=""
               value={characterData.zodiac_sign || ''}
               onChange={(e) => handleInputChange('zodiac_sign', e.target.value)}
             />
@@ -1183,7 +1182,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
               type="text"
               id="blood_type"
               name="blood_type"
-              placeholder="A型など"
+              placeholder=""
               value={characterData.blood_type || ''}
               onChange={(e) => handleInputChange('blood_type', e.target.value)}
             />
