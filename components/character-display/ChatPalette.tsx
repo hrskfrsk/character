@@ -32,8 +32,13 @@ CBRB(${character.headbutt_total || 0},${character.martial_arts_total || 0}) 頭�
     // 追加戦闘技能
     for (let i = 1; i <= 50; i++) {
       const skillName = character[`additional_combat_${i}_name`];
-      const skillTotal = character[`additional_combat_${i}_total`];
-      if (skillName && skillTotal) {
+      if (skillName) {
+        const skillTotal = 
+          (parseInt(character[`additional_combat_${i}_initial`] as string) || 1) +
+          (parseInt(character[`additional_combat_${i}_job`] as string) || 0) +
+          (parseInt(character[`additional_combat_${i}_interest`] as string) || 0) +
+          (parseInt(character[`additional_combat_${i}_growth`] as string) || 0) +
+          (parseInt(character[`additional_combat_${i}_other`] as string) || 0);
         palette += `\nCCB<=${skillTotal} ${skillName}`;
       }
     }
@@ -45,7 +50,7 @@ CCB<=${character.locksmith_total || 0} 鍵開け
 CCB<=${character.hide_total || 0} 隠す
 CCB<=${character.sneak_total || 0} 隠れる
 CCB<=${character.listen_total || 0} 聞き耳
-CCB<=${character.stealth_total || 0} 忍び歩き
+CCB<=${character.sneak_total || 0} 忍び歩き
 CCB<=${character.photography_total || 0} 写真術
 CCB<=${character.psychoanalysis_total || 0} 精神分析
 CCB<=${character.track_total || 0} 追跡
@@ -56,17 +61,22 @@ CCB<=${character.spot_hidden_total || 0} 目星`;
     // 追加探索技能
     for (let i = 1; i <= 50; i++) {
       const skillName = character[`additional_exploration_${i}_name`];
-      const skillTotal = character[`additional_exploration_${i}_total`];
-      if (skillName && skillTotal) {
+      if (skillName) {
+        const skillTotal = 
+          (parseInt(character[`additional_exploration_${i}_initial`] as string) || 1) +
+          (parseInt(character[`additional_exploration_${i}_job`] as string) || 0) +
+          (parseInt(character[`additional_exploration_${i}_interest`] as string) || 0) +
+          (parseInt(character[`additional_exploration_${i}_growth`] as string) || 0) +
+          (parseInt(character[`additional_exploration_${i}_other`] as string) || 0);
         palette += `\nCCB<=${skillTotal} ${skillName}`;
       }
     }
 
     palette += `
 ▼行動技能-------------------------------------
-CCB<=${character.drive_auto_total || 0} 運転
+CCB<=${character.drive_total || 0} 運転
 CCB<=${character.mechanical_repair_total || 0} 機械修理
-CCB<=${character.operate_heavy_machine_total || 0} 重機械操作
+CCB<=${character.heavy_machinery_total || 0} 重機械操作
 CCB<=${character.ride_total || 0} 乗馬
 CCB<=${character.swim_total || 0} 水泳
 CCB<=${character.craft_total || 0} 制作
@@ -79,8 +89,13 @@ CCB<=${character.disguise_total || 0} 変装`;
     // 追加行動技能
     for (let i = 1; i <= 50; i++) {
       const skillName = character[`additional_action_${i}_name`];
-      const skillTotal = character[`additional_action_${i}_total`];
-      if (skillName && skillTotal) {
+      if (skillName) {
+        const skillTotal = 
+          (parseInt(character[`additional_action_${i}_initial`] as string) || 1) +
+          (parseInt(character[`additional_action_${i}_job`] as string) || 0) +
+          (parseInt(character[`additional_action_${i}_interest`] as string) || 0) +
+          (parseInt(character[`additional_action_${i}_growth`] as string) || 0) +
+          (parseInt(character[`additional_action_${i}_other`] as string) || 0);
         palette += `\nCCB<=${skillTotal} ${skillName}`;
       }
     }
@@ -91,13 +106,18 @@ CCB<=${character.fast_talk_total || 0} 言いくるめ
 CCB<=${character.credit_rating_total || 0} 信用
 CCB<=${character.persuade_total || 0} 説得
 CCB<=${character.bargain_total || 0} 値切り
-CCB<=${character.own_language_total || 0} 母国語`;
+CCB<=${character.mother_tongue_total || 0} 母国語`;
 
     // 追加交渉技能
     for (let i = 1; i <= 50; i++) {
       const skillName = character[`additional_negotiation_${i}_name`];
-      const skillTotal = character[`additional_negotiation_${i}_total`];
-      if (skillName && skillTotal) {
+      if (skillName) {
+        const skillTotal = 
+          (parseInt(character[`additional_negotiation_${i}_initial`] as string) || 1) +
+          (parseInt(character[`additional_negotiation_${i}_job`] as string) || 0) +
+          (parseInt(character[`additional_negotiation_${i}_interest`] as string) || 0) +
+          (parseInt(character[`additional_negotiation_${i}_growth`] as string) || 0) +
+          (parseInt(character[`additional_negotiation_${i}_other`] as string) || 0);
         palette += `\nCCB<=${skillTotal} ${skillName}`;
       }
     }
@@ -127,8 +147,13 @@ CCB<=${character.history_total || 0} 歴史`;
     // 追加知識技能
     for (let i = 1; i <= 50; i++) {
       const skillName = character[`additional_knowledge_${i}_name`];
-      const skillTotal = character[`additional_knowledge_${i}_total`];
-      if (skillName && skillTotal) {
+      if (skillName) {
+        const skillTotal = 
+          (parseInt(character[`additional_knowledge_${i}_initial`] as string) || 1) +
+          (parseInt(character[`additional_knowledge_${i}_job`] as string) || 0) +
+          (parseInt(character[`additional_knowledge_${i}_interest`] as string) || 0) +
+          (parseInt(character[`additional_knowledge_${i}_growth`] as string) || 0) +
+          (parseInt(character[`additional_knowledge_${i}_other`] as string) || 0);
         palette += `\nCCB<=${skillTotal} ${skillName}`;
       }
     }
