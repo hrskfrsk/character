@@ -54,7 +54,7 @@ export default function TraitsSection({
                         name={`${trait.id}_number`}
                         value={(characterData as any)[`${trait.id}_number`] || ''}
                         onChange={(e) => handleInputChange(`${trait.id}_number`, e.target.value)}
-                        style={{ width: '8ch', border: 'none', background: '#ddd', textAlign: 'center', fontSize: '0.8rem', fontWeight: 'bold', letterSpacing: '0.1em', fontFamily: 'monospace', borderRadius: '5px', padding: '2px 5px' }}
+                        style={{ width: '11ch', border: 'none', background: '#ddd', textAlign: 'center', fontSize: '0.8rem', fontWeight: 'bold', letterSpacing: '0.1em', fontFamily: 'monospace', borderRadius: '5px', padding: '2px 5px' }}
                       >
                         <option value="">0-0</option>
                         <option value="1-1">1-1</option>
@@ -122,6 +122,8 @@ export default function TraitsSection({
                         <option value="6-8">6-8</option>
                         <option value="6-9">6-9</option>
                         <option value="6-10">6-10</option>
+                        <option value="">----------</option>
+                        <option value="original">オリジナル</option>
                       </select>
                     </span>
                     <button

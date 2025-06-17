@@ -69,7 +69,7 @@ export default function AbilityScores({
       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--ui-theme-color)'}
       title={`${formula}で振り直し`}
     >
-      🎲
+      <i className="fas fa-dice"></i>
     </button>
   );
 
@@ -95,7 +95,7 @@ export default function AbilityScores({
           onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--ui-theme-color-hover)'}
           onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--ui-theme-color)'}
         >
-          🎲 ALL
+          <i className="fas fa-dice"></i> ALL
         </button>
       </div>
 
