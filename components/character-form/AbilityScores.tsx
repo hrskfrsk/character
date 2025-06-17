@@ -56,7 +56,6 @@ export default function AbilityScores({
       type="button"
       onClick={() => handleRollSingleAbility(ability)}
       style={{
-        marginLeft: '5px',
         padding: '2px 6px',
         fontSize: '10px',
         backgroundColor: 'var(--ui-theme-color)',

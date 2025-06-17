@@ -31,6 +31,22 @@ export default function TraitsSection({
     handleInputChange(`${traitId}_number`, result);
   };
 
+  // 興味Pボーナス用の1D6ロール
+  const rollInterestBonus = () => {
+    return Math.floor(Math.random() * 6) + 1; // 1-6
+  };
+
+  // 興味Pボーナスをロールして設定
+  const rollForInterestBonus = (traitId: string) => {
+    const result = rollInterestBonus();
+    handleInputChange(`${traitId}_interest_bonus`, result);
+  };
+
+  // 4-の値かどうかを判定
+  const isFourSeries = (value: string) => {
+    return value && value.startsWith('4-');
+  };
+
 
   return (
     <div className="traits-section character-section">
@@ -184,6 +200,81 @@ export default function TraitsSection({
                       fontSize: 'inherit'
                     }}
                   />
+
+                  {/* 4-の値の場合のみ興味Pボーナス項目を表示 */}
+                  {isFourSeries((characterData as any)[`${trait.id}_number`]) && (
+                    <div style={{
+                      padding: '5px',
+                      backgroundColor: 'var(--ui-theme-color-light)',
+                      borderRadius: '5px',
+                    }}>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                      }}>
+                        <label style={{
+                          fontSize: '0.8rem',
+                          fontWeight: '600',
+                          color: 'var(--ui-theme-color)',
+                        }}>
+                          追加P 1D6:
+                        </label>
+                        <select
+                          name={`${trait.id}_interest_bonus`}
+                          value={(characterData as any)[`${trait.id}_interest_bonus`] || ''}
+                          onChange={(e) => handleInputChange(`${trait.id}_interest_bonus`, e.target.value)}
+                          style={{
+                            width: '60px',
+                            borderRadius: '4px',
+                            border: 'none',
+                            textAlign: 'center',
+                            fontSize: '0.9rem',
+                            background: '#fff'
+                          }}
+                        >
+                          <option value="">-</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                        </select>
+                        <button
+                          type="button"
+                          onClick={() => rollForInterestBonus(trait.id)}
+                          style={{
+                            background: 'linear-gradient(135deg, var(--ui-theme-color), var(--ui-theme-color-hover))',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            padding: '4px 8px',
+                            fontSize: '0.75rem',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '3px',
+                            transition: 'all 0.2s ease',
+                            minWidth: '24px',
+                            height: '24px',
+                            justifyContent: 'center',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'scale(1.05)';
+                            e.currentTarget.style.boxShadow = '0 2px 6px rgba(34, 198, 216, 0.3)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'scale(1)';
+                            e.currentTarget.style.boxShadow = 'none';
+                          }}
+                          title="1D6でランダム決定"
+                        >
+                          <i className="fas fa-dice"></i>
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div style={{
                   display: 'flex',

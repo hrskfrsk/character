@@ -1630,7 +1630,8 @@ li {
   width: 65.2px;
 }
 @media only screen and (max-width: 1029px) {
-  .chara-seet .scores .ul-score .score-li {
+  .chara-seet .scores .ul-score .score-li,
+  .character-input .chara-seet .scores .ul-score .score-li {
     -webkit-box-flex: 1;
     -ms-flex: 1 1 10%;
     flex: 1 1 10%;
@@ -1652,6 +1653,12 @@ li {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+@media only screen and (max-width: 768px) {
+  .character-input .chara-seet .scores .ul-score h3 {
+    flex-direction: column;
+    font-size: 0.6rem;
+  }
 }
 
 /* 初期SAN、HP、MP、知識、アイデア、幸運はテーマカラー40% */
@@ -1881,7 +1888,7 @@ li {
 @media only screen and (max-width: 768px) {
   .chara-seet .features .f-list .f-label .name {
     text-align: left;
-    width: 98.5%;
+    width: 97.5%;
     transform: translateX(5px);
   }
 }
