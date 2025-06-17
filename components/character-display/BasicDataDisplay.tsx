@@ -117,21 +117,21 @@ export default function BasicDataDisplay({ character }: BasicDataDisplayProps) {
             {character.age && (
               <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
                 <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>年齢</h3>
-                <div>{character.age}歳</div>
+                <div>{character.age}</div>
               </section>
             )}
 
             {character.height && (
               <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
                 <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>身長</h3>
-                <div>{character.height}cm</div>
+                <div>{character.height}</div>
               </section>
             )}
 
             {character.weight && (
               <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
                 <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>体重</h3>
-                <div>{character.weight}kg</div>
+                <div>{character.weight}</div>
               </section>
             )}
 

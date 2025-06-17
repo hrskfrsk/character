@@ -1087,7 +1087,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
               id="age"
               name="age"
               value={characterData.age || ''}
-              onChange={(e) => handleInputChange('age', e.target.value === '' ? '' : parseInt(e.target.value) || 0)}
+              onChange={(e) => handleInputChange('age', e.target.value)}
               placeholder="20歳"
             />
           </div>
