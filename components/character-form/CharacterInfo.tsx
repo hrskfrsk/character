@@ -19,9 +19,18 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
       const color = characterData.ui_theme_color;
       // 明度を下げたホバーカラーを計算
       const hoverColor = adjustBrightness(color, -20);
+      // 薄い色を計算（15%の不透明度）
+      const lightColor = hexToRgba(color, 0.15);
+      // 中間の色を計算（40%の不透明度）
+      const mediumColor = hexToRgba(color, 0.4);
+      // 濃い色を計算（70%の不透明度）
+      const darkColor = hexToRgba(color, 0.7);
       
       document.documentElement.style.setProperty('--ui-theme-color', color);
       document.documentElement.style.setProperty('--ui-theme-color-hover', hoverColor);
+      document.documentElement.style.setProperty('--ui-theme-color-light', lightColor);
+      document.documentElement.style.setProperty('--ui-theme-color-medium', mediumColor);
+      document.documentElement.style.setProperty('--ui-theme-color-dark', darkColor);
     }
   }, [characterData.ui_theme_color]);
 
@@ -43,6 +52,19 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     // 16進数に戻す
     const toHex = (n: number) => Math.round(n).toString(16).padStart(2, '0');
     return `#${toHex(adjustedR)}${toHex(adjustedG)}${toHex(adjustedB)}`;
+  };
+
+  // HEXカラーをRGBAに変換する関数
+  const hexToRgba = (hex: string, alpha: number): string => {
+    // #を取り除く
+    const cleanHex = hex.replace('#', '');
+    
+    // RGB値に変換
+    const r = parseInt(cleanHex.substring(0, 2), 16);
+    const g = parseInt(cleanHex.substring(2, 4), 16);
+    const b = parseInt(cleanHex.substring(4, 6), 16);
+    
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   };
   // アコーディオン状態の初期化（localStorageから読み込み）
   const [isAccordionOpen, setIsAccordionOpen] = useState(() => {

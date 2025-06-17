@@ -11,6 +11,9 @@
     var(--ui-theme-color) 0%,
     var(--ui-theme-color-hover) 100%
   );
+  --ui-theme-color-light: rgba(34, 198, 216, 0.15);
+  --ui-theme-color-medium: rgba(34, 198, 216, 0.4);
+  --ui-theme-color-dark: rgba(34, 198, 216, 0.7);
 }
 
 * {
@@ -862,7 +865,7 @@ textarea,
 }
 
 .character-info .basic-info .info-item label {
-  background: #aaa;
+  background: var(--ui-theme-color-medium);
   color: #fff;
   font-size: 0.85em;
   font-weight: 600;
@@ -1627,14 +1630,26 @@ li {
   line-height: 1.6;
 }
 
-/* 初期SAN、HP、MP、知識、アイデア、幸運、ダメージボーナスは#aaa固定 */
+/* 初期SAN、HP、MP、知識、アイデア、幸運はテーマカラー40% */
 .chara-seet .scores .ul-score .san.score-li h3,
 .chara-seet .scores .ul-score .hp.score-li h3,
 .chara-seet .scores .ul-score .mp.score-li h3,
 .chara-seet .scores .ul-score .knowledge.score-li h3,
 .chara-seet .scores .ul-score .idea.score-li h3,
 .chara-seet .scores .ul-score .luck.score-li h3 {
-  background: #aaa !important;
+  background: var(--ui-theme-color-medium) !important;
+}
+
+/* 装備セクションのアイコンをテーマカラーの70%に */
+.data-wrap h3 .fa-gun,           /* 武器 */
+.data-wrap h3 .fa-suitcase,     /* 所持品 */
+.data-wrap h3 .fa-bed,          /* 不定・後遺症 */
+.data-wrap h3 .fa-book-dead,    /* 魔導書 */
+.data-wrap h3 .fa-hand-sparkles, /* 呪文 */
+.data-wrap h3 .fa-star-of-david, /* アーティファクト */
+.data-wrap h3 .fa-octopus-deploy, /* 超自然の存在 */
+.data-wrap h3 .fa-scroll        /* メモ */ {
+  color: var(--ui-theme-color-dark);
 }
 @media only screen and (max-width: 768px) {
   .chara-seet .scores .ul-score h3 {
@@ -1889,7 +1904,7 @@ li {
 }
 .chara-seet .skill .skill-group h3 {
   margin: 0 0 3px;
-  background: #ddd;
+  background: var(--ui-theme-color-light);
   padding: 3px 10px 0;
   color: #666;
   font-size: 0.9rem;
