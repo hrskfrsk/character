@@ -91,6 +91,9 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
     memos: true
   });
 
+  // キャラクター表示セクションの開閉状態
+  const [characterDisplayOpen, setCharacterDisplayOpen] = useState(true);
+
 
   // 初期値を表示するヘルパー関数（初期値は必ず数字を表示）
   const displayInitial = (value: any, defaultValue: number = 0): string => {
@@ -177,6 +180,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
       localStorage.removeItem('character-display-showAllSkills');
 
       const savedEquipmentSections = localStorage.getItem(`character-display-equipmentSections-${characterId}-v2`);
+      const savedCharacterDisplayState = localStorage.getItem(`character-display-main-section-${characterId}`);
 
       if (savedEquipmentSections !== null) {
         const parsed = JSON.parse(savedEquipmentSections);
@@ -192,6 +196,10 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
           memos: parsed.memos !== undefined ? parsed.memos : true,
         });
       }
+
+      if (savedCharacterDisplayState !== null) {
+        setCharacterDisplayOpen(JSON.parse(savedCharacterDisplayState));
+      }
     }
   }, [characterId]);
 
@@ -201,6 +209,12 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
       localStorage.setItem(`character-display-equipmentSections-${characterId}-v2`, JSON.stringify(equipmentSections));
     }
   }, [equipmentSections, characterId]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && characterId) {
+      localStorage.setItem(`character-display-main-section-${characterId}`, JSON.stringify(characterDisplayOpen));
+    }
+  }, [characterDisplayOpen, characterId]);
 
   if (!character) {
     return (
@@ -235,82 +249,94 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                 <BasicDataDisplay character={character} />
 
                 <section className="chara-seet character-display">
-                  <CharacterHeader
-                    character={character}
-                    calculateAbilityTotal={calculateAbilityTotal}
-                  />
-
-                  {/* プレイシートセクション */}
-                  <div className="character-info character-name-section">
-                    {/* スペック */}
-                    <StatDisplay character={character} />
-
-                    {/* 技能セクション */}
-                    <SkillsDisplay
-                      character={character}
-                      characterId={characterId}
-                      handleSkillClick={handleSkillClick}
-                    />
-
-                    {/* 装備表示コンポーネント */}
-                    <EquipmentDisplay
-                      character={character}
-                      equipmentSections={equipmentSections}
-                      toggleEquipmentSection={toggleEquipmentSection}
-                      handleSkillClick={handleSkillClick}
-                    />
-
-                    <MemoDisplay
-                      character={character}
-                      equipmentSections={equipmentSections}
-                      toggleEquipmentSection={toggleEquipmentSection}
-                      secretMemoVisibility={secretMemoVisibility}
-                      memoPasswordStates={memoPasswordStates}
-                      toggleSecretMemoVisibility={toggleSecretMemoVisibility}
-                      handlePasswordInput={handlePasswordInput}
-                      handlePasswordSubmit={handlePasswordSubmit}
-                    />
-                  </div>
-
-                  {/* 編集ボタン */}
-                  <div className="edit-button-container" style={{ textAlign: 'center', marginTop: '30px', paddingTop: '20px', borderTop: '2px solid #ddd' }}>
-                    <button
-                      type="button"
-                      onClick={() => router.push(`/create?edit=${characterId}`)}
-                      className="btn edit-btn"
-                      style={{
-                        marginRight: '15px',
-                        padding: '12px 30px',
-                        backgroundColor: '#2196F3',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                        fontSize: '16px',
-                        fontWeight: 'bold'
-                      }}
+                  <div className="data-wrap">
+                    <h3
+                      onClick={() => setCharacterDisplayOpen(!characterDisplayOpen)}
+                      style={{ cursor: 'pointer', userSelect: 'none', marginTop: '0', marginBottom: '10px' }}
                     >
-                      <i className="fas fa-edit"></i> キャラクターを編集
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => router.push('/create')}
-                      className="btn new-btn"
-                      style={{
-                        padding: '12px 30px',
-                        backgroundColor: '#4CAF50',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                        fontSize: '16px',
-                        fontWeight: 'bold'
-                      }}
-                    >
-                      <i className="fas fa-plus"></i> 新しいキャラクター
-                    </button>
-                  </div>
+                      <i className={`fas ${characterDisplayOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '5px' }}></i>
+                      <i className="fas fa-dice-d20"></i> キャラクターシート
+                    </h3>
+                    {characterDisplayOpen && (
+                      <div className="equipment-content">
+                        <CharacterHeader
+                          character={character}
+                          calculateAbilityTotal={calculateAbilityTotal}
+                        />
 
+                        {/* プレイシートセクション */}
+                        <div className="character-info character-name-section">
+                          {/* スペック */}
+                          <StatDisplay character={character} />
+
+                          {/* 技能セクション */}
+                          <SkillsDisplay
+                            character={character}
+                            characterId={characterId}
+                            handleSkillClick={handleSkillClick}
+                          />
+
+                          {/* 装備表示コンポーネント */}
+                          <EquipmentDisplay
+                            character={character}
+                            equipmentSections={equipmentSections}
+                            toggleEquipmentSection={toggleEquipmentSection}
+                            handleSkillClick={handleSkillClick}
+                          />
+
+                          <MemoDisplay
+                            character={character}
+                            equipmentSections={equipmentSections}
+                            toggleEquipmentSection={toggleEquipmentSection}
+                            secretMemoVisibility={secretMemoVisibility}
+                            memoPasswordStates={memoPasswordStates}
+                            toggleSecretMemoVisibility={toggleSecretMemoVisibility}
+                            handlePasswordInput={handlePasswordInput}
+                            handlePasswordSubmit={handlePasswordSubmit}
+                          />
+                        </div>
+
+                        {/* 編集ボタン */}
+                        <div className="edit-button-container" style={{ textAlign: 'center', marginTop: '30px', paddingTop: '20px', borderTop: '2px solid #ddd' }}>
+                          <button
+                            type="button"
+                            onClick={() => router.push(`/create?edit=${characterId}`)}
+                            className="btn edit-btn"
+                            style={{
+                              marginRight: '15px',
+                              padding: '12px 30px',
+                              backgroundColor: '#2196F3',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '4px',
+                              cursor: 'pointer',
+                              fontSize: '16px',
+                              fontWeight: 'bold'
+                            }}
+                          >
+                            <i className="fas fa-edit"></i> キャラクターを編集
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => router.push('/create')}
+                            className="btn new-btn"
+                            style={{
+                              padding: '12px 30px',
+                              backgroundColor: '#4CAF50',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '4px',
+                              cursor: 'pointer',
+                              fontSize: '16px',
+                              fontWeight: 'bold'
+                            }}
+                          >
+                            <i className="fas fa-plus"></i> 新しいキャラクター
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </section>
               </article>
             </main>
