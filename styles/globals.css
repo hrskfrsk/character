@@ -39,6 +39,39 @@ h2 {
   flex-wrap: wrap;
 }
 
+/* 武器セクション入力フォーム - 列幅調整 */
+.character-input .data-wrap.buki .ginou {
+  width: 8%;
+  min-width: 60px;
+}
+
+.character-input .data-wrap.buki .damage {
+  width: 12%;
+  min-width: 70px;
+}
+
+.character-input .data-wrap.buki .syatei,
+.character-input .data-wrap.buki .kougekikaisu,
+.character-input .data-wrap.buki .soudansuu,
+.character-input .data-wrap.buki .kosyou,
+.character-input .data-wrap.buki .taikyu {
+  width: 7%;
+  min-width: 55px;
+}
+
+.character-input .data-wrap.buki .memo {
+  width: 25%;
+  min-width: 150px;
+}
+
+@media only screen and (max-width: 768px) {
+  .character-input .data-wrap.buki .memo {
+    width: 100%;
+    border-top: solid 1px #ccc;
+    margin-top: 10px;
+  }
+}
+
 /* ベース職業情報 - レスポンシブ対応 */
 .job-base-responsive {
   display: flex;
@@ -1835,6 +1868,10 @@ li {
 }
 .chara-seet .data-wrap .data-li div {
   padding: 0 10px;
+}
+
+.character-input .chara-seet .data-wrap .data-li div {
+  padding: 0 2px;
 }
 .chara-seet .data-wrap .data-li div:not(:last-of-type) {
   border-right: solid 1px #ccc;

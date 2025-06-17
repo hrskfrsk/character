@@ -99,7 +99,7 @@ export default function AbilityAndDerivedStats({
         paddingBottom: '5px',
 
       }}>
-        <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 'bold' }}>STATUS</h2>
+        <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 'bold' }}>能力値</h2>
         <button
           type="button"
           onClick={handleRollAllAbilities}

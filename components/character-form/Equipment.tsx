@@ -99,94 +99,116 @@ export default function Equipment({
             <ul>
               {weapons.map((weapon) => (
                 <li key={weapon.id} className="d-flex data-li skill-body">
-                  <div className="title">
+                  <div className="title" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', justifyContent: 'flex-start' }}>
+                    <span className="label">武器名</span>
                     <input
                       type="text"
                       name={`${weapon.id}_name`}
                       value={(characterData as any)[`${weapon.id}_name`] || ''}
                       onChange={(e) => handleInputChange(`${weapon.id}_name`, e.target.value)}
-                      placeholder="武器名"
-                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center' }}
+                      placeholder="--"
+                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center', marginTop: '5px' }}
                     />
                   </div>
                   <div className="ginou kazu">
-                    <input
-                      type="text"
-                      name={`${weapon.id}_success`}
-                      value={(characterData as any)[`${weapon.id}_success`] || ''}
-                      onChange={(e) => handleInputChange(`${weapon.id}_success`, e.target.value)}
-                      placeholder="成功率"
-                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center' }}
-                    />
+                    <span className="label">成功</span>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <input
+                        type="text"
+                        name={`${weapon.id}_success`}
+                        value={(characterData as any)[`${weapon.id}_success`] || ''}
+                        onChange={(e) => handleInputChange(`${weapon.id}_success`, e.target.value)}
+                        placeholder="--"
+                        style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center', marginTop: '5px' }}
+                      />
+                      <span>%</span>
+                    </div>
                   </div>
                   <div className="damage">
+                    <span className="label">ダメ―ジ</span>
                     <input
                       type="text"
                       name={`${weapon.id}_damage`}
                       value={(characterData as any)[`${weapon.id}_damage`] || ''}
                       onChange={(e) => handleInputChange(`${weapon.id}_damage`, e.target.value)}
-                      placeholder="ダメージ"
-                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center' }}
+                      placeholder="--"
+                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center', marginTop: '5px' }}
                     />
                   </div>
                   <div className="syatei kazu">
+                    <span className="label">射程</span>
                     <input
                       type="text"
                       name={`${weapon.id}_range`}
                       value={(characterData as any)[`${weapon.id}_range`] || ''}
                       onChange={(e) => handleInputChange(`${weapon.id}_range`, e.target.value)}
-                      placeholder="射程"
-                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center' }}
+                      placeholder="--"
+                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center', marginTop: '5px' }}
                     />
                   </div>
                   <div className="kougekikaisu kazu">
+                    <span className="label">回数</span>
                     <input
                       type="text"
                       name={`${weapon.id}_attacks`}
                       value={(characterData as any)[`${weapon.id}_attacks`] || ''}
                       onChange={(e) => handleInputChange(`${weapon.id}_attacks`, e.target.value)}
-                      placeholder="回数"
-                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center' }}
+                      placeholder="--"
+                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center', marginTop: '5px' }}
                     />
                   </div>
                   <div className="soudansuu kazu">
+                    <span className="label">装弾</span>
                     <input
                       type="text"
                       name={`${weapon.id}_capacity`}
                       value={(characterData as any)[`${weapon.id}_capacity`] || ''}
                       onChange={(e) => handleInputChange(`${weapon.id}_capacity`, e.target.value)}
-                      placeholder="装弾"
-                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center' }}
+                      placeholder="--"
+                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center', marginTop: '5px' }}
                     />
                   </div>
                   <div className="kosyou kazu">
+                    <span className="label">故障</span>
                     <input
                       type="text"
                       name={`${weapon.id}_malfunction`}
                       value={(characterData as any)[`${weapon.id}_malfunction`] || ''}
                       onChange={(e) => handleInputChange(`${weapon.id}_malfunction`, e.target.value)}
-                      placeholder="故障"
-                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center' }}
+                      placeholder="--"
+                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center', marginTop: '5px' }}
                     />
                   </div>
                   <div className="taikyu kazu">
+                    <span className="label">耐久</span>
                     <input
                       type="text"
                       name={`${weapon.id}_durability`}
                       value={(characterData as any)[`${weapon.id}_durability`] || ''}
                       onChange={(e) => handleInputChange(`${weapon.id}_durability`, e.target.value)}
-                      placeholder="耐久"
-                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center' }}
+                      placeholder="--"
+                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center', marginTop: '5px' }}
                     />
                   </div>
                   <div className="memo">
-                    <input
-                      type="text"
+                    <span className="label">詳細</span>
+                    <textarea
                       name={`${weapon.id}_details`}
                       value={(characterData as any)[`${weapon.id}_details`] || ''}
                       onChange={(e) => handleInputChange(`${weapon.id}_details`, e.target.value)}
-                      placeholder="詳細"
-                      style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'center' }}
+                      placeholder="--"
+                      style={{
+                        width: '100%',
+                        border: 'none',
+                        background: 'transparent',
+                        textAlign: 'center',
+                        resize: 'vertical',
+                        minHeight: '15px',
+                        fontFamily: 'inherit',
+                        fontSize: 'inherit',
+                        marginTop: '5px',
+                        height: '25px'
+                      }}
                     />
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', width: '40px', justifyContent: 'center' }}>
