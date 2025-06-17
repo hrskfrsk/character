@@ -17,19 +17,19 @@ export default function SkillDisplay({ skillName, skillValue, skillId, onClick }
       onClick={() => hasValue && onClick(skillName, numericValue)}
       style={{ 
         cursor: hasValue ? 'pointer' : 'default',
-        color: hasValue ? '#4CAF50' : 'inherit',
-        textDecoration: hasValue ? 'underline' : 'none',
+        color: 'inherit',
+        textDecoration: 'none',
         transition: 'all 0.2s ease'
       }}
       onMouseEnter={(e) => {
         if (hasValue) {
-          e.currentTarget.style.color = '#45a049';
+          e.currentTarget.style.color = 'var(--ui-theme-color)';
           e.currentTarget.style.fontWeight = 'bold';
         }
       }}
       onMouseLeave={(e) => {
         if (hasValue) {
-          e.currentTarget.style.color = '#4CAF50';
+          e.currentTarget.style.color = 'inherit';
           e.currentTarget.style.fontWeight = 'normal';
         }
       }}
