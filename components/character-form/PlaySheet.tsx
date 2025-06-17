@@ -71,6 +71,8 @@ interface PlaySheetProps {
   secretMemos: Array<{ id: string, counter: number }>;
   addSecretMemo: () => void;
   removeSecretMemo: (id: string) => void;
+  memoOrder: string[];
+  reorderMemos: (newOrder: string[]) => void;
 }
 
 export default function PlaySheet({
@@ -128,7 +130,9 @@ export default function PlaySheet({
   toggleMemoSection,
   secretMemos,
   addSecretMemo,
-  removeSecretMemo
+  removeSecretMemo,
+  memoOrder,
+  reorderMemos
 }: PlaySheetProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -226,6 +230,8 @@ export default function PlaySheet({
           secretMemos={secretMemos}
           addSecretMemo={addSecretMemo}
           removeSecretMemo={removeSecretMemo}
+          memoOrder={memoOrder}
+          reorderMemos={reorderMemos}
         />
         </div>
       </div>

@@ -11,6 +11,9 @@ interface MemoSectionProps {
   secretMemos: Array<{ id: string, counter: number }>;
   addSecretMemo: () => void;
   removeSecretMemo: (id: string) => void;
+  // 並び替え関連
+  memoOrder: string[];
+  reorderMemos: (newOrder: string[]) => void;
 }
 
 export default function MemoSection({
@@ -20,11 +23,26 @@ export default function MemoSection({
   toggleMemoSection,
   secretMemos,
   addSecretMemo,
-  removeSecretMemo
+  removeSecretMemo,
+  memoOrder,
+  reorderMemos
 }: MemoSectionProps) {
 
   // 各メモ項目の開閉状態を管理
   const [memoCollapsedStates, setMemoCollapsedStates] = useState<Record<string, boolean>>({});
+
+  // ドラッグ&ドロップ用の状態
+  const [draggedItem, setDraggedItem] = useState<string | null>(null);
+  const [dragOverItem, setDragOverItem] = useState<string | null>(null);
+  // リアルタイムプレビュー用の順序
+  const [previewOrder, setPreviewOrder] = useState<string[]>([]);
+  // ドロップが成功したかを追跡
+  const [dropSuccessful, setDropSuccessful] = useState(false);
+
+  // プレビュー順序を memoOrder と同期
+  useEffect(() => {
+    setPreviewOrder([...memoOrder]);
+  }, [memoOrder]);
 
   // localStorage からメモの開閉状態を復元
   useEffect(() => {
@@ -124,6 +142,94 @@ export default function MemoSection({
     }
   };
 
+  // ドラッグ&ドロップイベントハンドラー
+  const handleDragStart = (e: React.DragEvent, memoId: string) => {
+    setDraggedItem(memoId);
+    setDropSuccessful(false);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', memoId);
+
+    // カスタムドラッグイメージを作成
+    const dragElement = e.currentTarget as HTMLElement;
+    const clone = dragElement.cloneNode(true) as HTMLElement;
+
+    // クローンのスタイルを調整
+    clone.style.position = 'absolute';
+    clone.style.top = '-9999px';
+    clone.style.left = '-9999px';
+    clone.style.width = dragElement.offsetWidth + 'px';
+    clone.style.backgroundColor = 'white';
+    clone.style.borderRadius = '6px';
+    clone.style.boxShadow = '0 6px 20px rgba(34, 198, 216, 0.2)';
+    clone.style.opacity = '0.95';
+    clone.style.pointerEvents = 'none';
+
+    document.body.appendChild(clone);
+
+    // ドラッグイメージとして設定
+    e.dataTransfer.setDragImage(clone, e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+
+    // クリーンアップ
+    setTimeout(() => {
+      document.body.removeChild(clone);
+    }, 0);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDragEnter = (e: React.DragEvent, memoId: string) => {
+    e.preventDefault();
+    setDragOverItem(memoId);
+
+    // リアルタイムプレビューの更新
+    if (draggedItem && draggedItem !== memoId) {
+      const newPreviewOrder = [...previewOrder];
+      const draggedIndex = newPreviewOrder.indexOf(draggedItem);
+      const targetIndex = newPreviewOrder.indexOf(memoId);
+
+      if (draggedIndex !== -1 && targetIndex !== -1) {
+        newPreviewOrder.splice(draggedIndex, 1);
+        newPreviewOrder.splice(targetIndex, 0, draggedItem);
+        setPreviewOrder(newPreviewOrder);
+      }
+    }
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    // 子要素にマウスが移動した場合は無視
+    if (e.currentTarget.contains(e.relatedTarget as Node)) {
+      return;
+    }
+    setDragOverItem(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, targetMemoId: string) => {
+    e.preventDefault();
+
+    if (draggedItem) {
+      // プレビュー順序を正式に適用
+      reorderMemos([...previewOrder]);
+      setDropSuccessful(true);
+    }
+
+    setDraggedItem(null);
+    setDragOverItem(null);
+  };
+
+  const handleDragEnd = () => {
+    // ドロップが成功していない場合は元の順序に戻す
+    if (!dropSuccessful) {
+      setPreviewOrder([...memoOrder]);
+    }
+    
+    setDraggedItem(null);
+    setDragOverItem(null);
+    setDropSuccessful(false);
+  };
+
   return (
     <div className="memo-section" style={{ marginTop: '30px' }}>
       {/* 統合メモシステム */}
@@ -161,25 +267,66 @@ export default function MemoSection({
             </div>
 
             {/* 追加メモ項目 */}
-            <div style={{ borderTop: '2px solid #eee', paddingTop: '20px' }}>
-              <ul style={{ listStyle: 'none', padding: '0' }}>
-                {secretMemos.map((memo) => {
+            <div style={{ paddingTop: '5px' }}>
+              <ul style={{
+                listStyle: 'none',
+                padding: '0',
+                minHeight: draggedItem ? '100px' : 'auto',
+                transition: 'min-height 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+              }}>
+                {(draggedItem ? previewOrder : memoOrder).map((memoId) => {
+                  const memo = secretMemos.find(m => m.id === memoId);
+                  if (!memo) return null;
+
                   const isCollapsed = memoCollapsedStates[memo.id];
+                  const isDragging = draggedItem === memo.id;
+                  // const isDragOver = dragOverItem === memo.id;
 
                   return (
-                    <li key={memo.id} className="memo-item" style={{
-                      display: 'block',
-                      marginBottom: '15px',
-                      padding: '15px',
-                      boxShadow: '0 0 2px rgba(0, 0, 0, 0.5) inset',
-                      borderRadius: '4px',
-                    }}>
+                    <li
+                      key={memo.id}
+                      className="memo-item"
+                      draggable={true}
+                      onDragStart={(e) => handleDragStart(e, memo.id)}
+                      onDragOver={handleDragOver}
+                      onDragEnter={(e) => handleDragEnter(e, memo.id)}
+                      onDragLeave={handleDragLeave}
+                      onDrop={(e) => handleDrop(e, memo.id)}
+                      onDragEnd={handleDragEnd}
+                      style={{
+                        display: 'block',
+                        marginBottom: '5px',
+                        padding: '15px',
+                        boxShadow: '0 0 2px rgba(0, 0, 0, 0.5) inset',
+                        borderRadius: '4px',
+                        opacity: isDragging ? 0.3 : 1,
+                        backgroundColor: 'transparent',
+                        border: '2px solid transparent',
+                        cursor: isDragging ? 'grabbing' : 'grab',
+                        transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                        zIndex: isDragging ? 1000 : 1,
+                        position: 'relative',
+                      }}>
                       {/* トグルヘッダー */}
                       <div style={{
                         display: 'flex',
                         alignItems: 'center',
                         marginBottom: isCollapsed ? '0' : '5px'
                       }}>
+                        <i
+                          className="fas fa-grip-vertical"
+                          style={{
+                            marginRight: '6px',
+                            fontSize: '12px',
+                            color: isDragging ? 'var(--ui-theme-color)' : '#999',
+                            cursor: isDragging ? 'grabbing' : 'grab',
+                            userSelect: 'none',
+                            position: 'relative',
+                            zIndex: 10,
+                            transition: 'color 0.25s cubic-bezier(0.4, 0, 0.2, 1)'
+                          }}
+                          title="ドラッグして並べ替え"
+                        />
                         <i
                           className={`fas ${isCollapsed ? 'fa-chevron-right' : 'fa-chevron-down'}`}
                           style={{

@@ -50,6 +50,9 @@ export default function CreateCharacterPage() {
   // 秘匿関連の状態管理
   const [secretMemos, setSecretMemos] = useState<Array<{ id: string, counter: number }>>([]);
   const [secretMemoCounter, setSecretMemoCounter] = useState(0);
+  
+  // メモの並べ替え順序を管理
+  const [memoOrder, setMemoOrder] = useState<string[]>([]);
 
   // 元々データベースに存在していた動的フィールドを追跡
   const [originalDynamicFields, setOriginalDynamicFields] = useState<Set<string>>(new Set());
@@ -80,6 +83,7 @@ export default function CreateCharacterPage() {
       const savedHideInitialSkills = localStorage.getItem('character-form-hideInitialSkills');
       const savedEquipmentSections = localStorage.getItem('character-form-equipmentSections');
       const savedShowMemoSection = localStorage.getItem('character-form-showMemoSection');
+      const savedMemoOrder = localStorage.getItem('character-form-memoOrder');
       
       if (savedHideInitialSkills !== null) {
         setHideInitialSkills(JSON.parse(savedHideInitialSkills));
@@ -91,6 +95,10 @@ export default function CreateCharacterPage() {
       
       if (savedShowMemoSection !== null) {
         setShowMemoSection(JSON.parse(savedShowMemoSection));
+      }
+      
+      if (savedMemoOrder !== null) {
+        setMemoOrder(JSON.parse(savedMemoOrder));
       }
     }
   }, []);
@@ -113,6 +121,12 @@ export default function CreateCharacterPage() {
       localStorage.setItem('character-form-showMemoSection', JSON.stringify(showMemoSection));
     }
   }, [showMemoSection]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('character-form-memoOrder', JSON.stringify(memoOrder));
+    }
+  }, [memoOrder]);
 
   const router = useRouter();
   const { edit } = router.query;
@@ -251,6 +265,25 @@ export default function CreateCharacterPage() {
     }
     setSecretMemos(memoList);
     setSecretMemoCounter(maxMemoCounter);
+    
+    // localStorageに保存された順序があれば、それを優先使用
+    const savedMemoOrder = localStorage.getItem('character-form-memoOrder');
+    if (savedMemoOrder) {
+      const parsedOrder = JSON.parse(savedMemoOrder);
+      // 既存のメモIDと照合して、存在するもののみを保持
+      const validOrder = parsedOrder.filter((id: string) => 
+        memoList.some(memo => memo.id === id)
+      );
+      // 新しく追加されたメモ（順序にないもの）を末尾に追加
+      const newMemos = memoList
+        .filter(memo => !validOrder.includes(memo.id))
+        .map(memo => memo.id);
+      setMemoOrder([...validOrder, ...newMemos]);
+    } else {
+      // localStorageに順序がない場合は作成順を使用
+      const initialMemoOrder = memoList.map(memo => memo.id);
+      setMemoOrder(initialMemoOrder);
+    }
 
     // 追加技能の復元
     // 戦闘技能
@@ -920,6 +953,7 @@ export default function CreateCharacterPage() {
 
     setSecretMemoCounter(newCounter);
     setSecretMemos(prev => [...prev, { id: memoId, counter: newCounter }]);
+    setMemoOrder(prev => [...prev, memoId]);
 
     setCharacterData(prev => ({
       ...prev,
@@ -947,6 +981,7 @@ export default function CreateCharacterPage() {
   // メモを削除
   const removeSecretMemo = (memoId: string) => {
     setSecretMemos(prev => prev.filter(memo => memo.id !== memoId));
+    setMemoOrder(prev => prev.filter(id => id !== memoId));
 
     setCharacterData(prev => {
       const newData = { ...prev } as any;
@@ -957,6 +992,11 @@ export default function CreateCharacterPage() {
       delete newData[`${memoId}_password`];
       return newData;
     });
+  };
+
+  // メモの順序を並べ替える
+  const reorderMemos = (newOrder: string[]) => {
+    setMemoOrder(newOrder);
   };
 
   // 技能表示切替
@@ -1167,6 +1207,8 @@ export default function CreateCharacterPage() {
                     secretMemos={secretMemos}
                     addSecretMemo={addSecretMemo}
                     removeSecretMemo={removeSecretMemo}
+                    memoOrder={memoOrder}
+                    reorderMemos={reorderMemos}
                   />
 
                   {/* 保存・表示ボタン */}
