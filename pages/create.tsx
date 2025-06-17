@@ -8,10 +8,7 @@ import { calculateAllStats, CharacterData } from '../lib/character-calculations'
 
 // 新しいコンポーネントをインポート
 import CharacterInfo from '../components/character-form/CharacterInfo';
-import AbilityAndDerivedStats from '../components/character-form/AbilityAndDerivedStats';
-import SkillSections from '../components/character-form/SkillSections';
-import Equipment from '../components/character-form/Equipment';
-import MemoSection from '../components/character-form/MemoSection';
+import PlaySheet from '../components/character-form/PlaySheet';
 
 export default function CreateCharacterPage() {
   const [mounted, setMounted] = useState(false);
@@ -1107,14 +1104,14 @@ export default function CreateCharacterPage() {
                   <h1><i className="fa-brands fa-octopus-deploy"></i> クトゥルフ神話TRPG第6版</h1>
                   <p className="subtitle">キャラクター作成シート</p>
 
-                  {/* キャラクター基本情報 */}
+                  {/* プロフィールセクション */}
                   <CharacterInfo
                     characterData={characterData}
                     handleInputChange={handleInputChange}
                   />
 
-                  {/* 能力値と導出ステータス */}
-                  <AbilityAndDerivedStats
+                  {/* プレイシート */}
+                  <PlaySheet
                     characterData={characterData}
                     calculatedStats={calculatedStats}
                     handleInputChange={handleInputChange}
@@ -1124,19 +1121,9 @@ export default function CreateCharacterPage() {
                     removeTrait={removeTrait}
                     hideInitialSkills={hideInitialSkills}
                     toggleSkillDisplay={toggleSkillDisplay}
-                    isSkillSectionCollapsed={isSkillSectionCollapsed}
-                    onSkillSectionToggle={() => setIsSkillSectionCollapsed(!isSkillSectionCollapsed)}
-                  />
-
-                  {/* 技能セクション */}
-                  <SkillSections
-                    characterData={characterData}
-                    calculatedStats={calculatedStats}
-                    handleInputChange={handleInputChange}
-                    hideInitialSkills={hideInitialSkills}
-                    toggleSkillDisplay={toggleSkillDisplay}
                     isSkillInitialOnly={isSkillInitialOnly}
                     isSkillSectionCollapsed={isSkillSectionCollapsed}
+                    onSkillSectionToggle={() => setIsSkillSectionCollapsed(!isSkillSectionCollapsed)}
                     additionalCombatSkills={additionalCombatSkills}
                     addCombatSkill={addCombatSkill}
                     removeCombatSkill={removeCombatSkill}
@@ -1152,16 +1139,6 @@ export default function CreateCharacterPage() {
                     additionalKnowledgeSkills={additionalKnowledgeSkills}
                     addKnowledgeSkill={addKnowledgeSkill}
                     removeKnowledgeSkill={removeKnowledgeSkill}
-                    jobPointsUsed={Number(characterData.job_points_used) || 0}
-                    jobPointsTotal={Number(characterData.job_points_formula === 'manual' ? (characterData.job_points_total || 0) : (calculatedStats.job_points_total || 0))}
-                    interestPointsUsed={Number(characterData.interest_points_used) || 0}
-                    interestPointsTotal={Number(calculatedStats.interest_points_total) || 0}
-                  />
-
-                  {/* 装備・所持品セクション */}
-                  <Equipment
-                    characterData={characterData}
-                    handleInputChange={handleInputChange}
                     equipmentSections={equipmentSections}
                     toggleEquipmentSection={toggleEquipmentSection}
                     weapons={weapons}
@@ -1185,12 +1162,6 @@ export default function CreateCharacterPage() {
                     entities={entities}
                     addEntity={addEntity}
                     removeEntity={removeEntity}
-                  />
-
-                  {/* メモセクション */}
-                  <MemoSection
-                    characterData={characterData}
-                    handleInputChange={handleInputChange}
                     showMemoSection={showMemoSection}
                     toggleMemoSection={toggleMemoSection}
                     secretMemos={secretMemos}
