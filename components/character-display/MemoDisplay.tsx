@@ -44,7 +44,7 @@ export default function MemoDisplay({
         style={{ cursor: 'pointer', userSelect: 'none', marginTop: '5%', marginBottom: '10px' }}
       >
         <i className={`fas ${equipmentSections.memos ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '5px' }}></i>
-        <i className="fas fa-scroll"></i> メモ
+        <i className="fa-solid fa-receipt"></i> メモ
       </h3>
       {equipmentSections.memos && (
         <div className="equipment-content">

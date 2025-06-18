@@ -224,7 +224,7 @@ export default function MemoSection({
     if (!dropSuccessful) {
       setPreviewOrder([...memoOrder]);
     }
-    
+
     setDraggedItem(null);
     setDragOverItem(null);
     setDropSuccessful(false);
@@ -240,7 +240,7 @@ export default function MemoSection({
           style={{ cursor: 'pointer', userSelect: 'none', position: 'relative', zIndex: 10 }}
         >
           <i className={`fas ${showMemoSection ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '8px' }}></i>
-          <i className="fas fa-scroll" style={{ marginRight: '5px' }}></i> メモ
+          <i className="fa-solid fa-receipt" style={{ marginRight: '5px' }}></i> メモ
         </h3>
         {showMemoSection && (
           <div className="equipment-content" style={{ padding: '10px 0' }}>
@@ -330,7 +330,8 @@ export default function MemoSection({
                         <i
                           className={`fas ${isCollapsed ? 'fa-chevron-right' : 'fa-chevron-down'}`}
                           style={{
-                            marginRight: '8px',
+                            marginRight: '0',
+                            padding: '0 4px 0 5px',
                             fontSize: '12px',
                             color: '#666',
                             cursor: 'pointer',

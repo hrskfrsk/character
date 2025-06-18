@@ -1,6 +1,7 @@
 import React from 'react';
 import { CharacterData } from '../../lib/character-calculations';
 import CharacterInfo from './CharacterInfo';
+import PersonalDataSection from './PersonalDataSection';
 
 interface ProfileSheetProps {
   characterData: CharacterData;
@@ -24,6 +25,20 @@ export default function ProfileSheet({
           <CharacterInfo
             characterData={characterData}
             handleInputChange={handleInputChange}
+          />
+          
+          <PersonalDataSection
+            characterData={characterData}
+            setCharacterData={(updater) => {
+              if (typeof updater === 'function') {
+                const newData = updater(characterData);
+                Object.keys(newData).forEach(key => {
+                  if (newData[key] !== characterData[key]) {
+                    handleInputChange(key, newData[key]);
+                  }
+                });
+              }
+            }}
           />
         </div>
       </div>

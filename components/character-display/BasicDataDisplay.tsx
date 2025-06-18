@@ -149,13 +149,6 @@ export default function BasicDataDisplay({ character }: BasicDataDisplayProps) {
               </section>
             )}
 
-            {character.era && (
-              <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
-                <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>時代</h3>
-                <div>{character.era}</div>
-              </section>
-            )}
-
             {character.birthday && (
               <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
                 <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>誕生日</h3>
@@ -174,6 +167,13 @@ export default function BasicDataDisplay({ character }: BasicDataDisplayProps) {
               <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
                 <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>血液型</h3>
                 <div>{character.blood_type}</div>
+              </section>
+            )}
+
+            {character.era && (
+              <section className="line01 personal" style={{ borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+                <h3 style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8', borderColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>時代</h3>
+                <div>{character.era}</div>
               </section>
             )}
 

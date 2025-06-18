@@ -1605,6 +1605,145 @@ li {
   margin: 0;
   padding: 0;
 }
+
+/* Personal Data Section Styles
+---------------------------------------------------*/
+.personal-data-section {
+  margin: 20px 0;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.personal-data-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.personal-data-header:hover {
+  background: var(--ui-theme-color-light);
+}
+
+.personal-data-header h3 {
+  margin: 0;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1em;
+  color: #333;
+}
+
+.personal-data-header .section-icon {
+  color: var(--ui-theme-color);
+}
+
+.personal-data-header .toggle-icon {
+  color: #666;
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+.personal-data-content {
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  overflow: hidden;
+}
+
+.personal-data-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .personal-data-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
+
+.personal-data-item {
+  margin-bottom: 16px;
+}
+
+.personal-data-item label {
+  display: block;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 8px;
+  font-size: 0.9em;
+}
+
+.personal-data-item label i {
+  margin-right: 6px;
+  color: var(--ui-theme-color);
+}
+
+.personal-data-item input,
+.personal-data-item textarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 0.9em;
+  background: #fff;
+  transition: border-color 0.2s ease;
+}
+
+.personal-data-item textarea {
+  min-height: 80px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.personal-data-item input:focus,
+.personal-data-item textarea:focus {
+  outline: none;
+  border-color: var(--ui-theme-color);
+  box-shadow: 0 0 0 2px rgba(34, 198, 216, 0.1);
+}
+
+/* Personal Data Display Styles */
+.personal-data-display .data-wrap {
+  margin-top: 20px;
+}
+
+.personal-data-display .personal-data-item {
+  border-bottom: 1px dotted #ddd;
+  padding: 10px 0;
+}
+
+.personal-data-display .personal-data-item:last-child {
+  border-bottom: none;
+}
+
+.personal-data-display .personal-data-item h4 {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: var(--ui-theme-color);
+  margin: 0 0 5px 0;
+  display: flex;
+  align-items: center;
+}
+
+.personal-data-display .personal-data-item h4 i {
+  margin-right: 6px;
+  font-size: 0.9em;
+}
+
+.personal-data-display .personal-data-item p {
+  margin: 0;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  color: #333;
+}
 .chara-seet h3 {
   font-family: "Varela Round", "Kosugi", sans-serif;
 }
@@ -1703,7 +1842,8 @@ li {
 .data-wrap h3 .fa-hand-sparkles, /* 呪文 */
 .data-wrap h3 .fa-star-of-david, /* アーティファクト */
 .data-wrap h3 .fa-octopus-deploy, /* 超自然の存在 */
-.data-wrap h3 .fa-scroll        /* メモ */ {
+.data-wrap h3 .fa-scroll        /* メモ */,
+.data-wrap h3 .fa-receipt {
   color: var(--ui-theme-color-dark);
 }
 @media only screen and (max-width: 768px) {
@@ -1776,6 +1916,7 @@ li {
   color: #888;
   font-weight: 500;
   line-height: 1;
+  border: none;
 }
 .chara-seet .slots .slot {
   border-radius: 4px;
@@ -1875,7 +2016,7 @@ li {
   border-left: solid 2px var(--ui-theme-color);
   margin-bottom: 15px;
 }
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 768pscx) {
   .chara-seet .features .f-list {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
@@ -2037,11 +2178,7 @@ li {
     margin-bottom: 4%;
   }
 }
-.chara-seet .data-wrap h3 {
-  margin: 0;
-  font-weight: 400;
-  font-size: 0.9rem;
-}
+
 .chara-seet .data-wrap .data-li {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
@@ -2994,6 +3131,158 @@ li {
 .skill-initial-only {
   background-color: #e4e4e4 !important;
   color: #888 !important;
+}
+
+/* パーソナルデータセクション */
+.personal-data-section {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.personal-data-section h3 {
+  margin: 0 0 15px 0;
+  padding: 10px 15px;
+  background-color: var(--ui-theme-color-light);
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.personal-data-section h3:hover {
+  background-color: var(--ui-theme-color-medium);
+}
+
+.personal-data-content {
+  padding: 0 15px;
+}
+
+.personal-data-section .form-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.personal-data-section .form-row .form-group {
+  flex: 1;
+}
+
+.personal-data-section .form-group {
+  margin-bottom: 15px;
+}
+
+.personal-data-section label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.personal-data-section input[type="text"],
+.personal-data-section textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: border-color 0.3s;
+}
+
+.personal-data-section input[type="text"]:focus,
+.personal-data-section textarea:focus {
+  outline: none;
+  border-color: var(--ui-theme-color);
+  box-shadow: 0 0 0 2px var(--ui-theme-color-light);
+}
+
+.personal-data-section textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* パーソナルデータ表示用スタイル */
+.personal-data-display {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.personal-data-display h3 {
+  margin: 0 0 15px 0;
+  padding: 10px 15px;
+  background-color: var(--ui-theme-color-light);
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.personal-data-display h3:hover {
+  background-color: var(--ui-theme-color-medium);
+}
+
+.personal-data-display .personal-data-content {
+  padding: 0 15px;
+}
+
+.personal-data-display .data-item {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.personal-data-display .data-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.personal-data-display .data-value {
+  font-size: 1rem;
+  color: #333;
+  margin-left: 10px;
+}
+
+.personal-data-display .data-value-block {
+  font-size: 1rem;
+  color: #333;
+  padding: 10px;
+  background-color: white;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .personal-data-section .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .personal-data-section,
+  .personal-data-display {
+    padding: 10px;
+  }
+
+  .personal-data-content,
+  .personal-data-display .personal-data-content {
+    padding: 0 10px;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

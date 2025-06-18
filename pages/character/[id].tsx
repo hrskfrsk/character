@@ -12,6 +12,7 @@ import StatDisplay from '../../components/character-display/StatDisplay';
 import MemoDisplay from '../../components/character-display/MemoDisplay';
 import SkillsDisplay from '../../components/character-display/SkillsDisplay';
 import BasicDataDisplay from '../../components/character-display/BasicDataDisplay';
+import PersonalDataDisplay from '../../components/character-display/PersonalDataDisplay';
 
 interface CharacterPageProps {
   character: any;
@@ -306,6 +307,11 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                             toggleSecretMemoVisibility={toggleSecretMemoVisibility}
                             handlePasswordInput={handlePasswordInput}
                             handlePasswordSubmit={handlePasswordSubmit}
+                          />
+
+                          {/* パーソナルデータ表示 */}
+                          <PersonalDataDisplay
+                            characterData={character}
                           />
                         </div>
                       </div>
