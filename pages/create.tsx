@@ -9,6 +9,7 @@ import { calculateAllStats, CharacterData } from '../lib/character-calculations'
 // 新しいコンポーネントをインポート
 import ProfileSheet from '../components/character-form/ProfileSheet';
 import PlaySheet from '../components/character-form/PlaySheet';
+import PersonalDataSection from '../components/character-form/PersonalDataSection';
 
 export default function CreateCharacterPage() {
   const [mounted, setMounted] = useState(false);
@@ -723,10 +724,10 @@ export default function CreateCharacterPage() {
   };
 
   // 装備セクションのアコーディオン制御
-  const toggleEquipmentSection = (sectionId: keyof typeof equipmentSections) => {
+  const toggleEquipmentSection = (sectionId: string) => {
     setEquipmentSections(prev => ({
       ...prev,
-      [sectionId]: !prev[sectionId]
+      [sectionId]: !prev[sectionId as keyof typeof prev]
     }));
   };
 
@@ -1235,6 +1236,21 @@ export default function CreateCharacterPage() {
                     removeSecretMemo={removeSecretMemo}
                     memoOrder={memoOrder}
                     reorderMemos={reorderMemos}
+                  />
+
+                  {/* パーソナルデータセクション */}
+                  <PersonalDataSection
+                    characterData={characterData}
+                    setCharacterData={(updater) => {
+                      if (typeof updater === 'function') {
+                        const newData = updater(characterData);
+                        Object.keys(newData).forEach(key => {
+                          if ((newData as any)[key] !== (characterData as any)[key]) {
+                            handleInputChange(key, (newData as any)[key]);
+                          }
+                        });
+                      }
+                    }}
                   />
 
                   {/* 保存・表示ボタン */}

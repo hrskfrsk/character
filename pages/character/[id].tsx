@@ -308,11 +308,6 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                             handlePasswordInput={handlePasswordInput}
                             handlePasswordSubmit={handlePasswordSubmit}
                           />
-
-                          {/* パーソナルデータ表示 */}
-                          <PersonalDataDisplay
-                            characterData={character}
-                          />
                         </div>
                       </div>
 
@@ -321,6 +316,11 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                   </div>
 
                 </section>
+
+                {/* パーソナルデータ表示 */}
+                <PersonalDataDisplay
+                  characterData={character}
+                />
 
 
                 {/* 編集ボタン */}
@@ -416,7 +416,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         character,
         characterId: params.id,
       },
-      revalidate: 3600, // 1時間ごとに再生成
     };
   } catch (error) {
     console.error('getStaticProps error:', error);
