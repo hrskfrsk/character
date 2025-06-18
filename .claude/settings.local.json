@@ -9,7 +9,8 @@
       "Bash(grep:*)",
       "Bash(pkill:*)",
       "Bash(env)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(lsof:*)"
     ],
     "deny": []
   }

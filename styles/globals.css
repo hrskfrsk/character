@@ -1146,7 +1146,7 @@ textarea,
 
 @media (max-width: 768px) {
   .character-info {
-    padding: 10px 0;
+    padding: 25px 30px;
   }
 
   .character-info .character-name-section {
@@ -1596,6 +1596,11 @@ li {
   margin-bottom: 24px;
   text-align: left;
   position: relative;
+}
+@media only screen and (max-width: 768px) {
+  .character-display {
+    padding: 10px 0;
+  }
 }
 .character-display .playsheet-header {
   margin-top: 1%;
