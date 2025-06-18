@@ -6,7 +6,7 @@ interface PersonalDataDisplayProps {
 }
 
 const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   // localStorageから開閉状態を読み込む
   useEffect(() => {
@@ -24,7 +24,7 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
   };
 
   // データが存在するかチェック
-  const hasPersonalData = 
+  const hasPersonalData =
     characterData.first_person ||
     characterData.second_person ||
     characterData.speech_style ||
@@ -41,13 +41,14 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
 
   return (
     <section className="personal-data-display">
-      <h3 
+      <h3
         onClick={toggleOpen}
         style={{ cursor: 'pointer', userSelect: 'none' }}
       >
-        パーソナルデータ {isOpen ? '▼' : '▶'}
+        <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '5px' }}></i>
+        詳細
       </h3>
-      
+
       {isOpen && (
         <div className="personal-data-content">
           {characterData.first_person && (
@@ -56,49 +57,49 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
               <span className="data-value">{characterData.first_person}</span>
             </div>
           )}
-          
+
           {characterData.second_person && (
             <div className="data-item">
               <span className="data-label">二人称:</span>
               <span className="data-value">{characterData.second_person}</span>
             </div>
           )}
-          
+
           {characterData.speech_style && (
             <div className="data-item">
               <span className="data-label">口調:</span>
               <div className="data-value-block">{characterData.speech_style}</div>
             </div>
           )}
-          
+
           {characterData.likes && (
             <div className="data-item">
               <span className="data-label">好きなもの:</span>
               <div className="data-value-block">{characterData.likes}</div>
             </div>
           )}
-          
+
           {characterData.dislikes && (
             <div className="data-item">
               <span className="data-label">嫌いなもの:</span>
               <div className="data-value-block">{characterData.dislikes}</div>
             </div>
           )}
-          
+
           {characterData.hobbies && (
             <div className="data-item">
               <span className="data-label">趣味:</span>
               <div className="data-value-block">{characterData.hobbies}</div>
             </div>
           )}
-          
+
           {characterData.special_skills && (
             <div className="data-item">
               <span className="data-label">特技:</span>
               <div className="data-value-block">{characterData.special_skills}</div>
             </div>
           )}
-          
+
           {characterData.other_characteristics && (
             <div className="data-item">
               <span className="data-label">その他の特徴:</span>

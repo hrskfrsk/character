@@ -95,7 +95,7 @@ h2 {
 }
 
 .playsheet-header .section-toggle-icon.collapsed {
-  transform: rotate(180deg);
+  transform: rotate(360deg);
 }
 
 /* プロフィールシート用スタイル */
@@ -3222,13 +3222,14 @@ li {
 
 /* パーソナルデータ表示用スタイル */
 .personal-data-display {
+  border-top: solid 8px #ddd;
 }
 
 .personal-data-display h3 {
-}
-
-.personal-data-display h3:hover {
-  background-color: var(--ui-theme-color-medium);
+  font-size: 0.9rem;
+  border-bottom: dotted 1px;
+  margin: 20px 10px;
+  transition: all 0.3s;
 }
 
 .personal-data-display .personal-data-content {
