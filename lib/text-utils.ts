@@ -8,32 +8,84 @@ export const autoResizeTextarea = (textarea: HTMLTextAreaElement) => {
   textarea.style.height = `${textarea.scrollHeight}px`;
 };
 
-// URLを検出してリンク化
+// URLを検出してリンク化（Markdown風リンクと通常URLの両方に対応）
 export const linkifyText = (text: string): React.ReactNode => {
   if (!text) return text;
 
-  // URL検出の正規表現（http, https, www）
+  const result: React.ReactNode[] = [];
+  let lastIndex = 0;
+  
+  // Markdown風リンク [テキスト](URL) の正規表現
+  const markdownRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  // 通常のURL検出の正規表現
   const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
   
-  const parts = text.split(urlRegex);
+  // まずMarkdown風リンクを処理
+  let match;
+  const processedRanges: Array<{start: number, end: number}> = [];
   
-  return parts.map((part, index) => {
-    if (urlRegex.test(part)) {
-      let href = part;
-      // wwwで始まる場合はhttps://を追加
-      if (part.startsWith('www.')) {
-        href = `https://${part}`;
-      }
-      
-      return React.createElement('a', {
-        key: index,
-        href: href,
-        target: '_blank',
-        rel: 'noopener noreferrer'
-      }, part);
+  // Markdown風リンクを検索
+  while ((match = markdownRegex.exec(text)) !== null) {
+    const [fullMatch, linkText, url] = match;
+    const startIndex = match.index;
+    const endIndex = startIndex + fullMatch.length;
+    
+    // 前のテキストを追加
+    if (startIndex > lastIndex) {
+      result.push(text.substring(lastIndex, startIndex));
     }
-    return part;
+    
+    // リンクを追加
+    let href = url.trim();
+    if (href.startsWith('www.')) {
+      href = `https://${href}`;
+    }
+    
+    result.push(React.createElement('a', {
+      key: `markdown-${startIndex}`,
+      href: href,
+      target: '_blank',
+      rel: 'noopener noreferrer'
+    }, linkText));
+    
+    processedRanges.push({start: startIndex, end: endIndex});
+    lastIndex = endIndex;
+  }
+  
+  // 残りのテキストを追加
+  if (lastIndex < text.length) {
+    result.push(text.substring(lastIndex));
+  }
+  
+  // 通常のURLを処理（Markdown風リンクの範囲は除外）
+  const finalResult: React.ReactNode[] = [];
+  
+  result.forEach((part, partIndex) => {
+    if (typeof part === 'string') {
+      const urlParts = part.split(urlRegex);
+      urlParts.forEach((urlPart, urlPartIndex) => {
+        if (urlRegex.test(urlPart)) {
+          let href = urlPart;
+          if (urlPart.startsWith('www.')) {
+            href = `https://${urlPart}`;
+          }
+          
+          finalResult.push(React.createElement('a', {
+            key: `url-${partIndex}-${urlPartIndex}`,
+            href: href,
+            target: '_blank',
+            rel: 'noopener noreferrer'
+          }, urlPart));
+        } else if (urlPart) {
+          finalResult.push(urlPart);
+        }
+      });
+    } else {
+      finalResult.push(part);
+    }
   });
+  
+  return finalResult;
 };
 
 // テキストエリアのprops型定義
