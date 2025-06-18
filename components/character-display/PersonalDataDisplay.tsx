@@ -8,6 +8,11 @@ interface PersonalDataDisplayProps {
 
 const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData }) => {
   const [isOpen, setIsOpen] = useState(true);
+  const [speechSectionOpen, setSpeechSectionOpen] = useState(true);
+  const [preferencesSectionOpen, setPreferencesSectionOpen] = useState(true);
+  const [imageSectionOpen, setImageSectionOpen] = useState(true);
+  const [physicalSectionOpen, setPhysicalSectionOpen] = useState(true);
+  const [familySectionOpen, setFamilySectionOpen] = useState(true);
 
   // localStorageから開閉状態を読み込む
   useEffect(() => {
@@ -15,6 +20,22 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
     if (savedState !== null) {
       setIsOpen(JSON.parse(savedState));
     }
+    
+    // 各セクションの開閉状態も読み込み
+    const speechState = localStorage.getItem('speechDisplaySectionOpen');
+    if (speechState !== null) setSpeechSectionOpen(JSON.parse(speechState));
+    
+    const preferencesState = localStorage.getItem('preferencesDisplaySectionOpen');
+    if (preferencesState !== null) setPreferencesSectionOpen(JSON.parse(preferencesState));
+    
+    const imageState = localStorage.getItem('imageDisplaySectionOpen');
+    if (imageState !== null) setImageSectionOpen(JSON.parse(imageState));
+    
+    const physicalState = localStorage.getItem('physicalDisplaySectionOpen');
+    if (physicalState !== null) setPhysicalSectionOpen(JSON.parse(physicalState));
+    
+    const familyState = localStorage.getItem('familyDisplaySectionOpen');
+    if (familyState !== null) setFamilySectionOpen(JSON.parse(familyState));
   }, []);
 
   // 開閉状態をlocalStorageに保存
@@ -58,10 +79,17 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
         <div className="personal-data-content">
           {/* 話し方グループ */}
           {(characterData.first_person || characterData.second_person || characterData.speech_style) && (
-            <div className="data-group">
-              <h4 className="data-group-title">
-                <i className="fas fa-comments"></i> 話し方
+            <div className={`data-group ${!speechSectionOpen ? 'collapsed' : ''}`}>
+              <h4 className="data-group-title" onClick={() => {
+                const newState = !speechSectionOpen;
+                setSpeechSectionOpen(newState);
+                localStorage.setItem('speechDisplaySectionOpen', JSON.stringify(newState));
+              }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span><i className="fas fa-comments"></i> 話し方</span>
+                <i className={`fas ${speechSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
               </h4>
+              {speechSectionOpen && (
+              <>
 
               {/* 一人称・二人称を横並び */}
               {(characterData.first_person || characterData.second_person) && (
@@ -88,15 +116,24 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
                   <div className="data-value-block linkified-text">{linkifyText(characterData.speech_style)}</div>
                 </div>
               )}
+              </>
+              )}
             </div>
           )}
 
           {/* 嗜好グループ */}
           {(characterData.likes || characterData.dislikes || characterData.hobbies || characterData.special_skills) && (
-            <div className="data-group">
-              <h4 className="data-group-title">
-                <i className="fas fa-heart"></i> 嗜好
+            <div className={`data-group ${!preferencesSectionOpen ? 'collapsed' : ''}`}>
+              <h4 className="data-group-title" onClick={() => {
+                const newState = !preferencesSectionOpen;
+                setPreferencesSectionOpen(newState);
+                localStorage.setItem('preferencesDisplaySectionOpen', JSON.stringify(newState));
+              }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span><i className="fas fa-heart"></i> 嗜好</span>
+                <i className={`fas ${preferencesSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
               </h4>
+              {preferencesSectionOpen && (
+              <>
               {characterData.likes && (
                 <div className="data-item">
                   <span className="data-label">好き:</span>
@@ -124,15 +161,24 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
                   <div className="data-value-block linkified-text">{linkifyText(characterData.special_skills)}</div>
                 </div>
               )}
+              </>
+              )}
             </div>
           )}
 
           {/* イメージグループ */}
           {(characterData.theme_song || characterData.motif || (characterData.other_sections && characterData.other_sections.length > 0)) && (
-            <div className="data-group">
-              <h4 className="data-group-title">
-                <i className="fas fa-palette"></i> イメージ
+            <div className={`data-group ${!imageSectionOpen ? 'collapsed' : ''}`}>
+              <h4 className="data-group-title" onClick={() => {
+                const newState = !imageSectionOpen;
+                setImageSectionOpen(newState);
+                localStorage.setItem('imageDisplaySectionOpen', JSON.stringify(newState));
+              }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span><i className="fas fa-palette"></i> イメージ</span>
+                <i className={`fas ${imageSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
               </h4>
+              {imageSectionOpen && (
+              <>
               {characterData.theme_song && (
                 <div className="data-item">
                   <span className="data-label">曲:</span>
@@ -154,32 +200,52 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
                   <div className="data-value-block linkified-text">{linkifyText(section.content)}</div>
                 </div>
               ))}
+              </>
+              )}
             </div>
           )}
 
           {/* 身体的特徴グループ */}
           {characterData.physical_features && (
-            <div className="data-group">
-              <h4 className="data-group-title">
-                <i className="fas fa-user-circle"></i> 身体的特徴
+            <div className={`data-group ${!physicalSectionOpen ? 'collapsed' : ''}`}>
+              <h4 className="data-group-title" onClick={() => {
+                const newState = !physicalSectionOpen;
+                setPhysicalSectionOpen(newState);
+                localStorage.setItem('physicalDisplaySectionOpen', JSON.stringify(newState));
+              }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span><i className="fas fa-user-circle"></i> 身体的特徴</span>
+                <i className={`fas ${physicalSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
               </h4>
+              {physicalSectionOpen && (
+              <>
               <div className="data-item">
                 <span className="data-label">身体的特徴:</span>
                 <div className="data-value-block linkified-text">{linkifyText(characterData.physical_features)}</div>
               </div>
+              </>
+              )}
             </div>
           )}
 
           {/* 家族構成グループ */}
           {characterData.family_structure && (
-            <div className="data-group">
-              <h4 className="data-group-title">
-                <i className="fas fa-users"></i> 家族構成
+            <div className={`data-group ${!familySectionOpen ? 'collapsed' : ''}`}>
+              <h4 className="data-group-title" onClick={() => {
+                const newState = !familySectionOpen;
+                setFamilySectionOpen(newState);
+                localStorage.setItem('familyDisplaySectionOpen', JSON.stringify(newState));
+              }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span><i className="fas fa-users"></i> 家族構成</span>
+                <i className={`fas ${familySectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
               </h4>
+              {familySectionOpen && (
+              <>
               <div className="data-item">
                 <span className="data-label">家族構成:</span>
                 <div className="data-value-block linkified-text">{linkifyText(characterData.family_structure)}</div>
               </div>
+              </>
+              )}
             </div>
           )}
         </div>

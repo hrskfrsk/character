@@ -1549,6 +1549,26 @@ textarea,
   border-radius: 4px;
 }
 
+/* 表示ページのセクションタイトル */
+.data-group-title {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.data-group-title:hover {
+  background-color: #f8f9fa;
+}
+
+/* 閉じた状態のdata-groupのマージン調整 */
+.personal-data-display .data-group.collapsed {
+  margin-bottom: 0;
+}
+
 .character-input .check-growth {
   width: auto;
   -webkit-box-shadow: none;
@@ -3373,7 +3393,7 @@ li {
   border-bottom: none;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.17);
   border-left: 5px solid var(--ui-theme-color);
-  padding: 5px 0 5px 20px;
+  padding: 5px 10px 5px 20px;
   background: rgba(255, 255, 255, 0.3);
 }
 
