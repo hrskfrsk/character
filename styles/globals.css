@@ -1473,6 +1473,28 @@ textarea,
 .character-input .remove-btn:hover {
   background: #e2e2e2;
 }
+
+/* 統一された追加ボタンスタイル */
+.add-section-btn, .add-memo-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.add-section-btn:hover, .add-memo-btn:hover {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
+}
 .character-input .check-growth {
   width: auto;
   -webkit-box-shadow: none;
@@ -3165,7 +3187,7 @@ li {
 }
 
 .personal-data-content {
-  padding: 20px 15px 0;
+  padding: 20px 0 0;
 }
 
 /* パーソナルデータのグループ化スタイル */

@@ -31,7 +31,11 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
     characterData.likes ||
     characterData.dislikes ||
     characterData.hobbies ||
-    characterData.special_skills;
+    characterData.special_skills ||
+    characterData.theme_song ||
+    characterData.motif ||
+    (characterData.other_sections && characterData.other_sections.length > 0) ||
+    characterData.physical_features;
 
   // データがない場合は表示しない
   if (!hasPersonalData) {
@@ -118,6 +122,49 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
                   <div className="data-value-block">{characterData.special_skills}</div>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* イメージグループ */}
+          {(characterData.theme_song || characterData.motif || (characterData.other_sections && characterData.other_sections.length > 0)) && (
+            <div className="data-group">
+              <h4 className="data-group-title">
+                <i className="fas fa-palette"></i> イメージ
+              </h4>
+              {characterData.theme_song && (
+                <div className="data-item">
+                  <span className="data-label">曲:</span>
+                  <div className="data-value-block">{characterData.theme_song}</div>
+                </div>
+              )}
+
+              {characterData.motif && (
+                <div className="data-item">
+                  <span className="data-label">モチーフ:</span>
+                  <div className="data-value-block">{characterData.motif}</div>
+                </div>
+              )}
+
+              {/* 動的その他セクション */}
+              {characterData.other_sections && characterData.other_sections.map((section) => (
+                <div key={section.id} className="data-item">
+                  <span className="data-label">{section.title}:</span>
+                  <div className="data-value-block">{section.content}</div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* 身体的特徴グループ */}
+          {characterData.physical_features && (
+            <div className="data-group">
+              <h4 className="data-group-title">
+                <i className="fas fa-user-circle"></i> 身体的特徴
+              </h4>
+              <div className="data-item">
+                <span className="data-label">身体的特徴:</span>
+                <div className="data-value-block">{characterData.physical_features}</div>
+              </div>
             </div>
           )}
         </div>

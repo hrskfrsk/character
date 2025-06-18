@@ -466,20 +466,7 @@ export default function MemoSection({
               <button
                 type="button"
                 onClick={addSecretMemo}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px',
-                  width: '100%',
-                  padding: '8px 12px',
-                  backgroundColor: '#f8f9fa',
-                  color: '#333',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontSize: '14px'
-                }}
+                className="add-memo-btn"
               >
                 <i className="fas fa-plus"></i>
                 新しいメモを追加

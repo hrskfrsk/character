@@ -559,6 +559,21 @@ export interface CharacterData {
   dislikes?: string;             // 嫌いなもの
   hobbies?: string;              // 趣味
   special_skills?: string;       // 特技
+  
+  // イメージ
+  theme_song?: string;           // 曲
+  motif?: string;                // モチーフ
+  other_details?: string;        // その他
+  
+  // その他セクション（動的追加用）
+  other_sections?: Array<{
+    id: string;
+    title: string;
+    content: string;
+  }>;
+  
+  // 身体的特徴
+  physical_features?: string;    // 身体的特徴
 }
 
 // 年齢による能力値修正を計算

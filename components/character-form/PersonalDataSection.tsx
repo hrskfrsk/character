@@ -31,6 +31,36 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
     }));
   };
 
+  // その他セクション管理
+  const addOtherSection = () => {
+    const newSection = {
+      id: `other_${Date.now()}`,
+      title: '',
+      content: ''
+    };
+    
+    setCharacterData(prev => ({
+      ...prev,
+      other_sections: [...(prev.other_sections || []), newSection]
+    }));
+  };
+
+  const removeOtherSection = (id: string) => {
+    setCharacterData(prev => ({
+      ...prev,
+      other_sections: (prev.other_sections || []).filter(section => section.id !== id)
+    }));
+  };
+
+  const updateOtherSection = (id: string, field: 'title' | 'content', value: string) => {
+    setCharacterData(prev => ({
+      ...prev,
+      other_sections: (prev.other_sections || []).map(section =>
+        section.id === id ? { ...section, [field]: value } : section
+      )
+    }));
+  };
+
   return (
     <section className="personal-data-section">
       <div className="playsheet-header" onClick={toggleOpen}>
@@ -129,6 +159,92 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
                 onChange={(e) => handleInputChange('special_skills', e.target.value)}
                 placeholder="得意なこと、人より優れている能力など"
                 rows={3}
+              />
+            </div>
+          </div>
+
+          {/* イメージ */}
+          <div className="form-group-section">
+            <h3 className="form-group-title">
+              <i className="fas fa-palette"></i> イメージ
+            </h3>
+            
+            <div className="form-group">
+              <label htmlFor="theme_song">曲</label>
+              <textarea
+                id="theme_song"
+                value={characterData.theme_song || ''}
+                onChange={(e) => handleInputChange('theme_song', e.target.value)}
+                placeholder="テーマソング、イメージソングなど"
+                rows={3}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="motif">モチーフ</label>
+              <textarea
+                id="motif"
+                value={characterData.motif || ''}
+                onChange={(e) => handleInputChange('motif', e.target.value)}
+                placeholder="キャラクターデザインの元ネタ、モチーフなど"
+                rows={3}
+              />
+            </div>
+
+            {/* 動的その他セクション */}
+            {characterData.other_sections && characterData.other_sections.map((section) => (
+              <div key={section.id} className="form-group dynamic-section">
+                <div className="form-row">
+                  <div className="form-group inline">
+                    <label>項目名</label>
+                    <input
+                      type="text"
+                      value={section.title}
+                      onChange={(e) => updateOtherSection(section.id, 'title', e.target.value)}
+                      placeholder="項目名を入力"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => removeOtherSection(section.id)}
+                    className="remove-btn"
+                    title="この項目を削除"
+                  >
+                    <i className="fas fa-times"></i>
+                  </button>
+                </div>
+                <textarea
+                  value={section.content}
+                  onChange={(e) => updateOtherSection(section.id, 'content', e.target.value)}
+                  placeholder="内容を入力"
+                  rows={3}
+                />
+              </div>
+            ))}
+
+            <button
+              type="button"
+              onClick={addOtherSection}
+              className="add-section-btn"
+            >
+              <i className="fas fa-plus"></i> その他項目を追加
+            </button>
+          </div>
+
+          {/* 身体的特徴 */}
+          <div className="form-group-section">
+            <h3 className="form-group-title">
+              <i className="fas fa-user-circle"></i> 身体的特徴
+            </h3>
+            
+            <div className="form-group">
+              <label htmlFor="physical_features">身体的特徴</label>
+              <textarea
+                id="physical_features"
+                value={characterData.physical_features || ''}
+                onChange={(e) => handleInputChange('physical_features', e.target.value)}
+                placeholder="体型、髪型、顔立ち、服装、装身具、特徴的な印・傷など"
+                rows={4}
               />
             </div>
           </div>
