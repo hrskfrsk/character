@@ -14,6 +14,7 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
   const [physicalSectionOpen, setPhysicalSectionOpen] = useState(true);
   const [familySectionOpen, setFamilySectionOpen] = useState(true);
   const [customFieldsSectionOpen, setCustomFieldsSectionOpen] = useState(true);
+  const [customSectionsOpen, setCustomSectionsOpen] = useState<{[key: string]: boolean}>({});
 
   // localStorageから開閉状態を読み込む
   useEffect(() => {
@@ -40,13 +41,38 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
     
     const customFieldsState = localStorage.getItem('customFieldsDisplaySectionOpen');
     if (customFieldsState !== null) setCustomFieldsSectionOpen(JSON.parse(customFieldsState));
-  }, []);
+    
+    // 自由入力セクションの状態を読み込み
+    const customSectionsState = localStorage.getItem('customSectionsDisplayOpen');
+    if (customSectionsState !== null) {
+      setCustomSectionsOpen(JSON.parse(customSectionsState));
+    } else {
+      // デフォルトで全セクションを開いた状態で初期化
+      const defaultSectionsOpen: {[key: string]: boolean} = {};
+      if (characterData.custom_sections) {
+        characterData.custom_sections.forEach(section => {
+          defaultSectionsOpen[section.id] = true;
+        });
+      }
+      setCustomSectionsOpen(defaultSectionsOpen);
+    }
+  }, [characterData.custom_sections]);
 
   // 開閉状態をlocalStorageに保存
   const toggleOpen = () => {
     const newState = !isOpen;
     setIsOpen(newState);
     localStorage.setItem('personalDataDisplayOpen', JSON.stringify(newState));
+  };
+
+  // 自由入力セクションのトグル
+  const toggleCustomSection = (sectionId: string) => {
+    const currentState = customSectionsOpen[sectionId] !== false; // デフォルトでtrue
+    const newState = !currentState;
+    const newSectionsOpen = { ...customSectionsOpen, [sectionId]: newState };
+    
+    setCustomSectionsOpen(newSectionsOpen);
+    localStorage.setItem('customSectionsDisplayOpen', JSON.stringify(newSectionsOpen));
   };
 
   // データが存在するかチェック
@@ -255,27 +281,29 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
           )}
 
           {/* 自由入力セクション */}
-          {characterData.custom_sections && characterData.custom_sections.map((section) => (
-            <div key={section.id} className={`data-group ${!section.is_open ? 'collapsed' : ''}`}>
-              <h4 className="data-group-title" onClick={() => {
-                // セクションの開閉状態を更新する関数が必要
-              }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span><i className="fas fa-cogs"></i> {section.section_title || '無題のセクション'}</span>
-                <i className={`fas ${section.is_open ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
-              </h4>
-              {section.is_open && (
-              <>
-              {/* セクション内の項目 */}
-              {section.fields.map((field) => (
-                <div key={field.id} className="data-item">
-                  <span className="data-label">{field.title}:</span>
-                  <div className="data-value-block linkified-text">{linkifyText(field.content)}</div>
-                </div>
-              ))}
-              </>
-              )}
-            </div>
-          ))}
+          {characterData.custom_sections && characterData.custom_sections.map((section) => {
+            const isOpen = customSectionsOpen[section.id] !== false; // デフォルトで開いている
+            
+            return (
+              <div key={section.id} className={`data-group ${!isOpen ? 'collapsed' : ''}`}>
+                <h4 className="data-group-title" onClick={() => toggleCustomSection(section.id)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span><i className="fas fa-cogs"></i> {section.section_title || '無題のセクション'}</span>
+                  <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
+                </h4>
+                {isOpen && (
+                <>
+                {/* セクション内の項目 */}
+                {section.fields.map((field) => (
+                  <div key={field.id} className="data-item">
+                    <span className="data-label">{field.title}:</span>
+                    <div className="data-value-block linkified-text">{linkifyText(field.content)}</div>
+                  </div>
+                ))}
+                </>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </section>
