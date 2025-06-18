@@ -3152,10 +3152,6 @@ li {
   color: var(--ui-theme-color);
 }
 
-.personal-data-section h3:hover {
-  background-color: var(--ui-theme-color-medium);
-}
-
 .personal-data-content {
   padding: 20px 15px 0;
 }
@@ -3205,13 +3201,8 @@ li {
 
 .personal-data-section input[type="text"],
 .personal-data-section textarea {
-  width: 100%;
   padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  font-family: inherit;
-  transition: border-color 0.3s;
+  text-align: left;
 }
 
 .personal-data-section input[type="text"]:focus,

@@ -134,15 +134,27 @@ export default function PlaySheet({
   memoOrder,
   reorderMemos
 }: PlaySheetProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('playsheetCollapsed');
+      return saved ? JSON.parse(saved) : false;
+    }
+    return false;
+  });
+
+  const toggleCollapsed = () => {
+    const newState = !isCollapsed;
+    setIsCollapsed(newState);
+    localStorage.setItem('playsheetCollapsed', JSON.stringify(newState));
+  };
 
   return (
     <div className="character-name-section">
-      <div className="playsheet-header" onClick={() => setIsCollapsed(!isCollapsed)}>
+      <div className="playsheet-header" onClick={toggleCollapsed}>
         <h2>
           <i className="fas fa-scroll section-icon"></i>プレイシート
         </h2>
-        <i className={`fas ${isCollapsed ? 'fa-chevron-up' : 'fa-chevron-down'} section-toggle-icon ${isCollapsed ? 'collapsed' : ''}`}></i>
+        <i className={`fas fa-chevron-up section-toggle-icon ${isCollapsed ? 'collapsed' : ''}`}></i>
       </div>
 
       <div className={`section-content ${isCollapsed ? 'collapsed' : ''}`} style={{ maxHeight: isCollapsed ? '0' : 'none', overflow: 'hidden', transition: 'max-height 0.3s ease' }}>

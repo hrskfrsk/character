@@ -37,7 +37,7 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
         <h2>
           <i className="fas fa-user section-icon"></i> キャラクター詳細
         </h2>
-        <i className={`fas ${isOpen ? 'fa-chevron-up' : 'fa-chevron-down'} section-toggle-icon ${isOpen ? '' : 'collapsed'}`}></i>
+        <i className={`fas fa-chevron-up section-toggle-icon ${isOpen ? '' : 'collapsed'}`}></i>
       </div>
 
       {isOpen && (
