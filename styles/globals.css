@@ -1149,6 +1149,10 @@ textarea,
     padding: 25px 30px;
   }
 
+  .character-input .character-info {
+    padding: 20px 0 0;
+  }
+
   .character-info .character-name-section {
     padding: 20px;
     margin-bottom: 16px;
