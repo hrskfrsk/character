@@ -574,6 +574,9 @@ export interface CharacterData {
   
   // 身体的特徴
   physical_features?: string;    // 身体的特徴
+  
+  // 家族構成
+  family_structure?: string;     // 家族構成
 }
 
 // 年齢による能力値修正を計算

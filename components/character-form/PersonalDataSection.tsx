@@ -9,6 +9,11 @@ interface PersonalDataSectionProps {
 
 const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData, setCharacterData }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [speechSectionOpen, setSpeechSectionOpen] = useState(true);
+  const [preferencesSectionOpen, setPreferencesSectionOpen] = useState(true);
+  const [imageSectionOpen, setImageSectionOpen] = useState(true);
+  const [physicalSectionOpen, setPhysicalSectionOpen] = useState(true);
+  const [familySectionOpen, setFamilySectionOpen] = useState(true);
 
   // localStorageから開閉状態を読み込む
   useEffect(() => {
@@ -16,6 +21,22 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
     if (savedState !== null) {
       setIsOpen(JSON.parse(savedState));
     }
+    
+    // 各セクションの開閉状態も読み込み
+    const speechState = localStorage.getItem('speechSectionOpen');
+    if (speechState !== null) setSpeechSectionOpen(JSON.parse(speechState));
+    
+    const preferencesState = localStorage.getItem('preferencesSectionOpen');
+    if (preferencesState !== null) setPreferencesSectionOpen(JSON.parse(preferencesState));
+    
+    const imageState = localStorage.getItem('imageSectionOpen');
+    if (imageState !== null) setImageSectionOpen(JSON.parse(imageState));
+    
+    const physicalState = localStorage.getItem('physicalSectionOpen');
+    if (physicalState !== null) setPhysicalSectionOpen(JSON.parse(physicalState));
+    
+    const familyState = localStorage.getItem('familySectionOpen');
+    if (familyState !== null) setFamilySectionOpen(JSON.parse(familyState));
   }, []);
 
   // 開閉状態をlocalStorageに保存
@@ -76,9 +97,16 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
         <div className="personal-data-content">
           {/* 話し方・言葉遣い */}
           <div className="form-group-section">
-            <h3 className="form-group-title">
+            <h3 className="form-group-title" onClick={() => {
+              const newState = !speechSectionOpen;
+              setSpeechSectionOpen(newState);
+              localStorage.setItem('speechSectionOpen', JSON.stringify(newState));
+            }} style={{ cursor: 'pointer' }}>
               <i className="fas fa-comments"></i> 話し方
+              <i className={`fas ${speechSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginLeft: 'auto', fontSize: '12px' }}></i>
             </h3>
+            {speechSectionOpen && (
+            <>
             <div className="form-row">
               <div className="form-group">
                 <label htmlFor="first_person">一人称</label>
@@ -113,13 +141,22 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
                 minRows={2}
               />
             </div>
+            </>
+            )}
           </div>
 
           {/* 性格・嗜好 */}
           <div className="form-group-section">
-            <h3 className="form-group-title">
+            <h3 className="form-group-title" onClick={() => {
+              const newState = !preferencesSectionOpen;
+              setPreferencesSectionOpen(newState);
+              localStorage.setItem('preferencesSectionOpen', JSON.stringify(newState));
+            }} style={{ cursor: 'pointer' }}>
               <i className="fas fa-heart"></i> 嗜好
+              <i className={`fas ${preferencesSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginLeft: 'auto', fontSize: '12px' }}></i>
             </h3>
+            {preferencesSectionOpen && (
+            <>
             <div className="form-group">
               <label htmlFor="likes">好き</label>
               <AutoResizeTextarea
@@ -163,14 +200,22 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
                 minRows={3}
               />
             </div>
+            </>
+            )}
           </div>
 
           {/* イメージ */}
           <div className="form-group-section">
-            <h3 className="form-group-title">
+            <h3 className="form-group-title" onClick={() => {
+              const newState = !imageSectionOpen;
+              setImageSectionOpen(newState);
+              localStorage.setItem('imageSectionOpen', JSON.stringify(newState));
+            }} style={{ cursor: 'pointer' }}>
               <i className="fas fa-palette"></i> イメージ
+              <i className={`fas ${imageSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginLeft: 'auto', fontSize: '12px' }}></i>
             </h3>
-            
+            {imageSectionOpen && (
+            <>
             <div className="form-group">
               <label htmlFor="theme_song">曲</label>
               <AutoResizeTextarea
@@ -231,14 +276,22 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
             >
               <i className="fas fa-plus"></i> その他項目を追加
             </button>
+            </>
+            )}
           </div>
 
           {/* 身体的特徴 */}
           <div className="form-group-section">
-            <h3 className="form-group-title">
+            <h3 className="form-group-title" onClick={() => {
+              const newState = !physicalSectionOpen;
+              setPhysicalSectionOpen(newState);
+              localStorage.setItem('physicalSectionOpen', JSON.stringify(newState));
+            }} style={{ cursor: 'pointer' }}>
               <i className="fas fa-user-circle"></i> 身体的特徴
+              <i className={`fas ${physicalSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginLeft: 'auto', fontSize: '12px' }}></i>
             </h3>
-            
+            {physicalSectionOpen && (
+            <>
             <div className="form-group">
               <label htmlFor="physical_features">身体的特徴</label>
               <AutoResizeTextarea
@@ -249,6 +302,34 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
                 minRows={4}
               />
             </div>
+            </>
+            )}
+          </div>
+
+          {/* 家族構成 */}
+          <div className="form-group-section">
+            <h3 className="form-group-title" onClick={() => {
+              const newState = !familySectionOpen;
+              setFamilySectionOpen(newState);
+              localStorage.setItem('familySectionOpen', JSON.stringify(newState));
+            }} style={{ cursor: 'pointer' }}>
+              <i className="fas fa-users"></i> 家族構成
+              <i className={`fas ${familySectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginLeft: 'auto', fontSize: '12px' }}></i>
+            </h3>
+            {familySectionOpen && (
+            <>
+            <div className="form-group">
+              <label htmlFor="family_structure">家族構成</label>
+              <AutoResizeTextarea
+                id="family_structure"
+                value={characterData.family_structure || ''}
+                onChange={(value) => handleInputChange('family_structure', value)}
+                placeholder="両親、兄弟姉妹、配偶者、子供など家族構成の詳細"
+                minRows={4}
+              />
+            </div>
+            </>
+            )}
           </div>
 
         </div>

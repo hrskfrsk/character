@@ -1536,6 +1536,19 @@ textarea,
   color: #007bff;
 }
 
+/* セクションタイトルのフレックス表示 */
+.form-group-title {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+
+.form-group-title:hover {
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
 .character-input .check-growth {
   width: auto;
   -webkit-box-shadow: none;

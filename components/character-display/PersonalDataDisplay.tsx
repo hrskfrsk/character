@@ -36,7 +36,8 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
     characterData.theme_song ||
     characterData.motif ||
     (characterData.other_sections && characterData.other_sections.length > 0) ||
-    characterData.physical_features;
+    characterData.physical_features ||
+    characterData.family_structure;
 
   // データがない場合は表示しない
   if (!hasPersonalData) {
@@ -165,6 +166,19 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
               <div className="data-item">
                 <span className="data-label">身体的特徴:</span>
                 <div className="data-value-block linkified-text">{linkifyText(characterData.physical_features)}</div>
+              </div>
+            </div>
+          )}
+
+          {/* 家族構成グループ */}
+          {characterData.family_structure && (
+            <div className="data-group">
+              <h4 className="data-group-title">
+                <i className="fas fa-users"></i> 家族構成
+              </h4>
+              <div className="data-item">
+                <span className="data-label">家族構成:</span>
+                <div className="data-value-block linkified-text">{linkifyText(characterData.family_structure)}</div>
               </div>
             </div>
           )}

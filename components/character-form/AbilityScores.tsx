@@ -75,7 +75,7 @@ export default function AbilityScores({
   return (
     <>
       {/* STATUS */}
-      <div className="section-header" style={{ marginBottom: '0', marginTop: '20px' }}>
+      <div className="section-header" style={{ marginTop: '20px' }}>
         <h3>
           <i className="fas fa-dumbbell section-icon"></i>能力値
         </h3>
