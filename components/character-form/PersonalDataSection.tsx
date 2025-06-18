@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CharacterData } from '../../lib/character-calculations';
+import { AutoResizeTextarea } from '../../lib/text-utils';
 
 interface PersonalDataSectionProps {
   characterData: CharacterData;
@@ -103,12 +104,12 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
 
             <div className="form-group">
               <label htmlFor="speech_style">口調</label>
-              <textarea
+              <AutoResizeTextarea
                 id="speech_style"
                 value={characterData.speech_style || ''}
-                onChange={(e) => handleInputChange('speech_style', e.target.value)}
+                onChange={(value) => handleInputChange('speech_style', value)}
                 placeholder="丁寧語、タメ語、方言など、話し方の特徴やサンプル台詞など"
-                rows={2}
+                minRows={2}
               />
             </div>
           </div>
@@ -120,45 +121,45 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
             </h3>
             <div className="form-group">
               <label htmlFor="likes">好き</label>
-              <textarea
+              <AutoResizeTextarea
                 id="likes"
                 value={characterData.likes || ''}
-                onChange={(e) => handleInputChange('likes', e.target.value)}
+                onChange={(value) => handleInputChange('likes', value)}
                 placeholder="好きな食べ物、活動、場所など"
-                rows={3}
+                minRows={3}
               />
             </div>
 
             <div className="form-group">
               <label htmlFor="dislikes">嫌い</label>
-              <textarea
+              <AutoResizeTextarea
                 id="dislikes"
                 value={characterData.dislikes || ''}
-                onChange={(e) => handleInputChange('dislikes', e.target.value)}
+                onChange={(value) => handleInputChange('dislikes', value)}
                 placeholder="嫌いな食べ物、苦手なこと、避けたいものなど"
-                rows={3}
+                minRows={3}
               />
             </div>
 
             <div className="form-group">
               <label htmlFor="hobbies">趣味</label>
-              <textarea
+              <AutoResizeTextarea
                 id="hobbies"
                 value={characterData.hobbies || ''}
-                onChange={(e) => handleInputChange('hobbies', e.target.value)}
+                onChange={(value) => handleInputChange('hobbies', value)}
                 placeholder="余暇の過ごし方、興味のある活動など"
-                rows={3}
+                minRows={3}
               />
             </div>
 
             <div className="form-group">
               <label htmlFor="special_skills">得意</label>
-              <textarea
+              <AutoResizeTextarea
                 id="special_skills"
                 value={characterData.special_skills || ''}
-                onChange={(e) => handleInputChange('special_skills', e.target.value)}
+                onChange={(value) => handleInputChange('special_skills', value)}
                 placeholder="得意なこと、人より優れている能力など"
-                rows={3}
+                minRows={3}
               />
             </div>
           </div>
@@ -171,23 +172,23 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
             
             <div className="form-group">
               <label htmlFor="theme_song">曲</label>
-              <textarea
+              <AutoResizeTextarea
                 id="theme_song"
                 value={characterData.theme_song || ''}
-                onChange={(e) => handleInputChange('theme_song', e.target.value)}
+                onChange={(value) => handleInputChange('theme_song', value)}
                 placeholder="テーマソング、イメージソングなど"
-                rows={3}
+                minRows={3}
               />
             </div>
 
             <div className="form-group">
               <label htmlFor="motif">モチーフ</label>
-              <textarea
+              <AutoResizeTextarea
                 id="motif"
                 value={characterData.motif || ''}
-                onChange={(e) => handleInputChange('motif', e.target.value)}
+                onChange={(value) => handleInputChange('motif', value)}
                 placeholder="キャラクターデザインの元ネタ、モチーフなど"
-                rows={3}
+                minRows={3}
               />
             </div>
 
@@ -213,11 +214,11 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
                     <i className="fas fa-times"></i>
                   </button>
                 </div>
-                <textarea
+                <AutoResizeTextarea
                   value={section.content}
-                  onChange={(e) => updateOtherSection(section.id, 'content', e.target.value)}
+                  onChange={(value) => updateOtherSection(section.id, 'content', value)}
                   placeholder="内容を入力"
-                  rows={3}
+                  minRows={3}
                 />
               </div>
             ))}
@@ -239,12 +240,12 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
             
             <div className="form-group">
               <label htmlFor="physical_features">身体的特徴</label>
-              <textarea
+              <AutoResizeTextarea
                 id="physical_features"
                 value={characterData.physical_features || ''}
-                onChange={(e) => handleInputChange('physical_features', e.target.value)}
+                onChange={(value) => handleInputChange('physical_features', value)}
                 placeholder="体型、髪型、顔立ち、服装、装身具、特徴的な印・傷など"
-                rows={4}
+                minRows={4}
               />
             </div>
           </div>

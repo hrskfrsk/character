@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CharacterData } from '../../lib/character-calculations';
+import { linkifyText } from '../../lib/text-utils';
 
 interface PersonalDataDisplayProps {
   characterData: CharacterData;
@@ -83,7 +84,7 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
               {characterData.speech_style && (
                 <div className="data-item">
                   <span className="data-label">口調:</span>
-                  <div className="data-value-block">{characterData.speech_style}</div>
+                  <div className="data-value-block linkified-text">{linkifyText(characterData.speech_style)}</div>
                 </div>
               )}
             </div>
@@ -98,28 +99,28 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
               {characterData.likes && (
                 <div className="data-item">
                   <span className="data-label">好き:</span>
-                  <div className="data-value-block">{characterData.likes}</div>
+                  <div className="data-value-block linkified-text">{linkifyText(characterData.likes)}</div>
                 </div>
               )}
 
               {characterData.dislikes && (
                 <div className="data-item">
                   <span className="data-label">嫌い:</span>
-                  <div className="data-value-block">{characterData.dislikes}</div>
+                  <div className="data-value-block linkified-text">{linkifyText(characterData.dislikes)}</div>
                 </div>
               )}
 
               {characterData.hobbies && (
                 <div className="data-item">
                   <span className="data-label">趣味:</span>
-                  <div className="data-value-block">{characterData.hobbies}</div>
+                  <div className="data-value-block linkified-text">{linkifyText(characterData.hobbies)}</div>
                 </div>
               )}
 
               {characterData.special_skills && (
                 <div className="data-item">
                   <span className="data-label">得意:</span>
-                  <div className="data-value-block">{characterData.special_skills}</div>
+                  <div className="data-value-block linkified-text">{linkifyText(characterData.special_skills)}</div>
                 </div>
               )}
             </div>
@@ -134,14 +135,14 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
               {characterData.theme_song && (
                 <div className="data-item">
                   <span className="data-label">曲:</span>
-                  <div className="data-value-block">{characterData.theme_song}</div>
+                  <div className="data-value-block linkified-text">{linkifyText(characterData.theme_song)}</div>
                 </div>
               )}
 
               {characterData.motif && (
                 <div className="data-item">
                   <span className="data-label">モチーフ:</span>
-                  <div className="data-value-block">{characterData.motif}</div>
+                  <div className="data-value-block linkified-text">{linkifyText(characterData.motif)}</div>
                 </div>
               )}
 
@@ -149,7 +150,7 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
               {characterData.other_sections && characterData.other_sections.map((section) => (
                 <div key={section.id} className="data-item">
                   <span className="data-label">{section.title}:</span>
-                  <div className="data-value-block">{section.content}</div>
+                  <div className="data-value-block linkified-text">{linkifyText(section.content)}</div>
                 </div>
               ))}
             </div>
@@ -163,7 +164,7 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
               </h4>
               <div className="data-item">
                 <span className="data-label">身体的特徴:</span>
-                <div className="data-value-block">{characterData.physical_features}</div>
+                <div className="data-value-block linkified-text">{linkifyText(characterData.physical_features)}</div>
               </div>
             </div>
           )}

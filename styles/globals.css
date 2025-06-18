@@ -1475,7 +1475,8 @@ textarea,
 }
 
 /* 統一された追加ボタンスタイル */
-.add-section-btn, .add-memo-btn {
+.add-section-btn,
+.add-memo-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1491,9 +1492,35 @@ textarea,
   transition: all 0.3s ease;
 }
 
-.add-section-btn:hover, .add-memo-btn:hover {
+.add-section-btn:hover,
+.add-memo-btn:hover {
   background-color: #e9ecef;
   border-color: #adb5bd;
+}
+
+/* 自動リサイズテキストエリア */
+.auto-resize-textarea {
+  resize: none;
+  overflow: hidden;
+  min-height: 60px;
+  transition: height 0.2s ease;
+}
+
+/* リンク付きテキスト表示 */
+.linkified-text {
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+.linkified-text a {
+  color: #007bff;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.linkified-text a:hover {
+  color: #0056b3;
+  text-decoration: none;
 }
 .character-input .check-growth {
   width: auto;
@@ -1998,6 +2025,7 @@ li {
   align-items: center;
   justify-content: center;
   height: 100%;
+  flex-wrap: wrap;
 }
 @media only screen and (max-width: 768px) {
   .chara-seet .slots .slot-txt {
