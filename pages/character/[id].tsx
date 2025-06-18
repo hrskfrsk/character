@@ -94,6 +94,9 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
   // キャラクター表示セクションの開閉状態
   const [characterDisplayOpen, setCharacterDisplayOpen] = useState(true);
 
+  // プレイシートセクションの開閉状態
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
 
   // 初期値を表示するヘルパー関数（初期値は必ず数字を表示）
   const displayInitial = (value: any, defaultValue: number = 0): string => {
@@ -181,6 +184,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
 
       const savedEquipmentSections = localStorage.getItem(`character-display-equipmentSections-${characterId}-v2`);
       const savedCharacterDisplayState = localStorage.getItem(`character-display-main-section-${characterId}`);
+      const savedPlaysheetState = localStorage.getItem(`character-display-playsheet-${characterId}`);
 
       if (savedEquipmentSections !== null) {
         const parsed = JSON.parse(savedEquipmentSections);
@@ -200,6 +204,10 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
       if (savedCharacterDisplayState !== null) {
         setCharacterDisplayOpen(JSON.parse(savedCharacterDisplayState));
       }
+
+      if (savedPlaysheetState !== null) {
+        setIsCollapsed(JSON.parse(savedPlaysheetState));
+      }
     }
   }, [characterId]);
 
@@ -215,6 +223,12 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
       localStorage.setItem(`character-display-main-section-${characterId}`, JSON.stringify(characterDisplayOpen));
     }
   }, [characterDisplayOpen, characterId]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && characterId) {
+      localStorage.setItem(`character-display-playsheet-${characterId}`, JSON.stringify(isCollapsed));
+    }
+  }, [isCollapsed, characterId]);
 
   if (!character) {
     return (
@@ -249,15 +263,14 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                 <BasicDataDisplay character={character} />
 
                 <section className="chara-seet character-display">
-                  <div className="data-wrap">
-                    <h3
-                      onClick={() => setCharacterDisplayOpen(!characterDisplayOpen)}
-                      style={{ cursor: 'pointer', userSelect: 'none', marginTop: '0', marginBottom: '10px' }}
-                    >
-                      <i className={`fas ${characterDisplayOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '5px' }}></i>
-                      <i className="fas fa-dice-d20"></i> キャラクターシート
-                    </h3>
-                    {characterDisplayOpen && (
+                  <div className="data-wrap" style={{ margin: '10px 0' }}>
+                    <div className="playsheet-header" onClick={() => setIsCollapsed(!isCollapsed)}>
+                      <h2>
+                        <i className="fas fa-scroll section-icon"></i>プレイシート
+                      </h2>
+                      <i className={`fas ${isCollapsed ? 'fa-chevron-up' : 'fa-chevron-down'} section-toggle-icon ${isCollapsed ? 'collapsed' : ''}`}></i>
+                    </div>
+                    {!isCollapsed && (
                       <div className="equipment-content">
                         <CharacterHeader
                           character={character}
@@ -295,49 +308,51 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                             handlePasswordSubmit={handlePasswordSubmit}
                           />
                         </div>
-
-                        {/* 編集ボタン */}
-                        <div className="edit-button-container" style={{ textAlign: 'center', marginTop: '30px', paddingTop: '20px', borderTop: '2px solid #ddd' }}>
-                          <button
-                            type="button"
-                            onClick={() => router.push(`/create?edit=${characterId}`)}
-                            className="btn edit-btn"
-                            style={{
-                              marginRight: '15px',
-                              padding: '12px 30px',
-                              backgroundColor: '#2196F3',
-                              color: 'white',
-                              border: 'none',
-                              borderRadius: '4px',
-                              cursor: 'pointer',
-                              fontSize: '16px',
-                              fontWeight: 'bold'
-                            }}
-                          >
-                            <i className="fas fa-edit"></i> キャラクターを編集
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => router.push('/create')}
-                            className="btn new-btn"
-                            style={{
-                              padding: '12px 30px',
-                              backgroundColor: '#4CAF50',
-                              color: 'white',
-                              border: 'none',
-                              borderRadius: '4px',
-                              cursor: 'pointer',
-                              fontSize: '16px',
-                              fontWeight: 'bold'
-                            }}
-                          >
-                            <i className="fas fa-plus"></i> 新しいキャラクター
-                          </button>
-                        </div>
                       </div>
+
+
                     )}
                   </div>
+
                 </section>
+                {/* 編集ボタン */}
+                <div className="edit-button-container" style={{ textAlign: 'center', marginTop: '30px', paddingTop: '20px', borderTop: '2px solid #ddd' }}>
+                  <button
+                    type="button"
+                    onClick={() => router.push(`/create?edit=${characterId}`)}
+                    className="btn edit-btn"
+                    style={{
+                      marginRight: '15px',
+                      padding: '12px 30px',
+                      backgroundColor: '#2196F3',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      fontSize: '16px',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    <i className="fas fa-edit"></i> キャラクターを編集
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => router.push('/create')}
+                    className="btn new-btn"
+                    style={{
+                      padding: '12px 30px',
+                      backgroundColor: '#4CAF50',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      fontSize: '16px',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    <i className="fas fa-plus"></i> 新しいキャラクター
+                  </button>
+                </div>
               </article>
             </main>
           </div>

@@ -59,8 +59,8 @@ export default function MemoDisplay({
 
           {/* 新しいメモシステム */}
           {(() => {
-            const memoElements = [];
-            
+            const memoElements: JSX.Element[] = [];
+
             // メモの順序を取得（データベースから、なければ作成順）
             let memoOrder: string[] = [];
             if (character.memo_order) {
@@ -70,7 +70,7 @@ export default function MemoDisplay({
                 console.warn('Failed to parse memo_order:', e);
               }
             }
-            
+
             // 順序が設定されていない場合は、既存のメモIDを作成順で取得
             if (memoOrder.length === 0) {
               for (let i = 1; i <= 50; i++) {
@@ -79,12 +79,12 @@ export default function MemoDisplay({
                 }
               }
             }
-            
+
             // 順序に従ってメモを表示
             memoOrder.forEach((memoId) => {
               const match = memoId.match(/memo_(\d+)/);
               if (!match) return;
-              
+
               const i = parseInt(match[1]);
               const title = character[`memo_${i}_title`];
               const content = character[`memo_${i}_content`];

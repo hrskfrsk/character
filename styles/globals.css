@@ -1526,6 +1526,7 @@ textarea,
 .equipment-content {
   transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
   opacity: 1;
+  padding-top: 20px;
 }
 
 .equipment-content.collapsed {
@@ -1580,7 +1581,7 @@ li {
 .character-display.character-display {
   background: rgba(255, 255, 255, 0.3);
   border-radius: 8px;
-  padding: 30px;
+  padding: 10px 30px;
   margin-bottom: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: left;
