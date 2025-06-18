@@ -266,7 +266,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                   <div className="data-wrap" style={{ margin: '10px 0' }}>
                     <div className="playsheet-header" onClick={() => setIsCollapsed(!isCollapsed)}>
                       <h2>
-                        <i className="fas fa-scroll section-icon"></i>プレイシート
+                        <i className="fas fa-scroll section-icon"></i> Character Sheet
                       </h2>
                       <i className={`fas ${isCollapsed ? 'fa-chevron-up' : 'fa-chevron-down'} section-toggle-icon ${isCollapsed ? 'collapsed' : ''}`}></i>
                     </div>
@@ -315,6 +315,8 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                   </div>
 
                 </section>
+
+
                 {/* 編集ボタン */}
                 <div className="edit-button-container" style={{ textAlign: 'center', marginTop: '30px', paddingTop: '20px', borderTop: '2px solid #ddd' }}>
                   <button

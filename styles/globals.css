@@ -1578,15 +1578,29 @@ li {
   font-size: 0.8rem;
   font-family: "Kosugi";
 }
-.character-display.character-display {
-  background: rgba(255, 255, 255, 0.3);
+.character-display {
   border-radius: 8px;
   padding: 10px 30px;
   margin-bottom: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   text-align: left;
   position: relative;
 }
+.character-display .playsheet-header {
+  margin-top: 4%;
+  border-bottom: dotted 1px #000;
+  border-top: dotted 1px #000;
+  padding: 10px;
+}
+.character-display .playsheet-header:hover {
+  background: var(--ui-theme-color-light);
+}
+.character-display .playsheet-header h2 {
+  width: 100%;
+  justify-content: center;
+  gap: 8px;
+  font-family: "Varela Round", "Kosugi", sans-serif;
+}
+
 .chara-seet ul {
   margin: 0;
   padding: 0;
