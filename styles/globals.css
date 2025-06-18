@@ -3256,14 +3256,6 @@ li {
 }
 
 .personal-data-display .data-value-block {
-  font-size: 1rem;
-  color: #333;
-  padding: 10px;
-  background-color: white;
-  border-radius: 4px;
-  border: 1px solid #e0e0e0;
-  white-space: pre-wrap;
-  line-height: 1.6;
 }
 
 @media (max-width: 768px) {
@@ -3282,5 +3274,18 @@ li {
     padding: 0 10px;
   }
 }
-
+.data-group {
+  margin-bottom: 5%;
+}
+.data-group-title {
+  letter-spacing: 3px;
+  margin: 0 0 20px;
+  border-bottom: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.17);
+  border-left: 5px solid var(--ui-theme-color);
+  padding: 5px 0 5px 20px;
+}
+.data-group-title i {
+  color: var(--ui-theme-color);
+}
 /*# sourceMappingURL=style.css.map */

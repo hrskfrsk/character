@@ -51,55 +51,72 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
 
       {isOpen && (
         <div className="personal-data-content">
-          {characterData.first_person && (
-            <div className="data-item">
-              <span className="data-label">一人称:</span>
-              <span className="data-value">{characterData.first_person}</span>
+          {/* 話し方グループ */}
+          {(characterData.first_person || characterData.second_person || characterData.speech_style) && (
+            <div className="data-group">
+              <h4 className="data-group-title">
+                <i className="fas fa-comments"></i> 話し方
+              </h4>
+              {characterData.first_person && (
+                <div className="data-item">
+                  <span className="data-label">一人称:</span>
+                  <span className="data-value">{characterData.first_person}</span>
+                </div>
+              )}
+
+              {characterData.second_person && (
+                <div className="data-item">
+                  <span className="data-label">二人称:</span>
+                  <span className="data-value">{characterData.second_person}</span>
+                </div>
+              )}
+
+              {characterData.speech_style && (
+                <div className="data-item">
+                  <span className="data-label">口調:</span>
+                  <div className="data-value-block">{characterData.speech_style}</div>
+                </div>
+              )}
             </div>
           )}
 
-          {characterData.second_person && (
-            <div className="data-item">
-              <span className="data-label">二人称:</span>
-              <span className="data-value">{characterData.second_person}</span>
+          {/* 嗜好グループ */}
+          {(characterData.likes || characterData.dislikes || characterData.hobbies || characterData.special_skills) && (
+            <div className="data-group">
+              <h4 className="data-group-title">
+                <i className="fas fa-heart"></i> 嗜好
+              </h4>
+              {characterData.likes && (
+                <div className="data-item">
+                  <span className="data-label">好き:</span>
+                  <div className="data-value-block">{characterData.likes}</div>
+                </div>
+              )}
+
+              {characterData.dislikes && (
+                <div className="data-item">
+                  <span className="data-label">嫌い:</span>
+                  <div className="data-value-block">{characterData.dislikes}</div>
+                </div>
+              )}
+
+              {characterData.hobbies && (
+                <div className="data-item">
+                  <span className="data-label">趣味:</span>
+                  <div className="data-value-block">{characterData.hobbies}</div>
+                </div>
+              )}
+
+              {characterData.special_skills && (
+                <div className="data-item">
+                  <span className="data-label">得意:</span>
+                  <div className="data-value-block">{characterData.special_skills}</div>
+                </div>
+              )}
             </div>
           )}
 
-          {characterData.speech_style && (
-            <div className="data-item">
-              <span className="data-label">口調:</span>
-              <div className="data-value-block">{characterData.speech_style}</div>
-            </div>
-          )}
-
-          {characterData.likes && (
-            <div className="data-item">
-              <span className="data-label">好きなもの:</span>
-              <div className="data-value-block">{characterData.likes}</div>
-            </div>
-          )}
-
-          {characterData.dislikes && (
-            <div className="data-item">
-              <span className="data-label">嫌いなもの:</span>
-              <div className="data-value-block">{characterData.dislikes}</div>
-            </div>
-          )}
-
-          {characterData.hobbies && (
-            <div className="data-item">
-              <span className="data-label">趣味:</span>
-              <div className="data-value-block">{characterData.hobbies}</div>
-            </div>
-          )}
-
-          {characterData.special_skills && (
-            <div className="data-item">
-              <span className="data-label">特技:</span>
-              <div className="data-value-block">{characterData.special_skills}</div>
-            </div>
-          )}
-
+          {/* その他 */}
           {characterData.other_characteristics && (
             <div className="data-item">
               <span className="data-label">その他の特徴:</span>
