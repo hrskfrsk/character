@@ -36,6 +36,7 @@ export interface CharacterData {
   image_aspect_ratio?: string;
   
   // 説明文
+  catchphrase?: string;
   introduction?: string;
   secret_information?: string;
   special_notes?: string;

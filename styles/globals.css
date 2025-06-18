@@ -918,6 +918,19 @@ textarea,
   background: rgba(34, 198, 216, 0.05);
 }
 
+.catchphrase {
+  text-align: center;
+  color: var(--ui-theme-color);
+  margin: -5px auto 25px;
+  font-family: "Noto Serif JP", serif;
+  font-weight: bold;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  border-left: solid 3px;
+  border-right: solid 3px;
+}
+
 /* フル幅アイテム（説明・設定セクション用） */
 .character-info .info-item.full-width {
   margin-bottom: 16px;
@@ -940,17 +953,15 @@ textarea,
 .character-info .info-item.full-width input,
 .character-info .info-item.full-width textarea {
   width: 100%;
-  border: 1px solid #ddd;
   border-radius: 4px;
   padding: 12px;
-  font-size: 0.9em;
-  background: #fff;
+  text-align: left;
   transition: border-color 0.2s ease;
   box-sizing: border-box;
 }
 
 .character-info .info-item.full-width textarea {
-  min-height: 120px;
+  min-height: 40px;
   resize: vertical;
   line-height: 1.5;
   text-align: left;
@@ -2711,7 +2722,7 @@ li {
 
 .character .data-wrap {
   margin-bottom: 15px;
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 .character .data-wrap .acd-check {
@@ -3129,16 +3140,16 @@ li {
 /* personal-data-sectionの重複スタイルを削除（上で統一済み） */
 
 .personal-data-section h3 {
-  margin: 0 0 15px 0;
-  padding: 10px 15px;
+  margin: 0 0 10px 0;
+  padding: 5px 15px;
   background-color: var(--ui-theme-color-light);
-  border-radius: 5px;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: #333;
   display: flex;
   align-items: center;
   gap: 8px;
+  color: var(--ui-theme-color);
 }
 
 .personal-data-section h3:hover {
@@ -3146,13 +3157,34 @@ li {
 }
 
 .personal-data-content {
-  padding: 0 15px;
+  padding: 20px 15px 0;
+}
+
+/* パーソナルデータのグループ化スタイル */
+.form-group-section {
+  margin-bottom: 25px;
+  padding: 10px 20px 1px;
+  border-left: 3px solid var(--ui-theme-color);
+}
+
+.form-group-title {
+  margin: 0 0 15px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-group-title i {
+  color: var(--ui-theme-color);
+  font-size: 0.9rem;
 }
 
 .personal-data-section .form-row {
   display: flex;
   gap: 20px;
-  margin-bottom: 15px;
 }
 
 .personal-data-section .form-row .form-group {
@@ -3160,7 +3192,7 @@ li {
 }
 
 .personal-data-section .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .personal-data-section label {

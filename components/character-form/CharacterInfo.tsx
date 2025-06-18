@@ -1224,6 +1224,20 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
         <div className="info-grid description-info">
 
           <div className="info-item full-width">
+            <label htmlFor="catchphrase">
+              <i className="fas fa-quote-left"></i> キャッチフレーズ
+            </label>
+            <textarea
+              id="catchphrase"
+              name="catchphrase"
+              placeholder="キャラクターを表す一言"
+              value={characterData.catchphrase || ''}
+              onChange={(e) => handleInputChange('catchphrase', e.target.value)}
+              rows={2}
+            />
+          </div>
+
+          <div className="info-item full-width">
             <label htmlFor="introduction">
               <i className="fas fa-user-edit"></i> 紹介文
               <span className="label-hint">立ち絵画像の横に表示されます</span>
