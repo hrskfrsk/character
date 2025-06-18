@@ -1522,6 +1522,20 @@ textarea,
   color: #0056b3;
   text-decoration: none;
 }
+
+/* 情報アイコン */
+.info-icon {
+  margin-left: 8px;
+  font-size: 14px;
+  color: #6c757d;
+  cursor: help;
+  transition: color 0.2s ease;
+}
+
+.info-icon:hover {
+  color: #007bff;
+}
+
 .character-input .check-growth {
   width: auto;
   -webkit-box-shadow: none;

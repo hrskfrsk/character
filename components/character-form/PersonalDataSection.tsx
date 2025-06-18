@@ -67,6 +67,7 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
       <div className="playsheet-header" onClick={toggleOpen}>
         <h2>
           <i className="fas fa-user section-icon"></i> キャラクター詳細
+          <i className="fas fa-info-circle info-icon" title="[テキスト](URL)形式でテキストリンクが作成できます&#10;例: [この動画](https://youtube.com/watch?v=abc)"></i>
         </h2>
         <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '5px' }}></i>
       </div>
