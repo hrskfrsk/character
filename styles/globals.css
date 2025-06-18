@@ -1542,6 +1542,7 @@ textarea,
   align-items: center;
   justify-content: space-between;
   user-select: none;
+  transition: all 0.3s;
 }
 
 .form-group-title:hover {
