@@ -31,8 +31,7 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
     characterData.likes ||
     characterData.dislikes ||
     characterData.hobbies ||
-    characterData.special_skills ||
-    characterData.other_characteristics;
+    characterData.special_skills;
 
   // データがない場合は表示しない
   if (!hasPersonalData) {
@@ -57,7 +56,7 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
               <h4 className="data-group-title">
                 <i className="fas fa-comments"></i> 話し方
               </h4>
-              
+
               {/* 一人称・二人称を横並び */}
               {(characterData.first_person || characterData.second_person) && (
                 <div className="data-row">
@@ -119,14 +118,6 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
                   <div className="data-value-block">{characterData.special_skills}</div>
                 </div>
               )}
-            </div>
-          )}
-
-          {/* その他 */}
-          {characterData.other_characteristics && (
-            <div className="data-item">
-              <span className="data-label">その他の特徴:</span>
-              <div className="data-value-block">{characterData.other_characteristics}</div>
             </div>
           )}
         </div>

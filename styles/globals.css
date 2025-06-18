@@ -3333,12 +3333,9 @@ li {
     gap: 0;
   }
 
-  .personal-data-section,
-  .personal-data-display {
-    padding: 10px;
+  .personal-data-content {
+    padding: 20px 0 0;
   }
-
-  .personal-data-content,
   .personal-data-display .personal-data-content {
     padding: 0 10px;
   }

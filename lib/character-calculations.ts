@@ -559,7 +559,6 @@ export interface CharacterData {
   dislikes?: string;             // 嫌いなもの
   hobbies?: string;              // 趣味
   special_skills?: string;       // 特技
-  other_characteristics?: string; // その他の特徴
 }
 
 // 年齢による能力値修正を計算

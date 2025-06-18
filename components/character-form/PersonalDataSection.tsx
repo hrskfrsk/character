@@ -133,17 +133,6 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
             </div>
           </div>
 
-          {/* その他 */}
-          <div className="form-group">
-            <label htmlFor="other_characteristics">その他の特徴</label>
-            <textarea
-              id="other_characteristics"
-              value={characterData.other_characteristics || ''}
-              onChange={(e) => handleInputChange('other_characteristics', e.target.value)}
-              placeholder="その他の性格、習慣、癖、外見的特徴など"
-              rows={4}
-            />
-          </div>
         </div>
       )}
     </section>
