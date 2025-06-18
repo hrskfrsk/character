@@ -379,6 +379,15 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
 // SSG: 静的生成時に全キャラクターのパスを取得
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
+    // Firebase Admin初期化チェック
+    if (!process.env.FIREBASE_PROJECT_ID || !process.env.FIREBASE_CLIENT_EMAIL || !process.env.FIREBASE_PRIVATE_KEY) {
+      console.warn('Firebase environment variables missing, using empty paths');
+      return {
+        paths: [],
+        fallback: 'blocking'
+      };
+    }
+
     const paths = await getAllCharacterIds();
 
     return {
@@ -403,6 +412,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 
   try {
+    // Firebase Admin初期化チェック
+    if (!process.env.FIREBASE_PROJECT_ID || !process.env.FIREBASE_CLIENT_EMAIL || !process.env.FIREBASE_PRIVATE_KEY) {
+      console.warn('Firebase environment variables missing, redirecting to 404');
+      return {
+        notFound: true,
+      };
+    }
+
     const character = await getCharacterData(params.id);
 
     if (!character) {

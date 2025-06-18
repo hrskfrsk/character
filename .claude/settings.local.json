@@ -6,7 +6,10 @@
       "Bash(sed:*)",
       "Bash(find:*)",
       "Bash(rm:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(pkill:*)",
+      "Bash(env)",
+      "Bash(mv:*)"
     ],
     "deny": []
   }

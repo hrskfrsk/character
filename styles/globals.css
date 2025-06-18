@@ -103,11 +103,14 @@ h2 {
   margin-bottom: 20px;
 }
 
-.profile-sheet-section {
+/* 統一されたセクションスタイル */
+.profile-sheet-section,
+.character-name-section,
+.personal-data-section {
   background: rgba(255, 255, 255, 0.5);
   border-radius: 8px;
-  padding: 30px;
-  margin-bottom: 24px;
+  padding: 25px 30px;
+  margin-bottom: 15px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: relative;
 }
@@ -302,14 +305,9 @@ textarea,
 }
 
 /* キャラクター名セクション - タイトル風 */
-.character-info .character-name-section {
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 8px;
-  padding: 30px;
-  margin-bottom: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+/* character-name-sectionの追加スタイル（text-alignのみ） */
+.character-name-section {
   text-align: left;
-  position: relative;
 }
 
 /* ロストトグル（右上） */
@@ -1608,13 +1606,7 @@ li {
 
 /* Personal Data Section Styles
 ---------------------------------------------------*/
-.personal-data-section {
-  margin: 20px 0;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
+/* personal-data-sectionの追加スタイル（重複を削除） */
 
 .personal-data-header {
   display: flex;
@@ -3134,13 +3126,7 @@ li {
 }
 
 /* パーソナルデータセクション */
-.personal-data-section {
-  margin-top: 20px;
-  padding: 15px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
-}
+/* personal-data-sectionの重複スタイルを削除（上で統一済み） */
 
 .personal-data-section h3 {
   margin: 0 0 15px 0;

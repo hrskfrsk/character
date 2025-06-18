@@ -33,12 +33,12 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
 
   return (
     <section className="personal-data-section">
-      <h3 
-        onClick={toggleOpen}
-        style={{ cursor: 'pointer', userSelect: 'none' }}
-      >
-        パーソナルデータ {isOpen ? '▼' : '▶'}
-      </h3>
+      <div className="playsheet-header" onClick={toggleOpen}>
+        <h2>
+          <i className="fas fa-user section-icon"></i> パーソナルデータ
+        </h2>
+        <i className={`fas ${isOpen ? 'fa-chevron-up' : 'fa-chevron-down'} section-toggle-icon ${isOpen ? '' : 'collapsed'}`}></i>
+      </div>
       
       {isOpen && (
         <div className="personal-data-content">

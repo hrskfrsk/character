@@ -3,31 +3,42 @@ import { getFirestore } from 'firebase-admin/firestore';
 
 // Firebase Admin初期化
 let adminDb: any = null;
+let isInitialized = false;
 
-try {
-  if (!getApps().length) {
-    const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
-    
-    if (!privateKey || !process.env.FIREBASE_CLIENT_EMAIL || !process.env.FIREBASE_PROJECT_ID) {
-      throw new Error('Firebase Admin environment variables are missing');
+function initializeFirebaseAdmin() {
+  try {
+    if (!getApps().length) {
+      const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+      
+      if (!privateKey || !process.env.FIREBASE_CLIENT_EMAIL || !process.env.FIREBASE_PROJECT_ID) {
+        console.warn('Firebase Admin environment variables are missing - running in offline mode');
+        return false;
+      }
+      
+      initializeApp({
+        credential: cert({
+          projectId: process.env.FIREBASE_PROJECT_ID,
+          clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+          privateKey: privateKey,
+        }),
+        projectId: process.env.FIREBASE_PROJECT_ID,
+      });
+      
+      console.log('Firebase Admin initialized successfully');
     }
     
-    initializeApp({
-      credential: cert({
-        projectId: process.env.FIREBASE_PROJECT_ID,
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        privateKey: privateKey,
-      }),
-      projectId: process.env.FIREBASE_PROJECT_ID,
-    });
-    
-    console.log('Firebase Admin initialized successfully');
+    adminDb = getFirestore();
+    isInitialized = true;
+    return true;
+  } catch (error) {
+    console.error('Firebase Admin initialization error:', error);
+    isInitialized = false;
+    return false;
   }
-  
-  adminDb = getFirestore();
-} catch (error) {
-  console.error('Firebase Admin initialization error:', error);
 }
+
+// 初期化を試行
+initializeFirebaseAdmin();
 
 export { adminDb };
 export const db = adminDb;
@@ -35,8 +46,9 @@ export const db = adminDb;
 // キャラクターデータ取得関数
 export async function getCharacterData(characterId: string) {
   try {
-    if (!adminDb) {
-      throw new Error('Firebase Admin not initialized');
+    if (!isInitialized || !adminDb) {
+      console.warn('Firebase Admin not initialized, cannot fetch character data');
+      return null;
     }
     
     const doc = await adminDb.collection('characters').doc(characterId).get();
@@ -66,8 +78,9 @@ export async function getCharacterData(characterId: string) {
 // 全キャラクターID取得
 export async function getAllCharacterIds() {
   try {
-    if (!adminDb) {
-      throw new Error('Firebase Admin not initialized');
+    if (!isInitialized || !adminDb) {
+      console.warn('Firebase Admin not initialized, cannot fetch character IDs');
+      return [];
     }
     
     const snapshot = await adminDb.collection('characters').get();

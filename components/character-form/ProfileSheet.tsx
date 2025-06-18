@@ -12,20 +12,18 @@ export default function ProfileSheet({
   handleInputChange
 }: ProfileSheetProps) {
   return (
-    <div className="profile-sheet-wrapper">
-      <div className="profile-sheet-section">
-        <div className="playsheet-header">
-          <h2>
-            <i className="fas fa-user-circle section-icon"></i>プロフィールシート
-          </h2>
-        </div>
+    <div className="profile-sheet-section">
+      <div className="playsheet-header">
+        <h2>
+          <i className="fas fa-user-circle section-icon"></i>プロフィールシート
+        </h2>
+      </div>
 
-        <div className="section-content">
-          <CharacterInfo
-            characterData={characterData}
-            handleInputChange={handleInputChange}
-          />
-        </div>
+      <div className="section-content">
+        <CharacterInfo
+          characterData={characterData}
+          handleInputChange={handleInputChange}
+        />
       </div>
     </div>
   );

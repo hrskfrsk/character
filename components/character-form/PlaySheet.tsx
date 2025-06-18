@@ -137,16 +137,15 @@ export default function PlaySheet({
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="character-info">
-      <div className="character-name-section">
-        <div className="playsheet-header" onClick={() => setIsCollapsed(!isCollapsed)}>
-          <h2>
-            <i className="fas fa-scroll section-icon"></i>プレイシート
-          </h2>
-          <i className={`fas ${isCollapsed ? 'fa-chevron-up' : 'fa-chevron-down'} section-toggle-icon ${isCollapsed ? 'collapsed' : ''}`}></i>
-        </div>
+    <div className="character-name-section">
+      <div className="playsheet-header" onClick={() => setIsCollapsed(!isCollapsed)}>
+        <h2>
+          <i className="fas fa-scroll section-icon"></i>プレイシート
+        </h2>
+        <i className={`fas ${isCollapsed ? 'fa-chevron-up' : 'fa-chevron-down'} section-toggle-icon ${isCollapsed ? 'collapsed' : ''}`}></i>
+      </div>
 
-        <div className={`section-content ${isCollapsed ? 'collapsed' : ''}`} style={{ maxHeight: isCollapsed ? '0' : 'none', overflow: 'hidden', transition: 'max-height 0.3s ease' }}>
+      <div className={`section-content ${isCollapsed ? 'collapsed' : ''}`} style={{ maxHeight: isCollapsed ? '0' : 'none', overflow: 'hidden', transition: 'max-height 0.3s ease' }}>
         {/* 能力値と導出ステータス */}
         <AbilityAndDerivedStats
           characterData={characterData}
@@ -233,8 +232,8 @@ export default function PlaySheet({
           memoOrder={memoOrder}
           reorderMemos={reorderMemos}
         />
-        </div>
       </div>
     </div>
+
   );
 }
