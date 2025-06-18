@@ -3230,12 +3230,15 @@ li {
 .personal-data-display h3 {
   font-size: 0.9rem;
   border-bottom: dotted 1px;
-  margin: 20px 10px 25px;
+  margin: 20px 10px 15px;
   transition: all 0.3s;
 }
 
 .personal-data-display .personal-data-content {
   padding: 0 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .personal-data-display .data-item {
@@ -3264,6 +3267,13 @@ li {
 
 .personal-data-display .data-group {
   margin-bottom: 4%;
+  width: calc(50% - 10px);
+}
+
+@media (max-width: 768px) {
+  .personal-data-display .data-group {
+    width: 100%;
+  }
 }
 
 .personal-data-display .data-group-title {
