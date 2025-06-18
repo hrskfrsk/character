@@ -577,6 +577,18 @@ export interface CharacterData {
   
   // 家族構成
   family_structure?: string;     // 家族構成
+  
+  // 自由入力セクション（動的追加用）
+  custom_sections?: Array<{
+    id: string;
+    section_title: string;
+    is_open: boolean;
+    fields: Array<{
+      id: string;
+      title: string;
+      content: string;
+    }>;
+  }>;
 }
 
 // 年齢による能力値修正を計算

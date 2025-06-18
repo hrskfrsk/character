@@ -13,6 +13,7 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
   const [imageSectionOpen, setImageSectionOpen] = useState(true);
   const [physicalSectionOpen, setPhysicalSectionOpen] = useState(true);
   const [familySectionOpen, setFamilySectionOpen] = useState(true);
+  const [customFieldsSectionOpen, setCustomFieldsSectionOpen] = useState(true);
 
   // localStorageから開閉状態を読み込む
   useEffect(() => {
@@ -36,6 +37,9 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
     
     const familyState = localStorage.getItem('familyDisplaySectionOpen');
     if (familyState !== null) setFamilySectionOpen(JSON.parse(familyState));
+    
+    const customFieldsState = localStorage.getItem('customFieldsDisplaySectionOpen');
+    if (customFieldsState !== null) setCustomFieldsSectionOpen(JSON.parse(customFieldsState));
   }, []);
 
   // 開閉状態をlocalStorageに保存
@@ -58,7 +62,8 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
     characterData.motif ||
     (characterData.other_sections && characterData.other_sections.length > 0) ||
     characterData.physical_features ||
-    characterData.family_structure;
+    characterData.family_structure ||
+    (characterData.custom_sections && characterData.custom_sections.length > 0);
 
   // データがない場合は表示しない
   if (!hasPersonalData) {
@@ -248,6 +253,29 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
               )}
             </div>
           )}
+
+          {/* 自由入力セクション */}
+          {characterData.custom_sections && characterData.custom_sections.map((section) => (
+            <div key={section.id} className={`data-group ${!section.is_open ? 'collapsed' : ''}`}>
+              <h4 className="data-group-title" onClick={() => {
+                // セクションの開閉状態を更新する関数が必要
+              }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span><i className="fas fa-cogs"></i> {section.section_title || '無題のセクション'}</span>
+                <i className={`fas ${section.is_open ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
+              </h4>
+              {section.is_open && (
+              <>
+              {/* セクション内の項目 */}
+              {section.fields.map((field) => (
+                <div key={field.id} className="data-item">
+                  <span className="data-label">{field.title}:</span>
+                  <div className="data-value-block linkified-text">{linkifyText(field.content)}</div>
+                </div>
+              ))}
+              </>
+              )}
+            </div>
+          ))}
         </div>
       )}
     </section>

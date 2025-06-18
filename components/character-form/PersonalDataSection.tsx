@@ -14,6 +14,7 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
   const [imageSectionOpen, setImageSectionOpen] = useState(true);
   const [physicalSectionOpen, setPhysicalSectionOpen] = useState(true);
   const [familySectionOpen, setFamilySectionOpen] = useState(true);
+  const [customFieldsSectionOpen, setCustomFieldsSectionOpen] = useState(true);
 
   // localStorageから開閉状態を読み込む
   useEffect(() => {
@@ -37,6 +38,9 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
     
     const familyState = localStorage.getItem('familySectionOpen');
     if (familyState !== null) setFamilySectionOpen(JSON.parse(familyState));
+    
+    const customFieldsState = localStorage.getItem('customFieldsSectionOpen');
+    if (customFieldsState !== null) setCustomFieldsSectionOpen(JSON.parse(customFieldsState));
   }, []);
 
   // 開閉状態をlocalStorageに保存
@@ -79,6 +83,90 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
       ...prev,
       other_sections: (prev.other_sections || []).map(section =>
         section.id === id ? { ...section, [field]: value } : section
+      )
+    }));
+  };
+
+  // 自由入力セクション管理
+  const addCustomSection = () => {
+    const newSection = {
+      id: `section_${Date.now()}`,
+      section_title: '',
+      is_open: true,
+      fields: []
+    };
+    
+    setCharacterData(prev => ({
+      ...prev,
+      custom_sections: [...(prev.custom_sections || []), newSection]
+    }));
+  };
+
+  const removeCustomSection = (sectionId: string) => {
+    setCharacterData(prev => ({
+      ...prev,
+      custom_sections: (prev.custom_sections || []).filter(section => section.id !== sectionId)
+    }));
+  };
+
+  const updateCustomSectionTitle = (sectionId: string, title: string) => {
+    setCharacterData(prev => ({
+      ...prev,
+      custom_sections: (prev.custom_sections || []).map(section =>
+        section.id === sectionId ? { ...section, section_title: title } : section
+      )
+    }));
+  };
+
+  const toggleCustomSection = (sectionId: string) => {
+    setCharacterData(prev => ({
+      ...prev,
+      custom_sections: (prev.custom_sections || []).map(section =>
+        section.id === sectionId ? { ...section, is_open: !section.is_open } : section
+      )
+    }));
+  };
+
+  const addFieldToCustomSection = (sectionId: string) => {
+    const newField = {
+      id: `field_${Date.now()}`,
+      title: '',
+      content: ''
+    };
+    
+    setCharacterData(prev => ({
+      ...prev,
+      custom_sections: (prev.custom_sections || []).map(section =>
+        section.id === sectionId 
+          ? { ...section, fields: [...section.fields, newField] }
+          : section
+      )
+    }));
+  };
+
+  const removeFieldFromCustomSection = (sectionId: string, fieldId: string) => {
+    setCharacterData(prev => ({
+      ...prev,
+      custom_sections: (prev.custom_sections || []).map(section =>
+        section.id === sectionId 
+          ? { ...section, fields: section.fields.filter(field => field.id !== fieldId) }
+          : section
+      )
+    }));
+  };
+
+  const updateCustomField = (sectionId: string, fieldId: string, field: 'title' | 'content', value: string) => {
+    setCharacterData(prev => ({
+      ...prev,
+      custom_sections: (prev.custom_sections || []).map(section =>
+        section.id === sectionId 
+          ? { 
+              ...section, 
+              fields: section.fields.map(f =>
+                f.id === fieldId ? { ...f, [field]: value } : f
+              )
+            }
+          : section
       )
     }));
   };
@@ -330,6 +418,95 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
             </div>
             </>
             )}
+          </div>
+
+          {/* 自由入力セクション */}
+          {characterData.custom_sections && characterData.custom_sections.map((section) => (
+            <div key={section.id} className="form-group-section">
+              <div className="section-header-with-controls">
+                <div className="section-title-input">
+                  <input
+                    type="text"
+                    value={section.section_title}
+                    onChange={(e) => updateCustomSectionTitle(section.id, e.target.value)}
+                    placeholder="セクション名を入力（例：経歴、人間関係など）"
+                    className="section-title-field"
+                  />
+                </div>
+                <div className="section-controls">
+                  <button
+                    type="button"
+                    onClick={() => toggleCustomSection(section.id)}
+                    className="toggle-btn"
+                    title="セクションを開閉"
+                  >
+                    <i className={`fas ${section.is_open ? 'fa-chevron-down' : 'fa-chevron-right'}`}></i>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => removeCustomSection(section.id)}
+                    className="remove-btn"
+                    title="このセクションを削除"
+                  >
+                    <i className="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+
+              {section.is_open && (
+                <>
+                  {/* セクション内の項目 */}
+                  {section.fields.map((field) => (
+                    <div key={field.id} className="form-group dynamic-section">
+                      <div className="form-row">
+                        <div className="form-group inline">
+                          <label>項目名</label>
+                          <input
+                            type="text"
+                            value={field.title}
+                            onChange={(e) => updateCustomField(section.id, field.id, 'title', e.target.value)}
+                            placeholder="項目名を入力"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeFieldFromCustomSection(section.id, field.id)}
+                          className="remove-btn"
+                          title="この項目を削除"
+                        >
+                          <i className="fas fa-times"></i>
+                        </button>
+                      </div>
+                      <AutoResizeTextarea
+                        value={field.content}
+                        onChange={(value) => updateCustomField(section.id, field.id, 'content', value)}
+                        placeholder="内容を入力"
+                        minRows={3}
+                      />
+                    </div>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() => addFieldToCustomSection(section.id)}
+                    className="add-section-btn"
+                  >
+                    <i className="fas fa-plus"></i> この項目を追加
+                  </button>
+                </>
+              )}
+            </div>
+          ))}
+
+          {/* 新しいセクション追加ボタン */}
+          <div className="add-custom-section">
+            <button
+              type="button"
+              onClick={addCustomSection}
+              className="add-section-btn large"
+            >
+              <i className="fas fa-plus"></i> 新しいセクションを追加
+            </button>
           </div>
 
         </div>

@@ -1150,7 +1150,7 @@ textarea,
   }
 
   .character-input .character-info {
-    padding: 20px 0 0;
+    padding: 0;
   }
 
   .character-info .character-name-section {
@@ -1568,6 +1568,63 @@ textarea,
 /* 閉じた状態のdata-groupのマージン調整 */
 .personal-data-display .data-group.collapsed {
   margin-bottom: 0;
+}
+
+/* 自由入力セクションのスタイル */
+.section-header-with-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.section-title-input {
+  flex: 1;
+}
+
+.section-title-field {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.section-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.toggle-btn {
+  padding: 6px 8px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-btn:hover {
+  background: #e9ecef;
+}
+
+.add-section-btn.large {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 20px 0;
+}
+
+.add-custom-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px dashed #dee2e6;
 }
 
 .character-input .check-growth {
