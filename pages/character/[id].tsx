@@ -269,7 +269,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                       <h2>
                         <i className="fas fa-scroll section-icon"></i> Character Sheet
                       </h2>
-                      <i className={`fas ${isCollapsed ? 'fa-chevron-up' : 'fa-chevron-down'} section-toggle-icon ${isCollapsed ? 'collapsed' : ''}`}></i>
+                      <i className={`fas ${isCollapsed ? 'fa-chevron-right' : 'fa-chevron-down'}`} style={{ marginRight: '5px' }}></i>
                     </div>
                     {!isCollapsed && (
                       <div className="equipment-content">

@@ -154,7 +154,7 @@ export default function PlaySheet({
         <h2>
           <i className="fas fa-scroll section-icon"></i>プレイシート
         </h2>
-        <i className={`fas fa-chevron-up section-toggle-icon ${isCollapsed ? 'collapsed' : ''}`}></i>
+        <i className={`fas ${isCollapsed ? 'fa-chevron-right' : 'fa-chevron-down'}`} style={{ marginRight: '5px' }}></i>
       </div>
 
       <div className={`section-content ${isCollapsed ? 'collapsed' : ''}`} style={{ maxHeight: isCollapsed ? '0' : 'none', overflow: 'hidden', transition: 'max-height 0.3s ease' }}>

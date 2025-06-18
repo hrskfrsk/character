@@ -722,7 +722,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             <i className="fas fa-palette"></i>
             立ち絵/カラー設定
           </div>
-          <i className={`fas chevron ${isAccordionOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+          <i className={`fas chevron ${isAccordionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`}></i>
         </button>
       </div>
 
@@ -1016,7 +1016,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             <i className="fas fa-id-card"></i>
             基本データ
           </div>
-          <i className={`fas chevron ${isBasicDataOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+          <i className={`fas chevron ${isBasicDataOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`}></i>
         </button>
       </div>
 
@@ -1216,7 +1216,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             <i className="fas fa-file-alt"></i>
             キャラクター紹介
           </div>
-          <i className={`fas chevron ${isDescriptionOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
+          <i className={`fas chevron ${isDescriptionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`}></i>
         </button>
       </div>
 
