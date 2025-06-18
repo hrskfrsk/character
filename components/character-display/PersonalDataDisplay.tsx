@@ -46,7 +46,7 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
         style={{ cursor: 'pointer', userSelect: 'none' }}
       >
         <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '5px' }}></i>
-        詳細
+        キャラクター詳細
       </h3>
 
       {isOpen && (

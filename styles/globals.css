@@ -1598,7 +1598,7 @@ li {
   position: relative;
 }
 .character-display .playsheet-header {
-  margin-top: 2.5%;
+  margin-top: 1%;
   border: dotted 1px #000;
   padding: 10px;
   border-radius: 50px;
@@ -3223,12 +3223,14 @@ li {
 /* パーソナルデータ表示用スタイル */
 .personal-data-display {
   border-top: solid 8px #ddd;
+  padding-top: 2%;
+  margin-top: 3.5%;
 }
 
 .personal-data-display h3 {
   font-size: 0.9rem;
   border-bottom: dotted 1px;
-  margin: 20px 10px;
+  margin: 20px 10px 25px;
   transition: all 0.3s;
 }
 
