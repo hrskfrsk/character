@@ -57,17 +57,23 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
               <h4 className="data-group-title">
                 <i className="fas fa-comments"></i> 話し方
               </h4>
-              {characterData.first_person && (
-                <div className="data-item">
-                  <span className="data-label">一人称:</span>
-                  <span className="data-value">{characterData.first_person}</span>
-                </div>
-              )}
+              
+              {/* 一人称・二人称を横並び */}
+              {(characterData.first_person || characterData.second_person) && (
+                <div className="data-row">
+                  {characterData.first_person && (
+                    <div className="data-item inline">
+                      <span className="data-label">一人称:</span>
+                      <span className="data-value">{characterData.first_person}</span>
+                    </div>
+                  )}
 
-              {characterData.second_person && (
-                <div className="data-item">
-                  <span className="data-label">二人称:</span>
-                  <span className="data-value">{characterData.second_person}</span>
+                  {characterData.second_person && (
+                    <div className="data-item inline">
+                      <span className="data-label">二人称:</span>
+                      <span className="data-value">{characterData.second_person}</span>
+                    </div>
+                  )}
                 </div>
               )}
 
