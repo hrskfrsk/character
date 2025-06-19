@@ -1187,6 +1187,7 @@ export default function CreateCharacterPage() {
               type="button"
               className="nav-link"
               style={{
+                background: 'none',
                 border: 'none',
                 cursor: 'pointer'
               }}
