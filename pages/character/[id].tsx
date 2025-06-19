@@ -692,11 +692,27 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
 
             <div style={{ display: 'flex', gap: '8px' }}>
               <button
+                onClick={() => setShowShareModal(false)}
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  backgroundColor: '#f0f0f0',
+                  color: '#666',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontSize: '14px'
+                }}
+              >
+                閉じる
+              </button>
+              
+              <button
                 onClick={handleCopyUrl}
                 style={{
                   flex: 1,
                   padding: '10px',
-                  backgroundColor: '#2196F3',
+                  backgroundColor: character?.ui_theme_color || '#74cdc3',
                   color: 'white',
                   border: 'none',
                   borderRadius: '4px',
@@ -706,22 +722,6 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
               >
                 <i className="fas fa-copy" style={{ marginRight: '6px' }}></i>
                 URLをコピー
-              </button>
-              
-              <button
-                onClick={() => setShowShareModal(false)}
-                style={{
-                  flex: 1,
-                  padding: '10px',
-                  backgroundColor: '#666',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontSize: '14px'
-                }}
-              >
-                閉じる
               </button>
             </div>
           </div>
