@@ -36,9 +36,11 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareOptions, setShareOptions] = useState({
-    hideSecretMemos: false,
+    hideIntroSecrets: false,
     hideCharacterSheet: false,
-    hideRecords: false
+    hideCharacterDetails: false,
+    hideRecords: false,
+    hidePasswordProtected: false
   });
 
   // 共有機能
@@ -49,9 +51,11 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
   const handleCopyUrl = async () => {
     // URLパラメータを構築
     const params = new URLSearchParams();
-    if (shareOptions.hideSecretMemos) params.append('hideSecrets', 'true');
+    if (shareOptions.hideIntroSecrets) params.append('hideIntroSecrets', 'true');
     if (shareOptions.hideCharacterSheet) params.append('hideSheet', 'true');
+    if (shareOptions.hideCharacterDetails) params.append('hideDetails', 'true');
     if (shareOptions.hideRecords) params.append('hideRecords', 'true');
+    if (shareOptions.hidePasswordProtected) params.append('hidePassword', 'true');
     
     const shareUrl = params.toString() 
       ? `${window.location.href}${window.location.href.includes('?') ? '&' : '?'}${params.toString()}`
@@ -236,16 +240,20 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
   }, [character?.page_password_enabled, character?.page_password, characterId]);
 
   // URLパラメータから共有設定を取得
-  const [hideSecrets, setHideSecrets] = useState(false);
+  const [hideIntroSecrets, setHideIntroSecrets] = useState(false);
   const [hideSheet, setHideSheet] = useState(false);
+  const [hideDetails, setHideDetails] = useState(false);
   const [hideRecords, setHideRecords] = useState(false);
+  const [hidePasswordProtected, setHidePasswordProtected] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      setHideSecrets(params.get('hideSecrets') === 'true');
+      setHideIntroSecrets(params.get('hideIntroSecrets') === 'true');
       setHideSheet(params.get('hideSheet') === 'true');
+      setHideDetails(params.get('hideDetails') === 'true');
       setHideRecords(params.get('hideRecords') === 'true');
+      setHidePasswordProtected(params.get('hidePassword') === 'true');
     }
   }, []);
 
@@ -426,7 +434,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                 className="cf post-6531 works type-works status-publish has-post-thumbnail hentry custom_cat-character custom_cat-chara-coc custom_tag-1072"
                 role="article">
                 {/* 基本データ */}
-                <BasicDataDisplay character={character} />
+                <BasicDataDisplay character={character} hideSecrets={hideIntroSecrets} />
 
                 {!hideSheet && (
                   <section className="chara-seet character-display">
@@ -474,7 +482,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                             toggleSecretMemoVisibility={toggleSecretMemoVisibility}
                             handlePasswordInput={handlePasswordInput}
                             handlePasswordSubmit={handlePasswordSubmit}
-                            hideSecrets={hideSecrets}
+                            hideSecrets={hideIntroSecrets || hidePasswordProtected}
                           />
                         </div>
                       </div>
@@ -487,16 +495,18 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                 )}
 
                 {/* パーソナルデータ表示 */}
-                <PersonalDataDisplay
-                  characterData={character}
-                  hideSecrets={hideSecrets}
-                />
+                {!hideDetails && (
+                  <PersonalDataDisplay
+                    characterData={character}
+                    hideSecrets={hideIntroSecrets || hidePasswordProtected}
+                  />
+                )}
 
                 {/* 記録セクション表示 */}
                 {!hideRecords && (
                   <RecordSectionDisplay
                     characterData={character}
-                    hideSecrets={hideSecrets}
+                    hideSecrets={hideIntroSecrets || hidePasswordProtected}
                   />
                 )}
 
@@ -586,11 +596,11 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
               }}>
                 <input
                   type="checkbox"
-                  checked={shareOptions.hideSecretMemos}
-                  onChange={(e) => setShareOptions(prev => ({ ...prev, hideSecretMemos: e.target.checked }))}
+                  checked={shareOptions.hideIntroSecrets}
+                  onChange={(e) => setShareOptions(prev => ({ ...prev, hideIntroSecrets: e.target.checked }))}
                   style={{ marginRight: '8px' }}
                 />
-                秘匿メモ・パスワード保護項目
+                キャラクター紹介 - 秘匿情報
               </label>
               
               <label style={{
@@ -606,7 +616,39 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                   onChange={(e) => setShareOptions(prev => ({ ...prev, hideCharacterSheet: e.target.checked }))}
                   style={{ marginRight: '8px' }}
                 />
-                キャラクターシート（能力値・技能）
+                キャラクターシート
+              </label>
+              
+              <label style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: '8px',
+                fontSize: '14px',
+                cursor: 'pointer'
+              }}>
+                <input
+                  type="checkbox"
+                  checked={shareOptions.hideCharacterDetails}
+                  onChange={(e) => setShareOptions(prev => ({ ...prev, hideCharacterDetails: e.target.checked }))}
+                  style={{ marginRight: '8px' }}
+                />
+                キャラクター詳細
+              </label>
+              
+              <label style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: '8px',
+                fontSize: '14px',
+                cursor: 'pointer'
+              }}>
+                <input
+                  type="checkbox"
+                  checked={shareOptions.hideRecords}
+                  onChange={(e) => setShareOptions(prev => ({ ...prev, hideRecords: e.target.checked }))}
+                  style={{ marginRight: '8px' }}
+                />
+                記録
               </label>
               
               <label style={{
@@ -617,11 +659,11 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
               }}>
                 <input
                   type="checkbox"
-                  checked={shareOptions.hideRecords}
-                  onChange={(e) => setShareOptions(prev => ({ ...prev, hideRecords: e.target.checked }))}
+                  checked={shareOptions.hidePasswordProtected}
+                  onChange={(e) => setShareOptions(prev => ({ ...prev, hidePasswordProtected: e.target.checked }))}
                   style={{ marginRight: '8px' }}
                 />
-                記録セクション
+                パスワード付きの情報
               </label>
             </div>
 
@@ -636,9 +678,11 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
             }}>
               {(() => {
                 const params = new URLSearchParams();
-                if (shareOptions.hideSecretMemos) params.append('hideSecrets', 'true');
+                if (shareOptions.hideIntroSecrets) params.append('hideIntroSecrets', 'true');
                 if (shareOptions.hideCharacterSheet) params.append('hideSheet', 'true');
+                if (shareOptions.hideCharacterDetails) params.append('hideDetails', 'true');
                 if (shareOptions.hideRecords) params.append('hideRecords', 'true');
+                if (shareOptions.hidePasswordProtected) params.append('hidePassword', 'true');
                 
                 return params.toString() 
                   ? `${window.location.href}${window.location.href.includes('?') ? '&' : '?'}${params.toString()}`

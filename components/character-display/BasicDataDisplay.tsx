@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 
 interface BasicDataDisplayProps {
   character: any;
+  hideSecrets?: boolean;
 }
 
-export default function BasicDataDisplay({ character }: BasicDataDisplayProps) {
+export default function BasicDataDisplay({ character, hideSecrets = false }: BasicDataDisplayProps) {
   const [toastMessage, setToastMessage] = useState<string>('');
 
   // データベースから縦横比を取得、なければフォールバック
@@ -89,7 +90,7 @@ export default function BasicDataDisplay({ character }: BasicDataDisplayProps) {
             />
 
             {/* 秘匿情報 */}
-            {character.secret_information && (
+            {character.secret_information && !hideSecrets && (
               <div className="data-wrap">
                 <input id="acd-check-rsc" className="acd-check" type="checkbox" />
                 <label className="acd-label more-secret" htmlFor="acd-check-rsc">秘匿情報込…</label>
