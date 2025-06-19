@@ -1174,19 +1174,10 @@ export default function CreateCharacterPage() {
               type="button"
               className="nav-link"
               style={{
-                background: '#2196F3',
                 border: 'none',
                 cursor: 'pointer'
               }}
               onClick={handleDisplay}
-              onMouseEnter={(e) => {
-                const btn = e.currentTarget as HTMLElement;
-                btn.style.background = '#1976D2';
-              }}
-              onMouseLeave={(e) => {
-                const btn = e.currentTarget as HTMLElement;
-                btn.style.background = '#2196F3';
-              }}
             >
               <i className="fas fa-eye"></i>
               <span className="nav-text">表示</span>

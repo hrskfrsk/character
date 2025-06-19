@@ -3803,13 +3803,6 @@ li {
   color: white;
 }
 
-.nav-link.edit-btn {
-  background: rgba(255, 193, 7, 0.2);
-}
-
-.nav-link.edit-btn:hover {
-  background: rgba(255, 193, 7, 0.35);
-}
 
 .nav-link.ccfolia-btn {
   background: rgba(76, 175, 80, 0.2);
