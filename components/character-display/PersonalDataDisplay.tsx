@@ -113,14 +113,14 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
                     <div className="data-row">
                       {characterData.first_person && (
                         <div className="data-item inline">
-                          <span className="data-label">一人称:</span>
+                          <span className="data-label">一人称</span>
                           <span className="data-value">{characterData.first_person}</span>
                         </div>
                       )}
 
                       {characterData.second_person && (
                         <div className="data-item inline">
-                          <span className="data-label">二人称:</span>
+                          <span className="data-label">二人称</span>
                           <span className="data-value">{characterData.second_person}</span>
                         </div>
                       )}
@@ -129,7 +129,7 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
 
                   {characterData.speech_style && (
                     <div className="data-item">
-                      <span className="data-label">口調:</span>
+                      <span className="data-label">口調</span>
                       <div className="data-value-block linkified-text">{linkifyText(characterData.speech_style)}</div>
                     </div>
                   )}
@@ -153,28 +153,28 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
                 <>
                   {characterData.likes && (
                     <div className="data-item">
-                      <span className="data-label">好き:</span>
+                      <span className="data-label">好き</span>
                       <div className="data-value-block linkified-text">{linkifyText(characterData.likes)}</div>
                     </div>
                   )}
 
                   {characterData.dislikes && (
                     <div className="data-item">
-                      <span className="data-label">嫌い:</span>
+                      <span className="data-label">嫌い</span>
                       <div className="data-value-block linkified-text">{linkifyText(characterData.dislikes)}</div>
                     </div>
                   )}
 
                   {characterData.hobbies && (
                     <div className="data-item">
-                      <span className="data-label">趣味:</span>
+                      <span className="data-label">趣味</span>
                       <div className="data-value-block linkified-text">{linkifyText(characterData.hobbies)}</div>
                     </div>
                   )}
 
                   {characterData.special_skills && (
                     <div className="data-item">
-                      <span className="data-label">得意:</span>
+                      <span className="data-label">得意</span>
                       <div className="data-value-block linkified-text">{linkifyText(characterData.special_skills)}</div>
                     </div>
                   )}
@@ -198,14 +198,14 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
                 <>
                   {characterData.theme_song && (
                     <div className="data-item">
-                      <span className="data-label">曲:</span>
+                      <span className="data-label">曲</span>
                       <div className="data-value-block linkified-text">{linkifyText(characterData.theme_song)}</div>
                     </div>
                   )}
 
                   {characterData.motif && (
                     <div className="data-item">
-                      <span className="data-label">モチーフ:</span>
+                      <span className="data-label">モチーフ</span>
                       <div className="data-value-block linkified-text">{linkifyText(characterData.motif)}</div>
                     </div>
                   )}
@@ -213,7 +213,7 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
                   {/* 動的その他セクション */}
                   {characterData.other_sections && characterData.other_sections.map((section) => (
                     <div key={section.id} className="data-item">
-                      <span className="data-label">{section.title}:</span>
+                      <span className="data-label">{section.title}</span>
                       <div className="data-value-block linkified-text">{linkifyText(section.content)}</div>
                     </div>
                   ))}
@@ -238,7 +238,7 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
                     {/* セクション内の項目 */}
                     {section.fields.map((field) => (
                       <div key={field.id} className="data-item">
-                        <span className="data-label">{field.title}:</span>
+                        <span className="data-label">{field.title}</span>
                         <div className="data-value-block linkified-text">{linkifyText(field.content)}</div>
                       </div>
                     ))}
@@ -425,7 +425,7 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
                               onClick={() => toggleMemoContent(field.id)}
                             >
                               <i className={`fas ${isMemoContentOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px', marginRight: '5px' }}></i>
-                              <span>{field.title}:</span>
+                              <span>{field.title}</span>
                               {isPasswordProtected && (
                                 <i className="fas fa-lock" style={{ fontSize: '10px', marginLeft: '5px', color: '#999' }}></i>
                               )}
