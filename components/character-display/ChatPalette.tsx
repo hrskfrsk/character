@@ -2,9 +2,11 @@ import React from 'react';
 
 interface ChatPaletteProps {
   character: any;
+  characterId?: string;
+  onCcfoliaExport?: () => void;
 }
 
-export default function ChatPalette({ character }: ChatPaletteProps) {
+export default function ChatPalette({ character, characterId, onCcfoliaExport }: ChatPaletteProps) {
   const generateChatPalette = () => {
     let palette = `CCB<=
 CCB<=${character.current_san || character.max_san_value || 0} SANチェック
@@ -267,23 +269,43 @@ RESB({EDU}-対抗値) EDU対抗
         readOnly
         value={generateChatPalette()}
       />
-      <button
-        onClick={copyToClipboard}
-        style={{
-          marginTop: '5px',
-          padding: '5px 20px',
-          backgroundColor: '#007bff',
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-          fontSize: '12px',
-          fontWeight: 'bold'
-        }}
-      >
-        <i className="fas fa-copy" style={{ marginRight: '5px' }}></i>
-        チャットパレットをコピー
-      </button>
+      <div style={{ display: 'flex', gap: '10px', marginTop: '0px', justifyContent: 'flex-end' }}>
+        <button
+          onClick={copyToClipboard}
+          style={{
+            padding: '6px 20px',
+            backgroundColor: '#666',
+            color: 'white',
+            border: 'none',
+            borderRadius: '50px',
+            cursor: 'pointer',
+            fontSize: '10px',
+            fontWeight: 'bold'
+          }}
+        >
+          <i className="fas fa-copy" style={{ marginRight: '5px' }}></i>
+          チャットパレットをコピー
+        </button>
+
+        {onCcfoliaExport && (
+          <button
+            onClick={onCcfoliaExport}
+            style={{
+              padding: '6px 20px',
+              backgroundColor: 'var(--ui-theme-color)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '50px',
+              cursor: 'pointer',
+              fontSize: '10px',
+              fontWeight: 'bold'
+            }}
+          >
+            <i className="fas fa-download" style={{ marginRight: '5px' }}></i>
+            ココフォリアコマ出力
+          </button>
+        )}
+      </div>
     </li>
   );
 }

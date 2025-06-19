@@ -10,9 +10,10 @@ interface SkillsDisplayProps {
   character: any;
   characterId: string;
   handleSkillClick: (skillName: string, skillValue: number) => void;
+  onCcfoliaExport?: () => void;
 }
 
-export default function SkillsDisplay({ character, characterId, handleSkillClick }: SkillsDisplayProps) {
+export default function SkillsDisplay({ character, characterId, handleSkillClick, onCcfoliaExport }: SkillsDisplayProps) {
   // 技能表示の状態（デフォルトは初期値以外のみ表示）
   const [showAllSkills, setShowAllSkills] = useState(false);
 
@@ -112,7 +113,11 @@ export default function SkillsDisplay({ character, characterId, handleSkillClick
             isSkillInitialOnly={isSkillInitialOnly}
             handleSkillClick={handleSkillClick}
           />
-          <ChatPalette character={character} />
+          <ChatPalette 
+            character={character} 
+            characterId={characterId}
+            onCcfoliaExport={onCcfoliaExport}
+          />
         </ul>
       </div>
     </>

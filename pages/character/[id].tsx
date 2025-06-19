@@ -309,6 +309,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                             character={character}
                             characterId={characterId}
                             handleSkillClick={handleSkillClick}
+                            onCcfoliaExport={handleCcfoliaExport}
                           />
 
                           {/* 装備表示コンポーネント */}
