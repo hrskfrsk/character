@@ -34,6 +34,30 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
   const [showCcfoliaModal, setShowCcfoliaModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+
+  // 共有機能
+  const handleShare = () => {
+    setShowShareModal(true);
+  };
+
+  const handleCopyUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setShowShareModal(false);
+      alert('URLをクリップボードにコピーしました');
+    } catch (error) {
+      // Clipboard API非対応の場合はフォールバック
+      const textArea = document.createElement('textarea');
+      textArea.value = window.location.href;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setShowShareModal(false);
+      alert('URLをクリップボードにコピーしました');
+    }
+  };
 
   // 色の明度を調整する関数
   const adjustBrightness = (hex: string, percent: number): string => {
@@ -357,6 +381,8 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
         customBackUrl="/"
         showEditButton={true}
         editUrl={`/create?edit=${characterId}`}
+        showShareButton={true}
+        onShare={handleShare}
       />
 
       <FloatingActionButtons
@@ -458,6 +484,97 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
         character={character}
         characterId={characterId}
       />
+
+      {/* 共有モーダル */}
+      {showShareModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999
+        }}>
+          <div style={{
+            backgroundColor: 'white',
+            borderRadius: '8px',
+            padding: '24px',
+            maxWidth: '400px',
+            width: '90%',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
+          }}>
+            <h3 style={{
+              margin: '0 0 16px 0',
+              fontSize: '18px',
+              color: '#333',
+              textAlign: 'center'
+            }}>
+              <i className="fas fa-share-alt" style={{ marginRight: '8px' }}></i>
+              キャラクターシートを共有
+            </h3>
+            
+            <p style={{
+              margin: '0 0 16px 0',
+              fontSize: '14px',
+              color: '#666',
+              textAlign: 'center'
+            }}>
+              URLをコピーして共有できます
+            </p>
+
+            <div style={{
+              border: '1px solid #ddd',
+              borderRadius: '4px',
+              padding: '8px 12px',
+              backgroundColor: '#f9f9f9',
+              fontSize: '14px',
+              wordBreak: 'break-all',
+              marginBottom: '16px'
+            }}>
+              {window.location.href}
+            </div>
+
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button
+                onClick={handleCopyUrl}
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  backgroundColor: '#2196F3',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontSize: '14px'
+                }}
+              >
+                <i className="fas fa-copy" style={{ marginRight: '6px' }}></i>
+                URLをコピー
+              </button>
+              
+              <button
+                onClick={() => setShowShareModal(false)}
+                style={{
+                  flex: 1,
+                  padding: '10px',
+                  backgroundColor: '#666',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontSize: '14px'
+                }}
+              >
+                閉じる
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </>

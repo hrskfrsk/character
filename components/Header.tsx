@@ -9,6 +9,8 @@ interface HeaderProps {
   editUrl?: string;
   actionButtons?: React.ReactNode;
   showCreateButton?: boolean;
+  showShareButton?: boolean;
+  onShare?: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ 
@@ -17,7 +19,9 @@ const Header: React.FC<HeaderProps> = ({
   showEditButton = false,
   editUrl,
   actionButtons,
-  showCreateButton = true
+  showCreateButton = true,
+  showShareButton = false,
+  onShare
 }) => {
   const router = useRouter();
 
@@ -53,6 +57,22 @@ const Header: React.FC<HeaderProps> = ({
         <div className="header-right" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
           <nav className="header-nav">
             {actionButtons}
+            {showShareButton && onShare && (
+              <button 
+                type="button"
+                className="nav-link"
+                onClick={onShare}
+                title="共有"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer'
+                }}
+              >
+                <i className="fas fa-share-alt"></i>
+                <span className="nav-text">共有</span>
+              </button>
+            )}
             {showEditButton && editUrl && (
               <Link href={editUrl} className="nav-link edit-btn" title="編集">
                 <i className="fas fa-edit"></i>
