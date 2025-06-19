@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { getAllCharacterData } from '../../lib/firebase-admin';
 import { linkifyText } from '../../lib/text-utils';
 import Header from '../../components/Header';
@@ -14,6 +15,14 @@ interface RecordPageProps {
 
 export default function RecordPage({ recordSection, characterName, sectionTitle }: RecordPageProps) {
   const router = useRouter();
+  const [openFields, setOpenFields] = useState<{ [key: string]: boolean }>({});
+
+  const toggleField = (fieldId: string) => {
+    setOpenFields(prev => ({
+      ...prev,
+      [fieldId]: !prev[fieldId]
+    }));
+  };
 
   if (!recordSection) {
     return (
@@ -24,7 +33,7 @@ export default function RecordPage({ recordSection, characterName, sectionTitle 
         <div style={{ padding: '20px', textAlign: 'center' }}>
           <h1>記録が見つかりません</h1>
           <p>指定された記録は存在しません。</p>
-          <button 
+          <button
             onClick={() => router.back()}
             style={{
               padding: '10px 20px',
@@ -52,28 +61,23 @@ export default function RecordPage({ recordSection, characterName, sectionTitle 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <Header 
-        title={sectionTitle}
+      <Header
         showBackButton={true}
       />
 
-      <div style={{ 
-        minHeight: 'calc(100vh - 70px)',
-        backgroundColor: '#f5f5f5',
-        padding: '20px'
-      }} className="page-with-header">
+      <div>
         <div style={{
           maxWidth: '800px',
-          margin: '0 auto',
+          margin: '3% auto 0',
           backgroundColor: 'white',
           borderRadius: '8px',
-          padding: '30px',
+          padding: '30px 30px 40px',
           boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
         }}>
           {/* ヘッダー */}
-          <div style={{ marginBottom: '30px', borderBottom: '2px solid #eee', paddingBottom: '20px' }}>
-            <h1 style={{ 
-              fontSize: '24px', 
+          <div style={{ marginBottom: '0', borderBottom: '2px solid #eee', paddingBottom: '20px' }}>
+            <h1 style={{
+              fontSize: '24px',
               marginBottom: '8px',
               color: '#333',
               display: 'flex',
@@ -83,8 +87,8 @@ export default function RecordPage({ recordSection, characterName, sectionTitle 
               <i className="fas fa-clipboard"></i>
               {sectionTitle}
             </h1>
-            <p style={{ 
-              color: '#666', 
+            <p style={{
+              color: '#666',
               fontSize: '14px',
               margin: 0
             }}>
@@ -94,73 +98,46 @@ export default function RecordPage({ recordSection, characterName, sectionTitle 
 
           {/* 記録内容 */}
           <div className="record-content">
-            {recordSection.fields.map((field: any) => (
-              <div key={field.id} style={{ marginBottom: '25px' }}>
-                {field.title && (
-                  <h2 style={{ 
-                    fontSize: '18px',
-                    fontWeight: 'bold', 
-                    marginBottom: '8px', 
-                    color: '#333',
-                    borderLeft: '4px solid #2196F3',
-                    paddingLeft: '12px'
-                  }}>
-                    {field.title}
-                  </h2>
-                )}
-                <div style={{
-                  lineHeight: '1.8',
-                  color: '#444',
-                  fontSize: '16px',
-                  whiteSpace: 'pre-wrap',
-                  backgroundColor: '#fafafa',
-                  padding: '15px',
-                  borderRadius: '4px',
-                  border: '1px solid #e0e0e0'
-                }}>
-                  {linkifyText(field.content)}
+            {recordSection.fields.map((field: any) => {
+              const isOpen = openFields[field.id] !== false; // デフォルトで開いている
+
+              return (
+                <div key={field.id} style={{ marginBottom: '0' }}>
+                  {field.title && (
+                    <h2
+                      onClick={() => toggleField(field.id)}
+                      style={{
+                        fontSize: '0.9rem',
+                        fontWeight: 'normal',
+                        marginBottom: '0',
+                        padding: '5px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        userSelect: 'none',
+                        borderBottom: 'dotted 1px #000',
+                      }}
+                    >
+                      <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px', marginRight: '8px' }}></i>
+                      <span>{field.title}</span>
+                    </h2>
+                  )}
+                  {isOpen && (
+                    <div style={{
+                      lineHeight: '1.8',
+                      color: '#444',
+                      fontSize: '0.9rem',
+                      whiteSpace: 'pre-wrap',
+                      padding: '10px 10px 30px',
+                    }}>
+                      {linkifyText(field.content)}
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
-          {/* フッター */}
-          <div style={{
-            marginTop: '40px',
-            paddingTop: '20px',
-            borderTop: '1px solid #eee',
-            textAlign: 'center'
-          }}>
-            <button 
-              onClick={() => router.back()}
-              style={{
-                padding: '12px 24px',
-                backgroundColor: '#2196F3',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '16px',
-                marginRight: '10px'
-              }}
-            >
-              <i className="fas fa-arrow-left"></i> 戻る
-            </button>
-            <button 
-              onClick={() => window.close()}
-              style={{
-                padding: '12px 24px',
-                backgroundColor: '#666',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '16px'
-              }}
-            >
-              <i className="fas fa-times"></i> 閉じる
-            </button>
-          </div>
         </div>
       </div>
 
@@ -178,10 +155,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
   try {
     const recordId = params.id;
-    
+
     // 全キャラクターデータを取得して、該当の記録セクションを検索
     const allCharacters = await getAllCharacterData();
-    
+
     let foundRecord = null;
     let characterName = '';
     let sectionTitle = '';
