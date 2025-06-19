@@ -12,8 +12,6 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
   const [speechSectionOpen, setSpeechSectionOpen] = useState(true);
   const [preferencesSectionOpen, setPreferencesSectionOpen] = useState(true);
   const [imageSectionOpen, setImageSectionOpen] = useState(true);
-  const [physicalSectionOpen, setPhysicalSectionOpen] = useState(true);
-  const [familySectionOpen, setFamilySectionOpen] = useState(true);
 
   // localStorageから開閉状態を読み込む
   useEffect(() => {
@@ -31,12 +29,6 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
 
     const imageState = localStorage.getItem('imageSectionOpen');
     if (imageState !== null) setImageSectionOpen(JSON.parse(imageState));
-
-    const physicalState = localStorage.getItem('physicalSectionOpen');
-    if (physicalState !== null) setPhysicalSectionOpen(JSON.parse(physicalState));
-
-    const familyState = localStorage.getItem('familySectionOpen');
-    if (familyState !== null) setFamilySectionOpen(JSON.parse(familyState));
   }, []);
 
   // 開閉状態をlocalStorageに保存
@@ -364,57 +356,6 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
             )}
           </div>
 
-          {/* 身体的特徴 */}
-          <div className="form-group-section">
-            <h3 className="form-group-title" onClick={() => {
-              const newState = !physicalSectionOpen;
-              setPhysicalSectionOpen(newState);
-              localStorage.setItem('physicalSectionOpen', JSON.stringify(newState));
-            }} style={{ cursor: 'pointer' }}>
-              <i className={`fas ${physicalSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '5px', fontSize: '12px' }}></i>
-              <i className="fas fa-user-circle"></i> 身体的特徴
-            </h3>
-            {physicalSectionOpen && (
-              <>
-                <div className="form-group">
-                  <label htmlFor="physical_features">身体的特徴</label>
-                  <AutoResizeTextarea
-                    id="physical_features"
-                    value={characterData.physical_features || ''}
-                    onChange={(value) => handleInputChange('physical_features', value)}
-                    placeholder="体型、髪型、顔立ち、服装、装身具、特徴的な印・傷など"
-                    minRows={4}
-                  />
-                </div>
-              </>
-            )}
-          </div>
-
-          {/* 家族構成 */}
-          <div className="form-group-section">
-            <h3 className="form-group-title" onClick={() => {
-              const newState = !familySectionOpen;
-              setFamilySectionOpen(newState);
-              localStorage.setItem('familySectionOpen', JSON.stringify(newState));
-            }} style={{ cursor: 'pointer' }}>
-              <i className={`fas ${familySectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '5px', fontSize: '12px' }}></i>
-              <i className="fas fa-users"></i> 家族構成
-            </h3>
-            {familySectionOpen && (
-              <>
-                <div className="form-group">
-                  <label htmlFor="family_structure">家族構成</label>
-                  <AutoResizeTextarea
-                    id="family_structure"
-                    value={characterData.family_structure || ''}
-                    onChange={(value) => handleInputChange('family_structure', value)}
-                    placeholder="両親、兄弟姉妹、配偶者、子供など家族構成の詳細"
-                    minRows={4}
-                  />
-                </div>
-              </>
-            )}
-          </div>
 
           {/* 自由入力セクション */}
           {characterData.custom_sections && characterData.custom_sections.map((section) => (
