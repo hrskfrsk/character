@@ -3679,6 +3679,7 @@ li {
 }
 .o-memos-single-button {
   transition: all 0.3s;
+  margin-right: 10px;
 }
 .o-memos-single-button:hover {
   background: var(--ui-theme-color-hover) !important;

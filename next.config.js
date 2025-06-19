@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false, // 無限リロード防止
+  reactStrictMode: true, // Fast Refresh有効化
   swcMinify: true,
   
   // 開発時の設定
@@ -8,20 +8,12 @@ const nextConfig = {
     webpack: (config, { dev }) => {
       if (dev) {
         config.watchOptions = {
-          poll: 1000,
           aggregateTimeout: 300,
           ignored: ['**/node_modules/**', '**/.git/**', '**/.next/**'],
         }
         // ホットリロード安定化
         config.infrastructureLogging = {
           level: 'error',
-        }
-        // キャッシュ設定
-        config.cache = {
-          type: 'filesystem',
-          buildDependencies: {
-            config: [__filename],
-          },
         }
       }
       return config

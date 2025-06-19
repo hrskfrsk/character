@@ -405,7 +405,7 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
                       }}
                       className='o-memos-single-button'
                     >
-                      個別ページ <i className="fas fa-external-link-alt" style={{ margin: '0 0 0 5px;', color: '#fff' }}></i>
+                      個別ページ <i className="fas fa-external-link-alt" style={{ marginLeft: '5px', marginRight: '0', color: '#fff' }}></i>
                     </button>
                     <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
                   </div>
