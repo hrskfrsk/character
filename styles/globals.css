@@ -1548,11 +1548,11 @@ textarea,
 
 /* セクションタイトルのフレックス表示 */
 .form-group-title {
-  display: flex !important;
   align-items: center;
   justify-content: space-between;
   user-select: none;
   transition: all 0.3s;
+  display: block;
 }
 
 .form-group-title:hover {
@@ -3472,7 +3472,7 @@ li {
   font-size: 0.9rem;
   font-weight: 600;
   color: #333;
-  display: flex;
+  display: block;
   align-items: center;
   gap: 8px;
   color: var(--ui-theme-color);

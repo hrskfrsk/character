@@ -186,8 +186,8 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
               setSpeechSectionOpen(newState);
               localStorage.setItem('speechSectionOpen', JSON.stringify(newState));
             }} style={{ cursor: 'pointer' }}>
+              <i className={`fas ${speechSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '5px', fontSize: '12px' }}></i>
               <i className="fas fa-comments"></i> 話し方
-              <i className={`fas ${speechSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginLeft: 'auto', fontSize: '12px' }}></i>
             </h3>
             {speechSectionOpen && (
               <>
@@ -236,8 +236,8 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
               setPreferencesSectionOpen(newState);
               localStorage.setItem('preferencesSectionOpen', JSON.stringify(newState));
             }} style={{ cursor: 'pointer' }}>
+              <i className={`fas ${preferencesSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '5px', fontSize: '12px' }}></i>
               <i className="fas fa-heart"></i> 嗜好
-              <i className={`fas ${preferencesSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginLeft: 'auto', fontSize: '12px' }}></i>
             </h3>
             {preferencesSectionOpen && (
               <>
@@ -295,8 +295,8 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
               setImageSectionOpen(newState);
               localStorage.setItem('imageSectionOpen', JSON.stringify(newState));
             }} style={{ cursor: 'pointer' }}>
+              <i className={`fas ${imageSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '5px', fontSize: '12px' }}></i>
               <i className="fas fa-palette"></i> イメージ
-              <i className={`fas ${imageSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginLeft: 'auto', fontSize: '12px' }}></i>
             </h3>
             {imageSectionOpen && (
               <>
@@ -371,8 +371,8 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
               setPhysicalSectionOpen(newState);
               localStorage.setItem('physicalSectionOpen', JSON.stringify(newState));
             }} style={{ cursor: 'pointer' }}>
+              <i className={`fas ${physicalSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '5px', fontSize: '12px' }}></i>
               <i className="fas fa-user-circle"></i> 身体的特徴
-              <i className={`fas ${physicalSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginLeft: 'auto', fontSize: '12px' }}></i>
             </h3>
             {physicalSectionOpen && (
               <>
@@ -397,8 +397,8 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
               setFamilySectionOpen(newState);
               localStorage.setItem('familySectionOpen', JSON.stringify(newState));
             }} style={{ cursor: 'pointer' }}>
+              <i className={`fas ${familySectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '5px', fontSize: '12px' }}></i>
               <i className="fas fa-users"></i> 家族構成
-              <i className={`fas ${familySectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginLeft: 'auto', fontSize: '12px' }}></i>
             </h3>
             {familySectionOpen && (
               <>
@@ -419,7 +419,16 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
           {/* 自由入力セクション */}
           {characterData.custom_sections && characterData.custom_sections.map((section) => (
             <div key={section.id} className="form-group-section">
+
               <div className="section-header-with-controls">
+                <button
+                  type="button"
+                  onClick={() => toggleCustomSection(section.id)}
+                  className="toggle-btn"
+                  title="セクションを開閉"
+                >
+                  <i className={`fas ${section.is_open ? 'fa-chevron-down' : 'fa-chevron-right'}`}></i>
+                </button>
                 <div className="section-title-input">
                   <input
                     type="text"
@@ -430,14 +439,7 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
                   />
                 </div>
                 <div className="section-controls">
-                  <button
-                    type="button"
-                    onClick={() => toggleCustomSection(section.id)}
-                    className="toggle-btn"
-                    title="セクションを開閉"
-                  >
-                    <i className={`fas ${section.is_open ? 'fa-chevron-down' : 'fa-chevron-right'}`}></i>
-                  </button>
+
                   <button
                     type="button"
                     onClick={() => removeCustomSection(section.id)}
@@ -630,12 +632,12 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
           ? {
             ...section,
             fields: section.fields.map(f =>
-              f.id === fieldId 
-                ? { 
-                  ...f, 
+              f.id === fieldId
+                ? {
+                  ...f,
                   password_protected: checked,
                   open_by_default: checked ? false : f.open_by_default // パスワード保護をオンにした場合のみ「開いておく」を自動でオフ
-                } 
+                }
                 : f
             )
           }
@@ -964,7 +966,7 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
                       />
 
                       {/* 設定 */}
-                      <div 
+                      <div
                         style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', marginTop: '8px' }}
                         onClick={(e) => e.stopPropagation()}
                         onMouseDown={(e) => e.stopPropagation()}
