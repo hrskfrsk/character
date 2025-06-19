@@ -70,14 +70,14 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
 
   // 装備セクションのアコーディオン状態
   const [equipmentSections, setEquipmentSections] = useState({
-    weapons: true,
-    items: true,
-    disorders: true,
+    weapons: false,
+    items: false,
+    disorders: false,
     books: false,
     spells: false,
     artifacts: false,
     entities: false,
-    memos: true
+    memos: false
   });
 
   // キャラクター表示セクションの開閉状態
@@ -200,12 +200,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
 
     // localStorage から UI 状態を復元（キャラクターID別）
     if (typeof window !== 'undefined' && characterId) {
-      // 一時的に古いデータをクリア（デバッグ用）
-      localStorage.removeItem('character-display-equipmentSections');
-      localStorage.removeItem('character-display-equipmentSections-v1');
-      localStorage.removeItem('character-display-showAllSkills');
-
-      const savedEquipmentSections = localStorage.getItem(`character-display-equipmentSections-${characterId}-v2`);
+      const savedEquipmentSections = localStorage.getItem(`character-display-equipmentSections-${characterId}-v3`);
       const savedCharacterDisplayState = localStorage.getItem(`character-display-main-section-${characterId}`);
       const savedPlaysheetState = localStorage.getItem(`character-display-playsheet-${characterId}`);
 
@@ -213,14 +208,14 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
         const parsed = JSON.parse(savedEquipmentSections);
         // 新しいデフォルト値とマージして、保存されていないキーはデフォルト値を使用
         setEquipmentSections({
-          weapons: parsed.weapons !== undefined ? parsed.weapons : true,
-          items: parsed.items !== undefined ? parsed.items : true,
-          disorders: parsed.disorders !== undefined ? parsed.disorders : true,
+          weapons: parsed.weapons !== undefined ? parsed.weapons : false,
+          items: parsed.items !== undefined ? parsed.items : false,
+          disorders: parsed.disorders !== undefined ? parsed.disorders : false,
           books: parsed.books !== undefined ? parsed.books : false,
           spells: parsed.spells !== undefined ? parsed.spells : false,
           artifacts: parsed.artifacts !== undefined ? parsed.artifacts : false,
           entities: parsed.entities !== undefined ? parsed.entities : false,
-          memos: parsed.memos !== undefined ? parsed.memos : true,
+          memos: parsed.memos !== undefined ? parsed.memos : false,
         });
       }
 
@@ -236,10 +231,10 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
 
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && characterId) {
-      localStorage.setItem(`character-display-equipmentSections-${characterId}-v2`, JSON.stringify(equipmentSections));
+    if (typeof window !== 'undefined' && characterId && mounted) {
+      localStorage.setItem(`character-display-equipmentSections-${characterId}-v3`, JSON.stringify(equipmentSections));
     }
-  }, [equipmentSections, characterId]);
+  }, [equipmentSections, characterId, mounted]);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && characterId) {
