@@ -8,6 +8,7 @@ interface HeaderProps {
   customBackUrl?: string;
   showEditButton?: boolean;
   editUrl?: string;
+  actionButtons?: React.ReactNode;
 }
 
 const Header: React.FC<HeaderProps> = ({ 
@@ -15,7 +16,8 @@ const Header: React.FC<HeaderProps> = ({
   showBackButton = false,
   customBackUrl,
   showEditButton = false,
-  editUrl
+  editUrl,
+  actionButtons
 }) => {
   const router = useRouter();
 
@@ -51,7 +53,12 @@ const Header: React.FC<HeaderProps> = ({
           </Link>
         </div>
 
-        <div className="header-right">
+        <div className="header-right" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+          {actionButtons && (
+            <div className="header-action-buttons" style={{ marginRight: '15px' }}>
+              {actionButtons}
+            </div>
+          )}
           <nav className="header-nav">
             {showEditButton && editUrl && (
               <Link href={editUrl} className="nav-link edit-btn" title="編集">

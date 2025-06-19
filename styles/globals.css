@@ -161,6 +161,15 @@ h2 {
 .character-section {
   margin-top: 10px;
 }
+
+#chara-form {
+  margin-top: 4%;
+}
+@media (max-width: 768px) {
+  #chara-form {
+    margin-top: 0;
+  }
+}
 #content {
   margin: 0 0 5%;
 }
@@ -4136,16 +4145,16 @@ li {
     width: 95%;
     max-height: 95vh;
   }
-  
+
   .modal-content {
     padding: 20px;
     max-height: calc(95vh - 40px);
   }
-  
+
   .ccfolia-export-modal .checkbox-group {
     gap: 12px;
   }
-  
+
   .ccfolia-export-modal .checkbox-group label {
     font-size: 0.85rem;
   }

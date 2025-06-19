@@ -52,7 +52,7 @@ export default function CreateCharacterPage() {
   // 秘匿関連の状態管理
   const [secretMemos, setSecretMemos] = useState<Array<{ id: string, counter: number }>>([]);
   const [secretMemoCounter, setSecretMemoCounter] = useState(0);
-  
+
   // メモの並べ替え順序を管理
   const [memoOrder, setMemoOrder] = useState<string[]>([]);
 
@@ -61,7 +61,7 @@ export default function CreateCharacterPage() {
 
   // 技能表示切替の状態管理
   const [hideInitialSkills, setHideInitialSkills] = useState(false);
-  
+
   // 技能セクション全体の折りたたみ状態
   const [isSkillSectionCollapsed, setIsSkillSectionCollapsed] = useState(false);
 
@@ -86,19 +86,19 @@ export default function CreateCharacterPage() {
       const savedEquipmentSections = localStorage.getItem('character-form-equipmentSections');
       const savedShowMemoSection = localStorage.getItem('character-form-showMemoSection');
       const savedMemoOrder = localStorage.getItem('character-form-memoOrder');
-      
+
       if (savedHideInitialSkills !== null) {
         setHideInitialSkills(JSON.parse(savedHideInitialSkills));
       }
-      
+
       if (savedEquipmentSections !== null) {
         setEquipmentSections(JSON.parse(savedEquipmentSections));
       }
-      
+
       if (savedShowMemoSection !== null) {
         setShowMemoSection(JSON.parse(savedShowMemoSection));
       }
-      
+
       if (savedMemoOrder !== null) {
         setMemoOrder(JSON.parse(savedMemoOrder));
       }
@@ -262,8 +262,8 @@ export default function CreateCharacterPage() {
     const memoList: Array<{ id: string, counter: number }> = [];
     let maxMemoCounter = 0;
     for (let i = 1; i <= 50; i++) {
-      if (data[`memo_${i}_title`] || data[`memo_${i}_content`] || 
-          data[`secret_memo_${i}_title`] || data[`secret_memo_${i}_content`]) {
+      if (data[`memo_${i}_title`] || data[`memo_${i}_content`] ||
+        data[`secret_memo_${i}_title`] || data[`secret_memo_${i}_content`]) {
         // 新形式または旧形式のデータがある場合
         const memoId = data[`memo_${i}_title`] || data[`memo_${i}_content`] ? `memo_${i}` : `secret_memo_${i}`;
         memoList.push({ id: memoId, counter: i });
@@ -272,10 +272,10 @@ export default function CreateCharacterPage() {
     }
     setSecretMemos(memoList);
     setSecretMemoCounter(maxMemoCounter);
-    
+
     // データベースから保存された順序を優先、次にlocalStorage、最後に作成順
     let savedOrder: string[] | null = null;
-    
+
     // まずデータベースの順序を確認
     if (data.memo_order) {
       try {
@@ -284,7 +284,7 @@ export default function CreateCharacterPage() {
         console.warn('Failed to parse memo_order from database:', e);
       }
     }
-    
+
     // データベースにない場合はlocalStorageを確認
     if (!savedOrder) {
       const localStorageOrder = localStorage.getItem('character-form-memoOrder');
@@ -296,10 +296,10 @@ export default function CreateCharacterPage() {
         }
       }
     }
-    
+
     if (savedOrder) {
       // 既存のメモIDと照合して、存在するもののみを保持
-      const validOrder = savedOrder.filter((id: string) => 
+      const validOrder = savedOrder.filter((id: string) =>
         memoList.some(memo => memo.id === id)
       );
       // 新しく追加されたメモ（順序にないもの）を末尾に追加
@@ -379,14 +379,14 @@ export default function CreateCharacterPage() {
   const loadExistingCharacter = async (characterId: string) => {
     try {
       if (!db) return;
-      
+
       const docRef = doc(db, 'characters', characterId);
       const docSnap = await getDoc(docRef);
-      
+
       if (docSnap.exists()) {
         const data = docSnap.data();
         setCharacterData(data as CharacterData);
-        
+
         // 元々データベースに存在していた動的フィールドを追跡
         const originalFields = new Set<string>();
         Object.keys(data).forEach(key => {
@@ -395,7 +395,7 @@ export default function CreateCharacterPage() {
           }
         });
         setOriginalDynamicFields(originalFields);
-        
+
         // 動的リストの復元ロジック
         restoreDynamicLists(data);
       } else {
@@ -433,7 +433,7 @@ export default function CreateCharacterPage() {
   // 職業ポイントの使用量を計算
   const calculateJobPointsUsed = (data: CharacterData): number => {
     let total = 0;
-    
+
     // 固定技能の職業ポイント
     const fixedSkills = [
       'dodge', 'kick', 'grapple', 'punch', 'headbutt', 'throw',
@@ -450,14 +450,14 @@ export default function CreateCharacterPage() {
       'pharmacy', 'physics', 'pilot', 'psychotherapy', 'ride', 'spot_hidden',
       'survival', 'track'
     ];
-    
+
     fixedSkills.forEach(skill => {
       const jobValue = (data as any)[`${skill}_job`];
       if (jobValue && !isNaN(Number(jobValue))) {
         total += Number(jobValue);
       }
     });
-    
+
     // 追加技能の職業ポイント
     for (let i = 1; i <= 50; i++) {
       ['additional_combat', 'additional_exploration', 'additional_action', 'additional_negotiation', 'additional_knowledge'].forEach(category => {
@@ -467,14 +467,14 @@ export default function CreateCharacterPage() {
         }
       });
     }
-    
+
     return total;
   };
 
   // 興味ポイントの使用量を計算
   const calculateInterestPointsUsed = (data: CharacterData): number => {
     let total = 0;
-    
+
     // 固定技能の興味ポイント
     const fixedSkills = [
       'dodge', 'kick', 'grapple', 'punch', 'headbutt', 'throw',
@@ -491,14 +491,14 @@ export default function CreateCharacterPage() {
       'pharmacy', 'physics', 'pilot', 'psychotherapy', 'ride', 'spot_hidden',
       'survival', 'track'
     ];
-    
+
     fixedSkills.forEach(skill => {
       const interestValue = (data as any)[`${skill}_interest`];
       if (interestValue && !isNaN(Number(interestValue))) {
         total += Number(interestValue);
       }
     });
-    
+
     // 追加技能の興味ポイント
     for (let i = 1; i <= 50; i++) {
       ['additional_combat', 'additional_exploration', 'additional_action', 'additional_negotiation', 'additional_knowledge'].forEach(category => {
@@ -508,7 +508,7 @@ export default function CreateCharacterPage() {
         }
       });
     }
-    
+
     return total;
   };
 
@@ -996,9 +996,9 @@ export default function CreateCharacterPage() {
     setTimeout(() => {
       const newElement = document.querySelector(`[name="${memoId}_title"]`);
       if (newElement) {
-        newElement.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'center' 
+        newElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
         });
         // フォーカスも設定
         (newElement as HTMLInputElement).focus();
@@ -1125,7 +1125,7 @@ export default function CreateCharacterPage() {
 
   const handleDelete = async () => {
     if (!isEditMode || !edit) return;
-    
+
     const characterName = characterData.character_name || '無名のキャラクター';
     if (!confirm(`本当に「${characterName}」を削除しますか？\nこの操作は取り消せません。`)) {
       return;
@@ -1163,10 +1163,57 @@ export default function CreateCharacterPage() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <Header 
+      <Header
         title={isEditMode ? "キャラクター編集" : "キャラクター作成"}
         showBackButton={true}
         customBackUrl="/"
+        actionButtons={
+          <div style={{ display: 'flex', gap: '15px' }}>
+            <button
+              type="button"
+              className="nav-link"
+              style={{
+                background: '#2196F3',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+              onClick={handleDisplay}
+              onMouseEnter={(e) => {
+                const btn = e.currentTarget as HTMLElement;
+                btn.style.background = '#1976D2';
+              }}
+              onMouseLeave={(e) => {
+                const btn = e.currentTarget as HTMLElement;
+                btn.style.background = '#2196F3';
+              }}
+            >
+              <i className="fas fa-eye"></i>
+              <span className="nav-text">表示</span>
+            </button>
+            <button
+              type="submit"
+              form="chara-form"
+              className="nav-link"
+              style={{
+                background: '#4CAF50',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+              disabled={saving}
+              onMouseEnter={(e) => {
+                const btn = e.currentTarget as HTMLElement;
+                btn.style.background = '#388E3C';
+              }}
+              onMouseLeave={(e) => {
+                const btn = e.currentTarget as HTMLElement;
+                btn.style.background = '#4CAF50';
+              }}
+            >
+              <i className="fas fa-save"></i>
+              <span className="nav-text">{saving ? '保存中...' : (isEditMode ? '更新' : '保存')}</span>
+            </button>
+          </div>
+        }
       />
 
       <div id="content" className="character-input page-with-header">
@@ -1273,35 +1320,70 @@ export default function CreateCharacterPage() {
                     }}
                   />
 
-                  {/* 保存・表示ボタン */}
-                  <div className="form-actions" style={{ textAlign: 'center', margin: '30px 0' }}>
-                    <button
-                      type="submit"
-                      className="btn save-btn"
-                      style={{ marginRight: '15px', padding: '10px 30px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                      disabled={saving}
-                    >
-                      <i className="fas fa-save"></i> {saving ? '保存中...' : (isEditMode ? 'キャラクターを更新' : 'キャラクターを保存')}
-                    </button>
-                    <button
-                      type="button"
-                      className="btn display-btn"
-                      style={{ padding: '10px 30px', backgroundColor: '#2196F3', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                      onClick={handleDisplay}
-                    >
-                      <i className="fas fa-eye"></i> キャラクターシートを表示
-                    </button>
+                  {/* 保存・削除ボタン */}
+                  <div style={{
+                    textAlign: 'center',
+                    margin: '20px 0',
+                    paddingTop: '10px',
+                    borderTop: '1px solid #eee',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                    gap: '15px'
+                  }}>
                     {isEditMode && (
                       <button
                         type="button"
                         onClick={handleDelete}
                         className="btn delete-btn"
-                        style={{ marginLeft: '15px', padding: '10px 30px', backgroundColor: '#f44336', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                        style={{
+                          padding: '10px 30px',
+                          backgroundColor: 'transparent',
+                          color: '#666',
+                          border: '1px solid #666',
+                          borderRadius: '50px',
+                          cursor: 'pointer',
+                          fontSize: '14px',
+                          fontWeight: 'bold',
+                          transition: 'all 0.3s ease',
+                          minWidth: '120px'
+                        }}
                         disabled={deleting}
+                        onMouseEnter={(e) => {
+                          if (!deleting) {
+                            (e.target as HTMLElement).style.backgroundColor = '#666';
+                            (e.target as HTMLElement).style.color = 'white';
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!deleting) {
+                            (e.target as HTMLElement).style.backgroundColor = 'transparent';
+                            (e.target as HTMLElement).style.color = '#666';
+                          }
+                        }}
                       >
-                        <i className="fas fa-trash"></i> {deleting ? '削除中...' : 'キャラクターを削除'}
+                        <i className="fas fa-trash"></i> {deleting ? '削除中...' : '削除'}
                       </button>
                     )}
+
+                    <button
+                      type="submit"
+                      className="btn save-btn"
+                      style={{
+                        padding: '10px 30px',
+                        backgroundColor: '#4CAF50',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '50px',
+                        cursor: 'pointer',
+                        fontSize: '14px',
+                        fontWeight: 'bold',
+                        minWidth: '120px'
+                      }}
+                      disabled={saving}
+                    >
+                      <i className="fas fa-save"></i> {saving ? '保存中...' : (isEditMode ? '更新' : '保存')}
+                    </button>
                   </div>
 
                 </section>
