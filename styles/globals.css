@@ -1710,8 +1710,143 @@ textarea,
 
 /* Memo Item Accordion Styles
 ---------------------------------------------------*/
-.memo-item textarea {
+.memo-item h4 {
+  cursor: pointer;
+  user-select: none;
+  margin: 0px;
+  padding: 8px 12px;
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.memo-item h4 i {
+  margin-right: 8px;
+}
+
+.memo-item .memo-header .toggle-btn {
+  margin-right: 0px;
+  padding: 0px 4px 0px 5px;
+  font-size: 12px;
+  color: rgb(102, 102, 102);
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  z-index: 10;
+}
+
+.memo-item .memo-header .remove-btn {
+  margin-left: 8px;
+  padding: 4px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  width: auto;
+  height: auto;
+}
+
+.memo-item .memo-header .remove-btn:hover {
+  color: #666;
+}
+
+.memo-item .o-memos {
+  padding: 0 10px 10px;
+}
+
+.memo-item .o-memos:last-child {
+  margin-bottom: 0;
+}
+
+/* 入力フォーム用のメモスタイル */
+.character-input .memo-item {
+  display: block;
+  margin-bottom: 5px;
+  padding: 15px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 2px inset;
+  border-radius: 4px;
+  opacity: 1;
+  background-color: transparent;
+  border: 2px solid transparent;
+  cursor: grab;
+  transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+  position: relative;
+}
+
+.character-input .memo-item .memo-header {
+  display: flex;
+  align-items: center;
+}
+
+.character-input .memo-item input {
+  flex: 1 1 0%;
+  padding: 4px 6px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  border: none;
+  background: transparent;
+  color: rgb(51, 51, 51);
+  outline: none;
+  box-shadow: none;
+  text-align: left;
+}
+
+.character-input .memo-item .o-memos.form-item {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 5px 0 8px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
+}
+
+.character-input .memo-item .o-memos .field-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.character-input .character-input .memo-item .o-memos input {
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5) inset;
+  padding: 15px 12px;
+}
+
+.character-input .memo-item .o-memos .field-header button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #999;
+}
+
+.character-input .memo-item textarea {
   transition: height 0.2s ease-out;
+  padding: 12px;
+}
+
+.memo-item .add-memo-btn {
+  width: 100%;
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border: 1px dashed #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.memo-item .add-memo-btn:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
 }
 
 .data-wrap h3 {

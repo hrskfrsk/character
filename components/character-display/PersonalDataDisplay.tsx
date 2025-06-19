@@ -380,21 +380,28 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
             const isOpen = recordSectionsOpen[section.id] !== false; // デフォルトで開いている
             
             return (
-              <div key={section.id} className={`data-group ${!isOpen ? 'collapsed' : ''}`}>
-                <h4 className="data-group-title" onClick={() => toggleRecordSection(section.id)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span><i className="fas fa-clipboard"></i> {section.section_title || '無題の記録'}</span>
-                  <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
+              <div key={section.id} className="memo-item">
+                <h4 onClick={() => toggleRecordSection(section.id)}>
+                  <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`}></i>
+                  <i className="fas fa-clipboard"></i>
+                  {section.section_title || '無題の記録'}
                 </h4>
                 {isOpen && (
-                <>
-                {/* セクション内の項目 */}
-                {section.fields.map((field) => (
-                  <div key={field.id} className="data-item">
-                    <span className="data-label">{field.title}:</span>
-                    <div className="data-value-block linkified-text">{linkifyText(field.content)}</div>
-                  </div>
-                ))}
-                </>
+                <div>
+                  {/* セクション内の項目 */}
+                  {section.fields.map((field) => (
+                    <div key={field.id} className="o-memos">
+                      {field.title && (
+                        <div style={{ fontWeight: 'bold', marginBottom: '4px', color: '#333' }}>
+                          {field.title}:
+                        </div>
+                      )}
+                      <div className="linkified-text">
+                        {linkifyText(field.content)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
                 )}
               </div>
             );

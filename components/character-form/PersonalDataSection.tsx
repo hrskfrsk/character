@@ -21,20 +21,20 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
     if (savedState !== null) {
       setIsOpen(JSON.parse(savedState));
     }
-    
+
     // 各セクションの開閉状態も読み込み
     const speechState = localStorage.getItem('speechSectionOpen');
     if (speechState !== null) setSpeechSectionOpen(JSON.parse(speechState));
-    
+
     const preferencesState = localStorage.getItem('preferencesSectionOpen');
     if (preferencesState !== null) setPreferencesSectionOpen(JSON.parse(preferencesState));
-    
+
     const imageState = localStorage.getItem('imageSectionOpen');
     if (imageState !== null) setImageSectionOpen(JSON.parse(imageState));
-    
+
     const physicalState = localStorage.getItem('physicalSectionOpen');
     if (physicalState !== null) setPhysicalSectionOpen(JSON.parse(physicalState));
-    
+
     const familyState = localStorage.getItem('familySectionOpen');
     if (familyState !== null) setFamilySectionOpen(JSON.parse(familyState));
   }, []);
@@ -60,7 +60,7 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
       title: '',
       content: ''
     };
-    
+
     setCharacterData(prev => ({
       ...prev,
       other_sections: [...(prev.other_sections || []), newSection]
@@ -91,7 +91,7 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
       is_open: true,
       fields: []
     };
-    
+
     setCharacterData(prev => ({
       ...prev,
       custom_sections: [...(prev.custom_sections || []), newSection]
@@ -129,11 +129,11 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
       title: '',
       content: ''
     };
-    
+
     setCharacterData(prev => ({
       ...prev,
       custom_sections: (prev.custom_sections || []).map(section =>
-        section.id === sectionId 
+        section.id === sectionId
           ? { ...section, fields: [...section.fields, newField] }
           : section
       )
@@ -144,7 +144,7 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
     setCharacterData(prev => ({
       ...prev,
       custom_sections: (prev.custom_sections || []).map(section =>
-        section.id === sectionId 
+        section.id === sectionId
           ? { ...section, fields: section.fields.filter(field => field.id !== fieldId) }
           : section
       )
@@ -155,13 +155,13 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
     setCharacterData(prev => ({
       ...prev,
       custom_sections: (prev.custom_sections || []).map(section =>
-        section.id === sectionId 
-          ? { 
-              ...section, 
-              fields: section.fields.map(f =>
-                f.id === fieldId ? { ...f, [field]: value } : f
-              )
-            }
+        section.id === sectionId
+          ? {
+            ...section,
+            fields: section.fields.map(f =>
+              f.id === fieldId ? { ...f, [field]: value } : f
+            )
+          }
           : section
       )
     }));
@@ -190,42 +190,42 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
               <i className={`fas ${speechSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginLeft: 'auto', fontSize: '12px' }}></i>
             </h3>
             {speechSectionOpen && (
-            <>
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="first_person">一人称</label>
-                <input
-                  type="text"
-                  id="first_person"
-                  value={characterData.first_person || ''}
-                  onChange={(e) => handleInputChange('first_person', e.target.value)}
-                  placeholder="私、僕、俺など"
-                />
-              </div>
+              <>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="first_person">一人称</label>
+                    <input
+                      type="text"
+                      id="first_person"
+                      value={characterData.first_person || ''}
+                      onChange={(e) => handleInputChange('first_person', e.target.value)}
+                      placeholder="私、僕、俺など"
+                    />
+                  </div>
 
-              <div className="form-group">
-                <label htmlFor="second_person">二人称</label>
-                <input
-                  type="text"
-                  id="second_person"
-                  value={characterData.second_person || ''}
-                  onChange={(e) => handleInputChange('second_person', e.target.value)}
-                  placeholder="あなた、君、お前など"
-                />
-              </div>
-            </div>
+                  <div className="form-group">
+                    <label htmlFor="second_person">二人称</label>
+                    <input
+                      type="text"
+                      id="second_person"
+                      value={characterData.second_person || ''}
+                      onChange={(e) => handleInputChange('second_person', e.target.value)}
+                      placeholder="あなた、君、お前など"
+                    />
+                  </div>
+                </div>
 
-            <div className="form-group">
-              <label htmlFor="speech_style">口調</label>
-              <AutoResizeTextarea
-                id="speech_style"
-                value={characterData.speech_style || ''}
-                onChange={(value) => handleInputChange('speech_style', value)}
-                placeholder="丁寧語、タメ語、方言など、話し方の特徴やサンプル台詞など"
-                minRows={2}
-              />
-            </div>
-            </>
+                <div className="form-group">
+                  <label htmlFor="speech_style">口調</label>
+                  <AutoResizeTextarea
+                    id="speech_style"
+                    value={characterData.speech_style || ''}
+                    onChange={(value) => handleInputChange('speech_style', value)}
+                    placeholder="丁寧語、タメ語、方言など、話し方の特徴やサンプル台詞など"
+                    minRows={2}
+                  />
+                </div>
+              </>
             )}
           </div>
 
@@ -240,51 +240,51 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
               <i className={`fas ${preferencesSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginLeft: 'auto', fontSize: '12px' }}></i>
             </h3>
             {preferencesSectionOpen && (
-            <>
-            <div className="form-group">
-              <label htmlFor="likes">好き</label>
-              <AutoResizeTextarea
-                id="likes"
-                value={characterData.likes || ''}
-                onChange={(value) => handleInputChange('likes', value)}
-                placeholder="好きな食べ物、活動、場所など"
-                minRows={3}
-              />
-            </div>
+              <>
+                <div className="form-group">
+                  <label htmlFor="likes">好き</label>
+                  <AutoResizeTextarea
+                    id="likes"
+                    value={characterData.likes || ''}
+                    onChange={(value) => handleInputChange('likes', value)}
+                    placeholder="好きな食べ物、活動、場所など"
+                    minRows={3}
+                  />
+                </div>
 
-            <div className="form-group">
-              <label htmlFor="dislikes">嫌い</label>
-              <AutoResizeTextarea
-                id="dislikes"
-                value={characterData.dislikes || ''}
-                onChange={(value) => handleInputChange('dislikes', value)}
-                placeholder="嫌いな食べ物、苦手なこと、避けたいものなど"
-                minRows={3}
-              />
-            </div>
+                <div className="form-group">
+                  <label htmlFor="dislikes">嫌い</label>
+                  <AutoResizeTextarea
+                    id="dislikes"
+                    value={characterData.dislikes || ''}
+                    onChange={(value) => handleInputChange('dislikes', value)}
+                    placeholder="嫌いな食べ物、苦手なこと、避けたいものなど"
+                    minRows={3}
+                  />
+                </div>
 
-            <div className="form-group">
-              <label htmlFor="hobbies">趣味</label>
-              <AutoResizeTextarea
-                id="hobbies"
-                value={characterData.hobbies || ''}
-                onChange={(value) => handleInputChange('hobbies', value)}
-                placeholder="余暇の過ごし方、興味のある活動など"
-                minRows={3}
-              />
-            </div>
+                <div className="form-group">
+                  <label htmlFor="hobbies">趣味</label>
+                  <AutoResizeTextarea
+                    id="hobbies"
+                    value={characterData.hobbies || ''}
+                    onChange={(value) => handleInputChange('hobbies', value)}
+                    placeholder="余暇の過ごし方、興味のある活動など"
+                    minRows={3}
+                  />
+                </div>
 
-            <div className="form-group">
-              <label htmlFor="special_skills">得意</label>
-              <AutoResizeTextarea
-                id="special_skills"
-                value={characterData.special_skills || ''}
-                onChange={(value) => handleInputChange('special_skills', value)}
-                placeholder="得意なこと、人より優れている能力など"
-                minRows={3}
-              />
-            </div>
-            </>
+                <div className="form-group">
+                  <label htmlFor="special_skills">得意</label>
+                  <AutoResizeTextarea
+                    id="special_skills"
+                    value={characterData.special_skills || ''}
+                    onChange={(value) => handleInputChange('special_skills', value)}
+                    placeholder="得意なこと、人より優れている能力など"
+                    minRows={3}
+                  />
+                </div>
+              </>
             )}
           </div>
 
@@ -299,68 +299,68 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
               <i className={`fas ${imageSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginLeft: 'auto', fontSize: '12px' }}></i>
             </h3>
             {imageSectionOpen && (
-            <>
-            <div className="form-group">
-              <label htmlFor="theme_song">曲</label>
-              <AutoResizeTextarea
-                id="theme_song"
-                value={characterData.theme_song || ''}
-                onChange={(value) => handleInputChange('theme_song', value)}
-                placeholder="テーマソング、イメージソングなど"
-                minRows={3}
-              />
-            </div>
+              <>
+                <div className="form-group">
+                  <label htmlFor="theme_song">曲</label>
+                  <AutoResizeTextarea
+                    id="theme_song"
+                    value={characterData.theme_song || ''}
+                    onChange={(value) => handleInputChange('theme_song', value)}
+                    placeholder="テーマソング、イメージソングなど"
+                    minRows={3}
+                  />
+                </div>
 
-            <div className="form-group">
-              <label htmlFor="motif">モチーフ</label>
-              <AutoResizeTextarea
-                id="motif"
-                value={characterData.motif || ''}
-                onChange={(value) => handleInputChange('motif', value)}
-                placeholder="キャラクターデザインの元ネタ、モチーフなど"
-                minRows={3}
-              />
-            </div>
+                <div className="form-group">
+                  <label htmlFor="motif">モチーフ</label>
+                  <AutoResizeTextarea
+                    id="motif"
+                    value={characterData.motif || ''}
+                    onChange={(value) => handleInputChange('motif', value)}
+                    placeholder="キャラクターデザインの元ネタ、モチーフなど"
+                    minRows={3}
+                  />
+                </div>
 
-            {/* 動的その他セクション */}
-            {characterData.other_sections && characterData.other_sections.map((section) => (
-              <div key={section.id} className="form-group dynamic-section">
-                <div className="form-row">
-                  <div className="form-group inline">
-                    <label>項目名</label>
-                    <input
-                      type="text"
-                      value={section.title}
-                      onChange={(e) => updateOtherSection(section.id, 'title', e.target.value)}
-                      placeholder="項目名を入力"
+                {/* 動的その他セクション */}
+                {characterData.other_sections && characterData.other_sections.map((section) => (
+                  <div key={section.id} className="form-group dynamic-section">
+                    <div className="form-row">
+                      <div className="form-group inline">
+                        <label>項目名</label>
+                        <input
+                          type="text"
+                          value={section.title}
+                          onChange={(e) => updateOtherSection(section.id, 'title', e.target.value)}
+                          placeholder="項目名を入力"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeOtherSection(section.id)}
+                        className="remove-btn"
+                        title="この項目を削除"
+                      >
+                        <i className="fas fa-times"></i>
+                      </button>
+                    </div>
+                    <AutoResizeTextarea
+                      value={section.content}
+                      onChange={(value) => updateOtherSection(section.id, 'content', value)}
+                      placeholder="内容を入力"
+                      minRows={3}
                     />
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => removeOtherSection(section.id)}
-                    className="remove-btn"
-                    title="この項目を削除"
-                  >
-                    <i className="fas fa-times"></i>
-                  </button>
-                </div>
-                <AutoResizeTextarea
-                  value={section.content}
-                  onChange={(value) => updateOtherSection(section.id, 'content', value)}
-                  placeholder="内容を入力"
-                  minRows={3}
-                />
-              </div>
-            ))}
+                ))}
 
-            <button
-              type="button"
-              onClick={addOtherSection}
-              className="add-section-btn"
-            >
-              <i className="fas fa-plus"></i> その他項目を追加
-            </button>
-            </>
+                <button
+                  type="button"
+                  onClick={addOtherSection}
+                  className="add-section-btn"
+                >
+                  <i className="fas fa-plus"></i> その他項目を追加
+                </button>
+              </>
             )}
           </div>
 
@@ -375,18 +375,18 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
               <i className={`fas ${physicalSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginLeft: 'auto', fontSize: '12px' }}></i>
             </h3>
             {physicalSectionOpen && (
-            <>
-            <div className="form-group">
-              <label htmlFor="physical_features">身体的特徴</label>
-              <AutoResizeTextarea
-                id="physical_features"
-                value={characterData.physical_features || ''}
-                onChange={(value) => handleInputChange('physical_features', value)}
-                placeholder="体型、髪型、顔立ち、服装、装身具、特徴的な印・傷など"
-                minRows={4}
-              />
-            </div>
-            </>
+              <>
+                <div className="form-group">
+                  <label htmlFor="physical_features">身体的特徴</label>
+                  <AutoResizeTextarea
+                    id="physical_features"
+                    value={characterData.physical_features || ''}
+                    onChange={(value) => handleInputChange('physical_features', value)}
+                    placeholder="体型、髪型、顔立ち、服装、装身具、特徴的な印・傷など"
+                    minRows={4}
+                  />
+                </div>
+              </>
             )}
           </div>
 
@@ -401,18 +401,18 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
               <i className={`fas ${familySectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginLeft: 'auto', fontSize: '12px' }}></i>
             </h3>
             {familySectionOpen && (
-            <>
-            <div className="form-group">
-              <label htmlFor="family_structure">家族構成</label>
-              <AutoResizeTextarea
-                id="family_structure"
-                value={characterData.family_structure || ''}
-                onChange={(value) => handleInputChange('family_structure', value)}
-                placeholder="両親、兄弟姉妹、配偶者、子供など家族構成の詳細"
-                minRows={4}
-              />
-            </div>
-            </>
+              <>
+                <div className="form-group">
+                  <label htmlFor="family_structure">家族構成</label>
+                  <AutoResizeTextarea
+                    id="family_structure"
+                    value={characterData.family_structure || ''}
+                    onChange={(value) => handleInputChange('family_structure', value)}
+                    placeholder="両親、兄弟姉妹、配偶者、子供など家族構成の詳細"
+                    minRows={4}
+                  />
+                </div>
+              </>
             )}
           </div>
 
@@ -543,7 +543,7 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
       is_open: true,
       fields: []
     };
-    
+
     setCharacterData(prev => ({
       ...prev,
       record_sections: [...(prev.record_sections || []), newSection]
@@ -581,11 +581,11 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
       title: '',
       content: ''
     };
-    
+
     setCharacterData(prev => ({
       ...prev,
       record_sections: (prev.record_sections || []).map(section =>
-        section.id === sectionId 
+        section.id === sectionId
           ? { ...section, fields: [...section.fields, newField] }
           : section
       )
@@ -596,7 +596,7 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
     setCharacterData(prev => ({
       ...prev,
       record_sections: (prev.record_sections || []).map(section =>
-        section.id === sectionId 
+        section.id === sectionId
           ? { ...section, fields: section.fields.filter(field => field.id !== fieldId) }
           : section
       )
@@ -607,13 +607,13 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
     setCharacterData(prev => ({
       ...prev,
       record_sections: (prev.record_sections || []).map(section =>
-        section.id === sectionId 
-          ? { 
-              ...section, 
-              fields: section.fields.map(f =>
-                f.id === fieldId ? { ...f, [field]: value } : f
-              )
-            }
+        section.id === sectionId
+          ? {
+            ...section,
+            fields: section.fields.map(f =>
+              f.id === fieldId ? { ...f, [field]: value } : f
+            )
+          }
           : section
       )
     }));
@@ -632,56 +632,48 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
         <div className="record-section-content">
           {/* 記録セクション */}
           {characterData.record_sections && characterData.record_sections.map((section) => (
-            <div key={section.id} className="form-group-section">
-              <div className="section-header-with-controls">
-                <div className="section-title-input">
-                  <input
-                    type="text"
-                    value={section.section_title}
-                    onChange={(e) => updateRecordSectionTitle(section.id, e.target.value)}
-                    placeholder="記録セクション名を入力（例：第1話、探索記録など）"
-                    className="section-title-field"
-                  />
-                </div>
-                <div className="section-controls">
-                  <button
-                    type="button"
-                    onClick={() => toggleRecordSection(section.id)}
-                    className="toggle-btn"
-                    title="セクションを開閉"
-                  >
-                    <i className={`fas ${section.is_open ? 'fa-chevron-down' : 'fa-chevron-right'}`}></i>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => removeRecordSection(section.id)}
-                    className="remove-btn"
-                    title="このセクションを削除"
-                  >
-                    <i className="fas fa-times"></i>
-                  </button>
-                </div>
+            <div key={section.id} className="memo-item">
+              <div className="memo-header">
+                <button
+                  type="button"
+                  onClick={() => toggleRecordSection(section.id)}
+                  className="toggle-btn"
+                  title="セクションを開閉"
+                >
+                  <i className={`fas ${section.is_open ? 'fa-chevron-down' : 'fa-chevron-right'}`}></i>
+                </button>
+
+                <input
+                  type="text"
+                  value={section.section_title}
+                  onChange={(e) => updateRecordSectionTitle(section.id, e.target.value)}
+                  placeholder="記録セクション名を入力（例：第1話、探索記録など）"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeRecordSection(section.id)}
+                  className="remove-btn"
+                  title="このセクションを削除"
+                >
+                  削除
+                </button>
               </div>
 
               {section.is_open && (
-                <>
+                <div>
                   {/* セクション内の項目 */}
                   {section.fields.map((field) => (
-                    <div key={field.id} className="form-group dynamic-section">
-                      <div className="form-row">
-                        <div className="form-group inline">
-                          <label>項目名</label>
-                          <input
-                            type="text"
-                            value={field.title}
-                            onChange={(e) => updateRecordField(section.id, field.id, 'title', e.target.value)}
-                            placeholder="項目名を入力"
-                          />
-                        </div>
+                    <div key={field.id} className="o-memos form-item">
+                      <div className="field-header">
+                        <input
+                          type="text"
+                          value={field.title}
+                          onChange={(e) => updateRecordField(section.id, field.id, 'title', e.target.value)}
+                          placeholder="項目名を入力"
+                        />
                         <button
                           type="button"
                           onClick={() => removeFieldFromRecordSection(section.id, field.id)}
-                          className="remove-btn"
                           title="この項目を削除"
                         >
                           <i className="fas fa-times"></i>
@@ -699,17 +691,17 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
                   <button
                     type="button"
                     onClick={() => addFieldToRecordSection(section.id)}
-                    className="add-section-btn"
+                    className="add-memo-btn"
                   >
-                    <i className="fas fa-plus"></i> この項目を追加
+                    <i className="fas fa-plus"></i> 新しいメモを追加
                   </button>
-                </>
+                </div>
               )}
             </div>
           ))}
 
           {/* 新しい記録セクション追加ボタン */}
-          <div className="add-record-section">
+          <div className="add-record-section" style={{ marginTop: '16px' }}>
             <button
               type="button"
               onClick={addRecordSection}
