@@ -315,6 +315,8 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
   const [isOpen, setIsOpen] = useState(true);
   const [recordSectionsOpen, setRecordSectionsOpen] = useState<{ [key: string]: boolean }>({});
   const [memoContentOpen, setMemoContentOpen] = useState<{ [key: string]: boolean }>({});
+  const [passwordInputs, setPasswordInputs] = useState<{ [key: string]: string }>({});
+  const [passwordAuthenticated, setPasswordAuthenticated] = useState<{ [key: string]: boolean }>({});
 
   // localStorageから開閉状態を読み込む
   useEffect(() => {
@@ -338,20 +340,24 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
       setRecordSectionsOpen(defaultRecordSectionsOpen);
     }
 
-    // memo-contentの状態を読み込み
+    // memo-contentの状態を読み込み（キャラクターデータの設定を反映）
+    const defaultMemoContentOpen: { [key: string]: boolean } = {};
+    if (characterData.record_sections) {
+      characterData.record_sections.forEach(section => {
+        section.fields.forEach(field => {
+          // open_by_default が true の場合は開いた状態、それ以外は閉じた状態
+          defaultMemoContentOpen[field.id] = !!(field as any).open_by_default;
+        });
+      });
+    }
+
     const memoContentState = localStorage.getItem('recordMemoContentOpen');
     if (memoContentState !== null) {
-      setMemoContentOpen(JSON.parse(memoContentState));
+      const savedState = JSON.parse(memoContentState);
+      // 保存された状態とデフォルト状態をマージ（新しいフィールドに対応）
+      const mergedState = { ...defaultMemoContentOpen, ...savedState };
+      setMemoContentOpen(mergedState);
     } else {
-      // デフォルトで全memo-contentを開いた状態で初期化
-      const defaultMemoContentOpen: { [key: string]: boolean } = {};
-      if (characterData.record_sections) {
-        characterData.record_sections.forEach(section => {
-          section.fields.forEach(field => {
-            defaultMemoContentOpen[field.id] = true;
-          });
-        });
-      }
       setMemoContentOpen(defaultMemoContentOpen);
     }
   }, [characterData.record_sections]);
@@ -375,12 +381,23 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
 
   // memo-contentのトグル
   const toggleMemoContent = (fieldId: string) => {
-    const currentState = memoContentOpen[fieldId] !== false; // デフォルトでtrue
+    const currentState = memoContentOpen[fieldId] === true; // デフォルトでfalse
     const newState = !currentState;
     const newMemoContentOpen = { ...memoContentOpen, [fieldId]: newState };
 
     setMemoContentOpen(newMemoContentOpen);
     localStorage.setItem('recordMemoContentOpen', JSON.stringify(newMemoContentOpen));
+  };
+
+  // パスワード認証
+  const handlePasswordSubmit = (fieldId: string, field: any) => {
+    const inputPassword = passwordInputs[fieldId] || '';
+    if (inputPassword === field.password) {
+      setPasswordAuthenticated(prev => ({ ...prev, [fieldId]: true }));
+      setPasswordInputs(prev => ({ ...prev, [fieldId]: '' }));
+    } else {
+      alert('パスワードが正しくありません');
+    }
   };
 
   // データが存在するかチェック
@@ -442,7 +459,11 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
                   <div className='memo-content'>
                     {/* セクション内の項目 */}
                     {section.fields.map((field) => {
-                      const isMemoContentOpen = memoContentOpen[field.id] !== false; // デフォルトで開いている
+                      const fieldData = field as any;
+                      const isMemoContentOpen = memoContentOpen[field.id] === true; // デフォルトで閉じている
+                      const isPasswordProtected = fieldData.password_protected;
+                      const isAuthenticated = passwordAuthenticated[field.id] || false;
+                      const shouldShowContent = !isPasswordProtected || isAuthenticated;
 
                       return (
                         <div key={field.id} className="memo-field">
@@ -458,11 +479,57 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
                             >
                               <i className={`fas ${isMemoContentOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px', marginRight: '5px' }}></i>
                               <span>{field.title}:</span>
+                              {isPasswordProtected && (
+                                <i className="fas fa-lock" style={{ fontSize: '10px', marginLeft: '5px', color: '#999' }}></i>
+                              )}
                             </h5>
                           )}
                           {isMemoContentOpen && (
                             <div className="o-memos">
-                              {linkifyText(field.content)}
+                              {isPasswordProtected && !isAuthenticated ? (
+                                <div style={{ padding: '10px', backgroundColor: '#f9f9f9', borderRadius: '4px', border: '1px solid #ddd' }}>
+                                  <p style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#666' }}>
+                                    <i className="fas fa-lock" style={{ marginRight: '5px' }}></i>
+                                    このコンテンツはパスワードで保護されています
+                                  </p>
+                                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                    <input
+                                      type="password"
+                                      value={passwordInputs[field.id] || ''}
+                                      onChange={(e) => setPasswordInputs(prev => ({ ...prev, [field.id]: e.target.value }))}
+                                      placeholder="パスワードを入力"
+                                      style={{
+                                        padding: '6px 8px',
+                                        border: '1px solid #ccc',
+                                        borderRadius: '3px',
+                                        fontSize: '14px',
+                                        flex: 1
+                                      }}
+                                      onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                          handlePasswordSubmit(field.id, fieldData);
+                                        }
+                                      }}
+                                    />
+                                    <button
+                                      onClick={() => handlePasswordSubmit(field.id, fieldData)}
+                                      style={{
+                                        padding: '6px 12px',
+                                        backgroundColor: 'var(--ui-theme-color, #2196F3)',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '3px',
+                                        fontSize: '14px',
+                                        cursor: 'pointer'
+                                      }}
+                                    >
+                                      確認
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                shouldShowContent && linkifyText(field.content)
+                              )}
                             </div>
                           )}
                         </div>

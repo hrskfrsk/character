@@ -88,12 +88,12 @@ export default function MemoDisplay({
               const i = parseInt(match[1]);
               const title = character[`memo_${i}_title`];
               const content = character[`memo_${i}_content`];
-              const hidden = character[`memo_${i}_hidden`];
+              const openByDefault = character[`memo_${i}_open_by_default`];
               const passwordProtected = character[`memo_${i}_password_protected`];
 
               if (title || content) {
-                // デフォルトの表示状態：「隠す」がチェックされていない場合は表示
-                const defaultVisible = !hidden;
+                // デフォルトの表示状態：「開いておく」がチェックされている場合のみ表示
+                const defaultVisible = !!openByDefault;
                 const isVisible = secretMemoVisibility[memoId] !== undefined
                   ? secretMemoVisibility[memoId]
                   : defaultVisible;

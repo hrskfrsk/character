@@ -136,9 +136,9 @@ export default function MemoSection({
   // パスワード保護の変更ハンドラー
   const handlePasswordProtectedChange = (memoId: string, checked: boolean) => {
     handleInputChange(`${memoId}_password_protected`, checked);
-    // パスワード保護にチェックを入れた場合、自動的に「隠す」にもチェックを入れる
+    // パスワード保護にチェックを入れた場合、自動的に「開いておく」のチェックを外す
     if (checked) {
-      handleInputChange(`${memoId}_hidden`, true);
+      handleInputChange(`${memoId}_open_by_default`, false);
     }
   };
 
@@ -422,12 +422,12 @@ export default function MemoSection({
                             <label style={{ display: 'flex', alignItems: 'center' }}>
                               <input
                                 type="checkbox"
-                                name={`${memo.id}_hidden`}
-                                checked={(characterData as any)[`${memo.id}_hidden`] || false}
-                                onChange={(e) => handleInputChange(`${memo.id}_hidden`, e.target.checked)}
+                                name={`${memo.id}_open_by_default`}
+                                checked={(characterData as any)[`${memo.id}_open_by_default`] || false}
+                                onChange={(e) => handleInputChange(`${memo.id}_open_by_default`, e.target.checked)}
                                 style={{ marginRight: '4px', boxShadow: 'none', height: '16px', width: '16px' }}
                               />
-                              閉じておく
+                              開いておく
                             </label>
 
                             <label style={{ display: 'flex', alignItems: 'center' }}>

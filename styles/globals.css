@@ -116,6 +116,15 @@ h2 {
   position: relative;
 }
 
+@media only screen and (max-width: 768px) {
+  .profile-sheet-section,
+  .character-name-section,
+  .personal-data-section,
+  .record-section {
+    padding: 25px 9px;
+  }
+}
+
 .section-header .section-icon {
   margin-right: 8px;
   color: var(--ui-theme-color);
@@ -1147,7 +1156,7 @@ textarea,
 
 @media (max-width: 768px) {
   .character-info {
-    padding: 25px 30px;
+    padding: 25px 9px;
   }
 
   .character-input .character-info {
@@ -1713,6 +1722,11 @@ textarea,
 
 .record-section-content {
   padding: 0 15px;
+}
+@media only screen and (max-width: 1029px) {
+  .record-section-content {
+    padding: 0 10px;
+  }
 }
 .memo-item h4 {
   cursor: pointer;

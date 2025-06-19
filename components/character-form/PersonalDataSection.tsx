@@ -605,7 +605,7 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
     }));
   };
 
-  const updateRecordField = (sectionId: string, fieldId: string, field: 'title' | 'content' | 'hidden' | 'password_protected' | 'password', value: string | boolean) => {
+  const updateRecordField = (sectionId: string, fieldId: string, field: 'title' | 'content' | 'open_by_default' | 'password_protected' | 'password', value: string | boolean) => {
     setCharacterData(prev => ({
       ...prev,
       record_sections: (prev.record_sections || []).map(section =>
@@ -634,7 +634,7 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
                 ? { 
                   ...f, 
                   password_protected: checked,
-                  hidden: checked ? true : f.hidden // パスワード保護をオンにした場合のみ「閉じておく」を自動でオン
+                  open_by_default: checked ? false : f.open_by_default // パスワード保護をオンにした場合のみ「開いておく」を自動でオフ
                 } 
                 : f
             )
@@ -972,15 +972,15 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
                         <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
                           <input
                             type="checkbox"
-                            checked={(field as any).hidden || false}
+                            checked={(field as any).open_by_default || false}
                             onChange={(e) => {
                               e.stopPropagation();
-                              updateRecordField(section.id, field.id, 'hidden', e.target.checked);
+                              updateRecordField(section.id, field.id, 'open_by_default', e.target.checked);
                             }}
                             onClick={(e) => e.stopPropagation()}
                             style={{ marginRight: '4px', boxShadow: 'none', height: '16px', width: '16px', cursor: 'pointer' }}
                           />
-                          閉じておく
+                          開いておく
                         </label>
 
                         <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>

@@ -599,7 +599,7 @@ export interface CharacterData {
       id: string;
       title: string;
       content: string;
-      hidden?: boolean;
+      open_by_default?: boolean;
       password_protected?: boolean;
       password?: string;
     }>;
