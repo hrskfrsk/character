@@ -314,6 +314,7 @@ interface RecordSectionDisplayProps {
 const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterData }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [recordSectionsOpen, setRecordSectionsOpen] = useState<{ [key: string]: boolean }>({});
+  const [memoContentOpen, setMemoContentOpen] = useState<{ [key: string]: boolean }>({});
 
   // localStorageから開閉状態を読み込む
   useEffect(() => {
@@ -336,6 +337,23 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
       }
       setRecordSectionsOpen(defaultRecordSectionsOpen);
     }
+
+    // memo-contentの状態を読み込み
+    const memoContentState = localStorage.getItem('recordMemoContentOpen');
+    if (memoContentState !== null) {
+      setMemoContentOpen(JSON.parse(memoContentState));
+    } else {
+      // デフォルトで全memo-contentを開いた状態で初期化
+      const defaultMemoContentOpen: { [key: string]: boolean } = {};
+      if (characterData.record_sections) {
+        characterData.record_sections.forEach(section => {
+          section.fields.forEach(field => {
+            defaultMemoContentOpen[field.id] = true;
+          });
+        });
+      }
+      setMemoContentOpen(defaultMemoContentOpen);
+    }
   }, [characterData.record_sections]);
 
   // 開閉状態をlocalStorageに保存
@@ -353,6 +371,16 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
 
     setRecordSectionsOpen(newSectionsOpen);
     localStorage.setItem('recordSectionsDisplayOpen', JSON.stringify(newSectionsOpen));
+  };
+
+  // memo-contentのトグル
+  const toggleMemoContent = (fieldId: string) => {
+    const currentState = memoContentOpen[fieldId] !== false; // デフォルトでtrue
+    const newState = !currentState;
+    const newMemoContentOpen = { ...memoContentOpen, [fieldId]: newState };
+
+    setMemoContentOpen(newMemoContentOpen);
+    localStorage.setItem('recordMemoContentOpen', JSON.stringify(newMemoContentOpen));
   };
 
   // データが存在するかチェック
@@ -381,7 +409,7 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
 
             return (
               <div key={section.id} className="memo-item">
-                <h4 onClick={() => toggleRecordSection(section.id)} className='data-group-title' style={{ margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <h4 onClick={() => toggleRecordSection(section.id)} className='data-group-title' style={{ marginBottom: '4px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span>
                     <i className="fas fa-clipboard"></i>
                     {section.section_title || '無題の記録'}
@@ -413,18 +441,33 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
                 {isOpen && (
                   <div className='memo-content'>
                     {/* セクション内の項目 */}
-                    {section.fields.map((field) => (
-                      <div key={field.id}>
-                        {field.title && (
-                          <h5 style={{ fontWeight: 'bold', marginBottom: '4px', color: '#333' }}>
-                            {field.title}:
-                          </h5>
-                        )}
-                        <div className="o-memos">
-                          {linkifyText(field.content)}
+                    {section.fields.map((field) => {
+                      const isMemoContentOpen = memoContentOpen[field.id] !== false; // デフォルトで開いている
+
+                      return (
+                        <div key={field.id} className="memo-field">
+                          {field.title && (
+                            <h5
+                              style={{
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center'
+                              }}
+                              onClick={() => toggleMemoContent(field.id)}
+                            >
+                              <i className={`fas ${isMemoContentOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px', marginRight: '5px' }}></i>
+                              <span>{field.title}:</span>
+                            </h5>
+                          )}
+                          {isMemoContentOpen && (
+                            <div className="o-memos">
+                              {linkifyText(field.content)}
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </div>

@@ -3653,9 +3653,6 @@ li {
   align-items: center;
   font-size: 14px;
 }
-.record-section-display .o-memos {
-  border-bottom: 1px dotted rgb(153, 153, 153);
-}
 
 @media (max-width: 768px) {
   .personal-data-section .form-row {
@@ -3683,5 +3680,8 @@ li {
 }
 .o-memos-single-button:hover {
   background: var(--ui-theme-color-hover) !important;
+}
+.memo-field {
+  border-bottom: dotted 1px #000;
 }
 /*# sourceMappingURL=style.css.map */
