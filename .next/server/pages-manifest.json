@@ -4,7 +4,9 @@
   "/_document": "pages/_document.js",
   "/record/[id]": "pages/record/[id].js",
   "/character/[id]": "pages/character/[id].js",
-  "/404": "pages/404.js",
+  "/": "pages/index.js",
   "/create": "pages/create.js",
-  "/": "pages/index.js"
+  "/api/characters/[id]/delete": "pages/api/characters/[id]/delete.js",
+  "/404": "pages/404.js",
+  "/character/preview": "pages/character/preview.js"
 }

@@ -1118,7 +1118,8 @@ export default function CreateCharacterPage() {
     // 一時的にローカルストレージに保存して表示
     localStorage.setItem('tempCharacter', JSON.stringify({
       ...characterData,
-      ...calculatedStats
+      ...calculatedStats,
+      ...(isEditMode && edit ? { id: edit } : {}) // 編集モードの場合はIDを含める
     }));
 
     window.open('/character/preview', '_blank');
