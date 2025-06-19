@@ -11,8 +11,6 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
   const [speechSectionOpen, setSpeechSectionOpen] = useState(true);
   const [preferencesSectionOpen, setPreferencesSectionOpen] = useState(true);
   const [imageSectionOpen, setImageSectionOpen] = useState(true);
-  const [physicalSectionOpen, setPhysicalSectionOpen] = useState(true);
-  const [familySectionOpen, setFamilySectionOpen] = useState(true);
   const [customSectionsOpen, setCustomSectionsOpen] = useState<{ [key: string]: boolean }>({});
 
   // localStorageから開閉状態を読み込む
@@ -31,12 +29,6 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
 
     const imageState = localStorage.getItem('imageDisplaySectionOpen');
     if (imageState !== null) setImageSectionOpen(JSON.parse(imageState));
-
-    const physicalState = localStorage.getItem('physicalDisplaySectionOpen');
-    if (physicalState !== null) setPhysicalSectionOpen(JSON.parse(physicalState));
-
-    const familyState = localStorage.getItem('familyDisplaySectionOpen');
-    if (familyState !== null) setFamilySectionOpen(JSON.parse(familyState));
 
     // 自由入力セクションの状態を読み込み
     const customSectionsState = localStorage.getItem('customSectionsDisplayOpen');
@@ -83,8 +75,6 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
     characterData.theme_song ||
     characterData.motif ||
     (characterData.other_sections && characterData.other_sections.length > 0) ||
-    characterData.physical_features ||
-    characterData.family_structure ||
     (characterData.custom_sections && characterData.custom_sections.length > 0);
 
   // データがない場合は表示しない
@@ -232,49 +222,6 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
             </div>
           )}
 
-          {/* 身体的特徴グループ */}
-          {characterData.physical_features && (
-            <div className={`data-group ${!physicalSectionOpen ? 'collapsed' : ''}`}>
-              <h4 className="data-group-title" onClick={() => {
-                const newState = !physicalSectionOpen;
-                setPhysicalSectionOpen(newState);
-                localStorage.setItem('physicalDisplaySectionOpen', JSON.stringify(newState));
-              }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span><i className="fas fa-user-circle"></i> 身体的特徴</span>
-                <i className={`fas ${physicalSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
-              </h4>
-              {physicalSectionOpen && (
-                <>
-                  <div className="data-item">
-                    <span className="data-label">身体的特徴:</span>
-                    <div className="data-value-block linkified-text">{linkifyText(characterData.physical_features)}</div>
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-
-          {/* 家族構成グループ */}
-          {characterData.family_structure && (
-            <div className={`data-group ${!familySectionOpen ? 'collapsed' : ''}`}>
-              <h4 className="data-group-title" onClick={() => {
-                const newState = !familySectionOpen;
-                setFamilySectionOpen(newState);
-                localStorage.setItem('familyDisplaySectionOpen', JSON.stringify(newState));
-              }} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span><i className="fas fa-users"></i> 家族構成</span>
-                <i className={`fas ${familySectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
-              </h4>
-              {familySectionOpen && (
-                <>
-                  <div className="data-item">
-                    <span className="data-label">家族構成:</span>
-                    <div className="data-value-block linkified-text">{linkifyText(characterData.family_structure)}</div>
-                  </div>
-                </>
-              )}
-            </div>
-          )}
 
           {/* 自由入力セクション */}
           {characterData.custom_sections && characterData.custom_sections.map((section) => {
