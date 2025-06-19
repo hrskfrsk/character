@@ -14,6 +14,8 @@ import SkillsDisplay from '../../components/character-display/SkillsDisplay';
 import BasicDataDisplay from '../../components/character-display/BasicDataDisplay';
 import PersonalDataDisplay, { RecordSectionDisplay } from '../../components/character-display/PersonalDataDisplay';
 import Header from '../../components/Header';
+import FloatingActionButtons from '../../components/FloatingActionButtons';
+import { copyToCcfoliaClipboard } from '../../lib/ccfolia-exporter';
 
 interface CharacterPageProps {
   character: any;
@@ -246,6 +248,10 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
 
   const pageTitle = `${character.character_name || 'キャラクター'} - CoC6版キャラクターシート`;
 
+  const handleCcfoliaExport = () => {
+    copyToCcfoliaClipboard(character, characterId);
+  };
+
   return (
     <>
       <Head>
@@ -258,6 +264,12 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
         title={character.character_name || 'キャラクター'}
         showBackButton={true}
         customBackUrl="/"
+        showEditButton={true}
+        editUrl={`/create?edit=${characterId}`}
+      />
+
+      <FloatingActionButtons
+        onCcfoliaExport={handleCcfoliaExport}
       />
 
       <div className="works-template-default single single-works postid-6531 custom-background">
@@ -335,44 +347,6 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                 />
 
 
-                {/* 編集ボタン */}
-                <div className="edit-button-container" style={{ textAlign: 'center', marginTop: '30px', paddingTop: '20px', borderTop: '2px solid #ddd' }}>
-                  <button
-                    type="button"
-                    onClick={() => router.push(`/create?edit=${characterId}`)}
-                    className="btn edit-btn"
-                    style={{
-                      marginRight: '15px',
-                      padding: '12px 30px',
-                      backgroundColor: '#2196F3',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      fontSize: '16px',
-                      fontWeight: 'bold'
-                    }}
-                  >
-                    <i className="fas fa-edit"></i> キャラクターを編集
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => router.push('/create')}
-                    className="btn new-btn"
-                    style={{
-                      padding: '12px 30px',
-                      backgroundColor: '#4CAF50',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      fontSize: '16px',
-                      fontWeight: 'bold'
-                    }}
-                  >
-                    <i className="fas fa-plus"></i> 新しいキャラクター
-                  </button>
-                </div>
               </article>
             </main>
           </div>

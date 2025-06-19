@@ -270,19 +270,19 @@ RESB({EDU}-対抗値) EDU対抗
       <button
         onClick={copyToClipboard}
         style={{
-          marginTop: '10px',
-          padding: '10px 20px',
+          marginTop: '5px',
+          padding: '5px 20px',
           backgroundColor: '#007bff',
           color: 'white',
           border: 'none',
           borderRadius: '5px',
           cursor: 'pointer',
-          fontSize: '14px',
+          fontSize: '12px',
           fontWeight: 'bold'
         }}
       >
         <i className="fas fa-copy" style={{ marginRight: '5px' }}></i>
-        ココフォリアのコマをコピー
+        チャットパレットをコピー
       </button>
     </li>
   );

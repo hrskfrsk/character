@@ -6,12 +6,16 @@ interface HeaderProps {
   title?: string;
   showBackButton?: boolean;
   customBackUrl?: string;
+  showEditButton?: boolean;
+  editUrl?: string;
 }
 
 const Header: React.FC<HeaderProps> = ({ 
   title = "CoC 6版 キャラクターシート", 
   showBackButton = false,
-  customBackUrl 
+  customBackUrl,
+  showEditButton = false,
+  editUrl
 }) => {
   const router = useRouter();
 
@@ -49,6 +53,12 @@ const Header: React.FC<HeaderProps> = ({
 
         <div className="header-right">
           <nav className="header-nav">
+            {showEditButton && editUrl && (
+              <Link href={editUrl} className="nav-link edit-btn" title="編集">
+                <i className="fas fa-edit"></i>
+                <span className="nav-text">編集</span>
+              </Link>
+            )}
             <Link href="/create" className="nav-link" title="新規作成">
               <i className="fas fa-plus"></i>
               <span className="nav-text">作成</span>
