@@ -625,6 +625,337 @@ textarea,
   }
 }
 
+/* パスワード保護設定 */
+.character-info .password-protection-setting {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.character-info .password-protection-setting label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.character-info .password-protection-setting .password-protection-description {
+  font-size: 0.85em;
+  color: #666;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: #fff;
+  border-radius: 4px;
+  border-left: 3px solid var(--ui-theme-color);
+}
+
+.character-info .password-protection-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* トグルスイッチ */
+.character-info .password-protection-setting label.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  margin-bottom: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 24px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: var(--ui-theme-color);
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(26px);
+}
+
+.toggle-label {
+  font-size: 0.9em;
+  font-weight: 500;
+  color: #333;
+}
+
+/* パスワード入力 */
+.character-info .password-input-group {
+  background: #fff;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.character-info .password-input-group label {
+  font-size: 0.9em;
+  margin-bottom: 6px;
+}
+
+.character-info .password-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9em;
+  margin-bottom: 8px;
+}
+
+.character-info .password-input:focus {
+  outline: none;
+  border-color: var(--ui-theme-color);
+  box-shadow: 0 0 0 2px rgba(116, 205, 195, 0.2);
+}
+
+.character-info .password-hint {
+  font-size: 0.8em;
+  color: #888;
+  display: block;
+}
+
+/* パスワードモーダル */
+.password-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(4px);
+}
+
+.password-modal {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.password-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.password-modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.password-modal-header h2 i {
+  color: var(--ui-theme-color);
+}
+
+.password-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #999;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.password-modal-close:hover {
+  color: #666;
+  background: #f5f5f5;
+}
+
+.password-modal-body {
+  padding: 24px;
+}
+
+.password-modal-description {
+  margin: 0 0 20px;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  color: #555;
+  font-size: 0.95em;
+  border-left: 4px solid var(--ui-theme-color);
+}
+
+.password-modal-description i {
+  color: var(--ui-theme-color);
+  margin-right: 6px;
+}
+
+.password-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.password-input-wrapper label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.password-input-wrapper label i {
+  color: var(--ui-theme-color);
+  margin-right: 6px;
+}
+
+.password-modal-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.password-modal-input:focus {
+  outline: none;
+  border-color: var(--ui-theme-color);
+  box-shadow: 0 0 0 3px rgba(116, 205, 195, 0.1);
+}
+
+.password-modal-input:disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.password-modal-error {
+  padding: 12px 16px;
+  background: #fff5f5;
+  border: 1px solid #fed7d7;
+  border-radius: 6px;
+  color: #e53e3e;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.password-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.password-modal-cancel,
+.password-modal-submit {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.password-modal-cancel {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.password-modal-cancel:hover:not(:disabled) {
+  background: #e8e8e8;
+}
+
+.password-modal-submit {
+  background: var(--ui-theme-color);
+  color: white;
+}
+
+.password-modal-submit:hover:not(:disabled) {
+  background: var(--ui-theme-color-hover);
+}
+
+.password-modal-submit:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .password-modal {
+    width: 95%;
+    margin: 0 10px;
+  }
+
+  .password-modal-header,
+  .password-modal-body {
+    padding: 16px 20px;
+  }
+
+  .password-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .password-modal-cancel,
+  .password-modal-submit {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* アコーディオントグル（見出し風） */
 .character-info .accordion-toggle {
   margin-bottom: 10px;
@@ -3802,7 +4133,6 @@ li {
   text-decoration: none;
   color: white;
 }
-
 
 .nav-link.ccfolia-btn {
   background: rgba(76, 175, 80, 0.2);

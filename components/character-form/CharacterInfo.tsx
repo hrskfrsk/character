@@ -708,6 +708,46 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
         />
       </div>
 
+      {/* パスワード保護設定 */}
+      <div className="password-protection-setting" style={{ marginTop: '15px' }}>
+        <label htmlFor="page_password_enabled">
+          <i className="fas fa-lock"></i> 表示ページのパスワード保護
+        </label>
+        <div className="password-protection-description">
+          <i className="fas fa-info-circle"></i>
+          ONにすると、キャラクター表示ページにパスワードが必要になります。
+        </div>
+        <div className="password-protection-toggle">
+          <label className="toggle-switch">
+            <input
+              type="checkbox"
+              checked={characterData.page_password_enabled || false}
+              onChange={(e) => handleInputChange('page_password_enabled', e.target.checked)}
+            />
+            <span className="toggle-slider"></span>
+          </label>
+          <span className="toggle-label">
+            {characterData.page_password_enabled ? 'パスワード保護ON' : 'パスワード保護OFF'}
+          </span>
+        </div>
+        
+        {characterData.page_password_enabled && (
+          <div className="password-input-group" style={{ marginTop: '10px' }}>
+            <label htmlFor="page_password">
+              <i className="fas fa-key"></i> パスワード
+            </label>
+            <input
+              type="password"
+              id="page_password"
+              name="page_password"
+              placeholder="パスワードを入力してください"
+              value={characterData.page_password || ''}
+              onChange={(e) => handleInputChange('page_password', e.target.value)}
+              className="password-input"
+            />
+          </div>
+        )}
+      </div>
 
       {/* アコーディオントグル（見出し風） */}
       <div className="accordion-toggle">
@@ -841,6 +881,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
               />
             </div>
           </div>
+
 
           {/* 外見・カラー設定 */}
           <div className="appearance-color-setting">

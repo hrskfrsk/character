@@ -16,6 +16,7 @@ import PersonalDataDisplay, { RecordSectionDisplay } from '../../components/char
 import Header from '../../components/Header';
 import FloatingActionButtons from '../../components/FloatingActionButtons';
 import CcfoliaExportModal from '../../components/CcfoliaExportModal';
+import PasswordModal from '../../components/PasswordModal';
 import { copyToCcfoliaClipboard } from '../../lib/ccfolia-exporter';
 
 interface CharacterPageProps {
@@ -30,6 +31,8 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
   const [memoPasswordStates, setMemoPasswordStates] = useState<Record<string, { unlocked: boolean; inputPassword: string }>>({});
   const [diceRollResult, setDiceRollResult] = useState<DiceRollResult | null>(null);
   const [showCcfoliaModal, setShowCcfoliaModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // 色の明度を調整する関数
   const adjustBrightness = (hex: string, percent: number): string => {
@@ -175,6 +178,23 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
     }
   }, [character?.ui_theme_color]);
 
+  // パスワード認証チェック
+  useEffect(() => {
+    if (character?.page_password_enabled && character?.page_password) {
+      // セッションストレージから認証状態をチェック
+      const authKey = `auth-${characterId}`;
+      const isAuthenticatedSession = sessionStorage.getItem(authKey);
+      
+      if (!isAuthenticatedSession) {
+        setShowPasswordModal(true);
+      } else {
+        setIsAuthenticated(true);
+      }
+    } else {
+      setIsAuthenticated(true);
+    }
+  }, [character?.page_password_enabled, character?.page_password, characterId]);
+
   useEffect(() => {
     setMounted(true);
 
@@ -251,6 +271,20 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
     setShowCcfoliaModal(true);
   };
 
+  // パスワード認証成功時の処理
+  const handlePasswordSuccess = () => {
+    const authKey = `auth-${characterId}`;
+    sessionStorage.setItem(authKey, 'true');
+    setIsAuthenticated(true);
+    setShowPasswordModal(false);
+  };
+
+  // パスワードモーダルを閉じる（認証なし）
+  const handlePasswordModalClose = () => {
+    setShowPasswordModal(false);
+    router.push('/'); // ホームページにリダイレクト
+  };
+
   // テーマカラーのスタイルを事前計算
   const getThemeStyles = () => {
     if (!character?.ui_theme_color) return '';
@@ -273,6 +307,47 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
   };
 
 
+  // パスワード保護されている且つ認証されていない場合は、認証待ち状態を表示
+  if (character?.page_password_enabled && character?.page_password && !isAuthenticated) {
+    return (
+      <>
+        <Head>
+          <title>{pageTitle}</title>
+          <meta name="description" content={`${character.character_name}のキャラクターシート`} />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </Head>
+
+        <Header 
+          showBackButton={true}
+          customBackUrl="/"
+        />
+
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '60vh',
+          textAlign: 'center',
+          padding: '20px'
+        }}>
+          <div>
+            <i className="fas fa-lock" style={{ fontSize: '3rem', color: '#ccc', marginBottom: '20px' }}></i>
+            <h2 style={{ color: '#666', marginBottom: '10px' }}>パスワード保護されたページ</h2>
+            <p style={{ color: '#888' }}>このページを表示するには認証が必要です。</p>
+          </div>
+        </div>
+
+        <PasswordModal
+          isOpen={showPasswordModal}
+          onClose={handlePasswordModalClose}
+          onSuccess={handlePasswordSuccess}
+          characterName={character.character_name}
+          expectedPassword={character.page_password}
+        />
+      </>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -282,7 +357,6 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
       </Head>
 
       <Header 
-        title={character.character_name || 'キャラクター'}
         showBackButton={true}
         customBackUrl="/"
         showEditButton={true}

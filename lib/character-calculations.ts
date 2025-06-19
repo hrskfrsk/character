@@ -31,6 +31,10 @@ export interface CharacterData {
   skin_color?: string;
   skin_color_code?: string;
   
+  // パスワード保護設定
+  page_password_enabled?: boolean;
+  page_password?: string;
+  
   // 画像
   character_image_url?: string;
   image_aspect_ratio?: string;
