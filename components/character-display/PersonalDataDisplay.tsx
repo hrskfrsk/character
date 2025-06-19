@@ -4,9 +4,10 @@ import { linkifyText } from '../../lib/text-utils';
 
 interface PersonalDataDisplayProps {
   characterData: CharacterData;
+  hideSecrets?: boolean;
 }
 
-const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData }) => {
+const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData, hideSecrets = false }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [speechSectionOpen, setSpeechSectionOpen] = useState(true);
   const [preferencesSectionOpen, setPreferencesSectionOpen] = useState(true);
@@ -256,9 +257,10 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
 // 記録セクション用のコンポーネント
 interface RecordSectionDisplayProps {
   characterData: CharacterData;
+  hideSecrets?: boolean;
 }
 
-const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterData }) => {
+const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterData, hideSecrets = false }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [recordSectionsOpen, setRecordSectionsOpen] = useState<{ [key: string]: boolean }>({});
   const [memoContentOpen, setMemoContentOpen] = useState<{ [key: string]: boolean }>({});
@@ -411,6 +413,11 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
                       const isPasswordProtected = fieldData.password_protected;
                       const isAuthenticated = passwordAuthenticated[field.id] || false;
                       const shouldShowContent = !isPasswordProtected || isAuthenticated;
+
+                      // 秘匿項目を非表示にする場合、パスワード保護されたフィールドはスキップ
+                      if (hideSecrets && isPasswordProtected) {
+                        return null;
+                      }
 
                       return (
                         <div key={field.id} className="memo-field">

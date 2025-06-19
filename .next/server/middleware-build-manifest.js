@@ -34,11 +34,6 @@ self.__BUILD_MANIFEST = {
       "static/chunks/main.js",
       "static/chunks/pages/character/[id].js"
     ],
-    "/character/preview": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/character/preview.js"
-    ],
     "/create": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

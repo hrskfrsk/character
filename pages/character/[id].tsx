@@ -35,6 +35,11 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [shareOptions, setShareOptions] = useState({
+    hideSecretMemos: false,
+    hideCharacterSheet: false,
+    hideRecords: false
+  });
 
   // 共有機能
   const handleShare = () => {
@@ -42,14 +47,24 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
   };
 
   const handleCopyUrl = async () => {
+    // URLパラメータを構築
+    const params = new URLSearchParams();
+    if (shareOptions.hideSecretMemos) params.append('hideSecrets', 'true');
+    if (shareOptions.hideCharacterSheet) params.append('hideSheet', 'true');
+    if (shareOptions.hideRecords) params.append('hideRecords', 'true');
+    
+    const shareUrl = params.toString() 
+      ? `${window.location.href}${window.location.href.includes('?') ? '&' : '?'}${params.toString()}`
+      : window.location.href;
+
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(shareUrl);
       setShowShareModal(false);
       alert('URLをクリップボードにコピーしました');
     } catch (error) {
       // Clipboard API非対応の場合はフォールバック
       const textArea = document.createElement('textarea');
-      textArea.value = window.location.href;
+      textArea.value = shareUrl;
       document.body.appendChild(textArea);
       textArea.select();
       document.execCommand('copy');
@@ -219,6 +234,20 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
       setIsAuthenticated(true);
     }
   }, [character?.page_password_enabled, character?.page_password, characterId]);
+
+  // URLパラメータから共有設定を取得
+  const [hideSecrets, setHideSecrets] = useState(false);
+  const [hideSheet, setHideSheet] = useState(false);
+  const [hideRecords, setHideRecords] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      setHideSecrets(params.get('hideSecrets') === 'true');
+      setHideSheet(params.get('hideSheet') === 'true');
+      setHideRecords(params.get('hideRecords') === 'true');
+    }
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -399,15 +428,16 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                 {/* 基本データ */}
                 <BasicDataDisplay character={character} />
 
-                <section className="chara-seet character-display">
-                  <div className="data-wrap" style={{ margin: '10px 0' }}>
-                    <div className={`playsheet-header ${!isCollapsed ? 'active' : ''}`} onClick={() => setIsCollapsed(!isCollapsed)}>
-                      <h2>
-                        <i className="fas fa-scroll section-icon"></i> Character Sheet
-                      </h2>
-                      <i className={`fas ${isCollapsed ? 'fa-chevron-right' : 'fa-chevron-down'}`} style={{ marginRight: '5px' }}></i>
-                    </div>
-                    {!isCollapsed && (
+                {!hideSheet && (
+                  <section className="chara-seet character-display">
+                    <div className="data-wrap" style={{ margin: '10px 0' }}>
+                      <div className={`playsheet-header ${!isCollapsed ? 'active' : ''}`} onClick={() => setIsCollapsed(!isCollapsed)}>
+                        <h2>
+                          <i className="fas fa-scroll section-icon"></i> Character Sheet
+                        </h2>
+                        <i className={`fas ${isCollapsed ? 'fa-chevron-right' : 'fa-chevron-down'}`} style={{ marginRight: '5px' }}></i>
+                      </div>
+                      {!isCollapsed && (
                       <div className="equipment-content">
                         <CharacterHeader
                           character={character}
@@ -444,6 +474,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                             toggleSecretMemoVisibility={toggleSecretMemoVisibility}
                             handlePasswordInput={handlePasswordInput}
                             handlePasswordSubmit={handlePasswordSubmit}
+                            hideSecrets={hideSecrets}
                           />
                         </div>
                       </div>
@@ -453,16 +484,21 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
                   </div>
 
                 </section>
+                )}
 
                 {/* パーソナルデータ表示 */}
                 <PersonalDataDisplay
                   characterData={character}
+                  hideSecrets={hideSecrets}
                 />
 
                 {/* 記録セクション表示 */}
-                <RecordSectionDisplay
-                  characterData={character}
-                />
+                {!hideRecords && (
+                  <RecordSectionDisplay
+                    characterData={character}
+                    hideSecrets={hideSecrets}
+                  />
+                )}
 
 
               </article>
@@ -527,6 +563,69 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
             </p>
 
             <div style={{
+              marginBottom: '16px',
+              padding: '12px',
+              backgroundColor: '#f0f0f0',
+              borderRadius: '4px'
+            }}>
+              <p style={{
+                margin: '0 0 12px 0',
+                fontSize: '14px',
+                fontWeight: 'bold',
+                color: '#333'
+              }}>
+                非表示にする項目を選択：
+              </p>
+              
+              <label style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: '8px',
+                fontSize: '14px',
+                cursor: 'pointer'
+              }}>
+                <input
+                  type="checkbox"
+                  checked={shareOptions.hideSecretMemos}
+                  onChange={(e) => setShareOptions(prev => ({ ...prev, hideSecretMemos: e.target.checked }))}
+                  style={{ marginRight: '8px' }}
+                />
+                秘匿メモ・パスワード保護項目
+              </label>
+              
+              <label style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: '8px',
+                fontSize: '14px',
+                cursor: 'pointer'
+              }}>
+                <input
+                  type="checkbox"
+                  checked={shareOptions.hideCharacterSheet}
+                  onChange={(e) => setShareOptions(prev => ({ ...prev, hideCharacterSheet: e.target.checked }))}
+                  style={{ marginRight: '8px' }}
+                />
+                キャラクターシート（能力値・技能）
+              </label>
+              
+              <label style={{
+                display: 'flex',
+                alignItems: 'center',
+                fontSize: '14px',
+                cursor: 'pointer'
+              }}>
+                <input
+                  type="checkbox"
+                  checked={shareOptions.hideRecords}
+                  onChange={(e) => setShareOptions(prev => ({ ...prev, hideRecords: e.target.checked }))}
+                  style={{ marginRight: '8px' }}
+                />
+                記録セクション
+              </label>
+            </div>
+
+            <div style={{
               border: '1px solid #ddd',
               borderRadius: '4px',
               padding: '8px 12px',
@@ -535,7 +634,16 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
               wordBreak: 'break-all',
               marginBottom: '16px'
             }}>
-              {window.location.href}
+              {(() => {
+                const params = new URLSearchParams();
+                if (shareOptions.hideSecretMemos) params.append('hideSecrets', 'true');
+                if (shareOptions.hideCharacterSheet) params.append('hideSheet', 'true');
+                if (shareOptions.hideRecords) params.append('hideRecords', 'true');
+                
+                return params.toString() 
+                  ? `${window.location.href}${window.location.href.includes('?') ? '&' : '?'}${params.toString()}`
+                  : window.location.href;
+              })()}
             </div>
 
             <div style={{ display: 'flex', gap: '8px' }}>

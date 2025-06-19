@@ -3,8 +3,7 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/create": "pages/create.js",
-  "/": "pages/index.js",
   "/character/[id]": "pages/character/[id].js",
-  "/character/preview": "pages/character/preview.js",
+  "/": "pages/index.js",
   "/404": "pages/404.js"
 }

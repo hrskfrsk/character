@@ -11,6 +11,7 @@ interface MemoDisplayProps {
   toggleSecretMemoVisibility: (memoId: string) => void;
   handlePasswordInput: (memoId: string, password: string) => void;
   handlePasswordSubmit: (memoId: string) => void;
+  hideSecrets?: boolean;
 }
 
 export default function MemoDisplay({
@@ -21,7 +22,8 @@ export default function MemoDisplay({
   memoPasswordStates,
   toggleSecretMemoVisibility,
   handlePasswordInput,
-  handlePasswordSubmit
+  handlePasswordSubmit,
+  hideSecrets = false
 }: MemoDisplayProps) {
 
   const hasSecretMemos = (char: any): boolean => {
@@ -92,6 +94,11 @@ export default function MemoDisplay({
               const passwordProtected = character[`memo_${i}_password_protected`];
 
               if (title || content) {
+                // 秘匿項目を非表示にする場合、パスワード保護されたメモはスキップ
+                if (hideSecrets && passwordProtected) {
+                  return;
+                }
+
                 // デフォルトの表示状態：「開いておく」がチェックされている場合のみ表示
                 const defaultVisible = !!openByDefault;
                 const isVisible = secretMemoVisibility[memoId] !== undefined
