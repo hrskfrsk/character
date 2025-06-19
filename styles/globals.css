@@ -3677,4 +3677,10 @@ li {
 .data-group-title i {
   color: var(--ui-theme-color);
 }
+.o-memos-single-button {
+  transition: all 0.3s;
+}
+.o-memos-single-button:hover {
+  background: var(--ui-theme-color-hover) !important;
+}
 /*# sourceMappingURL=style.css.map */

@@ -381,31 +381,35 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
 
             return (
               <div key={section.id} className="memo-item">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h4 onClick={() => toggleRecordSection(section.id)} className='data-group-title' style={{ flex: 1, margin: 0 }}>
-                    <span>
-                      <i className="fas fa-clipboard"></i>
-                      {section.section_title || '無題の記録'}</span>
+                <h4 onClick={() => toggleRecordSection(section.id)} className='data-group-title' style={{ margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span>
+                    <i className="fas fa-clipboard"></i>
+                    {section.section_title || '無題の記録'}
+                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(`/record/${section.id}`, '_blank');
+                      }}
+                      style={{
+                        padding: '4px 8px',
+                        fontSize: '12px',
+                        backgroundColor: 'var(--ui-theme-color, #2196F3)',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        flexShrink: 0
+                      }}
+                      className='o-memos-single-button'
+                    >
+                      個別ページ <i className="fas fa-external-link-alt" style={{ margin: '0 0 0 5px;', color: '#fff' }}></i>
+                    </button>
                     <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
-                  </h4>
-                  <button
-                    type="button"
-                    onClick={() => window.open(`/record/${section.id}`, '_blank')}
-                    style={{
-                      marginLeft: '10px',
-                      padding: '4px 8px',
-                      fontSize: '12px',
-                      backgroundColor: 'var(--ui-theme-color, #2196F3)',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      flexShrink: 0
-                    }}
-                  >
-                    <i className="fas fa-external-link-alt"></i> 個別ページ
-                  </button>
-                </div>
+                  </div>
+                </h4>
                 {isOpen && (
                   <div className='memo-content'>
                     {/* セクション内の項目 */}
