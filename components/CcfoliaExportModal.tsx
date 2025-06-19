@@ -75,7 +75,11 @@ const CcfoliaExportModal: React.FC<CcfoliaExportModalProps> = ({
     // 詳細情報行
     const details = [];
     if (options.memoOptions.job) details.push(character.job || '職業');
-    if (options.memoOptions.sex) details.push(character.sex || character.gender || '性別');
+    if (options.memoOptions.sex) {
+      // 性別の優先順位: gender_custom > sex > gender > デフォルト
+      const sexValue = character.gender_custom || character.sex || character.gender || '性別';
+      details.push(sexValue);
+    }
     if (options.memoOptions.age) details.push(character.age || '年齢');
     if (options.memoOptions.height) details.push(character.height || '身長');
     

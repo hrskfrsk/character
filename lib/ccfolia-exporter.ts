@@ -94,7 +94,11 @@ export function generateCcfoliaCharacterData(
     // 詳細情報行
     const details = [];
     if (exportOptions.memoOptions.job) details.push(character.job || '職業');
-    if (exportOptions.memoOptions.sex) details.push(character.sex || character.gender || '性別');
+    if (exportOptions.memoOptions.sex) {
+      // 性別の優先順位: gender_custom > sex > gender > デフォルト
+      const sexValue = character.gender_custom || character.sex || character.gender || '性別';
+      details.push(sexValue);
+    }
     if (exportOptions.memoOptions.age) details.push(character.age || '年齢');
     if (exportOptions.memoOptions.height) details.push(character.height || '身長');
     
