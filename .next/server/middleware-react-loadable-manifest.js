@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{\"components/CcfoliaExportModal.tsx -> ../lib/ccfolia-exporter\":{\"id\":\"components/CcfoliaExportModal.tsx -> ../lib/ccfolia-exporter\",\"files\":[\"static/chunks/lib_ccfolia-exporter_ts.js\"]}}"
+self.__REACT_LOADABLE_MANIFEST="{}"

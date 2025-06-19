@@ -2,11 +2,9 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/record/[id]": "pages/record/[id].js",
-  "/character/[id]": "pages/character/[id].js",
   "/": "pages/index.js",
+  "/character/preview": "pages/character/preview.js",
   "/create": "pages/create.js",
-  "/api/characters/[id]/delete": "pages/api/characters/[id]/delete.js",
   "/404": "pages/404.js",
-  "/character/preview": "pages/character/preview.js"
+  "/record/[id]": "pages/record/[id].js"
 }

@@ -19,6 +19,8 @@ export default function CreateCharacterPage() {
   const [calculatedStats, setCalculatedStats] = useState<any>({});
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
+  const [originalData, setOriginalData] = useState<CharacterData>({});
   const [additionalCombatSkills, setAdditionalCombatSkills] = useState<Array<{ id: string, counter: number }>>([]);
   const [combatSkillCounter, setCombatSkillCounter] = useState(0);
   const [additionalExplorationSkills, setAdditionalExplorationSkills] = useState<Array<{ id: string, counter: number }>>([]);
@@ -387,6 +389,7 @@ export default function CreateCharacterPage() {
       if (docSnap.exists()) {
         const data = docSnap.data();
         setCharacterData(data as CharacterData);
+        setOriginalData(data as CharacterData); // 元データを保存
 
         // 元々データベースに存在していた動的フィールドを追跡
         const originalFields = new Set<string>();
@@ -429,6 +432,14 @@ export default function CreateCharacterPage() {
   useEffect(() => {
     updateCalculations();
   }, [updateCalculations]);
+
+  // データ変更を検知
+  useEffect(() => {
+    if (isEditMode && Object.keys(originalData).length > 0) {
+      const hasDataChanged = JSON.stringify(characterData) !== JSON.stringify(originalData);
+      setHasChanges(hasDataChanged);
+    }
+  }, [characterData, originalData, isEditMode]);
 
   // フォーム値の更新
   // 職業ポイントの使用量を計算
@@ -1189,18 +1200,22 @@ export default function CreateCharacterPage() {
               form="chara-form"
               className="nav-link"
               style={{
-                background: '#74cdc3',
+                background: (!isEditMode || hasChanges) ? '#74cdc3' : '',
                 border: 'none',
                 cursor: 'pointer'
               }}
               disabled={saving}
               onMouseEnter={(e) => {
                 const btn = e.currentTarget as HTMLElement;
-                btn.style.background = '#5fb5aa';
+                if (!isEditMode || hasChanges) {
+                  btn.style.background = '#5fb5aa';
+                }
               }}
               onMouseLeave={(e) => {
                 const btn = e.currentTarget as HTMLElement;
-                btn.style.background = '#74cdc3';
+                if (!isEditMode || hasChanges) {
+                  btn.style.background = '#74cdc3';
+                }
               }}
             >
               <i className="fas fa-save"></i>
