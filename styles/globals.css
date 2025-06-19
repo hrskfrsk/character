@@ -627,25 +627,26 @@ textarea,
 
 /* パスワード保護設定 */
 .character-info .password-protection-setting {
-  margin-bottom: 20px;
-  padding: 15px;
+  margin-bottom: 15px;
+  padding: 12px;
   background: #f9f9f9;
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid #e0e0e0;
 }
 
 .character-info .password-protection-setting label {
   font-weight: 600;
   color: #333;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   display: block;
+  font-size: 0.95em;
 }
 
 .character-info .password-protection-setting .password-protection-description {
-  font-size: 0.85em;
+  font-size: 0.8em;
   color: #666;
-  margin-bottom: 12px;
-  padding: 8px 12px;
+  margin-bottom: 8px;
+  padding: 6px 10px;
   background: #fff;
   border-radius: 4px;
   border-left: 3px solid var(--ui-theme-color);
@@ -655,7 +656,6 @@ textarea,
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
 }
 
 /* トグルスイッチ */
@@ -714,23 +714,22 @@ textarea,
 /* パスワード入力 */
 .character-info .password-input-group {
   background: #fff;
-  padding: 12px;
-  border-radius: 6px;
+  padding: 10px;
+  border-radius: 5px;
   border: 1px solid #ddd;
 }
 
 .character-info .password-input-group label {
-  font-size: 0.9em;
-  margin-bottom: 6px;
+  font-size: 0.85em;
+  margin-bottom: 5px;
 }
 
 .character-info .password-input {
   width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ddd;
+  padding: 6px 10px;
   border-radius: 4px;
-  font-size: 0.9em;
-  margin-bottom: 8px;
+  font-size: 0.85em;
+  margin-bottom: 0;
 }
 
 .character-info .password-input:focus {

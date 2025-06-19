@@ -710,13 +710,6 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
 
       {/* パスワード保護設定 */}
       <div className="password-protection-setting" style={{ marginTop: '15px' }}>
-        <label htmlFor="page_password_enabled">
-          <i className="fas fa-lock"></i> 表示ページのパスワード保護
-        </label>
-        <div className="password-protection-description">
-          <i className="fas fa-info-circle"></i>
-          ONにすると、キャラクター表示ページにパスワードが必要になります。
-        </div>
         <div className="password-protection-toggle">
           <label className="toggle-switch">
             <input
