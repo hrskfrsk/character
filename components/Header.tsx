@@ -8,6 +8,7 @@ interface HeaderProps {
   showEditButton?: boolean;
   editUrl?: string;
   actionButtons?: React.ReactNode;
+  showCreateButton?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({ 
@@ -15,7 +16,8 @@ const Header: React.FC<HeaderProps> = ({
   customBackUrl,
   showEditButton = false,
   editUrl,
-  actionButtons
+  actionButtons,
+  showCreateButton = true
 }) => {
   const router = useRouter();
 
@@ -57,10 +59,12 @@ const Header: React.FC<HeaderProps> = ({
                 <span className="nav-text">編集</span>
               </Link>
             )}
-            <Link href="/create" className="nav-link" title="新規作成">
-              <i className="fas fa-plus"></i>
-              <span className="nav-text">新規</span>
-            </Link>
+            {showCreateButton && (
+              <Link href="/create" className="nav-link" title="新規作成">
+                <i className="fas fa-plus"></i>
+                <span className="nav-text">新規</span>
+              </Link>
+            )}
           </nav>
         </div>
       </div>
