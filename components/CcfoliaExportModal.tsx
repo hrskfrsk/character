@@ -31,6 +31,7 @@ const CcfoliaExportModal: React.FC<CcfoliaExportModalProps> = ({
   character,
   characterId
 }) => {
+  const [copied, setCopied] = useState(false);
   const [options, setOptions] = useState<ExportOptions>({
     skillOutput: 'all',
     rollCommand: 'CCB',
@@ -211,10 +212,6 @@ const CcfoliaExportModal: React.FC<CcfoliaExportModalProps> = ({
                         character.special_notes ||
                         character.job_memo ||
                         character.occupation_special;
-      // デバッグ用：関連するフィールドを探す
-      console.log('Character keys related to job:', Object.keys(character).filter(key => 
-        key.includes('job') || key.includes('occupation') || key.includes('special') || key.includes('memo')
-      ));
       if (jobSpecial) {
         parts.push('\n【職業特記】\n' + jobSpecial);
       }
@@ -232,10 +229,11 @@ const CcfoliaExportModal: React.FC<CcfoliaExportModalProps> = ({
       
       navigator.clipboard.writeText(jsonString).then(
         () => {
-          onClose();
+          setCopied(true);
           setTimeout(() => {
-            alert('ココフォリア用のコマデータをクリップボードにコピーしました！\nココフォリアの「コマ」→「JSONインポート」で貼り付けてください。');
-          }, 100);
+            setCopied(false);
+            onClose();
+          }, 2000);
         },
         () => {
           // Fallback
@@ -245,14 +243,22 @@ const CcfoliaExportModal: React.FC<CcfoliaExportModalProps> = ({
           textArea.select();
           document.execCommand('copy');
           document.body.removeChild(textArea);
-          onClose();
+          setCopied(true);
           setTimeout(() => {
-            alert('ココフォリア用のコマデータをクリップボードにコピーしました！\nココフォリアの「コマ」→「JSONインポート」で貼り付けてください。');
-          }, 100);
+            setCopied(false);
+            onClose();
+          }, 2000);
         }
       );
     });
   };
+
+  // モーダルが閉じる時にコピー状態をリセット
+  useEffect(() => {
+    if (!isOpen) {
+      setCopied(false);
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -481,9 +487,15 @@ const CcfoliaExportModal: React.FC<CcfoliaExportModalProps> = ({
             <button className="modal-button cancel" onClick={onClose}>
               閉じる
             </button>
-            <button className="modal-button confirm" onClick={handleExport}>
-              <i className="fas fa-copy"></i> コピー
-            </button>
+            {copied ? (
+              <span style={{ color: '#4caf50', fontWeight: 'bold' }}>
+                <i className="fas fa-check"></i> コピーしました
+              </span>
+            ) : (
+              <button className="modal-button confirm" onClick={handleExport}>
+                <i className="fas fa-copy"></i> コピー
+              </button>
+            )}
           </div>
         </div>
       </div>
