@@ -106,7 +106,8 @@ h2 {
 /* 統一されたセクションスタイル */
 .profile-sheet-section,
 .character-name-section,
-.personal-data-section {
+.personal-data-section,
+.record-section {
   background: rgba(255, 255, 255, 0.5);
   border-radius: 8px;
   padding: 25px 30px;

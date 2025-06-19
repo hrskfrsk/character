@@ -589,6 +589,18 @@ export interface CharacterData {
       content: string;
     }>;
   }>;
+  
+  // 記録セクション（動的追加用）
+  record_sections?: Array<{
+    id: string;
+    section_title: string;
+    is_open: boolean;
+    fields: Array<{
+      id: string;
+      title: string;
+      content: string;
+    }>;
+  }>;
 }
 
 // 年齢による能力値修正を計算

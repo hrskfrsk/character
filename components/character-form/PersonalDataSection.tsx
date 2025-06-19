@@ -14,7 +14,6 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
   const [imageSectionOpen, setImageSectionOpen] = useState(true);
   const [physicalSectionOpen, setPhysicalSectionOpen] = useState(true);
   const [familySectionOpen, setFamilySectionOpen] = useState(true);
-  const [customFieldsSectionOpen, setCustomFieldsSectionOpen] = useState(true);
 
   // localStorageから開閉状態を読み込む
   useEffect(() => {
@@ -38,9 +37,6 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
     
     const familyState = localStorage.getItem('familySectionOpen');
     if (familyState !== null) setFamilySectionOpen(JSON.parse(familyState));
-    
-    const customFieldsState = localStorage.getItem('customFieldsSectionOpen');
-    if (customFieldsState !== null) setCustomFieldsSectionOpen(JSON.parse(customFieldsState));
   }, []);
 
   // 開閉状態をlocalStorageに保存
@@ -515,4 +511,219 @@ const PersonalDataSection: React.FC<PersonalDataSectionProps> = ({ characterData
   );
 };
 
+// 記録セクション用のコンポーネント
+interface RecordSectionProps {
+  characterData: CharacterData;
+  setCharacterData: React.Dispatch<React.SetStateAction<CharacterData>>;
+}
+
+const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharacterData }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // localStorageから開閉状態を読み込む
+  useEffect(() => {
+    const savedState = localStorage.getItem('recordSectionOpen');
+    if (savedState !== null) {
+      setIsOpen(JSON.parse(savedState));
+    }
+  }, []);
+
+  // 開閉状態をlocalStorageに保存
+  const toggleOpen = () => {
+    const newState = !isOpen;
+    setIsOpen(newState);
+    localStorage.setItem('recordSectionOpen', JSON.stringify(newState));
+  };
+
+  // 記録セクション管理
+  const addRecordSection = () => {
+    const newSection = {
+      id: `record_${Date.now()}`,
+      section_title: '',
+      is_open: true,
+      fields: []
+    };
+    
+    setCharacterData(prev => ({
+      ...prev,
+      record_sections: [...(prev.record_sections || []), newSection]
+    }));
+  };
+
+  const removeRecordSection = (sectionId: string) => {
+    setCharacterData(prev => ({
+      ...prev,
+      record_sections: (prev.record_sections || []).filter(section => section.id !== sectionId)
+    }));
+  };
+
+  const updateRecordSectionTitle = (sectionId: string, title: string) => {
+    setCharacterData(prev => ({
+      ...prev,
+      record_sections: (prev.record_sections || []).map(section =>
+        section.id === sectionId ? { ...section, section_title: title } : section
+      )
+    }));
+  };
+
+  const toggleRecordSection = (sectionId: string) => {
+    setCharacterData(prev => ({
+      ...prev,
+      record_sections: (prev.record_sections || []).map(section =>
+        section.id === sectionId ? { ...section, is_open: !section.is_open } : section
+      )
+    }));
+  };
+
+  const addFieldToRecordSection = (sectionId: string) => {
+    const newField = {
+      id: `field_${Date.now()}`,
+      title: '',
+      content: ''
+    };
+    
+    setCharacterData(prev => ({
+      ...prev,
+      record_sections: (prev.record_sections || []).map(section =>
+        section.id === sectionId 
+          ? { ...section, fields: [...section.fields, newField] }
+          : section
+      )
+    }));
+  };
+
+  const removeFieldFromRecordSection = (sectionId: string, fieldId: string) => {
+    setCharacterData(prev => ({
+      ...prev,
+      record_sections: (prev.record_sections || []).map(section =>
+        section.id === sectionId 
+          ? { ...section, fields: section.fields.filter(field => field.id !== fieldId) }
+          : section
+      )
+    }));
+  };
+
+  const updateRecordField = (sectionId: string, fieldId: string, field: 'title' | 'content', value: string) => {
+    setCharacterData(prev => ({
+      ...prev,
+      record_sections: (prev.record_sections || []).map(section =>
+        section.id === sectionId 
+          ? { 
+              ...section, 
+              fields: section.fields.map(f =>
+                f.id === fieldId ? { ...f, [field]: value } : f
+              )
+            }
+          : section
+      )
+    }));
+  };
+
+  return (
+    <section className="record-section">
+      <div className="playsheet-header" onClick={toggleOpen}>
+        <h2>
+          <i className="fas fa-clipboard section-icon"></i> 記録
+        </h2>
+        <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '5px' }}></i>
+      </div>
+
+      {isOpen && (
+        <div className="record-section-content">
+          {/* 記録セクション */}
+          {characterData.record_sections && characterData.record_sections.map((section) => (
+            <div key={section.id} className="form-group-section">
+              <div className="section-header-with-controls">
+                <div className="section-title-input">
+                  <input
+                    type="text"
+                    value={section.section_title}
+                    onChange={(e) => updateRecordSectionTitle(section.id, e.target.value)}
+                    placeholder="記録セクション名を入力（例：第1話、探索記録など）"
+                    className="section-title-field"
+                  />
+                </div>
+                <div className="section-controls">
+                  <button
+                    type="button"
+                    onClick={() => toggleRecordSection(section.id)}
+                    className="toggle-btn"
+                    title="セクションを開閉"
+                  >
+                    <i className={`fas ${section.is_open ? 'fa-chevron-down' : 'fa-chevron-right'}`}></i>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => removeRecordSection(section.id)}
+                    className="remove-btn"
+                    title="このセクションを削除"
+                  >
+                    <i className="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+
+              {section.is_open && (
+                <>
+                  {/* セクション内の項目 */}
+                  {section.fields.map((field) => (
+                    <div key={field.id} className="form-group dynamic-section">
+                      <div className="form-row">
+                        <div className="form-group inline">
+                          <label>項目名</label>
+                          <input
+                            type="text"
+                            value={field.title}
+                            onChange={(e) => updateRecordField(section.id, field.id, 'title', e.target.value)}
+                            placeholder="項目名を入力"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeFieldFromRecordSection(section.id, field.id)}
+                          className="remove-btn"
+                          title="この項目を削除"
+                        >
+                          <i className="fas fa-times"></i>
+                        </button>
+                      </div>
+                      <AutoResizeTextarea
+                        value={field.content}
+                        onChange={(value) => updateRecordField(section.id, field.id, 'content', value)}
+                        placeholder="内容を入力"
+                        minRows={3}
+                      />
+                    </div>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() => addFieldToRecordSection(section.id)}
+                    className="add-section-btn"
+                  >
+                    <i className="fas fa-plus"></i> この項目を追加
+                  </button>
+                </>
+              )}
+            </div>
+          ))}
+
+          {/* 新しい記録セクション追加ボタン */}
+          <div className="add-record-section">
+            <button
+              type="button"
+              onClick={addRecordSection}
+              className="add-section-btn large"
+            >
+              <i className="fas fa-plus"></i> 新しい記録セクションを追加
+            </button>
+          </div>
+
+        </div>
+      )}
+    </section>
+  );
+};
+
 export default PersonalDataSection;
+export { RecordSection };

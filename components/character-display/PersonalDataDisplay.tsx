@@ -13,7 +13,6 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
   const [imageSectionOpen, setImageSectionOpen] = useState(true);
   const [physicalSectionOpen, setPhysicalSectionOpen] = useState(true);
   const [familySectionOpen, setFamilySectionOpen] = useState(true);
-  const [customFieldsSectionOpen, setCustomFieldsSectionOpen] = useState(true);
   const [customSectionsOpen, setCustomSectionsOpen] = useState<{[key: string]: boolean}>({});
 
   // localStorageから開閉状態を読み込む
@@ -38,9 +37,6 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
     
     const familyState = localStorage.getItem('familyDisplaySectionOpen');
     if (familyState !== null) setFamilySectionOpen(JSON.parse(familyState));
-    
-    const customFieldsState = localStorage.getItem('customFieldsDisplaySectionOpen');
-    if (customFieldsState !== null) setCustomFieldsSectionOpen(JSON.parse(customFieldsState));
     
     // 自由入力セクションの状態を読み込み
     const customSectionsState = localStorage.getItem('customSectionsDisplayOpen');
@@ -310,4 +306,104 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
   );
 };
 
+// 記録セクション用のコンポーネント
+interface RecordSectionDisplayProps {
+  characterData: CharacterData;
+}
+
+const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterData }) => {
+  const [isOpen, setIsOpen] = useState(true);
+  const [recordSectionsOpen, setRecordSectionsOpen] = useState<{[key: string]: boolean}>({});
+
+  // localStorageから開閉状態を読み込む
+  useEffect(() => {
+    const savedState = localStorage.getItem('recordSectionDisplayOpen');
+    if (savedState !== null) {
+      setIsOpen(JSON.parse(savedState));
+    }
+    
+    // 記録セクションの状態を読み込み
+    const recordSectionsState = localStorage.getItem('recordSectionsDisplayOpen');
+    if (recordSectionsState !== null) {
+      setRecordSectionsOpen(JSON.parse(recordSectionsState));
+    } else {
+      // デフォルトで全セクションを開いた状態で初期化
+      const defaultRecordSectionsOpen: {[key: string]: boolean} = {};
+      if (characterData.record_sections) {
+        characterData.record_sections.forEach(section => {
+          defaultRecordSectionsOpen[section.id] = true;
+        });
+      }
+      setRecordSectionsOpen(defaultRecordSectionsOpen);
+    }
+  }, [characterData.record_sections]);
+
+  // 開閉状態をlocalStorageに保存
+  const toggleOpen = () => {
+    const newState = !isOpen;
+    setIsOpen(newState);
+    localStorage.setItem('recordSectionDisplayOpen', JSON.stringify(newState));
+  };
+
+  // 記録セクションのトグル
+  const toggleRecordSection = (sectionId: string) => {
+    const currentState = recordSectionsOpen[sectionId] !== false; // デフォルトでtrue
+    const newState = !currentState;
+    const newSectionsOpen = { ...recordSectionsOpen, [sectionId]: newState };
+    
+    setRecordSectionsOpen(newSectionsOpen);
+    localStorage.setItem('recordSectionsDisplayOpen', JSON.stringify(newSectionsOpen));
+  };
+
+  // データが存在するかチェック
+  const hasRecordData = characterData.record_sections && characterData.record_sections.length > 0;
+
+  // データがない場合は表示しない
+  if (!hasRecordData) {
+    return null;
+  }
+
+  return (
+    <section className="record-section-display">
+      <h3
+        onClick={toggleOpen}
+        style={{ cursor: 'pointer', userSelect: 'none' }}
+      >
+        <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ marginRight: '5px' }}></i>
+        記録
+      </h3>
+
+      {isOpen && (
+        <div className="record-section-content">
+          {/* 記録セクション */}
+          {characterData.record_sections && characterData.record_sections.map((section) => {
+            const isOpen = recordSectionsOpen[section.id] !== false; // デフォルトで開いている
+            
+            return (
+              <div key={section.id} className={`data-group ${!isOpen ? 'collapsed' : ''}`}>
+                <h4 className="data-group-title" onClick={() => toggleRecordSection(section.id)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span><i className="fas fa-clipboard"></i> {section.section_title || '無題の記録'}</span>
+                  <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
+                </h4>
+                {isOpen && (
+                <>
+                {/* セクション内の項目 */}
+                {section.fields.map((field) => (
+                  <div key={field.id} className="data-item">
+                    <span className="data-label">{field.title}:</span>
+                    <div className="data-value-block linkified-text">{linkifyText(field.content)}</div>
+                  </div>
+                ))}
+                </>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  );
+};
+
 export default PersonalDataDisplay;
+export { RecordSectionDisplay };
