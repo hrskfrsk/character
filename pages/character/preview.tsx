@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { collection, addDoc, doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../lib/firebase-client';
 import DiceRollPopup from '../../components/DiceRollPopup';
 import { rollSkillCheck, DiceRollResult } from '../../lib/dice-roller';
 import SkillDisplay from '../../components/SkillDisplay';
@@ -21,6 +23,7 @@ export default function CharacterPreview() {
   const [secretMemoVisibility, setSecretMemoVisibility] = useState<Record<string, boolean>>({});
   const [memoPasswordStates, setMemoPasswordStates] = useState<Record<string, { unlocked: boolean; inputPassword: string }>>({});
   const [diceRollResult, setDiceRollResult] = useState<DiceRollResult | null>(null);
+  const [saving, setSaving] = useState(false);
 
   // 色の明度を調整する関数
   const adjustBrightness = (hex: string, percent: number): string => {
@@ -121,6 +124,63 @@ export default function CharacterPreview() {
     }));
   };
 
+  const handleSave = async () => {
+    if (!character) return;
+
+    setSaving(true);
+    try {
+      if (!db) {
+        console.error('Firebase not initialized');
+        alert('データベースに接続できません');
+        return;
+      }
+
+      // キャラクター名が入力されているかチェック
+      if (!character.character_name || character.character_name.trim() === '') {
+        alert('キャラクター名を入力してください');
+        return;
+      }
+
+      let savedId = '';
+
+      // 編集モードかどうかをcharacter.idで判定
+      if (character.id) {
+        // 更新モード
+        const finalData = {
+          ...character,
+          updatedAt: new Date(),
+        };
+        
+        // idをデータから除去
+        delete finalData.id;
+
+        const docRef = doc(db, 'characters', character.id);
+        await updateDoc(docRef, finalData);
+        savedId = character.id;
+        alert('キャラクターが更新されました！');
+      } else {
+        // 新規作成モード
+        const finalData = {
+          ...character,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+
+        const docRef = await addDoc(collection(db, 'characters'), finalData);
+        savedId = docRef.id;
+        alert('キャラクターが保存されました！');
+      }
+
+      // 保存後はプレビューウィンドウ自体を表示ページにリダイレクト
+      router.push(`/character/${savedId}`);
+    } catch (error) {
+      console.error('保存エラー:', error);
+      alert('保存に失敗しました');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   useEffect(() => {
     if (character?.ui_theme_color && typeof window !== 'undefined') {
       const color = character.ui_theme_color;
@@ -192,18 +252,42 @@ export default function CharacterPreview() {
         title="プレビュー"
         showBackButton={false}
         actionButtons={
-          <button
-            type="button"
-            className="nav-link"
-            style={{
-              border: 'none',
-              cursor: 'pointer'
-            }}
-            onClick={() => window.close()}
-          >
-            <i className="fas fa-times"></i>
-            <span className="nav-text">閉じる</span>
-          </button>
+          <>
+            <button
+              type="button"
+              className="nav-link"
+              style={{
+                background: '#74cdc3',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+              disabled={saving}
+              onClick={handleSave}
+              onMouseEnter={(e) => {
+                const btn = e.currentTarget as HTMLElement;
+                btn.style.background = '#5fb5aa';
+              }}
+              onMouseLeave={(e) => {
+                const btn = e.currentTarget as HTMLElement;
+                btn.style.background = '#74cdc3';
+              }}
+            >
+              <i className="fas fa-save"></i>
+              <span className="nav-text">{saving ? '保存中...' : '保存'}</span>
+            </button>
+            <button
+              type="button"
+              className="nav-link"
+              style={{
+                border: 'none',
+                cursor: 'pointer'
+              }}
+              onClick={() => window.close()}
+            >
+              <i className="fas fa-times"></i>
+              <span className="nav-text">閉じる</span>
+            </button>
+          </>
         }
       />
 
