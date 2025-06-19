@@ -1710,6 +1710,10 @@ textarea,
 
 /* Memo Item Accordion Styles
 ---------------------------------------------------*/
+
+.record-section-content {
+  padding: 0 15px;
+}
 .memo-item h4 {
   cursor: pointer;
   user-select: none;
@@ -1753,6 +1757,7 @@ textarea,
 
 .memo-item .o-memos {
   padding: 0 10px 10px;
+  font-size: 0.8rem;
 }
 
 .memo-item .o-memos:last-child {
@@ -1760,6 +1765,10 @@ textarea,
 }
 
 /* 入力フォーム用のメモスタイル */
+.character-input .record-section-content {
+  margin: 20px 0 0;
+  padding: 0;
+}
 .character-input .memo-item {
   display: block;
   margin-bottom: 5px;
@@ -3522,13 +3531,15 @@ li {
 }
 
 /* パーソナルデータ表示用スタイル */
-.personal-data-display {
+.personal-data-display,
+.record-section-display {
   border-top: solid 8px #ddd;
   padding-top: 2%;
   margin-top: 3.5%;
 }
 
-.personal-data-display h3 {
+.personal-data-display h3,
+.record-section-display h3 {
   font-size: 0.9rem;
   border-bottom: dotted 1px;
   margin: 20px 10px 15px;
@@ -3577,7 +3588,8 @@ li {
   }
 }
 
-.personal-data-display .data-group-title {
+.personal-data-display .data-group-title,
+.record-section-display .memo-item h4 {
   font-size: 1rem;
   font-weight: 600;
   display: flex;
@@ -3591,7 +3603,15 @@ li {
   padding: 5px 10px 5px 20px;
   background: rgba(255, 255, 255, 0.3);
 }
-
+.record-section-display .memo-item h4 {
+  margin-bottom: 5px;
+}
+.record-section-display .memo-content {
+  margin: 0 10px 10px;
+}
+.record-section-display .memo-item {
+  margin-bottom: 20px;
+}
 .personal-data-display .data-group-title i {
   color: var(--ui-theme-color);
   font-size: 0.9rem;
@@ -3621,6 +3641,20 @@ li {
   white-space: pre-wrap;
   line-height: 1.6;
   font-size: 0.9rem;
+}
+.record-section-display .memo-item h5 {
+  cursor: pointer;
+  user-select: none;
+  margin: 0px;
+  padding: 8px 12px;
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+.record-section-display .o-memos {
+  border-bottom: 1px dotted rgb(153, 153, 153);
 }
 
 @media (max-width: 768px) {

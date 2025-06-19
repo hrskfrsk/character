@@ -519,6 +519,8 @@ interface RecordSectionProps {
 
 const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharacterData }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [draggedSection, setDraggedSection] = useState<string | null>(null);
+  const [draggedField, setDraggedField] = useState<{ sectionId: string, fieldId: string } | null>(null);
 
   // localStorageから開閉状態を読み込む
   useEffect(() => {
@@ -619,6 +621,149 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
     }));
   };
 
+  // セクションのドラッグ&ドロップ
+  const handleSectionDragStart = (e: React.DragEvent, sectionId: string) => {
+    setDraggedSection(sectionId);
+
+    // カスタムゴーストイメージを作成
+    const dragElement = e.currentTarget as HTMLElement;
+    const clone = dragElement.cloneNode(true) as HTMLElement;
+
+    // ゴーストイメージのスタイリング
+    clone.style.position = 'absolute';
+    clone.style.top = '-9999px';
+    clone.style.left = '-9999px';
+    clone.style.width = dragElement.offsetWidth + 'px';
+    clone.style.backgroundColor = 'white';
+    clone.style.borderRadius = '6px';
+    clone.style.boxShadow = '0 6px 20px rgba(34, 198, 216, 0.2)';
+    clone.style.opacity = '0.95';
+    clone.style.pointerEvents = 'none';
+
+    document.body.appendChild(clone);
+    e.dataTransfer.setDragImage(clone, e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+
+    // ドラッグ終了後にクリーンアップ
+    setTimeout(() => {
+      if (document.body.contains(clone)) {
+        document.body.removeChild(clone);
+      }
+    }, 0);
+  };
+
+  const handleSectionDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+  };
+
+  const handleSectionDragEnd = () => {
+    setDraggedSection(null);
+  };
+
+  const handleFieldDragEnd = () => {
+    setDraggedField(null);
+  };
+
+  const handleSectionDrop = (targetSectionId: string) => {
+    if (!draggedSection || draggedSection === targetSectionId) return;
+
+    setCharacterData(prev => {
+      const sections = [...(prev.record_sections || [])];
+      const draggedIndex = sections.findIndex(s => s.id === draggedSection);
+      const targetIndex = sections.findIndex(s => s.id === targetSectionId);
+
+      if (draggedIndex === -1 || targetIndex === -1) return prev;
+
+      const [removed] = sections.splice(draggedIndex, 1);
+      sections.splice(targetIndex, 0, removed);
+
+      return { ...prev, record_sections: sections };
+    });
+
+    setDraggedSection(null);
+  };
+
+  // フィールドのドラッグ&ドロップ
+  const handleFieldDragStart = (e: React.DragEvent, sectionId: string, fieldId: string) => {
+    setDraggedField({ sectionId, fieldId });
+
+    // カスタムゴーストイメージを作成
+    const dragElement = e.currentTarget as HTMLElement;
+    const clone = dragElement.cloneNode(true) as HTMLElement;
+
+    // ゴーストイメージのスタイリング
+    clone.style.position = 'absolute';
+    clone.style.top = '-9999px';
+    clone.style.left = '-9999px';
+    clone.style.width = dragElement.offsetWidth + 'px';
+    clone.style.backgroundColor = 'white';
+    clone.style.borderRadius = '6px';
+    clone.style.boxShadow = '0 6px 20px rgba(34, 198, 216, 0.2)';
+    clone.style.opacity = '0.95';
+    clone.style.pointerEvents = 'none';
+    clone.style.border = '2px solid var(--ui-theme-color)';
+
+    document.body.appendChild(clone);
+    e.dataTransfer.setDragImage(clone, e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+
+    // ドラッグ終了後にクリーンアップ
+    setTimeout(() => {
+      if (document.body.contains(clone)) {
+        document.body.removeChild(clone);
+      }
+    }, 0);
+  };
+
+  const handleFieldDrop = (targetSectionId: string, targetFieldId: string) => {
+    if (!draggedField) return;
+    if (draggedField.sectionId === targetSectionId && draggedField.fieldId === targetFieldId) return;
+
+    setCharacterData(prev => {
+      const sections = [...(prev.record_sections || [])];
+
+      // 同じセクション内での移動
+      if (draggedField.sectionId === targetSectionId) {
+        const sectionIndex = sections.findIndex(s => s.id === targetSectionId);
+        if (sectionIndex === -1) return prev;
+
+        const fields = [...sections[sectionIndex].fields];
+        const draggedIndex = fields.findIndex(f => f.id === draggedField.fieldId);
+        const targetIndex = fields.findIndex(f => f.id === targetFieldId);
+
+        if (draggedIndex === -1 || targetIndex === -1) return prev;
+
+        const [removed] = fields.splice(draggedIndex, 1);
+        fields.splice(targetIndex, 0, removed);
+
+        sections[sectionIndex] = { ...sections[sectionIndex], fields };
+      } else {
+        // 異なるセクション間での移動
+        const sourceSectionIndex = sections.findIndex(s => s.id === draggedField.sectionId);
+        const targetSectionIndex = sections.findIndex(s => s.id === targetSectionId);
+
+        if (sourceSectionIndex === -1 || targetSectionIndex === -1) return prev;
+
+        const sourceFields = [...sections[sourceSectionIndex].fields];
+        const targetFields = [...sections[targetSectionIndex].fields];
+
+        const draggedFieldIndex = sourceFields.findIndex(f => f.id === draggedField.fieldId);
+        const targetFieldIndex = targetFields.findIndex(f => f.id === targetFieldId);
+
+        if (draggedFieldIndex === -1) return prev;
+
+        const [removed] = sourceFields.splice(draggedFieldIndex, 1);
+        const insertIndex = targetFieldIndex === -1 ? targetFields.length : targetFieldIndex;
+        targetFields.splice(insertIndex, 0, removed);
+
+        sections[sourceSectionIndex] = { ...sections[sourceSectionIndex], fields: sourceFields };
+        sections[targetSectionIndex] = { ...sections[targetSectionIndex], fields: targetFields };
+      }
+
+      return { ...prev, record_sections: sections };
+    });
+
+    setDraggedField(null);
+  };
+
   return (
     <section className="record-section">
       <div className="playsheet-header" onClick={toggleOpen}>
@@ -632,8 +777,47 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
         <div className="record-section-content">
           {/* 記録セクション */}
           {characterData.record_sections && characterData.record_sections.map((section) => (
-            <div key={section.id} className="memo-item">
-              <div className="memo-header">
+            <div
+              key={section.id}
+              className="memo-item"
+              draggable
+              onDragStart={(e) => handleSectionDragStart(e, section.id)}
+              onDragOver={handleSectionDragOver}
+              onDragEnd={handleSectionDragEnd}
+              onDrop={() => handleSectionDrop(section.id)}
+              style={{
+                display: 'block',
+                marginBottom: '5px',
+                padding: '15px',
+                boxShadow: '0 0 2px rgba(0, 0, 0, 0.5) inset',
+                borderRadius: '4px',
+                opacity: draggedSection === section.id ? 0.3 : 1,
+                backgroundColor: 'transparent',
+                border: '2px solid transparent',
+                cursor: draggedSection === section.id ? 'grabbing' : 'grab',
+                transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                zIndex: draggedSection === section.id ? 1000 : 1,
+                position: 'relative'
+              }}
+            >
+              <div className="memo-header" style={{
+                display: 'flex',
+                alignItems: 'center'
+              }}>
+                <i
+                  className="fas fa-grip-vertical"
+                  style={{
+                    marginRight: '6px',
+                    fontSize: '12px',
+                    color: draggedSection === section.id ? 'var(--ui-theme-color)' : '#999',
+                    cursor: draggedSection === section.id ? 'grabbing' : 'grab',
+                    userSelect: 'none',
+                    position: 'relative',
+                    zIndex: 10,
+                    transition: 'color 0.25s cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                  title="ドラッグして並べ替え"
+                ></i>
                 <button
                   type="button"
                   onClick={() => toggleRecordSection(section.id)}
@@ -648,12 +832,34 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
                   value={section.section_title}
                   onChange={(e) => updateRecordSectionTitle(section.id, e.target.value)}
                   placeholder="記録セクション名を入力（例：第1話、探索記録など）"
+                  style={{
+                    flex: '1',
+                    padding: '4px 6px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    fontFamily: 'inherit',
+                    border: 'none',
+                    background: 'transparent',
+                    color: '#333',
+                    outline: 'none',
+                    boxShadow: 'none',
+                    textAlign: 'left',
+                  }}
                 />
                 <button
                   type="button"
                   onClick={() => removeRecordSection(section.id)}
                   className="remove-btn"
                   title="このセクションを削除"
+                  style={{
+                    marginLeft: '8px',
+                    padding: '4px 8px',
+                    borderRadius: '3px',
+                    cursor: 'pointer',
+                    fontSize: '12px',
+                    width: 'auto',
+                    height: 'auto'
+                  }}
                 >
                   削除
                 </button>
@@ -663,18 +869,66 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
                 <div>
                   {/* セクション内の項目 */}
                   {section.fields.map((field) => (
-                    <div key={field.id} className="o-memos form-item">
-                      <div className="field-header">
+                    <div
+                      key={field.id}
+                      className="o-memos form-item"
+                      draggable
+                      onDragStart={(e) => handleFieldDragStart(e, section.id, field.id)}
+                      onDragOver={handleSectionDragOver}
+                      onDragEnd={handleFieldDragEnd}
+                      onDrop={() => handleFieldDrop(section.id, field.id)}
+                      style={{
+                        display: 'block',
+                        marginBottom: '8px',
+                        padding: '8px',
+                        boxShadow: '0 0 1px rgba(0, 0, 0, 0.3) inset',
+                        borderRadius: '4px',
+                        opacity: draggedField?.fieldId === field.id ? 0.3 : 1,
+                        backgroundColor: 'transparent',
+                        border: '1px solid #eee',
+                        cursor: draggedField?.fieldId === field.id ? 'grabbing' : 'grab',
+                        transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                        zIndex: draggedField?.fieldId === field.id ? 1000 : 1,
+                        position: 'relative'
+                      }}
+                    >
+                      <div className="field-header" style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginBottom: '5px'
+                      }}>
                         <input
                           type="text"
                           value={field.title}
                           onChange={(e) => updateRecordField(section.id, field.id, 'title', e.target.value)}
                           placeholder="項目名を入力"
+                          style={{
+                            width: '100%',
+                            padding: '15px 12px',
+                            fontSize: '14px',
+                            fontWeight: '500',
+                            fontFamily: 'inherit',
+                            border: 'none',
+                            background: 'transparent',
+                            color: '#333',
+                            outline: 'none',
+                            boxShadow: '0 0 2px rgba(0,0,0,0.5) inset',
+                            textAlign: 'left'
+                          }}
                         />
                         <button
                           type="button"
                           onClick={() => removeFieldFromRecordSection(section.id, field.id)}
                           title="この項目を削除"
+                          style={{
+                            marginLeft: '8px',
+                            padding: '4px 8px',
+                            borderRadius: '3px',
+                            cursor: 'pointer',
+                            fontSize: '12px',
+                            width: 'auto',
+                            height: 'auto'
+                          }}
                         >
                           <i className="fas fa-times"></i>
                         </button>

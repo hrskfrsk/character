@@ -13,7 +13,7 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
   const [imageSectionOpen, setImageSectionOpen] = useState(true);
   const [physicalSectionOpen, setPhysicalSectionOpen] = useState(true);
   const [familySectionOpen, setFamilySectionOpen] = useState(true);
-  const [customSectionsOpen, setCustomSectionsOpen] = useState<{[key: string]: boolean}>({});
+  const [customSectionsOpen, setCustomSectionsOpen] = useState<{ [key: string]: boolean }>({});
 
   // localStorageから開閉状態を読み込む
   useEffect(() => {
@@ -21,30 +21,30 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
     if (savedState !== null) {
       setIsOpen(JSON.parse(savedState));
     }
-    
+
     // 各セクションの開閉状態も読み込み
     const speechState = localStorage.getItem('speechDisplaySectionOpen');
     if (speechState !== null) setSpeechSectionOpen(JSON.parse(speechState));
-    
+
     const preferencesState = localStorage.getItem('preferencesDisplaySectionOpen');
     if (preferencesState !== null) setPreferencesSectionOpen(JSON.parse(preferencesState));
-    
+
     const imageState = localStorage.getItem('imageDisplaySectionOpen');
     if (imageState !== null) setImageSectionOpen(JSON.parse(imageState));
-    
+
     const physicalState = localStorage.getItem('physicalDisplaySectionOpen');
     if (physicalState !== null) setPhysicalSectionOpen(JSON.parse(physicalState));
-    
+
     const familyState = localStorage.getItem('familyDisplaySectionOpen');
     if (familyState !== null) setFamilySectionOpen(JSON.parse(familyState));
-    
+
     // 自由入力セクションの状態を読み込み
     const customSectionsState = localStorage.getItem('customSectionsDisplayOpen');
     if (customSectionsState !== null) {
       setCustomSectionsOpen(JSON.parse(customSectionsState));
     } else {
       // デフォルトで全セクションを開いた状態で初期化
-      const defaultSectionsOpen: {[key: string]: boolean} = {};
+      const defaultSectionsOpen: { [key: string]: boolean } = {};
       if (characterData.custom_sections) {
         characterData.custom_sections.forEach(section => {
           defaultSectionsOpen[section.id] = true;
@@ -66,7 +66,7 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
     const currentState = customSectionsOpen[sectionId] !== false; // デフォルトでtrue
     const newState = !currentState;
     const newSectionsOpen = { ...customSectionsOpen, [sectionId]: newState };
-    
+
     setCustomSectionsOpen(newSectionsOpen);
     localStorage.setItem('customSectionsDisplayOpen', JSON.stringify(newSectionsOpen));
   };
@@ -116,34 +116,34 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
                 <i className={`fas ${speechSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
               </h4>
               {speechSectionOpen && (
-              <>
+                <>
 
-              {/* 一人称・二人称を横並び */}
-              {(characterData.first_person || characterData.second_person) && (
-                <div className="data-row">
-                  {characterData.first_person && (
-                    <div className="data-item inline">
-                      <span className="data-label">一人称:</span>
-                      <span className="data-value">{characterData.first_person}</span>
+                  {/* 一人称・二人称を横並び */}
+                  {(characterData.first_person || characterData.second_person) && (
+                    <div className="data-row">
+                      {characterData.first_person && (
+                        <div className="data-item inline">
+                          <span className="data-label">一人称:</span>
+                          <span className="data-value">{characterData.first_person}</span>
+                        </div>
+                      )}
+
+                      {characterData.second_person && (
+                        <div className="data-item inline">
+                          <span className="data-label">二人称:</span>
+                          <span className="data-value">{characterData.second_person}</span>
+                        </div>
+                      )}
                     </div>
                   )}
 
-                  {characterData.second_person && (
-                    <div className="data-item inline">
-                      <span className="data-label">二人称:</span>
-                      <span className="data-value">{characterData.second_person}</span>
+                  {characterData.speech_style && (
+                    <div className="data-item">
+                      <span className="data-label">口調:</span>
+                      <div className="data-value-block linkified-text">{linkifyText(characterData.speech_style)}</div>
                     </div>
                   )}
-                </div>
-              )}
-
-              {characterData.speech_style && (
-                <div className="data-item">
-                  <span className="data-label">口調:</span>
-                  <div className="data-value-block linkified-text">{linkifyText(characterData.speech_style)}</div>
-                </div>
-              )}
-              </>
+                </>
               )}
             </div>
           )}
@@ -160,35 +160,35 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
                 <i className={`fas ${preferencesSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
               </h4>
               {preferencesSectionOpen && (
-              <>
-              {characterData.likes && (
-                <div className="data-item">
-                  <span className="data-label">好き:</span>
-                  <div className="data-value-block linkified-text">{linkifyText(characterData.likes)}</div>
-                </div>
-              )}
+                <>
+                  {characterData.likes && (
+                    <div className="data-item">
+                      <span className="data-label">好き:</span>
+                      <div className="data-value-block linkified-text">{linkifyText(characterData.likes)}</div>
+                    </div>
+                  )}
 
-              {characterData.dislikes && (
-                <div className="data-item">
-                  <span className="data-label">嫌い:</span>
-                  <div className="data-value-block linkified-text">{linkifyText(characterData.dislikes)}</div>
-                </div>
-              )}
+                  {characterData.dislikes && (
+                    <div className="data-item">
+                      <span className="data-label">嫌い:</span>
+                      <div className="data-value-block linkified-text">{linkifyText(characterData.dislikes)}</div>
+                    </div>
+                  )}
 
-              {characterData.hobbies && (
-                <div className="data-item">
-                  <span className="data-label">趣味:</span>
-                  <div className="data-value-block linkified-text">{linkifyText(characterData.hobbies)}</div>
-                </div>
-              )}
+                  {characterData.hobbies && (
+                    <div className="data-item">
+                      <span className="data-label">趣味:</span>
+                      <div className="data-value-block linkified-text">{linkifyText(characterData.hobbies)}</div>
+                    </div>
+                  )}
 
-              {characterData.special_skills && (
-                <div className="data-item">
-                  <span className="data-label">得意:</span>
-                  <div className="data-value-block linkified-text">{linkifyText(characterData.special_skills)}</div>
-                </div>
-              )}
-              </>
+                  {characterData.special_skills && (
+                    <div className="data-item">
+                      <span className="data-label">得意:</span>
+                      <div className="data-value-block linkified-text">{linkifyText(characterData.special_skills)}</div>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           )}
@@ -205,29 +205,29 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
                 <i className={`fas ${imageSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
               </h4>
               {imageSectionOpen && (
-              <>
-              {characterData.theme_song && (
-                <div className="data-item">
-                  <span className="data-label">曲:</span>
-                  <div className="data-value-block linkified-text">{linkifyText(characterData.theme_song)}</div>
-                </div>
-              )}
+                <>
+                  {characterData.theme_song && (
+                    <div className="data-item">
+                      <span className="data-label">曲:</span>
+                      <div className="data-value-block linkified-text">{linkifyText(characterData.theme_song)}</div>
+                    </div>
+                  )}
 
-              {characterData.motif && (
-                <div className="data-item">
-                  <span className="data-label">モチーフ:</span>
-                  <div className="data-value-block linkified-text">{linkifyText(characterData.motif)}</div>
-                </div>
-              )}
+                  {characterData.motif && (
+                    <div className="data-item">
+                      <span className="data-label">モチーフ:</span>
+                      <div className="data-value-block linkified-text">{linkifyText(characterData.motif)}</div>
+                    </div>
+                  )}
 
-              {/* 動的その他セクション */}
-              {characterData.other_sections && characterData.other_sections.map((section) => (
-                <div key={section.id} className="data-item">
-                  <span className="data-label">{section.title}:</span>
-                  <div className="data-value-block linkified-text">{linkifyText(section.content)}</div>
-                </div>
-              ))}
-              </>
+                  {/* 動的その他セクション */}
+                  {characterData.other_sections && characterData.other_sections.map((section) => (
+                    <div key={section.id} className="data-item">
+                      <span className="data-label">{section.title}:</span>
+                      <div className="data-value-block linkified-text">{linkifyText(section.content)}</div>
+                    </div>
+                  ))}
+                </>
               )}
             </div>
           )}
@@ -244,12 +244,12 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
                 <i className={`fas ${physicalSectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
               </h4>
               {physicalSectionOpen && (
-              <>
-              <div className="data-item">
-                <span className="data-label">身体的特徴:</span>
-                <div className="data-value-block linkified-text">{linkifyText(characterData.physical_features)}</div>
-              </div>
-              </>
+                <>
+                  <div className="data-item">
+                    <span className="data-label">身体的特徴:</span>
+                    <div className="data-value-block linkified-text">{linkifyText(characterData.physical_features)}</div>
+                  </div>
+                </>
               )}
             </div>
           )}
@@ -266,12 +266,12 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
                 <i className={`fas ${familySectionOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
               </h4>
               {familySectionOpen && (
-              <>
-              <div className="data-item">
-                <span className="data-label">家族構成:</span>
-                <div className="data-value-block linkified-text">{linkifyText(characterData.family_structure)}</div>
-              </div>
-              </>
+                <>
+                  <div className="data-item">
+                    <span className="data-label">家族構成:</span>
+                    <div className="data-value-block linkified-text">{linkifyText(characterData.family_structure)}</div>
+                  </div>
+                </>
               )}
             </div>
           )}
@@ -279,7 +279,7 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
           {/* 自由入力セクション */}
           {characterData.custom_sections && characterData.custom_sections.map((section) => {
             const isOpen = customSectionsOpen[section.id] !== false; // デフォルトで開いている
-            
+
             return (
               <div key={section.id} className={`data-group ${!isOpen ? 'collapsed' : ''}`}>
                 <h4 className="data-group-title" onClick={() => toggleCustomSection(section.id)} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -287,15 +287,15 @@ const PersonalDataDisplay: React.FC<PersonalDataDisplayProps> = ({ characterData
                   <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
                 </h4>
                 {isOpen && (
-                <>
-                {/* セクション内の項目 */}
-                {section.fields.map((field) => (
-                  <div key={field.id} className="data-item">
-                    <span className="data-label">{field.title}:</span>
-                    <div className="data-value-block linkified-text">{linkifyText(field.content)}</div>
-                  </div>
-                ))}
-                </>
+                  <>
+                    {/* セクション内の項目 */}
+                    {section.fields.map((field) => (
+                      <div key={field.id} className="data-item">
+                        <span className="data-label">{field.title}:</span>
+                        <div className="data-value-block linkified-text">{linkifyText(field.content)}</div>
+                      </div>
+                    ))}
+                  </>
                 )}
               </div>
             );
@@ -313,7 +313,7 @@ interface RecordSectionDisplayProps {
 
 const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterData }) => {
   const [isOpen, setIsOpen] = useState(true);
-  const [recordSectionsOpen, setRecordSectionsOpen] = useState<{[key: string]: boolean}>({});
+  const [recordSectionsOpen, setRecordSectionsOpen] = useState<{ [key: string]: boolean }>({});
 
   // localStorageから開閉状態を読み込む
   useEffect(() => {
@@ -321,14 +321,14 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
     if (savedState !== null) {
       setIsOpen(JSON.parse(savedState));
     }
-    
+
     // 記録セクションの状態を読み込み
     const recordSectionsState = localStorage.getItem('recordSectionsDisplayOpen');
     if (recordSectionsState !== null) {
       setRecordSectionsOpen(JSON.parse(recordSectionsState));
     } else {
       // デフォルトで全セクションを開いた状態で初期化
-      const defaultRecordSectionsOpen: {[key: string]: boolean} = {};
+      const defaultRecordSectionsOpen: { [key: string]: boolean } = {};
       if (characterData.record_sections) {
         characterData.record_sections.forEach(section => {
           defaultRecordSectionsOpen[section.id] = true;
@@ -350,7 +350,7 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
     const currentState = recordSectionsOpen[sectionId] !== false; // デフォルトでtrue
     const newState = !currentState;
     const newSectionsOpen = { ...recordSectionsOpen, [sectionId]: newState };
-    
+
     setRecordSectionsOpen(newSectionsOpen);
     localStorage.setItem('recordSectionsDisplayOpen', JSON.stringify(newSectionsOpen));
   };
@@ -378,30 +378,31 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
           {/* 記録セクション */}
           {characterData.record_sections && characterData.record_sections.map((section) => {
             const isOpen = recordSectionsOpen[section.id] !== false; // デフォルトで開いている
-            
+
             return (
               <div key={section.id} className="memo-item">
-                <h4 onClick={() => toggleRecordSection(section.id)}>
-                  <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`}></i>
-                  <i className="fas fa-clipboard"></i>
-                  {section.section_title || '無題の記録'}
+                <h4 onClick={() => toggleRecordSection(section.id)} className='data-group-title'>
+                  <span>
+                    <i className="fas fa-clipboard"></i>
+                    {section.section_title || '無題の記録'}</span>
+                  <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
                 </h4>
                 {isOpen && (
-                <div>
-                  {/* セクション内の項目 */}
-                  {section.fields.map((field) => (
-                    <div key={field.id} className="o-memos">
-                      {field.title && (
-                        <div style={{ fontWeight: 'bold', marginBottom: '4px', color: '#333' }}>
-                          {field.title}:
+                  <div className='memo-content'>
+                    {/* セクション内の項目 */}
+                    {section.fields.map((field) => (
+                      <div key={field.id}>
+                        {field.title && (
+                          <h5 style={{ fontWeight: 'bold', marginBottom: '4px', color: '#333' }}>
+                            {field.title}:
+                          </h5>
+                        )}
+                        <div className="o-memos">
+                          {linkifyText(field.content)}
                         </div>
-                      )}
-                      <div className="linkified-text">
-                        {linkifyText(field.content)}
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
                 )}
               </div>
             );
