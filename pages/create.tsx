@@ -1108,6 +1108,21 @@ export default function CreateCharacterPage() {
     }
   };
 
+  // プレビューボタン
+  const handlePreview = () => {
+    if (!calculatedStats.character_name) {
+      alert('キャラクター名を入力してください');
+      return;
+    }
+
+    // 一時的にローカルストレージに保存して表示
+    localStorage.setItem('tempCharacter', JSON.stringify({
+      ...characterData,
+      ...calculatedStats
+    }));
+
+    window.open('/character/preview', '_blank');
+  };
 
   const handleDelete = async () => {
     if (!isEditMode || !edit) return;
@@ -1155,28 +1170,42 @@ export default function CreateCharacterPage() {
         showBackButton={true}
         customBackUrl="/"
         actionButtons={
-          <button
-            type="submit"
-            form="chara-form"
-            className="nav-link"
-            style={{
-              background: '#74cdc3',
-              border: 'none',
-              cursor: 'pointer'
-            }}
-            disabled={saving}
-            onMouseEnter={(e) => {
-              const btn = e.currentTarget as HTMLElement;
-              btn.style.background = '#5fb5aa';
-            }}
-            onMouseLeave={(e) => {
-              const btn = e.currentTarget as HTMLElement;
-              btn.style.background = '#74cdc3';
-            }}
-          >
-            <i className="fas fa-save"></i>
-            <span className="nav-text">{saving ? '保存中...' : (isEditMode ? '更新' : '保存')}</span>
-          </button>
+          <>
+            <button
+              type="button"
+              className="nav-link"
+              style={{
+                border: 'none',
+                cursor: 'pointer'
+              }}
+              onClick={handlePreview}
+            >
+              <i className="fas fa-eye"></i>
+              <span className="nav-text">プレビュー</span>
+            </button>
+            <button
+              type="submit"
+              form="chara-form"
+              className="nav-link"
+              style={{
+                background: '#74cdc3',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+              disabled={saving}
+              onMouseEnter={(e) => {
+                const btn = e.currentTarget as HTMLElement;
+                btn.style.background = '#5fb5aa';
+              }}
+              onMouseLeave={(e) => {
+                const btn = e.currentTarget as HTMLElement;
+                btn.style.background = '#74cdc3';
+              }}
+            >
+              <i className="fas fa-save"></i>
+              <span className="nav-text">{saving ? '保存中...' : (isEditMode ? '更新' : '保存')}</span>
+            </button>
+          </>
         }
       />
 
