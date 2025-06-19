@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 interface HeaderProps {
-  title?: string;
   showBackButton?: boolean;
   customBackUrl?: string;
   showEditButton?: boolean;
@@ -12,7 +11,6 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ 
-  title = "CoC 6版 キャラクターシート", 
   showBackButton = false,
   customBackUrl,
   showEditButton = false,
@@ -42,13 +40,10 @@ const Header: React.FC<HeaderProps> = ({
               <i className="fas fa-arrow-left"></i>
             </button>
           )}
-        </div>
-
-        <div className="header-center">
           <Link href="/" className="header-title">
             <h1>
               <i className="fas fa-scroll" style={{ marginRight: '8px' }}></i>
-              {title}
+              ChroLog
             </h1>
           </Link>
         </div>

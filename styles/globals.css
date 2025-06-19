@@ -3713,12 +3713,10 @@ li {
 
 /* Header Styles */
 .app-header {
-  background: var(--ui-theme-gradient);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: #333;
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 3px solid rgba(255, 255, 255, 0.2);
 }
 
 .header-container {
@@ -3727,17 +3725,17 @@ li {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 70px;
+  height: 50px;
 }
 
-.header-left,
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .header-right {
   flex: 1;
-}
-
-.header-center {
-  flex: 2;
-  text-align: center;
 }
 
 .header-title {
@@ -3752,12 +3750,12 @@ li {
 }
 
 .header-title h1 {
-  margin: 0;
-  font-size: 1.5rem;
+  margin: 0 0 0 10px;
+  font-size: 1rem;
   font-weight: 600;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -3766,8 +3764,8 @@ li {
   color: white;
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3829,11 +3827,79 @@ li {
   font-size: 0.85rem;
 }
 
+/* Large tablet responsiveness */
+@media (max-width: 1024px) and (min-width: 957px) {
+  .header-action-buttons {
+    margin-right: 10px !important;
+  }
+
+  .header-action-buttons .nav-link {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .header-action-buttons .nav-text {
+    font-size: 0.75rem;
+  }
+
+  .header-nav {
+    gap: 10px;
+  }
+}
+
+/* Mid-large tablet responsiveness */
+@media (max-width: 956px) and (min-width: 901px) {
+  .header-action-buttons {
+    margin-right: 9px !important;
+  }
+
+  .header-action-buttons .nav-link {
+    padding: 5px 11px;
+    font-size: 0.78rem;
+  }
+
+  .header-action-buttons .nav-text {
+    font-size: 0.72rem;
+  }
+
+  .header-nav {
+    gap: 9px;
+  }
+
+  .header-nav .nav-link {
+    padding: 7px 11px;
+  }
+}
+
+/* Medium tablet responsiveness */
+@media (max-width: 900px) and (min-width: 769px) {
+  .header-action-buttons {
+    margin-right: 8px !important;
+  }
+
+  .header-action-buttons .nav-link {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+  }
+
+  .header-action-buttons .nav-text {
+    font-size: 0.7rem;
+  }
+
+  .header-nav {
+    gap: 8px;
+  }
+
+  .header-nav .nav-link {
+    padding: 6px 10px;
+  }
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .header-container {
     padding: 0 15px;
-    height: 60px;
+    height: 45px;
   }
 
   .header-title h1 {
@@ -3853,6 +3919,15 @@ li {
   .header-nav {
     gap: 10px;
   }
+
+  .header-action-buttons {
+    margin-right: 8px !important;
+  }
+
+  .header-action-buttons .nav-link {
+    padding: 6px;
+    min-width: 35px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -3867,14 +3942,14 @@ li {
 
 /* Page content with header */
 .page-with-header {
-  min-height: calc(100vh - 70px);
+  min-height: calc(100vh - 50px);
   position: relative;
 }
 
 /* Floating Action Buttons */
 .floating-action-buttons {
   position: absolute;
-  top: calc(70px + 15px);
+  top: calc(50px + 15px);
   right: 20px;
   z-index: 100;
   display: flex;
