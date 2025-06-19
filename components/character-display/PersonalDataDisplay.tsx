@@ -381,12 +381,31 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
 
             return (
               <div key={section.id} className="memo-item">
-                <h4 onClick={() => toggleRecordSection(section.id)} className='data-group-title'>
-                  <span>
-                    <i className="fas fa-clipboard"></i>
-                    {section.section_title || '無題の記録'}</span>
-                  <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
-                </h4>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h4 onClick={() => toggleRecordSection(section.id)} className='data-group-title' style={{ flex: 1, margin: 0 }}>
+                    <span>
+                      <i className="fas fa-clipboard"></i>
+                      {section.section_title || '無題の記録'}</span>
+                    <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px' }}></i>
+                  </h4>
+                  <button
+                    type="button"
+                    onClick={() => window.open(`/record/${section.id}`, '_blank')}
+                    style={{
+                      marginLeft: '10px',
+                      padding: '4px 8px',
+                      fontSize: '12px',
+                      backgroundColor: 'var(--ui-theme-color, #2196F3)',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      flexShrink: 0
+                    }}
+                  >
+                    <i className="fas fa-external-link-alt"></i> 個別ページ
+                  </button>
+                </div>
                 {isOpen && (
                   <div className='memo-content'>
                     {/* セクション内の項目 */}

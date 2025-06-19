@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Call of Cthulhu 6th Edition Character Sheet with Next.js SSR",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3000 -H 0.0.0.0",
+    "dev:stable": "NODE_OPTIONS='--max-old-space-size=4096 --max-http-header-size=80000' next dev -p 3000 -H 0.0.0.0",
+    "dev:clean": "./start-dev.sh",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

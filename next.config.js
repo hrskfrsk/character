@@ -5,15 +5,24 @@ const nextConfig = {
   
   // 開発時の設定
   ...(process.env.NODE_ENV === 'development' && {
-    webpack: (config) => {
-      config.watchOptions = {
-        // pollを削除して通常のファイル監視に
-        aggregateTimeout: 300,
-        ignored: /node_modules/,
-      }
-      // ホットリロード対策
-      config.infrastructureLogging = {
-        level: 'warn',
+    webpack: (config, { dev }) => {
+      if (dev) {
+        config.watchOptions = {
+          poll: 1000,
+          aggregateTimeout: 300,
+          ignored: ['**/node_modules/**', '**/.git/**', '**/.next/**'],
+        }
+        // ホットリロード安定化
+        config.infrastructureLogging = {
+          level: 'error',
+        }
+        // キャッシュ設定
+        config.cache = {
+          type: 'filesystem',
+          buildDependencies: {
+            config: [__filename],
+          },
+        }
       }
       return config
     }
@@ -37,6 +46,9 @@ const nextConfig = {
   // 既存のassetsディレクトリを保持
   assetPrefix: process.env.NODE_ENV === 'production' ? '/character' : '',
   basePath: process.env.NODE_ENV === 'production' ? '/character' : '',
+  
+  // CORS警告の修正
+  allowedDevOrigins: ['http://127.0.0.1:3000'],
   
   // 静的エクスポート時の設定
   experimental: {
