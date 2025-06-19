@@ -425,10 +425,11 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
                               onClick={() => toggleMemoContent(field.id)}
                             >
                               <i className={`fas ${isMemoContentOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px', marginRight: '5px' }}></i>
-                              <span>{field.title}</span>
                               {isPasswordProtected && (
-                                <i className="fas fa-lock" style={{ fontSize: '10px', marginLeft: '5px', color: '#999' }}></i>
+                                <i className="fas fa-lock" style={{ fontSize: '12px', marginRight: '5px', opacity: '0.7' }}></i>
                               )}
+                              <span>{field.title}</span>
+
                             </h5>
                           )}
                           {isMemoContentOpen && (
@@ -470,7 +471,7 @@ const RecordSectionDisplay: React.FC<RecordSectionDisplayProps> = ({ characterDa
                                         cursor: 'pointer'
                                       }}
                                     >
-                                      確認
+                                      <i className="fas fa-unlock" style={{ marginRight: '4px' }}></i>解除
                                     </button>
                                   </div>
                                 </div>

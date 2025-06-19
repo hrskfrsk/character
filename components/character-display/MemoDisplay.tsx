@@ -167,12 +167,12 @@ export default function MemoDisplay({
                                   onClick={() => handlePasswordSubmit(memoId)}
                                   style={{
                                     padding: '6px 12px',
-                                    backgroundColor: '#28a745',
+                                    backgroundColor: 'var(--ui-theme-color)',
                                     color: 'white',
                                     border: 'none',
                                     borderRadius: '3px',
                                     cursor: 'pointer',
-                                    fontSize: '12px'
+                                    fontSize: '14px'
                                   }}
                                 >
                                   <i className="fas fa-unlock" style={{ marginRight: '4px' }}></i>
