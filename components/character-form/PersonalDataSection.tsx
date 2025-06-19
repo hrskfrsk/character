@@ -605,7 +605,7 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
     }));
   };
 
-  const updateRecordField = (sectionId: string, fieldId: string, field: 'title' | 'content', value: string) => {
+  const updateRecordField = (sectionId: string, fieldId: string, field: 'title' | 'content' | 'hidden' | 'password_protected' | 'password', value: string | boolean) => {
     setCharacterData(prev => ({
       ...prev,
       record_sections: (prev.record_sections || []).map(section =>
@@ -614,6 +614,29 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
             ...section,
             fields: section.fields.map(f =>
               f.id === fieldId ? { ...f, [field]: value } : f
+            )
+          }
+          : section
+      )
+    }));
+  };
+
+  // パスワード保護の変更ハンドラー
+  const handleRecordPasswordProtectedChange = (sectionId: string, fieldId: string, checked: boolean) => {
+    setCharacterData(prev => ({
+      ...prev,
+      record_sections: (prev.record_sections || []).map(section =>
+        section.id === sectionId
+          ? {
+            ...section,
+            fields: section.fields.map(f =>
+              f.id === fieldId 
+                ? { 
+                  ...f, 
+                  password_protected: checked,
+                  hidden: checked ? true : f.hidden // パスワード保護をオンにした場合のみ「閉じておく」を自動でオン
+                } 
+                : f
             )
           }
           : section
@@ -939,6 +962,61 @@ const RecordSection: React.FC<RecordSectionProps> = ({ characterData, setCharact
                         placeholder="内容を入力"
                         minRows={3}
                       />
+
+                      {/* 設定 */}
+                      <div 
+                        style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', marginTop: '8px' }}
+                        onClick={(e) => e.stopPropagation()}
+                        onMouseDown={(e) => e.stopPropagation()}
+                      >
+                        <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                          <input
+                            type="checkbox"
+                            checked={(field as any).hidden || false}
+                            onChange={(e) => {
+                              e.stopPropagation();
+                              updateRecordField(section.id, field.id, 'hidden', e.target.checked);
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                            style={{ marginRight: '4px', boxShadow: 'none', height: '16px', width: '16px', cursor: 'pointer' }}
+                          />
+                          閉じておく
+                        </label>
+
+                        <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                          <input
+                            type="checkbox"
+                            checked={(field as any).password_protected || false}
+                            onChange={(e) => {
+                              e.stopPropagation();
+                              handleRecordPasswordProtectedChange(section.id, field.id, e.target.checked);
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                            style={{ marginRight: '4px', boxShadow: 'none', height: '16px', width: '16px', cursor: 'pointer' }}
+                          />
+                          パスワード保護
+                        </label>
+
+                        {(field as any).password_protected && (
+                          <input
+                            type="password"
+                            value={(field as any).password || ''}
+                            onChange={(e) => {
+                              e.stopPropagation();
+                              updateRecordField(section.id, field.id, 'password', e.target.value);
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                            onFocus={(e) => e.stopPropagation()}
+                            placeholder="パスワード"
+                            style={{
+                              padding: '4px 6px',
+                              borderRadius: '3px',
+                              fontSize: '13px',
+                              width: '150px'
+                            }}
+                          />
+                        )}
+                      </div>
                     </div>
                   ))}
 

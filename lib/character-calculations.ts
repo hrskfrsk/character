@@ -599,6 +599,9 @@ export interface CharacterData {
       id: string;
       title: string;
       content: string;
+      hidden?: boolean;
+      password_protected?: boolean;
+      password?: string;
     }>;
   }>;
 }
