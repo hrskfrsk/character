@@ -5,6 +5,7 @@
   "/": "pages/index.js",
   "/character/preview": "pages/character/preview.js",
   "/create": "pages/create.js",
-  "/404": "pages/404.js",
-  "/record/[id]": "pages/record/[id].js"
+  "/record/[id]": "pages/record/[id].js",
+  "/character/[id]": "pages/character/[id].js",
+  "/404": "pages/404.js"
 }

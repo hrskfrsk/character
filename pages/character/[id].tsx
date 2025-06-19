@@ -375,7 +375,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
 
                 <section className="chara-seet character-display">
                   <div className="data-wrap" style={{ margin: '10px 0' }}>
-                    <div className="playsheet-header" onClick={() => setIsCollapsed(!isCollapsed)}>
+                    <div className={`playsheet-header ${!isCollapsed ? 'active' : ''}`} onClick={() => setIsCollapsed(!isCollapsed)}>
                       <h2>
                         <i className="fas fa-scroll section-icon"></i> Character Sheet
                       </h2>
