@@ -3781,7 +3781,7 @@ li {
 
 .header-nav {
   display: flex;
-  gap: 15px;
+  gap: 8px;
   justify-content: flex-end;
 }
 
@@ -3791,7 +3791,7 @@ li {
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 8px 12px;
+  padding: 5px 12px;
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.15);
   transition: all 0.3s ease;
@@ -3829,69 +3829,26 @@ li {
 
 /* Large tablet responsiveness */
 @media (max-width: 1024px) and (min-width: 957px) {
-  .header-action-buttons {
-    margin-right: 10px !important;
-  }
-
-  .header-action-buttons .nav-link {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-  }
-
-  .header-action-buttons .nav-text {
-    font-size: 0.75rem;
-  }
-
   .header-nav {
-    gap: 10px;
+    gap: 6px;
   }
 }
 
 /* Mid-large tablet responsiveness */
 @media (max-width: 956px) and (min-width: 901px) {
-  .header-action-buttons {
-    margin-right: 9px !important;
-  }
-
-  .header-action-buttons .nav-link {
-    padding: 5px 11px;
-    font-size: 0.78rem;
-  }
-
-  .header-action-buttons .nav-text {
-    font-size: 0.72rem;
-  }
-
   .header-nav {
-    gap: 9px;
+    gap: 5px;
   }
 
   .header-nav .nav-link {
-    padding: 7px 11px;
+    padding: 5px 11px;
   }
 }
 
 /* Medium tablet responsiveness */
 @media (max-width: 900px) and (min-width: 769px) {
-  .header-action-buttons {
-    margin-right: 8px !important;
-  }
-
-  .header-action-buttons .nav-link {
-    padding: 5px 10px;
-    font-size: 0.75rem;
-  }
-
-  .header-action-buttons .nav-text {
-    font-size: 0.7rem;
-  }
-
   .header-nav {
     gap: 8px;
-  }
-
-  .header-nav .nav-link {
-    padding: 6px 10px;
   }
 }
 
@@ -3917,14 +3874,10 @@ li {
   }
 
   .header-nav {
-    gap: 10px;
+    gap: 6px;
   }
 
-  .header-action-buttons {
-    margin-right: 8px !important;
-  }
-
-  .header-action-buttons .nav-link {
+  .header-nav .nav-link {
     padding: 6px;
     min-width: 35px;
   }

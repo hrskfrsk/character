@@ -49,12 +49,8 @@ const Header: React.FC<HeaderProps> = ({
         </div>
 
         <div className="header-right" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-          {actionButtons && (
-            <div className="header-action-buttons" style={{ marginRight: '15px' }}>
-              {actionButtons}
-            </div>
-          )}
           <nav className="header-nav">
+            {actionButtons}
             {showEditButton && editUrl && (
               <Link href={editUrl} className="nav-link edit-btn" title="編集">
                 <i className="fas fa-edit"></i>
@@ -63,7 +59,7 @@ const Header: React.FC<HeaderProps> = ({
             )}
             <Link href="/create" className="nav-link" title="新規作成">
               <i className="fas fa-plus"></i>
-              <span className="nav-text">作成</span>
+              <span className="nav-text">新規</span>
             </Link>
           </nav>
         </div>

@@ -1168,7 +1168,7 @@ export default function CreateCharacterPage() {
         showBackButton={true}
         customBackUrl="/"
         actionButtons={
-          <div style={{ display: 'flex', gap: '15px' }}>
+          <>
             <button
               type="button"
               className="nav-link"
@@ -1212,7 +1212,7 @@ export default function CreateCharacterPage() {
               <i className="fas fa-save"></i>
               <span className="nav-text">{saving ? '保存中...' : (isEditMode ? '更新' : '保存')}</span>
             </button>
-          </div>
+          </>
         }
       />
 
