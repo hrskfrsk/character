@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { getAllCharacterData } from '../../lib/firebase-admin';
 import { linkifyText } from '../../lib/text-utils';
 import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 interface RecordPageProps {
   recordSection: any;
@@ -162,6 +163,8 @@ export default function RecordPage({ recordSection, characterName, sectionTitle 
           </div>
         </div>
       </div>
+
+      <Footer />
     </>
   );
 }

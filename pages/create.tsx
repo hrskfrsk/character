@@ -6,6 +6,7 @@ import { collection, addDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase-client';
 import { calculateAllStats, CharacterData } from '../lib/character-calculations';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 // 新しいコンポーネントをインポート
 import ProfileSheet from '../components/character-form/ProfileSheet';
@@ -1384,6 +1385,8 @@ export default function CreateCharacterPage() {
           </main>
         </div>
       </div>
+
+      <Footer />
 
     </>
   );

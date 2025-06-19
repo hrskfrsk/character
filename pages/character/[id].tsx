@@ -14,6 +14,7 @@ import SkillsDisplay from '../../components/character-display/SkillsDisplay';
 import BasicDataDisplay from '../../components/character-display/BasicDataDisplay';
 import PersonalDataDisplay, { RecordSectionDisplay } from '../../components/character-display/PersonalDataDisplay';
 import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 import FloatingActionButtons from '../../components/FloatingActionButtons';
 import CcfoliaExportModal from '../../components/CcfoliaExportModal';
 import PasswordModal from '../../components/PasswordModal';
@@ -457,6 +458,8 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
         character={character}
         characterId={characterId}
       />
+
+      <Footer />
     </>
   );
 }

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { db } from '../lib/firebase-client';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 export default function Home() {
   const [characters, setCharacters] = useState<any[]>([]);
@@ -132,6 +133,8 @@ export default function Home() {
           </div>
         )}
       </main>
+      
+      <Footer />
       
       <style jsx>{`
         .container {
