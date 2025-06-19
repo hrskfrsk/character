@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { getAllCharacterData } from '../../lib/firebase-admin';
 import { linkifyText } from '../../lib/text-utils';
+import Header from '../../components/Header';
 
 interface RecordPageProps {
   recordSection: any;
@@ -50,11 +51,16 @@ export default function RecordPage({ recordSection, characterName, sectionTitle 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
+      <Header 
+        title={sectionTitle}
+        showBackButton={true}
+      />
+
       <div style={{ 
-        minHeight: '100vh',
+        minHeight: 'calc(100vh - 70px)',
         backgroundColor: '#f5f5f5',
         padding: '20px'
-      }}>
+      }} className="page-with-header">
         <div style={{
           maxWidth: '800px',
           margin: '0 auto',

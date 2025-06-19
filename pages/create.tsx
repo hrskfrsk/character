@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { collection, addDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase-client';
 import { calculateAllStats, CharacterData } from '../lib/character-calculations';
+import Header from '../components/Header';
 
 // 新しいコンポーネントをインポート
 import ProfileSheet from '../components/character-form/ProfileSheet';
@@ -1162,14 +1163,18 @@ export default function CreateCharacterPage() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <div id="content" className="character-input">
+      <Header 
+        title={isEditMode ? "キャラクター編集" : "キャラクター作成"}
+        showBackButton={true}
+        customBackUrl="/"
+      />
+
+      <div id="content" className="character-input page-with-header">
         <div className="wrap">
           <main id="main">
             <article className="character-input">
               <form id="chara-form" className="pc-data" onSubmit={handleSubmit}>
                 <section className="chara-seet">
-                  <h1><i className="fa-brands fa-octopus-deploy"></i> クトゥルフ神話TRPG第6版</h1>
-                  <p className="subtitle">キャラクター作成シート</p>
 
                   {/* プロフィールシート */}
                   <ProfileSheet

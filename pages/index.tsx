@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { db } from '../lib/firebase-client';
+import Header from '../components/Header';
 
 export default function Home() {
   const [characters, setCharacters] = useState<any[]>([]);
@@ -78,8 +79,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       
-      <main className="container">
-        <h1>クトゥルフ神話TRPG第6版 キャラクターシート</h1>
+      <Header />
+      
+      <main className="container page-with-header">
         
         <div className="actions">
           <Link href="/create" className="btn btn-primary">

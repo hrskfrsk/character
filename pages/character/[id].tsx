@@ -13,6 +13,7 @@ import MemoDisplay from '../../components/character-display/MemoDisplay';
 import SkillsDisplay from '../../components/character-display/SkillsDisplay';
 import BasicDataDisplay from '../../components/character-display/BasicDataDisplay';
 import PersonalDataDisplay, { RecordSectionDisplay } from '../../components/character-display/PersonalDataDisplay';
+import Header from '../../components/Header';
 
 interface CharacterPageProps {
   character: any;
@@ -253,8 +254,14 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
+      <Header 
+        title={character.character_name || 'キャラクター'}
+        showBackButton={true}
+        customBackUrl="/"
+      />
+
       <div className="works-template-default single single-works postid-6531 custom-background">
-        <div id="content" className={`chara-coc character ${character?.is_lost ? 'is-lost' : ''}`}>
+        <div id="content" className={`chara-coc character page-with-header ${character?.is_lost ? 'is-lost' : ''}`}>
           <div id="inner-content" className="wrap cf">
             <main id="main" role="main" itemScope itemProp="mainContentOfPage" itemType="http://schema.org/Blog">
               <article id="post-6531"
