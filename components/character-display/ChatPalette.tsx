@@ -259,7 +259,7 @@ RESB({EDU}-対抗値) EDU対抗
       textArea.select();
       document.execCommand('copy');
       document.body.removeChild(textArea);
-      alert('ココフォリアのチャットパレットをクリップボードにコピーしました！');
+      alert('チャットパレットをクリップボードにコピーしました！');
     });
   };
 
