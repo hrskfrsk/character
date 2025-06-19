@@ -15,6 +15,7 @@ import BasicDataDisplay from '../../components/character-display/BasicDataDispla
 import PersonalDataDisplay, { RecordSectionDisplay } from '../../components/character-display/PersonalDataDisplay';
 import Header from '../../components/Header';
 import FloatingActionButtons from '../../components/FloatingActionButtons';
+import CcfoliaExportModal from '../../components/CcfoliaExportModal';
 import { copyToCcfoliaClipboard } from '../../lib/ccfolia-exporter';
 
 interface CharacterPageProps {
@@ -28,6 +29,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
   const [secretMemoVisibility, setSecretMemoVisibility] = useState<Record<string, boolean>>({});
   const [memoPasswordStates, setMemoPasswordStates] = useState<Record<string, { unlocked: boolean; inputPassword: string }>>({});
   const [diceRollResult, setDiceRollResult] = useState<DiceRollResult | null>(null);
+  const [showCcfoliaModal, setShowCcfoliaModal] = useState(false);
 
   // UIテーマカラーの動的適用
   useEffect(() => {
@@ -249,7 +251,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
   const pageTitle = `${character.character_name || 'キャラクター'} - CoC6版キャラクターシート`;
 
   const handleCcfoliaExport = () => {
-    copyToCcfoliaClipboard(character, characterId);
+    setShowCcfoliaModal(true);
   };
 
   return (
@@ -357,6 +359,14 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
       <DiceRollPopup
         result={diceRollResult}
         onClose={() => setDiceRollResult(null)}
+      />
+
+      {/* ココフォリア出力モーダル */}
+      <CcfoliaExportModal
+        isOpen={showCcfoliaModal}
+        onClose={() => setShowCcfoliaModal(false)}
+        character={character}
+        characterId={characterId}
       />
     </>
   );
