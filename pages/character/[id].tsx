@@ -1,7 +1,7 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useLayoutEffect } from 'react';
 import { getCharacterData, getAllCharacterIds } from '../../lib/firebase-admin';
 import DiceRollPopup from '../../components/DiceRollPopup';
 import { rollSkillCheck, DiceRollResult } from '../../lib/dice-roller';
@@ -30,27 +30,6 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
   const [memoPasswordStates, setMemoPasswordStates] = useState<Record<string, { unlocked: boolean; inputPassword: string }>>({});
   const [diceRollResult, setDiceRollResult] = useState<DiceRollResult | null>(null);
   const [showCcfoliaModal, setShowCcfoliaModal] = useState(false);
-
-  // UIテーマカラーの動的適用
-  useEffect(() => {
-    if (character?.ui_theme_color && typeof window !== 'undefined') {
-      const color = character.ui_theme_color;
-      // 明度を下げたホバーカラーを計算
-      const hoverColor = adjustBrightness(color, -20);
-      // 薄い色を計算（15%の不透明度）
-      const lightColor = hexToRgba(color, 0.15);
-      // 中間の色を計算（40%の不透明度）
-      const mediumColor = hexToRgba(color, 0.4);
-      // 濃い色を計算（70%の不透明度）
-      const darkColor = hexToRgba(color, 0.7);
-
-      document.documentElement.style.setProperty('--ui-theme-color', color);
-      document.documentElement.style.setProperty('--ui-theme-color-hover', hoverColor);
-      document.documentElement.style.setProperty('--ui-theme-color-light', lightColor);
-      document.documentElement.style.setProperty('--ui-theme-color-medium', mediumColor);
-      document.documentElement.style.setProperty('--ui-theme-color-dark', darkColor);
-    }
-  }, [character?.ui_theme_color]);
 
   // 色の明度を調整する関数
   const adjustBrightness = (hex: string, percent: number): string => {
@@ -84,6 +63,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
 
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   };
+
 
   // 装備セクションのアコーディオン状態
   const [equipmentSections, setEquipmentSections] = useState({
@@ -178,6 +158,23 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
 
 
 
+  // UIテーマカラーの動的適用
+  useEffect(() => {
+    if (character?.ui_theme_color && typeof window !== 'undefined') {
+      const color = character.ui_theme_color;
+      const hoverColor = adjustBrightness(color, -20);
+      const lightColor = hexToRgba(color, 0.15);
+      const mediumColor = hexToRgba(color, 0.4);
+      const darkColor = hexToRgba(color, 0.7);
+
+      document.documentElement.style.setProperty('--ui-theme-color', color);
+      document.documentElement.style.setProperty('--ui-theme-color-hover', hoverColor);
+      document.documentElement.style.setProperty('--ui-theme-color-light', lightColor);
+      document.documentElement.style.setProperty('--ui-theme-color-medium', mediumColor);
+      document.documentElement.style.setProperty('--ui-theme-color-dark', darkColor);
+    }
+  }, [character?.ui_theme_color]);
+
   useEffect(() => {
     setMounted(true);
 
@@ -253,6 +250,28 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
   const handleCcfoliaExport = () => {
     setShowCcfoliaModal(true);
   };
+
+  // テーマカラーのスタイルを事前計算
+  const getThemeStyles = () => {
+    if (!character?.ui_theme_color) return '';
+    
+    const color = character.ui_theme_color;
+    const hoverColor = adjustBrightness(color, -20);
+    const lightColor = hexToRgba(color, 0.15);
+    const mediumColor = hexToRgba(color, 0.4);
+    const darkColor = hexToRgba(color, 0.7);
+    
+    return `
+      :root {
+        --ui-theme-color: ${color} !important;
+        --ui-theme-color-hover: ${hoverColor} !important;
+        --ui-theme-color-light: ${lightColor} !important;
+        --ui-theme-color-medium: ${mediumColor} !important;
+        --ui-theme-color-dark: ${darkColor} !important;
+      }
+    `;
+  };
+
 
   return (
     <>

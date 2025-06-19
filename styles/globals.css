@@ -4,16 +4,16 @@
 
 /* テーマカラー変数定義 */
 :root {
-  --ui-theme-color: #22c6d8;
-  --ui-theme-color-hover: #1ba1b5;
+  --ui-theme-color: #74cdc3;
+  --ui-theme-color-hover: #5fb5aa;
   --ui-theme-gradient: linear-gradient(
     135deg,
     var(--ui-theme-color) 0%,
     var(--ui-theme-color-hover) 100%
   );
-  --ui-theme-color-light: rgba(34, 198, 216, 0.15);
-  --ui-theme-color-medium: rgba(34, 198, 216, 0.4);
-  --ui-theme-color-dark: rgba(34, 198, 216, 0.7);
+  --ui-theme-color-light: rgba(116, 205, 195, 0.15);
+  --ui-theme-color-medium: rgba(116, 205, 195, 0.4);
+  --ui-theme-color-dark: rgba(116, 205, 195, 0.7);
 }
 
 * {
@@ -804,11 +804,7 @@ textarea,
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: linear-gradient(
-    135deg,
-    var(--ui-theme-color) 0%,
-    var(--ui-theme-color-hover) 100%
-  );
+  background: var(--ui-theme-color);
   color: white;
   padding: 12px 20px;
   border-radius: 6px;
@@ -901,7 +897,7 @@ textarea,
 
 .character-info .basic-info .info-item label {
   background: var(--ui-theme-color-medium);
-  color: #fff;
+  color: var(--ui-theme-color-hover);
   font-size: 0.85em;
   font-weight: 600;
   padding: 7px 10px;
@@ -915,7 +911,6 @@ textarea,
 
 .character-info .basic-info .info-item label i {
   margin-right: 6px;
-  color: #fff;
   text-align: center;
 }
 
@@ -2173,6 +2168,7 @@ li {
 .chara-seet .scores .ul-score .idea.score-li h3,
 .chara-seet .scores .ul-score .luck.score-li h3 {
   background: var(--ui-theme-color-medium) !important;
+  color: var(--ui-theme-color-hover);
 }
 
 /* 装備セクションのアイコンをテーマカラーの70%に */

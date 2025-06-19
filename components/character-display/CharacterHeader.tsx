@@ -39,7 +39,7 @@ export default function CharacterHeader({
 
           {/* STR */}
           <li className="str score-li">
-            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>STR</h3>
+            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#74cdc3' }}>STR</h3>
             <div className="score-sum">
               <span id="str_total">{character.str_total || '-'}</span>
             </div>
@@ -58,7 +58,7 @@ export default function CharacterHeader({
 
           {/* CON */}
           <li className="con score-li">
-            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>CON</h3>
+            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#74cdc3' }}>CON</h3>
             <div className="score-sum">
               <span id="con_total">{character.con_total || '-'}</span>
             </div>
@@ -77,7 +77,7 @@ export default function CharacterHeader({
 
           {/* POW */}
           <li className="pow score-li">
-            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>POW</h3>
+            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#74cdc3' }}>POW</h3>
             <div className="score-sum">
               <span id="pow_total">{character.pow_total || '-'}</span>
             </div>
@@ -96,7 +96,7 @@ export default function CharacterHeader({
 
           {/* DEX */}
           <li className="dex score-li">
-            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>DEX</h3>
+            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#74cdc3' }}>DEX</h3>
             <div className="score-sum">
               <span id="dex_total">{character.dex_total || '-'}</span>
             </div>
@@ -115,7 +115,7 @@ export default function CharacterHeader({
 
           {/* APP */}
           <li className="app score-li">
-            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>APP</h3>
+            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#74cdc3' }}>APP</h3>
             <div className="score-sum">
               <span id="app_total">{character.app_total || '-'}</span>
             </div>
@@ -134,7 +134,7 @@ export default function CharacterHeader({
 
           {/* SIZ */}
           <li className="siz score-li">
-            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>SIZ</h3>
+            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#74cdc3' }}>SIZ</h3>
             <div className="score-sum">
               <span id="siz_total">{character.siz_total || '-'}</span>
             </div>
@@ -153,7 +153,7 @@ export default function CharacterHeader({
 
           {/* INT */}
           <li className="int score-li">
-            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>INT</h3>
+            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#74cdc3' }}>INT</h3>
             <div className="score-sum">
               <span id="int_total">{character.int_total || '-'}</span>
             </div>
@@ -172,7 +172,7 @@ export default function CharacterHeader({
 
           {/* EDU */}
           <li className="edu score-li">
-            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>EDU</h3>
+            <h3 style={{ background: character.ui_theme_color || character.character_color_code || '#74cdc3' }}>EDU</h3>
             <div className="score-sum">
               <span id="edu_total">{character.edu_total || '-'}</span>
             </div>

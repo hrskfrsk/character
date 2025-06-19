@@ -1155,6 +1155,7 @@ export default function CreateCharacterPage() {
 
   const pageTitle = "キャラクター作成 - クトゥルフ神話TRPG第6版";
 
+
   return (
     <>
       <Head>
@@ -1195,18 +1196,18 @@ export default function CreateCharacterPage() {
               form="chara-form"
               className="nav-link"
               style={{
-                background: '#4CAF50',
+                background: '#74cdc3',
                 border: 'none',
                 cursor: 'pointer'
               }}
               disabled={saving}
               onMouseEnter={(e) => {
                 const btn = e.currentTarget as HTMLElement;
-                btn.style.background = '#388E3C';
+                btn.style.background = '#5fb5aa';
               }}
               onMouseLeave={(e) => {
                 const btn = e.currentTarget as HTMLElement;
-                btn.style.background = '#4CAF50';
+                btn.style.background = '#74cdc3';
               }}
             >
               <i className="fas fa-save"></i>
@@ -1371,7 +1372,7 @@ export default function CreateCharacterPage() {
                       className="btn save-btn"
                       style={{
                         padding: '10px 30px',
-                        backgroundColor: '#4CAF50',
+                        backgroundColor: '#74cdc3',
                         color: 'white',
                         border: 'none',
                         borderRadius: '50px',

@@ -13,27 +13,6 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     isUploading: false
   });
 
-  // UIテーマカラーの動的適用
-  useEffect(() => {
-    if (characterData.ui_theme_color && typeof window !== 'undefined') {
-      const color = characterData.ui_theme_color;
-      // 明度を下げたホバーカラーを計算
-      const hoverColor = adjustBrightness(color, -20);
-      // 薄い色を計算（15%の不透明度）
-      const lightColor = hexToRgba(color, 0.15);
-      // 中間の色を計算（40%の不透明度）
-      const mediumColor = hexToRgba(color, 0.4);
-      // 濃い色を計算（70%の不透明度）
-      const darkColor = hexToRgba(color, 0.7);
-
-      document.documentElement.style.setProperty('--ui-theme-color', color);
-      document.documentElement.style.setProperty('--ui-theme-color-hover', hoverColor);
-      document.documentElement.style.setProperty('--ui-theme-color-light', lightColor);
-      document.documentElement.style.setProperty('--ui-theme-color-medium', mediumColor);
-      document.documentElement.style.setProperty('--ui-theme-color-dark', darkColor);
-    }
-  }, [characterData.ui_theme_color]);
-
   // 色の明度を調整する関数
   const adjustBrightness = (hex: string, percent: number): string => {
     // #を取り除く
@@ -66,6 +45,8 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
 
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   };
+
+
   // アコーディオン状態の初期化（localStorageから読み込み）
   const [isAccordionOpen, setIsAccordionOpen] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -97,6 +78,23 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
 
   // デバウンス用の状態
   const [inputTimeouts, setInputTimeouts] = useState<{ [key: string]: NodeJS.Timeout }>({});
+
+  // UIテーマカラーの動的適用
+  useEffect(() => {
+    if (characterData.ui_theme_color && typeof window !== 'undefined') {
+      const color = characterData.ui_theme_color;
+      const hoverColor = adjustBrightness(color, -20);
+      const lightColor = hexToRgba(color, 0.15);
+      const mediumColor = hexToRgba(color, 0.4);
+      const darkColor = hexToRgba(color, 0.7);
+
+      document.documentElement.style.setProperty('--ui-theme-color', color);
+      document.documentElement.style.setProperty('--ui-theme-color-hover', hoverColor);
+      document.documentElement.style.setProperty('--ui-theme-color-light', lightColor);
+      document.documentElement.style.setProperty('--ui-theme-color-medium', mediumColor);
+      document.documentElement.style.setProperty('--ui-theme-color-dark', darkColor);
+    }
+  }, [characterData.ui_theme_color]);
 
   // アコーディオン状態が変更されたときにlocalStorageに保存
   useEffect(() => {
@@ -828,7 +826,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
               <input
                 type="color"
                 id="ui_theme_color_picker"
-                value={characterData.ui_theme_color || '#22c6d8'}
+                value={characterData.ui_theme_color || '#74cdc3'}
                 onChange={(e) => handleInputChange('ui_theme_color', e.target.value)}
                 className="color-picker"
               />
@@ -836,7 +834,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
                 type="text"
                 id="ui_theme_color"
                 name="ui_theme_color"
-                placeholder="#22c6d8"
+                placeholder="#74cdc3"
                 value={characterData.ui_theme_color || ''}
                 onChange={(e) => handleInputChange('ui_theme_color', e.target.value)}
                 className="color-text-input"
@@ -854,7 +852,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
               <div className="color-pair">
                 <div className="info-item">
                   <label htmlFor="character_color">
-                    <i className="fas fa-circle" style={{ color: characterData.character_color_code || '#22c6d8' }}></i> イメージカラー
+                    <i className="fas fa-circle" style={{ color: characterData.character_color_code || '#74cdc3' }}></i> イメージカラー
                   </label>
                   <input
                     type="text"
@@ -871,7 +869,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
                     <input
                       type="color"
                       id="character_color_picker"
-                      value={characterData.character_color_code || '#22c6d8'}
+                      value={characterData.character_color_code || '#74cdc3'}
                       onChange={(e) => handleInputChange('character_color_code', e.target.value)}
                       className="color-picker"
                     />

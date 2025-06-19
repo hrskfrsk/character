@@ -78,8 +78,8 @@ export default function StatDisplay({ character }: StatDisplayProps) {
 
           if (traitName) {
             traitElements.push(
-              <li key={i} className="d-flex f-list" style={{ borderLeftColor: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
-                <div className="f-label" style={{ color: character.ui_theme_color || character.character_color_code || '#22c6d8' }}>
+              <li key={i} className="d-flex f-list" style={{ borderLeftColor: character.ui_theme_color || character.character_color_code || '#74cdc3' }}>
+                <div className="f-label" style={{ color: character.ui_theme_color || character.character_color_code || '#74cdc3' }}>
                   <span className="num">{traitNumber || '0-0'}</span>
                   <span className="name">{traitName}</span>
                 </div>
