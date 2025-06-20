@@ -4780,4 +4780,48 @@ li {
   font-size: 13px !important;
 }
 
+/* 新しいキャラクター作成ボタン */
+.btn-primary {
+  background: var(--ui-theme-color) !important;
+  color: white !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 8px 16px !important;
+  border-radius: 20px !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.02em !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+}
+
+.btn-primary::before {
+  content: '\f067' !important;
+  font-family: 'Font Awesome 5 Free' !important;
+  font-weight: 900 !important;
+  font-size: 12px !important;
+}
+
+.btn-primary:hover {
+  background: var(--ui-theme-color-hover) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+  color: white !important;
+  text-decoration: none !important;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .btn-primary {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+  }
+  
+  .btn-primary::before {
+    font-size: 11px !important;
+  }
+}
+
 /*# sourceMappingURL=style.css.map */

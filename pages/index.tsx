@@ -20,6 +20,7 @@ export default function Home() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [filteredCharacters, setFilteredCharacters] = useState<any[]>([]);
   const [genderFilter, setGenderFilter] = useState('');
+  const [isSearchBarOpen, setIsSearchBarOpen] = useState(true);
   const CHARACTERS_PER_PAGE = 50;
 
   const fetchTotalCount = async () => {
@@ -57,7 +58,7 @@ export default function Home() {
         id: doc.id,
         ...doc.data()
       }));
-      
+
       setCharacters(characterList);
       applyFiltersAndSort(characterList);
     } catch (error) {
@@ -140,7 +141,7 @@ export default function Home() {
     });
 
     setFilteredCharacters(filtered);
-    
+
     // ページネーション用の設定
     const totalFiltered = filtered.length;
     setTotalPages(Math.ceil(totalFiltered / CHARACTERS_PER_PAGE));
@@ -201,13 +202,23 @@ export default function Home() {
           <Link href="/create" className="btn btn-primary">
             新しいキャラクター作成
           </Link>
-          <div className="character-count">
-            全{totalCharacters}件
+          <div className="character-stats">
+            <div className="character-count">
+              全{totalCharacters}件
+            </div>
+            <button 
+              className="search-toggle-btn"
+              onClick={() => setIsSearchBarOpen(!isSearchBarOpen)}
+              title={isSearchBarOpen ? '検索バーを閉じる' : '検索バーを開く'}
+            >
+              <i className={`fas fa-${isSearchBarOpen ? 'chevron-up' : 'search'}`}></i>
+            </button>
           </div>
         </div>
 
         {/* 検索・ソート */}
-        <div className="search-sort-controls">
+        {isSearchBarOpen && (
+          <div className="search-sort-controls">
           <div className="search-box">
             <i className="fas fa-search"></i>
             <input
@@ -295,6 +306,7 @@ export default function Home() {
             </button>
           </div>
         </div>
+        )}
 
         {loading ? (
           <div className="loading">キャラクター一覧を読み込み中...</div>
@@ -400,10 +412,43 @@ export default function Home() {
           align-items: center;
         }
         
+        .character-stats {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        
         .character-count {
           font-size: 14px;
           color: #666;
           font-weight: 500;
+        }
+        
+        .search-toggle-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 24px;
+          height: 24px;
+          padding: 0;
+          background: transparent;
+          border: 1px solid #ddd;
+          border-radius: 50%;
+          color: #6c757d;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          position: relative;
+          top: -1px;
+        }
+        
+        .search-toggle-btn:hover {
+          color: var(--ui-theme-color);
+          border-color: var(--ui-theme-color);
+          background: var(--ui-theme-color-light);
+        }
+        
+        .search-toggle-btn i {
+          font-size: 10px;
         }
         
         .search-sort-controls {
@@ -415,6 +460,18 @@ export default function Home() {
           background: #f8f9fa;
           border-radius: 6px;
           border: 1px solid #e9ecef;
+          animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
         
         .search-box {
@@ -569,12 +626,14 @@ export default function Home() {
         
         .btn {
           display: inline-block;
-          padding: 12px 24px;
+          padding: 10px 20px;
           text-decoration: none;
-          border-radius: 6px;
-          font-weight: bold;
+          border-radius: 25px;
+          font-weight: 600;
           margin: 0 5px;
           transition: all 0.3s ease;
+          font-size: 14px;
+          letter-spacing: 0.02em;
         }
         
         .btn:hover {
@@ -583,8 +642,24 @@ export default function Home() {
         }
         
         .btn-primary {
-          background-color: #4CAF50;
+          background: var(--ui-theme-color);
           color: white;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary::before {
+          content: '\\f067';
+          font-family: 'Font Awesome 5 Free';
+          font-weight: 900;
+          font-size: 14px;
+        }
+        
+        .btn-primary:hover {
+          background: var(--ui-theme-color-hover);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         
         .btn-secondary {
@@ -895,10 +970,23 @@ export default function Home() {
             text-align: center;
           }
           
+          .btn {
+            padding: 8px 16px;
+            font-size: 13px;
+          }
+          
+          .btn-primary::before {
+            font-size: 12px;
+          }
+          
           .search-sort-controls {
             flex-direction: column;
             gap: 5px;
             align-items: stretch;
+          }
+          
+          .search-toggle-btn {
+            top: 0;
           }
           
           .search-box {
