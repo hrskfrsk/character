@@ -221,14 +221,13 @@ export default function Home() {
         
         .character-card {
           border: 1px solid #ddd;
-          padding: 20px;
           border-radius: 8px;
           background: white;
           box-shadow: 0 2px 4px rgba(0,0,0,0.1);
           transition: all 0.3s ease;
           display: flex;
           flex-direction: column;
-          align-items: center;
+          overflow: hidden;
         }
         
         .character-card:hover {
@@ -237,16 +236,14 @@ export default function Home() {
         }
         
         .character-avatar {
-          width: 80px;
-          height: 80px;
-          margin-bottom: 15px;
-          border-radius: 50%;
+          width: 100%;
+          height: 180px;
           overflow: hidden;
           display: flex;
           align-items: center;
           justify-content: center;
           background-color: #f0f0f0;
-          border: 2px solid #ddd;
+          position: relative;
         }
         
         .face-image {
@@ -262,10 +259,11 @@ export default function Home() {
           align-items: center;
           justify-content: center;
           color: #999;
-          font-size: 32px;
+          font-size: 48px;
         }
         
         .character-info {
+          padding: 20px;
           text-align: center;
           width: 100%;
         }
@@ -317,8 +315,30 @@ export default function Home() {
             grid-template-columns: 1fr;
           }
           
+          .character-avatar {
+            height: 150px;
+          }
+          
+          .face-placeholder {
+            font-size: 36px;
+          }
+          
           .container {
             padding: 10px;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .character-avatar {
+            height: 120px;
+          }
+          
+          .face-placeholder {
+            font-size: 30px;
+          }
+          
+          .character-info {
+            padding: 15px;
           }
         }
       `}</style>
