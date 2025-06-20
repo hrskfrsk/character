@@ -21,7 +21,7 @@ export default function Home() {
   const [sortBy, setSortBy] = useState('updatedAt');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [filteredCharacters, setFilteredCharacters] = useState<any[]>([]);
-  const [genderFilter, setGenderFilter] = useState('');
+  const [combinedFilter, setCombinedFilter] = useState(''); // '', '男性', '女性', 'その他', '生存者', 'LOST'
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(true);
   const CHARACTERS_PER_PAGE = 50;
 
@@ -84,27 +84,39 @@ export default function Home() {
       );
     }
 
-    // 性別フィルター
-    if (genderFilter) {
+    // 統合フィルター（性別・LOST状態）
+    if (combinedFilter) {
       filtered = filtered.filter((character: any) => {
         const gender = character.gender || character.sex;
-        if (!gender) return false;
-        
-        // 性別の表記ブレに対応
-        const normalizedGender = gender.toString().toLowerCase();
-        
-        switch (genderFilter) {
+        const isLost = character.is_lost || false;
+
+        switch (combinedFilter) {
           case '男性':
-            return normalizedGender.includes('男') || normalizedGender === 'male' || normalizedGender === 'm';
+            if (!gender) return false;
+            const normalizedMaleGender = gender.toString().toLowerCase();
+            return normalizedMaleGender.includes('男') || normalizedMaleGender === 'male' || normalizedMaleGender === 'm';
+
           case '女性':
-            return normalizedGender.includes('女') || normalizedGender === 'female' || normalizedGender === 'f';
+            if (!gender) return false;
+            const normalizedFemaleGender = gender.toString().toLowerCase();
+            return normalizedFemaleGender.includes('女') || normalizedFemaleGender === 'female' || normalizedFemaleGender === 'f';
+
           case 'その他':
-            return !normalizedGender.includes('男') && 
-                   !normalizedGender.includes('女') && 
-                   normalizedGender !== 'male' && 
-                   normalizedGender !== 'female' && 
-                   normalizedGender !== 'm' && 
-                   normalizedGender !== 'f';
+            if (!gender) return false;
+            const normalizedOtherGender = gender.toString().toLowerCase();
+            return !normalizedOtherGender.includes('男') &&
+              !normalizedOtherGender.includes('女') &&
+              normalizedOtherGender !== 'male' &&
+              normalizedOtherGender !== 'female' &&
+              normalizedOtherGender !== 'm' &&
+              normalizedOtherGender !== 'f';
+
+          case '生存者':
+            return !isLost;
+
+          case 'LOST':
+            return isLost;
+
           default:
             return true;
         }
@@ -198,7 +210,7 @@ export default function Home() {
 
   useEffect(() => {
     applyFiltersAndSort(characters);
-  }, [searchTerm, genderFilter, sortBy, sortOrder]);
+  }, [searchTerm, combinedFilter, sortBy, sortOrder]);
 
   useEffect(() => {
     setHasNextPage(currentPage < totalPages);
@@ -209,7 +221,7 @@ export default function Home() {
       fetchTotalCount();
       fetchAllCharacters();
     }
-  }, [user, sortBy, sortOrder]);
+  }, [user, sortBy, sortOrder, combinedFilter]);
 
   return (
     <ProtectedRoute>
@@ -224,114 +236,133 @@ export default function Home() {
 
       <main className="container page-with-header">
         <div className="actions">
-              <Link href="/create" className="btn btn-primary">
-                新しいキャラクター作成
-              </Link>
-              <div className="character-stats">
-                <div className="character-count">
-                  全{totalCharacters}件
-                </div>
-                <button 
-                  className="search-toggle-btn"
-                  onClick={() => setIsSearchBarOpen(!isSearchBarOpen)}
-                  title={isSearchBarOpen ? '検索バーを閉じる' : '検索バーを開く'}
-                >
-                  <i className={`fas fa-${isSearchBarOpen ? 'chevron-up' : 'search'}`}></i>
-                </button>
+          <Link href="/create" className="btn btn-primary">
+            新しいキャラクター作成
+          </Link>
+          <div className="character-stats">
+            <div className="character-count">
+              全{totalCharacters}件
+            </div>
+            <button
+              className="search-toggle-btn"
+              onClick={() => setIsSearchBarOpen(!isSearchBarOpen)}
+              title={isSearchBarOpen ? '検索バーを閉じる' : '検索バーを開く'}
+            >
+              <i className={`fas fa-${isSearchBarOpen ? 'chevron-up' : 'search'}`}></i>
+            </button>
+          </div>
+        </div>
+
+        {/* 検索・ソート */}
+        {isSearchBarOpen && (
+          <div className="search-sort-controls">
+            <div className="search-box">
+              <i className="fas fa-search"></i>
+              <input
+                type="text"
+                placeholder="キャラクター名で検索..."
+                value={searchTerm}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="search-input"
+              />
+            </div>
+            <div className="combined-filter">
+              <div className="filter-options">
+                <label className="filter-option">
+                  <input
+                    type="radio"
+                    name="combined"
+                    value=""
+                    checked={combinedFilter === ''}
+                    onChange={(e) => setCombinedFilter(e.target.value)}
+                  />
+                  <span>全て</span>
+                </label>
+                <label className="filter-option">
+                  <input
+                    type="radio"
+                    name="combined"
+                    value="男性"
+                    checked={combinedFilter === '男性'}
+                    onChange={(e) => setCombinedFilter(e.target.value)}
+                  />
+                  <span>男性</span>
+                </label>
+                <label className="filter-option">
+                  <input
+                    type="radio"
+                    name="combined"
+                    value="女性"
+                    checked={combinedFilter === '女性'}
+                    onChange={(e) => setCombinedFilter(e.target.value)}
+                  />
+                  <span>女性</span>
+                </label>
+                <label className="filter-option">
+                  <input
+                    type="radio"
+                    name="combined"
+                    value="その他"
+                    checked={combinedFilter === 'その他'}
+                    onChange={(e) => setCombinedFilter(e.target.value)}
+                  />
+                  <span>他性別</span>
+                </label>
+                <label className="filter-option">
+                  <input
+                    type="radio"
+                    name="combined"
+                    value="生存者"
+                    checked={combinedFilter === '生存者'}
+                    onChange={(e) => setCombinedFilter(e.target.value)}
+                  />
+                  <span>生存者</span>
+                </label>
+                <label className="filter-option">
+                  <input
+                    type="radio"
+                    name="combined"
+                    value="LOST"
+                    checked={combinedFilter === 'LOST'}
+                    onChange={(e) => setCombinedFilter(e.target.value)}
+                  />
+                  <span>LOST</span>
+                </label>
               </div>
             </div>
-
-            {/* 検索・ソート */}
-            {isSearchBarOpen && (
-              <div className="search-sort-controls">
-                <div className="search-box">
-                  <i className="fas fa-search"></i>
-                  <input
-                    type="text"
-                    placeholder="キャラクター名で検索..."
-                    value={searchTerm}
-                    onChange={(e) => handleSearch(e.target.value)}
-                    className="search-input"
-                  />
-                </div>
-                <div className="gender-filter">
-                  <span className="filter-label">性別:</span>
-                  <div className="gender-options">
-                    <label className="gender-option">
-                      <input
-                        type="radio"
-                        name="gender"
-                        value=""
-                        checked={genderFilter === ''}
-                        onChange={(e) => setGenderFilter(e.target.value)}
-                      />
-                      <span>全て</span>
-                    </label>
-                    <label className="gender-option">
-                      <input
-                        type="radio"
-                        name="gender"
-                        value="男性"
-                        checked={genderFilter === '男性'}
-                        onChange={(e) => setGenderFilter(e.target.value)}
-                      />
-                      <span>男性</span>
-                    </label>
-                    <label className="gender-option">
-                      <input
-                        type="radio"
-                        name="gender"
-                        value="女性"
-                        checked={genderFilter === '女性'}
-                        onChange={(e) => setGenderFilter(e.target.value)}
-                      />
-                      <span>女性</span>
-                    </label>
-                    <label className="gender-option">
-                      <input
-                        type="radio"
-                        name="gender"
-                        value="その他"
-                        checked={genderFilter === 'その他'}
-                        onChange={(e) => setGenderFilter(e.target.value)}
-                      />
-                      <span>その他</span>
-                    </label>
-                  </div>
-                </div>
-                <div className="sort-controls">
-                  <span className="sort-label">並び順:</span>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="sort-select"
-                  >
-                    <option value="updatedAt">更新日時</option>
-                    <option value="character_name">名前</option>
-                    <option value="createdAt">作成日時</option>
-                    <option value="str_total">STR</option>
-                    <option value="con_total">CON</option>
-                    <option value="pow_total">POW</option>
-                    <option value="dex_total">DEX</option>
-                    <option value="app_total">APP</option>
-                    <option value="siz_total">SIZ</option>
-                    <option value="int_total">INT</option>
-                    <option value="edu_total">EDU</option>
-                    <option value="current_san">現在SAN値</option>
-                    <option value="cthulhu_mythos">クトゥルフ神話</option>
-                    <option value="height">身長</option>
-                    <option value="age">年齢</option>
-                  </select>
-                  <button
-                    onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                    className="sort-order-btn"
-                    title={sortOrder === 'desc' ? '降順' : '昇順'}
-                  >
-                    <i className={`fas fa-sort-amount-${sortOrder === 'desc' ? 'down' : 'up'}`}></i>
-                  </button>
-                </div>
-              </div>
-            )}
+            <div className="sort-controls">
+              <span className="sort-label">並び順:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="sort-select"
+              >
+                <option value="updatedAt">更新日時</option>
+                <option value="character_name">名前</option>
+                <option value="createdAt">作成日時</option>
+                <option value="str_total">STR</option>
+                <option value="con_total">CON</option>
+                <option value="pow_total">POW</option>
+                <option value="dex_total">DEX</option>
+                <option value="app_total">APP</option>
+                <option value="siz_total">SIZ</option>
+                <option value="int_total">INT</option>
+                <option value="edu_total">EDU</option>
+                <option value="current_san">現在SAN値</option>
+                <option value="cthulhu_mythos">クトゥルフ神話</option>
+                <option value="height">身長</option>
+                <option value="age">年齢</option>
+              </select>
+              <button
+                onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                className="sort-order-btn"
+                title={sortOrder === 'desc' ? '降順' : '昇順'}
+              >
+                <i className={`fas fa-sort-amount-${sortOrder === 'desc' ? 'down' : 'up'}`}></i>
+              </button>
+            </div>
+          </div>
+        )}
 
         {loading ? (
           <div className="loading">キャラクター一覧を読み込み中...</div>
@@ -587,26 +618,20 @@ export default function Home() {
           color: var(--ui-theme-color);
         }
         
-        .gender-filter {
+        .combined-filter {
           display: flex;
           align-items: center;
           gap: 4px;
           flex-wrap: wrap;
         }
         
-        .filter-label {
-          font-size: 13px;
-          color: #495057;
-          font-weight: 500;
-        }
-        
-        .gender-options {
+        .filter-options {
           display: flex;
           gap: 2px;
           flex-wrap: wrap;
         }
         
-        .gender-option {
+        .filter-option {
           display: flex;
           align-items: center;
           gap: 4px;
@@ -619,18 +644,18 @@ export default function Home() {
           position: relative;
         }
         
-        .gender-option:hover {
+        .filter-option:hover {
           background: #f8f9fa;
         }
         
-        .gender-option input[type="radio"] {
+        .filter-option input[type="radio"] {
           position: absolute;
           opacity: 0;
           width: 0;
           height: 0;
         }
         
-        .gender-option::before {
+        .filter-option::before {
           content: '';
           width: 12px;
           height: 12px;
@@ -641,17 +666,17 @@ export default function Home() {
           flex-shrink: 0;
         }
         
-        .gender-option input[type="radio"]:checked + span {
+        .filter-option input[type="radio"]:checked + span {
           color: #495057;
         }
         
-        .gender-option:has(input:checked)::before {
+        .filter-option:has(input:checked)::before {
           border-color: var(--ui-theme-color);
           background: var(--ui-theme-color);
           box-shadow: inset 0 0 0 2.5px white;
         }
         
-        .gender-option span {
+        .filter-option span {
           cursor: pointer;
         }
         
@@ -720,14 +745,14 @@ export default function Home() {
         .character-list {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 16px;
+          gap: 10px;
           margin-top: 20px;
         }
         
         @media (min-width: 1200px) {
           .character-list {
-            grid-template-columns: repeat(5, 1fr);
-            max-width: 1200px;
+            grid-template-columns: repeat(6, 1fr);
+            max-width: 1360px;
             margin-left: auto;
             margin-right: auto;
           }
@@ -820,6 +845,7 @@ export default function Home() {
           color: #57595d;
           font-size: 0.95em;
           font-weight: 500;
+          line-height: 1.4;
         }
         
         
@@ -949,7 +975,6 @@ export default function Home() {
         @media (max-width: 768px) {
           .character-list {
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
           }
           
           .character-avatar {
@@ -1028,7 +1053,7 @@ export default function Home() {
             justify-content: center;
           }
           
-          .gender-filter {
+          .combined-filter {
             justify-content: center;
           }
           
@@ -1051,7 +1076,7 @@ export default function Home() {
         @media (max-width: 480px) {
           .character-list {
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            gap: 6px;
           }
           
           .character-avatar {
@@ -1075,7 +1100,7 @@ export default function Home() {
           }
           
           .character-info {
-            padding: 15px;
+            padding: 5px 10px 10px;
           }
           
           .pagination {
