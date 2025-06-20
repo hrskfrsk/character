@@ -354,7 +354,7 @@ textarea,
 
 .character-info .character-lost-toggle-header > label i {
   margin-right: 6px;
-  color: #e74c3c;
+  color: #333;
 }
 
 .character-info .character-lost-toggle-header .toggle-wrapper {
@@ -383,7 +383,7 @@ textarea,
   .character-lost-toggle-header
   .toggle-checkbox:checked
   + .toggle-label {
-  background: #e74c3c;
+  background: #333;
 }
 
 .character-info .character-lost-toggle-header .toggle-switch {
@@ -3443,7 +3443,7 @@ li {
   position: absolute;
   top: -10px;
   right: -30px;
-  background: #e74c3c;
+  background: #333;
   color: white;
   width: 30px;
   height: 30px;
@@ -3452,7 +3452,7 @@ li {
   align-items: center;
   justify-content: center;
   font-size: 16px;
-  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   z-index: 10;
 }
 

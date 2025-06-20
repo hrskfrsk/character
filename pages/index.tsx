@@ -9,7 +9,6 @@ import Footer from '../components/Footer';
 export default function Home() {
   const [characters, setCharacters] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCharacters = async () => {
@@ -43,33 +42,6 @@ export default function Home() {
     fetchCharacters();
   }, []);
 
-  const handleDelete = async (characterId: string, characterName: string) => {
-    if (!confirm(`本当に「${characterName}」を削除しますか？\nこの操作は取り消せません。`)) {
-      return;
-    }
-
-    setDeletingId(characterId);
-
-    try {
-      const response = await fetch(`/api/characters/${characterId}/delete`, {
-        method: 'DELETE',
-      });
-
-      if (response.ok) {
-        // 削除成功したらリストから削除
-        setCharacters(characters.filter(char => char.id !== characterId));
-        alert('キャラクターを削除しました');
-      } else {
-        const error = await response.json();
-        alert(`削除に失敗しました: ${error.error || '不明なエラー'}`);
-      }
-    } catch (error) {
-      console.error('削除エラー:', error);
-      alert('削除中にエラーが発生しました');
-    } finally {
-      setDeletingId(null);
-    }
-  };
 
   return (
     <>
@@ -99,41 +71,44 @@ export default function Home() {
             ) : (
               characters.map((character) => (
                 <div key={character.id} className="character-card">
-                  <div className="character-avatar">
-                    {character.face_image_url ? (
-                      <img 
-                        src={character.face_image_url} 
-                        alt={`${character.character_name}の顔画像`}
-                        className="face-image"
-                      />
-                    ) : (
-                      <div className="face-placeholder">
-                        <i className="fas fa-user"></i>
-                      </div>
-                    )}
-                  </div>
-                  <div className="character-info">
-                    <h3>{character.character_name || '無名のキャラクター'}</h3>
-                    {character.updatedAt && (
-                      <div className="last-updated">
-                        最終更新: {new Date(character.updatedAt.seconds * 1000).toLocaleDateString('ja-JP')}
-                      </div>
-                    )}
-                  </div>
+                  {character.is_lost && (
+                    <div className="lost-badge">
+                      <i className="fas fa-skull-crossbones"></i>
+                      <span>LOST</span>
+                    </div>
+                  )}
+                  <Link href={`/character/${character.id}`} className="character-card-link">
+                    <div className="character-avatar">
+                      {character.face_image_url ? (
+                        <img 
+                          src={character.face_image_url} 
+                          alt={`${character.character_name}の顔画像`}
+                          className="face-image"
+                        />
+                      ) : (
+                        <div className="face-placeholder">
+                          <i className="fas fa-user"></i>
+                        </div>
+                      )}
+                    </div>
+                    <div className="character-info">
+                      <h3>{character.character_name || '無名のキャラクター'}</h3>
+                      {character.updatedAt && (
+                        <div className="last-updated">
+                          最終更新: {new Date(character.updatedAt.seconds * 1000).toLocaleDateString('ja-JP')}
+                        </div>
+                      )}
+                    </div>
+                  </Link>
                   <div className="character-actions">
-                    <Link href={`/character/${character.id}`} className="btn btn-secondary">
-                      <i className="fas fa-eye"></i> 表示
-                    </Link>
-                    <Link href={`/create?edit=${character.id}`} className="btn btn-edit">
-                      <i className="fas fa-edit"></i> 編集
-                    </Link>
-                    <button 
-                      onClick={() => handleDelete(character.id, character.character_name || '無名のキャラクター')}
-                      className="btn btn-danger"
-                      disabled={deletingId === character.id}
+                    <Link 
+                      href={`/create?edit=${character.id}`} 
+                      className="edit-btn"
+                      onClick={(e) => e.stopPropagation()}
                     >
-                      <i className="fas fa-trash"></i> {deletingId === character.id ? '削除中...' : '削除'}
-                    </button>
+                      <i className="fas fa-edit"></i>
+                      <span>編集</span>
+                    </Link>
                   </div>
                 </div>
               ))
@@ -223,6 +198,21 @@ export default function Home() {
           display: flex;
           flex-direction: column;
           overflow: hidden;
+          position: relative;
+        }
+        
+        .character-card-link {
+          text-decoration: none;
+          color: inherit;
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          cursor: pointer;
+        }
+        
+        .character-card-link:hover {
+          text-decoration: none;
+          color: inherit;
         }
         
         .character-card:hover {
@@ -276,18 +266,72 @@ export default function Home() {
           margin-top: 10px;
         }
         
-        .character-actions {
-          margin-top: 15px;
+        .lost-badge {
+          position: absolute;
+          top: 12px;
+          left: 12px;
           display: flex;
-          gap: 10px;
+          align-items: center;
+          gap: 4px;
+          padding: 4px 8px;
+          background: rgba(0, 0, 0, 0.85);
+          color: white;
+          border-radius: 12px;
+          font-size: 11px;
+          font-weight: bold;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          z-index: 15;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+          backdrop-filter: blur(10px);
         }
         
-        .character-actions .btn {
-          flex: 1;
-          text-align: center;
-          padding: 8px 16px;
-          font-size: 0.9em;
+        .lost-badge i {
+          font-size: 10px;
         }
+        
+        .character-actions {
+          position: absolute;
+          bottom: 15px;
+          right: 15px;
+          z-index: 10;
+        }
+        
+        .edit-btn {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 8px 12px;
+          background: rgba(255, 255, 255, 0.95);
+          color: #2196F3;
+          border: 1px solid rgba(33, 150, 243, 0.3);
+          border-radius: 20px;
+          font-size: 13px;
+          font-weight: 500;
+          text-decoration: none;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+          backdrop-filter: blur(10px);
+        }
+        
+        .edit-btn:hover {
+          background: #2196F3;
+          color: white;
+          border-color: #2196F3;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+          text-decoration: none;
+        }
+        
+        .edit-btn i {
+          font-size: 12px;
+        }
+        
+        .edit-btn span {
+          font-size: 13px;
+        }
+        
         
         .loading {
           text-align: center;
@@ -308,6 +352,37 @@ export default function Home() {
             font-size: 36px;
           }
           
+          .lost-badge {
+            top: 8px;
+            left: 8px;
+            padding: 3px 6px;
+            font-size: 10px;
+            border-radius: 10px;
+          }
+          
+          .lost-badge i {
+            font-size: 9px;
+          }
+          
+          .character-actions {
+            bottom: 10px;
+            right: 10px;
+          }
+          
+          .edit-btn {
+            padding: 6px 10px;
+            font-size: 12px;
+            border-radius: 16px;
+          }
+          
+          .edit-btn i {
+            font-size: 11px;
+          }
+          
+          .edit-btn span {
+            font-size: 12px;
+          }
+          
           .container {
             padding: 10px;
           }
@@ -320,6 +395,18 @@ export default function Home() {
           
           .face-placeholder {
             font-size: 30px;
+          }
+          
+          .lost-badge {
+            top: 6px;
+            left: 6px;
+            padding: 2px 5px;
+            font-size: 9px;
+            gap: 3px;
+          }
+          
+          .lost-badge i {
+            font-size: 8px;
           }
           
           .character-info {
