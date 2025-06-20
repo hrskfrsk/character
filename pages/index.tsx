@@ -19,11 +19,11 @@ export default function Home() {
   const fetchTotalCount = async () => {
     try {
       if (!db) return;
-      
+
       const countQuery = query(collection(db, 'characters'));
       const snapshot = await getCountFromServer(countQuery);
       const total = snapshot.data().count;
-      
+
       setTotalCharacters(total);
       setTotalPages(Math.ceil(total / CHARACTERS_PER_PAGE));
     } catch (error) {
@@ -59,17 +59,17 @@ export default function Home() {
 
       const querySnapshot = await getDocs(q);
       const docs = querySnapshot.docs;
-      
+
       // 次ページがあるかどうかを確認
       const hasMore = docs.length > CHARACTERS_PER_PAGE;
       setHasNextPage(hasMore);
-      
+
       // 実際に表示するデータ（最大3件）
       const characterList = docs.slice(0, CHARACTERS_PER_PAGE).map((doc) => ({
         id: doc.id,
         ...doc.data()
       }));
-      
+
       // 最後のドキュメントを保存（次ページ用）
       if (characterList.length > 0) {
         setLastDoc(docs[characterList.length - 1]);
@@ -120,6 +120,9 @@ export default function Home() {
           <Link href="/create" className="btn btn-primary">
             新しいキャラクター作成
           </Link>
+          <div className="character-count">
+            全{totalCharacters}件
+          </div>
         </div>
 
         {loading ? (
@@ -174,23 +177,23 @@ export default function Home() {
                 ))
               )}
             </div>
-            
+
             {/* ページネーション */}
             {characters.length > 0 && (currentPage > 1 || hasNextPage) && (
               <div className="pagination">
-                <button 
+                <button
                   onClick={handlePrevPage}
                   disabled={currentPage === 1}
                   className="pagination-btn"
                 >
                   <i className="fas fa-chevron-left"></i>
                 </button>
-                
+
                 <span className="page-info">
                   {currentPage} / {totalPages}
                 </span>
-                
-                <button 
+
+                <button
                   onClick={handleNextPage}
                   disabled={!hasNextPage}
                   className="pagination-btn"
@@ -221,7 +224,15 @@ export default function Home() {
         
         .actions {
           margin: 20px 0;
-          text-align: center;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        
+        .character-count {
+          font-size: 14px;
+          color: #666;
+          font-weight: 500;
         }
         
         .btn {
@@ -407,8 +418,8 @@ export default function Home() {
         
         .character-actions {
           position: absolute;
-          bottom: 5px;
-          right: 5px;
+          bottom: 10px;
+          right: 10px;
           z-index: 10;
           
         }
@@ -544,6 +555,12 @@ export default function Home() {
           
           .container {
             padding: 10px;
+          }
+          
+          .actions {
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
           }
           
           .pagination {
