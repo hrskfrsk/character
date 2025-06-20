@@ -28,10 +28,20 @@ const Header: React.FC<HeaderProps> = ({
   const { user, logout } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
 
-  // 現在のページを判定
-  const isLoginPage = router.pathname === '/auth/login';
-  const isSignupPage = router.pathname === '/auth/signup';
+  // クライアントサイドでのマウント後に判定
+  const [currentPage, setCurrentPage] = useState('');
+
+  useEffect(() => {
+    setMounted(true);
+    setCurrentPage(router.pathname);
+  }, [router.pathname]);
+
+  // 現在のページを判定（クライアントサイドでのみ）
+  const isLoginPage = mounted && currentPage === '/auth/login';
+  const isSignupPage = mounted && currentPage === '/auth/signup';
+  const isResetPasswordPage = mounted && currentPage === '/auth/reset-password';
 
   const handleBackClick = () => {
     if (customBackUrl) {
@@ -153,16 +163,33 @@ const Header: React.FC<HeaderProps> = ({
               </div>
             ) : (
               <>
-                {isLoginPage ? (
+                {mounted && isLoginPage ? (
                   <Link href="/auth/signup" className="nav-link" title="アカウント作成">
                     <i className="fas fa-user-plus"></i>
                     <span className="nav-text">アカウント登録</span>
                   </Link>
-                ) : isSignupPage ? (
+                ) : mounted && isSignupPage ? (
                   <Link href="/auth/login" className="nav-link" title="ログイン">
                     <i className="fas fa-sign-in-alt"></i>
                     <span className="nav-text">ログイン</span>
                   </Link>
+                ) : mounted && isResetPasswordPage ? (
+                  <Link href="/auth/login" className="nav-link" title="ログイン">
+                    <i className="fas fa-sign-in-alt"></i>
+                    <span className="nav-text">ログイン</span>
+                  </Link>
+                ) : !mounted ? (
+                  // SSR時はデフォルト表示
+                  <>
+                    <Link href="/auth/signup" className="nav-link" title="アカウント作成">
+                      <i className="fas fa-user-plus"></i>
+                      <span className="nav-text">登録</span>
+                    </Link>
+                    <Link href="/auth/login" className="nav-link" title="ログイン">
+                      <i className="fas fa-sign-in-alt"></i>
+                      <span className="nav-text">ログイン</span>
+                    </Link>
+                  </>
                 ) : (
                   <>
                     <Link href="/auth/signup" className="nav-link" title="アカウント作成">
