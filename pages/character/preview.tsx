@@ -249,7 +249,6 @@ export default function CharacterPreview() {
       </Head>
 
       <Header 
-        title="プレビュー"
         showBackButton={false}
         showCreateButton={false}
         actionButtons={

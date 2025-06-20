@@ -1,6 +1,9 @@
 // キャラクターシート計算ロジック
 
 export interface CharacterData {
+  // 認証情報
+  userId?: string;
+  
   // キャラクター基本情報
   character_name?: string;
   character_name_kana?: string;

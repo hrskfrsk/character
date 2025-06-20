@@ -20,11 +20,11 @@ const nextConfig = {
     }
   }),
   
-  // 静的ファイル出力設定
-  ...(process.env.NODE_ENV === 'production' && {
-    output: 'export',
-    trailingSlash: true,
-  }),
+  // 静的ファイル出力設定は一旦無効化（SSRを使用）
+  // ...(process.env.NODE_ENV === 'production' && {
+  //   output: 'export',
+  //   trailingSlash: true,
+  // }),
   
   images: {
     unoptimized: true
@@ -35,9 +35,9 @@ const nextConfig = {
     includePaths: ['./styles'],
   },
   
-  // 既存のassetsディレクトリを保持
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/character' : '',
-  basePath: process.env.NODE_ENV === 'production' ? '/character' : '',
+  // 既存のassetsディレクトリを保持（一旦無効化）
+  // assetPrefix: process.env.NODE_ENV === 'production' ? '/character' : '',
+  // basePath: process.env.NODE_ENV === 'production' ? '/character' : '',
   
   // CORS警告の修正
   allowedDevOrigins: ['http://127.0.0.1:3000'],

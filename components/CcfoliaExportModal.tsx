@@ -91,7 +91,7 @@ const CcfoliaExportModal: React.FC<CcfoliaExportModalProps> = ({
     
     // 実際の技能データを表示
     if (options.memoOptions.skills) {
-      const skills = [];
+      const skills: string[] = [];
       // 技能の初期値定義
       const skillInitialValues = {
         dodge: 30, grapple: 25, throw: 25, handgun: 20, submachine_gun: 15,
@@ -108,7 +108,7 @@ const CcfoliaExportModal: React.FC<CcfoliaExportModalProps> = ({
         natural_history: 10, physics: 1, law: 5, pharmacy: 1, history: 20
       };
 
-      const skillNames = {
+      const skillNames: { [key: string]: string } = {
         dodge: '回避', grapple: '組み付き', throw: '投擲', handgun: '拳銃',
         submachine_gun: 'サブマシンガン', shotgun: 'ショットガン', machine_gun: 'マシンガン',
         rifle: 'ライフル', martial_arts: 'マーシャルアーツ', kick: 'キック',

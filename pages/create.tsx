@@ -1278,7 +1278,6 @@ export default function CreateCharacterPage() {
       </Head>
 
       <Header
-        title={isEditMode ? "キャラクター編集" : "キャラクター作成"}
         showBackButton={true}
         customBackUrl="/list"
         actionButtons={
