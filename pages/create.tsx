@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { collection, addDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase-client';
 import { calculateAllStats, CharacterData } from '../lib/character-calculations';
+import { useAuth } from '../contexts/AuthContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -14,6 +15,7 @@ import PlaySheet from '../components/character-form/PlaySheet';
 import PersonalDataSection, { RecordSection } from '../components/character-form/PersonalDataSection';
 
 export default function CreateCharacterPage() {
+  const { user } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [characterData, setCharacterData] = useState<CharacterData>({});
   const [calculatedStats, setCalculatedStats] = useState<any>({});
@@ -388,6 +390,14 @@ export default function CreateCharacterPage() {
 
       if (docSnap.exists()) {
         const data = docSnap.data();
+        
+        // ユーザー権限チェック
+        if (data.userId && data.userId !== user?.uid) {
+          alert('このキャラクターを編集する権限がありません');
+          router.push('/');
+          return;
+        }
+        
         setCharacterData(data as CharacterData);
         setOriginalData(data as CharacterData); // 元データを保存
 
@@ -416,12 +426,12 @@ export default function CreateCharacterPage() {
     setMounted(true);
   }, []);
 
-  // 編集モードの場合、キャラクターデータを読み込む
+  // 編集モードの場合、キャラクターデータを読み込む（認証完了後）
   useEffect(() => {
-    if (mounted && edit && typeof edit === 'string') {
+    if (mounted && edit && typeof edit === 'string' && user) {
       loadExistingCharacter(edit);
     }
-  }, [mounted, edit]);
+  }, [mounted, edit, user]);
 
   // 計算を実行
   const updateCalculations = useCallback(() => {
@@ -1062,10 +1072,23 @@ export default function CreateCharacterPage() {
       return;
     }
 
+    if (!user) {
+      alert('ログインが必要です');
+      router.push('/auth/login');
+      return;
+    }
+
     setSaving(true);
     try {
       if (isEditMode && edit) {
         // 編集モード：既存キャラクターを更新
+        // 追加セキュリティチェック：キャラクターの所有者を確認
+        if (originalData.userId && originalData.userId !== user.uid) {
+          alert('このキャラクターを編集する権限がありません');
+          router.push('/');
+          return;
+        }
+        
         const finalData = {
           ...characterData,
           ...calculatedStats,
@@ -1103,6 +1126,7 @@ export default function CreateCharacterPage() {
         const finalData = {
           ...characterData,
           ...calculatedStats,
+          userId: user.uid,
           createdAt: new Date(),
           updatedAt: new Date(),
         };

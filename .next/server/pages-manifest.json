@@ -3,8 +3,9 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/auth/signup": "pages/auth/signup.js",
   "/create": "pages/create.js",
   "/404": "pages/404.js",
-  "/character/[id]": "pages/character/[id].js"
+  "/character/[id]": "pages/character/[id].js",
+  "/auth/login": "pages/auth/login.js",
+  "/auth/signup": "pages/auth/signup.js"
 }

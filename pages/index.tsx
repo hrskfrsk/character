@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { collection, getDocs, orderBy, query, limit, startAfter, DocumentSnapshot, getCountFromServer } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, limit, startAfter, DocumentSnapshot, getCountFromServer, where } from 'firebase/firestore';
 import { db } from '../lib/firebase-client';
 import { calculateAbilityTotal } from '../lib/character-calculations';
+import { useAuth } from '../contexts/AuthContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 export default function Home() {
+  const { user, loading: authLoading } = useAuth();
   const [characters, setCharacters] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,9 +27,12 @@ export default function Home() {
 
   const fetchTotalCount = async () => {
     try {
-      if (!db) return;
+      if (!db || !user) return;
 
-      const countQuery = query(collection(db, 'characters'));
+      const countQuery = query(
+        collection(db, 'characters'),
+        where('userId', '==', user.uid)
+      );
       const snapshot = await getCountFromServer(countQuery);
       const total = snapshot.data().count;
 
@@ -41,15 +46,16 @@ export default function Home() {
   const fetchAllCharacters = async () => {
     try {
       setLoading(true);
-      if (!db) {
-        console.error('Firebase not initialized');
+      if (!db || !user) {
+        console.error('Firebase not initialized or user not logged in');
         setLoading(false);
         return;
       }
 
-      // 全キャラクターを取得（検索・ソート用）
+      // ユーザーのキャラクターのみ取得（検索・ソート用）
       const q = query(
         collection(db, 'characters'),
+        where('userId', '==', user.uid),
         orderBy(sortBy, sortOrder)
       );
 
@@ -181,9 +187,11 @@ export default function Home() {
   }, [currentPage, totalPages]);
 
   useEffect(() => {
-    fetchTotalCount();
-    fetchAllCharacters();
-  }, [sortBy, sortOrder]);
+    if (user && !authLoading) {
+      fetchTotalCount();
+      fetchAllCharacters();
+    }
+  }, [user, authLoading, sortBy, sortOrder]);
 
   return (
     <>
@@ -197,115 +205,135 @@ export default function Home() {
       <Header />
 
       <main className="container page-with-header">
-
-        <div className="actions">
-          <Link href="/create" className="btn btn-primary">
-            新しいキャラクター作成
-          </Link>
-          <div className="character-stats">
-            <div className="character-count">
-              全{totalCharacters}件
-            </div>
-            <button 
-              className="search-toggle-btn"
-              onClick={() => setIsSearchBarOpen(!isSearchBarOpen)}
-              title={isSearchBarOpen ? '検索バーを閉じる' : '検索バーを開く'}
-            >
-              <i className={`fas fa-${isSearchBarOpen ? 'chevron-up' : 'search'}`}></i>
-            </button>
+        {authLoading ? (
+          <div className="loading-container">
+            <div className="loading">認証状態を確認中...</div>
           </div>
-        </div>
-
-        {/* 検索・ソート */}
-        {isSearchBarOpen && (
-          <div className="search-sort-controls">
-          <div className="search-box">
-            <i className="fas fa-search"></i>
-            <input
-              type="text"
-              placeholder="キャラクター名で検索..."
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="search-input"
-            />
-          </div>
-          <div className="gender-filter">
-            <span className="filter-label">性別:</span>
-            <div className="gender-options">
-              <label className="gender-option">
-                <input
-                  type="radio"
-                  name="gender"
-                  value=""
-                  checked={genderFilter === ''}
-                  onChange={(e) => setGenderFilter(e.target.value)}
-                />
-                <span>全て</span>
-              </label>
-              <label className="gender-option">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="男性"
-                  checked={genderFilter === '男性'}
-                  onChange={(e) => setGenderFilter(e.target.value)}
-                />
-                <span>男性</span>
-              </label>
-              <label className="gender-option">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="女性"
-                  checked={genderFilter === '女性'}
-                  onChange={(e) => setGenderFilter(e.target.value)}
-                />
-                <span>女性</span>
-              </label>
-              <label className="gender-option">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="その他"
-                  checked={genderFilter === 'その他'}
-                  onChange={(e) => setGenderFilter(e.target.value)}
-                />
-                <span>その他</span>
-              </label>
+        ) : !user ? (
+          <div className="auth-required">
+            <h2>ログインが必要です</h2>
+            <p>キャラクターシートを作成・管理するにはログインしてください。</p>
+            <div className="auth-actions">
+              <Link href="/auth/login" className="btn btn-primary">
+                ログイン
+              </Link>
+              <Link href="/auth/signup" className="btn btn-secondary">
+                アカウント作成
+              </Link>
             </div>
           </div>
-          <div className="sort-controls">
-            <span className="sort-label">並び順:</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="sort-select"
-            >
-              <option value="updatedAt">更新日時</option>
-              <option value="character_name">名前</option>
-              <option value="createdAt">作成日時</option>
-              <option value="str_total">STR</option>
-              <option value="con_total">CON</option>
-              <option value="pow_total">POW</option>
-              <option value="dex_total">DEX</option>
-              <option value="app_total">APP</option>
-              <option value="siz_total">SIZ</option>
-              <option value="int_total">INT</option>
-              <option value="edu_total">EDU</option>
-              <option value="current_san">現在SAN値</option>
-              <option value="cthulhu_mythos">クトゥルフ神話</option>
-              <option value="height">身長</option>
-              <option value="age">年齢</option>
-            </select>
-            <button
-              onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-              className="sort-order-btn"
-              title={sortOrder === 'desc' ? '降順' : '昇順'}
-            >
-              <i className={`fas fa-sort-amount-${sortOrder === 'desc' ? 'down' : 'up'}`}></i>
-            </button>
-          </div>
-        </div>
+        ) : (
+          <>
+            <div className="actions">
+              <Link href="/create" className="btn btn-primary">
+                新しいキャラクター作成
+              </Link>
+              <div className="character-stats">
+                <div className="character-count">
+                  全{totalCharacters}件
+                </div>
+                <button 
+                  className="search-toggle-btn"
+                  onClick={() => setIsSearchBarOpen(!isSearchBarOpen)}
+                  title={isSearchBarOpen ? '検索バーを閉じる' : '検索バーを開く'}
+                >
+                  <i className={`fas fa-${isSearchBarOpen ? 'chevron-up' : 'search'}`}></i>
+                </button>
+              </div>
+            </div>
+
+            {/* 検索・ソート */}
+            {isSearchBarOpen && (
+              <div className="search-sort-controls">
+                <div className="search-box">
+                  <i className="fas fa-search"></i>
+                  <input
+                    type="text"
+                    placeholder="キャラクター名で検索..."
+                    value={searchTerm}
+                    onChange={(e) => handleSearch(e.target.value)}
+                    className="search-input"
+                  />
+                </div>
+                <div className="gender-filter">
+                  <span className="filter-label">性別:</span>
+                  <div className="gender-options">
+                    <label className="gender-option">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value=""
+                        checked={genderFilter === ''}
+                        onChange={(e) => setGenderFilter(e.target.value)}
+                      />
+                      <span>全て</span>
+                    </label>
+                    <label className="gender-option">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="男性"
+                        checked={genderFilter === '男性'}
+                        onChange={(e) => setGenderFilter(e.target.value)}
+                      />
+                      <span>男性</span>
+                    </label>
+                    <label className="gender-option">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="女性"
+                        checked={genderFilter === '女性'}
+                        onChange={(e) => setGenderFilter(e.target.value)}
+                      />
+                      <span>女性</span>
+                    </label>
+                    <label className="gender-option">
+                      <input
+                        type="radio"
+                        name="gender"
+                        value="その他"
+                        checked={genderFilter === 'その他'}
+                        onChange={(e) => setGenderFilter(e.target.value)}
+                      />
+                      <span>その他</span>
+                    </label>
+                  </div>
+                </div>
+                <div className="sort-controls">
+                  <span className="sort-label">並び順:</span>
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="sort-select"
+                  >
+                    <option value="updatedAt">更新日時</option>
+                    <option value="character_name">名前</option>
+                    <option value="createdAt">作成日時</option>
+                    <option value="str_total">STR</option>
+                    <option value="con_total">CON</option>
+                    <option value="pow_total">POW</option>
+                    <option value="dex_total">DEX</option>
+                    <option value="app_total">APP</option>
+                    <option value="siz_total">SIZ</option>
+                    <option value="int_total">INT</option>
+                    <option value="edu_total">EDU</option>
+                    <option value="current_san">現在SAN値</option>
+                    <option value="cthulhu_mythos">クトゥルフ神話</option>
+                    <option value="height">身長</option>
+                    <option value="age">年齢</option>
+                  </select>
+                  <button
+                    onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                    className="sort-order-btn"
+                    title={sortOrder === 'desc' ? '降順' : '昇順'}
+                  >
+                    <i className={`fas fa-sort-amount-${sortOrder === 'desc' ? 'down' : 'up'}`}></i>
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         {loading ? (
@@ -397,6 +425,63 @@ export default function Home() {
           margin: 0 auto;
           padding: 20px;
           font-family: 'Kosugi', 'Varela Round', sans-serif;
+        }
+
+        .loading-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 300px;
+        }
+
+        .loading {
+          text-align: center;
+          color: #666;
+          font-size: 16px;
+        }
+
+        .auth-required {
+          text-align: center;
+          padding: 60px 20px;
+          max-width: 500px;
+          margin: 0 auto;
+        }
+
+        .auth-required h2 {
+          color: #333;
+          margin-bottom: 16px;
+          font-size: 24px;
+        }
+
+        .auth-required p {
+          color: #666;
+          margin-bottom: 30px;
+          line-height: 1.6;
+        }
+
+        .auth-actions {
+          display: flex;
+          gap: 16px;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+
+        .btn-secondary {
+          background: #f8f9fa;
+          color: #333;
+          border: 1px solid #ddd;
+          padding: 10px 20px;
+          border-radius: 6px;
+          text-decoration: none;
+          transition: all 0.3s ease;
+          display: inline-block;
+        }
+
+        .btn-secondary:hover {
+          background: #e9ecef;
+          border-color: #ccc;
+          transform: translateY(-1px);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         h1 {

@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useLayoutEffect } from 'react';
 import { getCharacterData, getAllCharacterIds } from '../../lib/firebase-admin';
+import { useAuth } from '../../contexts/AuthContext';
 import DiceRollPopup from '../../components/DiceRollPopup';
 import { rollSkillCheck, DiceRollResult } from '../../lib/dice-roller';
 import SkillDisplay from '../../components/SkillDisplay';
@@ -27,6 +28,7 @@ interface CharacterPageProps {
 
 export default function CharacterPage({ character, characterId }: CharacterPageProps) {
   const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [secretMemoVisibility, setSecretMemoVisibility] = useState<Record<string, boolean>>({});
   const [memoPasswordStates, setMemoPasswordStates] = useState<Record<string, { unlocked: boolean; inputPassword: string }>>({});
@@ -42,6 +44,9 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
     hideRecords: false,
     hidePasswordProtected: false
   });
+
+  // 編集権限をチェック
+  const canEdit = user && character && character.userId === user.uid;
 
   // 共有機能
   const handleShare = () => {
@@ -416,7 +421,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
       <Header 
         showBackButton={true}
         customBackUrl="/"
-        showEditButton={true}
+        showEditButton={canEdit}
         editUrl={`/create?edit=${characterId}`}
         showShareButton={true}
         onShare={handleShare}
