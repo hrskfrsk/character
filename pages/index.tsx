@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { collection, getDocs, orderBy, query, limit, startAfter, DocumentSnapshot, getCountFromServer, where } from 'firebase/firestore';
+import { collection, getDocs, query, getCountFromServer, where } from 'firebase/firestore';
 import { db } from '../lib/firebase-client';
 import { calculateAbilityTotal } from '../lib/character-calculations';
 import { useAuth } from '../contexts/AuthContext';
+import ProtectedRoute from '../components/ProtectedRoute';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 export default function Home() {
-  const { user, loading: authLoading } = useAuth();
+  const { user } = useAuth();
   const [characters, setCharacters] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [lastDoc, setLastDoc] = useState<DocumentSnapshot | null>(null);
   const [hasNextPage, setHasNextPage] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCharacters, setTotalCharacters] = useState(0);
@@ -52,11 +52,10 @@ export default function Home() {
         return;
       }
 
-      // ユーザーのキャラクターのみ取得（検索・ソート用）
+      // ユーザーのキャラクターのみ取得（ソートはクライアント側で実行）
       const q = query(
         collection(db, 'characters'),
-        where('userId', '==', user.uid),
-        orderBy(sortBy, sortOrder)
+        where('userId', '==', user.uid)
       );
 
       const querySnapshot = await getDocs(q);
@@ -187,14 +186,14 @@ export default function Home() {
   }, [currentPage, totalPages]);
 
   useEffect(() => {
-    if (user && !authLoading) {
+    if (user) {
       fetchTotalCount();
       fetchAllCharacters();
     }
-  }, [user, authLoading, sortBy, sortOrder]);
+  }, [user, sortBy, sortOrder]);
 
   return (
-    <>
+    <ProtectedRoute>
       <Head>
         <title>クトゥルフ神話TRPG第6版 キャラクターシート</title>
         <meta name="description" content="Call of Cthulhu 6th Edition Character Sheet" />
@@ -205,26 +204,7 @@ export default function Home() {
       <Header />
 
       <main className="container page-with-header">
-        {authLoading ? (
-          <div className="loading-container">
-            <div className="loading">認証状態を確認中...</div>
-          </div>
-        ) : !user ? (
-          <div className="auth-required">
-            <h2>ログインが必要です</h2>
-            <p>キャラクターシートを作成・管理するにはログインしてください。</p>
-            <div className="auth-actions">
-              <Link href="/auth/login" className="btn btn-primary">
-                ログイン
-              </Link>
-              <Link href="/auth/signup" className="btn btn-secondary">
-                アカウント作成
-              </Link>
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="actions">
+        <div className="actions">
               <Link href="/create" className="btn btn-primary">
                 新しいキャラクター作成
               </Link>
@@ -333,8 +313,6 @@ export default function Home() {
                 </div>
               </div>
             )}
-          </>
-        )}
 
         {loading ? (
           <div className="loading">キャラクター一覧を読み込み中...</div>
@@ -427,61 +405,10 @@ export default function Home() {
           font-family: 'Kosugi', 'Varela Round', sans-serif;
         }
 
-        .loading-container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          min-height: 300px;
-        }
-
         .loading {
           text-align: center;
           color: #666;
           font-size: 16px;
-        }
-
-        .auth-required {
-          text-align: center;
-          padding: 60px 20px;
-          max-width: 500px;
-          margin: 0 auto;
-        }
-
-        .auth-required h2 {
-          color: #333;
-          margin-bottom: 16px;
-          font-size: 24px;
-        }
-
-        .auth-required p {
-          color: #666;
-          margin-bottom: 30px;
-          line-height: 1.6;
-        }
-
-        .auth-actions {
-          display: flex;
-          gap: 16px;
-          justify-content: center;
-          flex-wrap: wrap;
-        }
-
-        .btn-secondary {
-          background: #f8f9fa;
-          color: #333;
-          border: 1px solid #ddd;
-          padding: 10px 20px;
-          border-radius: 6px;
-          text-decoration: none;
-          transition: all 0.3s ease;
-          display: inline-block;
-        }
-
-        .btn-secondary:hover {
-          background: #e9ecef;
-          border-color: #ccc;
-          transform: translateY(-1px);
-          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         h1 {
@@ -1152,6 +1079,6 @@ export default function Home() {
           }
         }
       `}</style>
-    </>
+    </ProtectedRoute>
   );
 }

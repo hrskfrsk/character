@@ -17,7 +17,8 @@ export default function SignUp() {
 
   useEffect(() => {
     if (!loading && user) {
-      router.push('/');
+      const redirectTo = router.query.redirect as string || '/';
+      router.push(redirectTo);
     }
   }, [user, loading, router]);
 
@@ -39,7 +40,8 @@ export default function SignUp() {
 
     try {
       await signUpWithEmail(email, password);
-      router.push('/');
+      const redirectTo = router.query.redirect as string || '/';
+      router.push(redirectTo);
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
         setError('このメールアドレスは既に使用されています');
@@ -61,7 +63,8 @@ export default function SignUp() {
 
     try {
       await signInWithGoogle();
-      router.push('/');
+      const redirectTo = router.query.redirect as string || '/';
+      router.push(redirectTo);
     } catch (error: any) {
       if (error.code === 'auth/popup-closed-by-user') {
         setError('サインアップがキャンセルされました');

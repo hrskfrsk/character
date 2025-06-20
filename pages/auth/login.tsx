@@ -16,7 +16,9 @@ export default function Login() {
 
   useEffect(() => {
     if (!loading && user) {
-      router.push('/');
+      // リダイレクト先がクエリパラメータにある場合はそこに、なければホームに
+      const redirectTo = router.query.redirect as string || '/';
+      router.push(redirectTo);
     }
   }, [user, loading, router]);
 
@@ -27,7 +29,8 @@ export default function Login() {
 
     try {
       await signInWithEmail(email, password);
-      router.push('/');
+      const redirectTo = router.query.redirect as string || '/';
+      router.push(redirectTo);
     } catch (error: any) {
       if (error.code === 'auth/user-not-found') {
         setError('ユーザーが見つかりません');
@@ -49,7 +52,8 @@ export default function Login() {
 
     try {
       await signInWithGoogle();
-      router.push('/');
+      const redirectTo = router.query.redirect as string || '/';
+      router.push(redirectTo);
     } catch (error: any) {
       if (error.code === 'auth/popup-closed-by-user') {
         setError('ログインがキャンセルされました');

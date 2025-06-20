@@ -6,6 +6,7 @@ import { collection, addDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase-client';
 import { calculateAllStats, CharacterData } from '../lib/character-calculations';
 import { useAuth } from '../contexts/AuthContext';
+import ProtectedRoute from '../components/ProtectedRoute';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -1194,7 +1195,7 @@ export default function CreateCharacterPage() {
 
 
   return (
-    <>
+    <ProtectedRoute>
       <Head>
         <title>{pageTitle}</title>
         <meta name="description" content="クトゥルフ神話TRPG第6版のキャラクターシート作成フォーム" />
@@ -1429,7 +1430,7 @@ export default function CreateCharacterPage() {
 
       <Footer />
 
-    </>
+    </ProtectedRoute>
   );
 }
 
