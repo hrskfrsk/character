@@ -114,11 +114,6 @@ export default function Home() {
                   </div>
                   <div className="character-info">
                     <h3>{character.character_name || '無名のキャラクター'}</h3>
-                    <div className="character-details">
-                      <span className="detail-item">職業: {character.job || '-'}</span>
-                      <span className="detail-item">年齢: {character.age || '-'}</span>
-                      <span className="detail-item">性別: {character.gender || '-'}</span>
-                    </div>
                     {character.updatedAt && (
                       <div className="last-updated">
                         最終更新: {new Date(character.updatedAt.seconds * 1000).toLocaleDateString('ja-JP')}
@@ -274,16 +269,6 @@ export default function Home() {
           font-size: 1.2em;
         }
         
-        .character-details {
-          margin: 10px 0;
-        }
-        
-        .detail-item {
-          display: block;
-          margin: 5px 0;
-          color: #666;
-          font-size: 0.9em;
-        }
         
         .last-updated {
           font-size: 0.8em;

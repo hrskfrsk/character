@@ -95,10 +95,14 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
         throw new Error('Canvas context not available');
       }
 
-      // キャンバスサイズを128x128に設定
-      const targetSize = 128;
+      // キャンバスサイズを256x256に設定（高解像度）
+      const targetSize = 256;
       canvas.width = targetSize;
       canvas.height = targetSize;
+
+      // 高品質レンダリング設定
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
 
       // 表示された画像と実際の画像のスケール比を計算
       const scaleX = image.naturalWidth / image.clientWidth;
@@ -135,8 +139,8 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
         targetSize
       );
 
-      // キャンバスからデータURLを取得
-      const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+      // キャンバスからデータURLを取得（PNG形式で無劣化）
+      const dataUrl = canvas.toDataURL('image/png');
       
       // dataURLが正常に生成されたかチェック
       if (!dataUrl || dataUrl === 'data:,') {
@@ -248,7 +252,7 @@ const ImageCropper: React.FC<ImageCropperProps> = ({
               color: '#666'
             }}>
               選択範囲: {Math.round(completedCrop.width)} × {Math.round(completedCrop.height)}px<br />
-              最終サイズ: 128 × 128px
+              最終サイズ: 256 × 256px（高品質）
             </p>
           </div>
         )}

@@ -697,9 +697,9 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
       const response = await fetch(croppedImageUrl);
       const blob = await response.blob();
 
-      // Fileオブジェクトを作成
-      const fileName = `face_${Date.now()}.jpg`;
-      const file = new File([blob], fileName, { type: 'image/jpeg' });
+      // Fileオブジェクトを作成（PNG形式で高品質保存）
+      const fileName = `face_${Date.now()}.png`;
+      const file = new File([blob], fileName, { type: 'image/png' });
 
       // 既存の顔画像を削除
       if (characterData.face_image_url) {
