@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CharacterData } from '../../lib/character-calculations';
 import { uploadImage, deleteImage, getImagePathFromUrl, UploadProgress } from '../../lib/upload-image';
+import ImageCropper from '../ImageCropper';
 
 interface CharacterInfoProps {
   characterData: CharacterData;
@@ -12,6 +13,10 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
     progress: 0,
     isUploading: false
   });
+
+  // 顔画像クロップ用の状態
+  const [showImageCropper, setShowImageCropper] = useState(false);
+  const [faceImageUploading, setFaceImageUploading] = useState(false);
 
   // 色の明度を調整する関数
   const adjustBrightness = (hex: string, percent: number): string => {
@@ -665,10 +670,88 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
       }
 
       handleInputChange('character_image_url', '');
+      // 顔画像も削除
+      if (characterData.face_image_url) {
+        const faceImagePath = getImagePathFromUrl(characterData.face_image_url);
+        if (faceImagePath) {
+          await deleteImage(faceImagePath);
+        }
+        handleInputChange('face_image_url', '');
+        handleInputChange('face_image_crop_data', null);
+      }
     } catch (error) {
       console.error('Failed to delete image:', error);
       // エラーが出ても画像URLは削除する
       handleInputChange('character_image_url', '');
+      handleInputChange('face_image_url', '');
+      handleInputChange('face_image_crop_data', null);
+    }
+  };
+
+  // 顔画像のクロップ処理
+  const handleFaceCropComplete = async (croppedImageUrl: string) => {
+    setFaceImageUploading(true);
+    
+    try {
+      // Blob URLからBlobを取得
+      const response = await fetch(croppedImageUrl);
+      const blob = await response.blob();
+      
+      // Fileオブジェクトを作成
+      const fileName = `face_${Date.now()}.jpg`;
+      const file = new File([blob], fileName, { type: 'image/jpeg' });
+      
+      // 既存の顔画像を削除
+      if (characterData.face_image_url) {
+        const oldFaceImagePath = getImagePathFromUrl(characterData.face_image_url);
+        if (oldFaceImagePath) {
+          await deleteImage(oldFaceImagePath);
+        }
+      }
+      
+      // Firebase Storageにアップロード
+      const uploadResult = await uploadImage(file, undefined);
+      
+      // 顔画像URLを保存
+      handleInputChange('face_image_url', uploadResult.url);
+      
+      // Blob URLを解放
+      URL.revokeObjectURL(croppedImageUrl);
+      
+      console.log('Face image uploaded successfully:', uploadResult.url);
+    } catch (error) {
+      console.error('Failed to upload face image:', error);
+      alert('顔画像のアップロードに失敗しました');
+    } finally {
+      setFaceImageUploading(false);
+    }
+  };
+
+  // 顔画像クロップを開始
+  const handleStartFaceCrop = () => {
+    if (!characterData.character_image_url) {
+      alert('まず先にキャラクター画像をアップロードしてください');
+      return;
+    }
+    setShowImageCropper(true);
+  };
+
+  // 顔画像を削除
+  const removeFaceImage = async () => {
+    if (!characterData.face_image_url) return;
+    
+    try {
+      const faceImagePath = getImagePathFromUrl(characterData.face_image_url);
+      if (faceImagePath) {
+        await deleteImage(faceImagePath);
+      }
+      handleInputChange('face_image_url', '');
+      handleInputChange('face_image_crop_data', null);
+    } catch (error) {
+      console.error('Failed to delete face image:', error);
+      // エラーが出ても顔画像URLは削除する
+      handleInputChange('face_image_url', '');
+      handleInputChange('face_image_crop_data', null);
     }
   };
 
@@ -786,6 +869,61 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
                   >
                     <i className="fas fa-times"></i>
                   </button>
+                </div>
+                
+                {/* 顔画像セクション */}
+                <div className="face-image-section">
+                  <div className="face-image-header">
+                    <h4>
+                      <i className="fas fa-user-circle"></i>
+                      キャラクターリスト用顔画像
+                    </h4>
+                    <p>一覧ページに表示される顔画像を設定できます</p>
+                  </div>
+                  
+                  <div className="face-image-controls">
+                    {characterData.face_image_url ? (
+                      <div className="face-image-preview">
+                        <img
+                          src={characterData.face_image_url}
+                          alt="顔画像プレビュー"
+                          className="face-preview-img"
+                        />
+                        <div className="face-image-actions">
+                          <button
+                            type="button"
+                            className="btn-face-crop"
+                            onClick={handleStartFaceCrop}
+                            disabled={faceImageUploading}
+                          >
+                            <i className="fas fa-crop"></i>
+                            再設定
+                          </button>
+                          <button
+                            type="button"
+                            className="btn-face-remove"
+                            onClick={removeFaceImage}
+                            disabled={faceImageUploading}
+                          >
+                            <i className="fas fa-trash"></i>
+                            削除
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="face-image-setup">
+                        <button
+                          type="button"
+                          className="btn-face-crop"
+                          onClick={handleStartFaceCrop}
+                          disabled={faceImageUploading}
+                        >
+                          <i className={faceImageUploading ? "fas fa-spinner fa-spin" : "fas fa-crop"}></i>
+                          {faceImageUploading ? '処理中...' : '顔画像を設定'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
@@ -1461,6 +1599,15 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
 
         </div>
       </div>
+
+      {/* 画像クロップモーダル */}
+      <ImageCropper
+        isOpen={showImageCropper}
+        onClose={() => setShowImageCropper(false)}
+        sourceImageUrl={characterData.character_image_url || ''}
+        onCropComplete={handleFaceCropComplete}
+        characterName={characterData.character_name}
+      />
 
     </div>
   );

@@ -4645,4 +4645,92 @@ li {
   }
 }
 
+/* 顔画像関連のスタイル */
+.face-image-section {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.face-image-header h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.face-image-header p {
+  margin: 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.face-image-controls {
+  margin-top: 15px;
+}
+
+.face-image-preview {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.face-preview-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.face-image-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-face-crop,
+.btn-face-remove {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn-face-crop {
+  background-color: var(--ui-theme-color);
+  color: white;
+}
+
+.btn-face-crop:hover {
+  background-color: var(--ui-theme-color-hover);
+}
+
+.btn-face-remove {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-face-remove:hover {
+  background-color: #c82333;
+}
+
+.btn-face-crop:disabled,
+.btn-face-remove:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.face-image-setup {
+  text-align: center;
+}
+
 /*# sourceMappingURL=style.css.map */

@@ -99,6 +99,19 @@ export default function Home() {
             ) : (
               characters.map((character) => (
                 <div key={character.id} className="character-card">
+                  <div className="character-avatar">
+                    {character.face_image_url ? (
+                      <img 
+                        src={character.face_image_url} 
+                        alt={`${character.character_name}の顔画像`}
+                        className="face-image"
+                      />
+                    ) : (
+                      <div className="face-placeholder">
+                        <i className="fas fa-user"></i>
+                      </div>
+                    )}
+                  </div>
                   <div className="character-info">
                     <h3>{character.character_name || '無名のキャラクター'}</h3>
                     <div className="character-details">
@@ -213,11 +226,48 @@ export default function Home() {
           background: white;
           box-shadow: 0 2px 4px rgba(0,0,0,0.1);
           transition: all 0.3s ease;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
         
         .character-card:hover {
           transform: translateY(-5px);
           box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        
+        .character-avatar {
+          width: 80px;
+          height: 80px;
+          margin-bottom: 15px;
+          border-radius: 50%;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #f0f0f0;
+          border: 2px solid #ddd;
+        }
+        
+        .face-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        
+        .face-placeholder {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #999;
+          font-size: 32px;
+        }
+        
+        .character-info {
+          text-align: center;
+          width: 100%;
         }
         
         .character-info h3 {

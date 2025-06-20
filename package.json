@@ -17,7 +17,9 @@
     "next": "^14.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sass": "^1.69.0"
+    "react-image-crop": "^11.0.10",
+    "sass": "^1.69.0",
+    "sharp": "^0.34.2"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

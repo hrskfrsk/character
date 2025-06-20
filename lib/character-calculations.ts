@@ -38,6 +38,14 @@ export interface CharacterData {
   // 画像
   character_image_url?: string;
   image_aspect_ratio?: string;
+  face_image_url?: string;
+  face_image_crop_data?: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    scale?: number;
+  };
   
   // 説明文
   catchphrase?: string;
