@@ -14,6 +14,10 @@ export default function Home() {
   const [hasNextPage, setHasNextPage] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCharacters, setTotalCharacters] = useState(0);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('updatedAt');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [filteredCharacters, setFilteredCharacters] = useState<any[]>([]);
   const CHARACTERS_PER_PAGE = 50;
 
   const fetchTotalCount = async () => {
@@ -31,7 +35,7 @@ export default function Home() {
     }
   };
 
-  const fetchCharacters = async (page: number = 1, lastDocument: DocumentSnapshot | null = null) => {
+  const fetchAllCharacters = async () => {
     try {
       setLoading(true);
       if (!db) {
@@ -40,43 +44,20 @@ export default function Home() {
         return;
       }
 
-      // ページごとにキャラクター一覧を取得
-      let q = query(
+      // 全キャラクターを取得（検索・ソート用）
+      const q = query(
         collection(db, 'characters'),
-        orderBy('updatedAt', 'desc'),
-        limit(CHARACTERS_PER_PAGE + 1) // +1で次ページの有無を確認
+        orderBy(sortBy, sortOrder)
       );
 
-      // 2ページ目以降の場合、最後のドキュメントから開始
-      if (lastDocument) {
-        q = query(
-          collection(db, 'characters'),
-          orderBy('updatedAt', 'desc'),
-          startAfter(lastDocument),
-          limit(CHARACTERS_PER_PAGE + 1)
-        );
-      }
-
       const querySnapshot = await getDocs(q);
-      const docs = querySnapshot.docs;
-
-      // 次ページがあるかどうかを確認
-      const hasMore = docs.length > CHARACTERS_PER_PAGE;
-      setHasNextPage(hasMore);
-
-      // 実際に表示するデータ（最大3件）
-      const characterList = docs.slice(0, CHARACTERS_PER_PAGE).map((doc) => ({
+      const characterList = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data()
       }));
-
-      // 最後のドキュメントを保存（次ページ用）
-      if (characterList.length > 0) {
-        setLastDoc(docs[characterList.length - 1]);
-      }
-
+      
       setCharacters(characterList);
-      setCurrentPage(page);
+      applyFiltersAndSort(characterList);
     } catch (error) {
       console.error('キャラクター取得エラー:', error);
     } finally {
@@ -84,24 +65,81 @@ export default function Home() {
     }
   };
 
+  const applyFiltersAndSort = (characterList: any[]) => {
+    let filtered = characterList;
+
+    // 検索フィルター
+    if (searchTerm) {
+      filtered = filtered.filter(character =>
+        character.character_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        character.job?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // ソート
+    filtered.sort((a, b) => {
+      let aValue = a[sortBy];
+      let bValue = b[sortBy];
+
+      if (sortBy === 'updatedAt' || sortBy === 'createdAt') {
+        aValue = aValue?.seconds || 0;
+        bValue = bValue?.seconds || 0;
+      } else if (typeof aValue === 'string') {
+        aValue = aValue.toLowerCase();
+        bValue = bValue?.toLowerCase() || '';
+      }
+
+      if (sortOrder === 'asc') {
+        return aValue > bValue ? 1 : -1;
+      } else {
+        return aValue < bValue ? 1 : -1;
+      }
+    });
+
+    setFilteredCharacters(filtered);
+    
+    // ページネーション用の設定
+    const totalFiltered = filtered.length;
+    setTotalPages(Math.ceil(totalFiltered / CHARACTERS_PER_PAGE));
+    setCurrentPage(1);
+  };
+
+  const getCurrentPageCharacters = () => {
+    const startIndex = (currentPage - 1) * CHARACTERS_PER_PAGE;
+    const endIndex = startIndex + CHARACTERS_PER_PAGE;
+    return filteredCharacters.slice(startIndex, endIndex);
+  };
+
   const handleNextPage = () => {
-    if (hasNextPage) {
-      fetchCharacters(currentPage + 1, lastDoc);
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
     }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      // 前ページに戻る場合は最初から再取得（簡易実装）
-      fetchCharacters(1);
-      // より複雑な実装では前ページのlastDocを保存する必要がある
+      setCurrentPage(currentPage - 1);
     }
   };
 
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+    applyFiltersAndSort(characters);
+  };
+
+
+  useEffect(() => {
+    applyFiltersAndSort(characters);
+  }, [searchTerm, sortBy, sortOrder]);
+
+  useEffect(() => {
+    setHasNextPage(currentPage < totalPages);
+  }, [currentPage, totalPages]);
+
   useEffect(() => {
     fetchTotalCount();
-    fetchCharacters(1);
-  }, []);
+    fetchAllCharacters();
+  }, [sortBy, sortOrder]);
 
   return (
     <>
@@ -125,15 +163,48 @@ export default function Home() {
           </div>
         </div>
 
+        {/* 検索・ソート */}
+        <div className="search-sort-controls">
+          <div className="search-box">
+            <i className="fas fa-search"></i>
+            <input
+              type="text"
+              placeholder="キャラクター名で検索..."
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="search-input"
+            />
+          </div>
+          <div className="sort-controls">
+            <span className="sort-label">並び順:</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="sort-select"
+            >
+              <option value="updatedAt">更新日時</option>
+              <option value="character_name">名前</option>
+              <option value="createdAt">作成日時</option>
+            </select>
+            <button
+              onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+              className="sort-order-btn"
+              title={sortOrder === 'desc' ? '降順' : '昇順'}
+            >
+              <i className={`fas fa-sort-amount-${sortOrder === 'desc' ? 'down' : 'up'}`}></i>
+            </button>
+          </div>
+        </div>
+
         {loading ? (
           <div className="loading">キャラクター一覧を読み込み中...</div>
         ) : (
           <>
             <div className="character-list">
-              {characters.length === 0 ? (
-                <p>保存されたキャラクターはありません</p>
+              {getCurrentPageCharacters().length === 0 ? (
+                <p>{searchTerm ? '検索結果がありません' : '保存されたキャラクターはありません'}</p>
               ) : (
-                characters.map((character) => (
+                getCurrentPageCharacters().map((character) => (
                   <div key={character.id} className="character-card">
                     {character.is_lost && (
                       <div className="lost-badge">
@@ -179,7 +250,7 @@ export default function Home() {
             </div>
 
             {/* ページネーション */}
-            {characters.length > 0 && (currentPage > 1 || hasNextPage) && (
+            {filteredCharacters.length > CHARACTERS_PER_PAGE && (
               <div className="pagination">
                 <button
                   onClick={handlePrevPage}
@@ -233,6 +304,99 @@ export default function Home() {
           font-size: 14px;
           color: #666;
           font-weight: 500;
+        }
+        
+        .search-sort-controls {
+          display: flex;
+          gap: 20px;
+          align-items: center;
+          margin: 20px 0;
+          padding: 16px;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        }
+        
+        .search-box {
+          position: relative;
+          flex: 1;
+          max-width: 300px;
+        }
+        
+        .search-box i {
+          position: absolute;
+          left: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #6c757d;
+          font-size: 14px;
+        }
+        
+        .search-input {
+          width: 100%;
+          padding: 10px 12px 10px 35px;
+          border: 1px solid #ddd;
+          border-radius: 6px;
+          font-size: 14px;
+          transition: border-color 0.3s ease;
+        }
+        
+        .search-input:focus {
+          outline: none;
+          border-color: var(--ui-theme-color);
+          box-shadow: 0 0 0 2px var(--ui-theme-color-light);
+        }
+        
+        .sort-controls {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+        
+        .sort-label {
+          font-size: 14px;
+          color: #495057;
+          font-weight: 500;
+        }
+        
+        .sort-select {
+          padding: 8px 12px;
+          border: 1px solid #ddd;
+          border-radius: 6px;
+          font-size: 13px;
+          background: white;
+          color: #495057;
+          cursor: pointer;
+          transition: border-color 0.3s ease;
+          min-width: 120px;
+        }
+        
+        .sort-select:focus {
+          outline: none;
+          border-color: var(--ui-theme-color);
+          box-shadow: 0 0 0 2px var(--ui-theme-color-light);
+        }
+        
+        .sort-order-btn {
+          padding: 8px 12px;
+          background: white;
+          color: #495057;
+          border: 1px solid #ddd;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 14px;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 36px;
+        }
+        
+        .sort-order-btn:hover {
+          border-color: var(--ui-theme-color);
+          color: var(--ui-theme-color);
         }
         
         .btn {
@@ -561,6 +725,20 @@ export default function Home() {
             flex-direction: column;
             gap: 10px;
             text-align: center;
+          }
+          
+          .search-sort-controls {
+            flex-direction: column;
+            gap: 15px;
+            align-items: stretch;
+          }
+          
+          .search-box {
+            max-width: none;
+          }
+          
+          .sort-controls {
+            justify-content: center;
           }
           
           .pagination {
