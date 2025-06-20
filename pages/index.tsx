@@ -19,6 +19,7 @@ export default function Home() {
   const [sortBy, setSortBy] = useState('updatedAt');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [filteredCharacters, setFilteredCharacters] = useState<any[]>([]);
+  const [genderFilter, setGenderFilter] = useState('');
   const CHARACTERS_PER_PAGE = 50;
 
   const fetchTotalCount = async () => {
@@ -77,6 +78,14 @@ export default function Home() {
       );
     }
 
+    // 性別フィルター
+    if (genderFilter) {
+      filtered = filtered.filter(character => {
+        const gender = character.gender || character.sex;
+        return gender === genderFilter;
+      });
+    }
+
     // ソート
     filtered.sort((a, b) => {
       let aValue, bValue;
@@ -94,6 +103,22 @@ export default function Home() {
           b[`${abilityName}_age_mod`] || 0,
           b[`${abilityName}_other_mod`] || 0
         );
+      } else if (sortBy === 'current_san') {
+        // 現在SAN値は数値として扱う
+        aValue = parseInt(a.current_san) || 0;
+        bValue = parseInt(b.current_san) || 0;
+      } else if (sortBy === 'cthulhu_mythos') {
+        // クトゥルフ神話技能値は数値として扱う
+        aValue = parseInt(a.cthulhu_mythos_total) || 0;
+        bValue = parseInt(b.cthulhu_mythos_total) || 0;
+      } else if (sortBy === 'height') {
+        // 身長は数値部分を抽出して比較（例: "170cm" → 170）
+        aValue = parseFloat(a.height?.toString().replace(/[^\d.]/g, '')) || 0;
+        bValue = parseFloat(b.height?.toString().replace(/[^\d.]/g, '')) || 0;
+      } else if (sortBy === 'age') {
+        // 年齢は数値として扱う
+        aValue = parseInt(a.age) || 0;
+        bValue = parseInt(b.age) || 0;
       } else {
         aValue = a[sortBy];
         bValue = b[sortBy];
@@ -148,7 +173,7 @@ export default function Home() {
 
   useEffect(() => {
     applyFiltersAndSort(characters);
-  }, [searchTerm, sortBy, sortOrder]);
+  }, [searchTerm, genderFilter, sortBy, sortOrder]);
 
   useEffect(() => {
     setHasNextPage(currentPage < totalPages);
@@ -193,6 +218,51 @@ export default function Home() {
               className="search-input"
             />
           </div>
+          <div className="gender-filter">
+            <span className="filter-label">性別:</span>
+            <div className="gender-options">
+              <label className="gender-option">
+                <input
+                  type="radio"
+                  name="gender"
+                  value=""
+                  checked={genderFilter === ''}
+                  onChange={(e) => setGenderFilter(e.target.value)}
+                />
+                <span>全て</span>
+              </label>
+              <label className="gender-option">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="男性"
+                  checked={genderFilter === '男性'}
+                  onChange={(e) => setGenderFilter(e.target.value)}
+                />
+                <span>男性</span>
+              </label>
+              <label className="gender-option">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="女性"
+                  checked={genderFilter === '女性'}
+                  onChange={(e) => setGenderFilter(e.target.value)}
+                />
+                <span>女性</span>
+              </label>
+              <label className="gender-option">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="その他"
+                  checked={genderFilter === 'その他'}
+                  onChange={(e) => setGenderFilter(e.target.value)}
+                />
+                <span>その他</span>
+              </label>
+            </div>
+          </div>
           <div className="sort-controls">
             <span className="sort-label">並び順:</span>
             <select
@@ -211,6 +281,10 @@ export default function Home() {
               <option value="siz_total">SIZ</option>
               <option value="int_total">INT</option>
               <option value="edu_total">EDU</option>
+              <option value="current_san">現在SAN値</option>
+              <option value="cthulhu_mythos">クトゥルフ神話</option>
+              <option value="height">身長</option>
+              <option value="age">年齢</option>
             </select>
             <button
               onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
@@ -334,12 +408,12 @@ export default function Home() {
         
         .search-sort-controls {
           display: flex;
-          gap: 20px;
+          gap: 16px;
           align-items: center;
-          margin: 20px 0;
-          padding: 16px;
+          margin: 16px 0;
+          padding: 8px 12px;
           background: #f8f9fa;
-          border-radius: 8px;
+          border-radius: 6px;
           border: 1px solid #e9ecef;
         }
         
@@ -360,10 +434,10 @@ export default function Home() {
         
         .search-input {
           width: 100%;
-          padding: 10px 12px 10px 35px;
+          padding: 6px 10px 6px 32px;
           border: 1px solid #ddd;
-          border-radius: 6px;
-          font-size: 14px;
+          border-radius: 4px;
+          font-size: 13px;
           transition: border-color 0.3s ease;
         }
         
@@ -381,21 +455,21 @@ export default function Home() {
         }
         
         .sort-label {
-          font-size: 14px;
+          font-size: 13px;
           color: #495057;
           font-weight: 500;
         }
         
         .sort-select {
-          padding: 8px 12px;
+          padding: 6px 10px;
           border: 1px solid #ddd;
-          border-radius: 6px;
+          border-radius: 4px;
           font-size: 13px;
           background: white;
           color: #495057;
           cursor: pointer;
           transition: border-color 0.3s ease;
-          min-width: 120px;
+          min-width: 80px;
         }
         
         .sort-select:focus {
@@ -405,24 +479,92 @@ export default function Home() {
         }
         
         .sort-order-btn {
-          padding: 8px 12px;
+          padding: 6px;
           background: white;
           color: #495057;
           border: 1px solid #ddd;
-          border-radius: 6px;
+          border-radius: 4px;
           cursor: pointer;
-          font-size: 14px;
+          font-size: 13px;
           transition: all 0.3s ease;
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 40px;
-          height: 36px;
+          width: 32px;
+          height: 32px;
         }
         
         .sort-order-btn:hover {
           border-color: var(--ui-theme-color);
           color: var(--ui-theme-color);
+        }
+        
+        .gender-filter {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          flex-wrap: wrap;
+        }
+        
+        .filter-label {
+          font-size: 13px;
+          color: #495057;
+          font-weight: 500;
+        }
+        
+        .gender-options {
+          display: flex;
+          gap: 2px;
+          flex-wrap: wrap;
+        }
+        
+        .gender-option {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          cursor: pointer;
+          font-size: 13px;
+          color: #6c757d;
+          padding: 2px 6px;
+          border-radius: 4px;
+          transition: all 0.2s ease;
+          position: relative;
+        }
+        
+        .gender-option:hover {
+          background: #f8f9fa;
+        }
+        
+        .gender-option input[type="radio"] {
+          position: absolute;
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+        
+        .gender-option::before {
+          content: '';
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          border: 1.5px solid #ced4da;
+          background: white;
+          transition: all 0.2s ease;
+          flex-shrink: 0;
+        }
+        
+        .gender-option input[type="radio"]:checked + span {
+          color: #495057;
+        }
+        
+        .gender-option:has(input:checked)::before {
+          border-color: var(--ui-theme-color);
+          background: var(--ui-theme-color);
+          box-shadow: inset 0 0 0 2.5px white;
+        }
+        
+        .gender-option span {
+          cursor: pointer;
         }
         
         .btn {
@@ -755,7 +897,7 @@ export default function Home() {
           
           .search-sort-controls {
             flex-direction: column;
-            gap: 15px;
+            gap: 5px;
             align-items: stretch;
           }
           
@@ -764,6 +906,10 @@ export default function Home() {
           }
           
           .sort-controls {
+            justify-content: center;
+          }
+          
+          .gender-filter {
             justify-content: center;
           }
           
