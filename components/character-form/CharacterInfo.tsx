@@ -691,16 +691,16 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
   // 顔画像のクロップ処理
   const handleFaceCropComplete = async (croppedImageUrl: string) => {
     setFaceImageUploading(true);
-    
+
     try {
       // Blob URLからBlobを取得
       const response = await fetch(croppedImageUrl);
       const blob = await response.blob();
-      
+
       // Fileオブジェクトを作成
       const fileName = `face_${Date.now()}.jpg`;
       const file = new File([blob], fileName, { type: 'image/jpeg' });
-      
+
       // 既存の顔画像を削除
       if (characterData.face_image_url) {
         const oldFaceImagePath = getImagePathFromUrl(characterData.face_image_url);
@@ -708,16 +708,16 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
           await deleteImage(oldFaceImagePath);
         }
       }
-      
+
       // Firebase Storageにアップロード
       const uploadResult = await uploadImage(file, undefined);
-      
+
       // 顔画像URLを保存
       handleInputChange('face_image_url', uploadResult.url);
-      
+
       // Blob URLを解放
       URL.revokeObjectURL(croppedImageUrl);
-      
+
       console.log('Face image uploaded successfully:', uploadResult.url);
     } catch (error) {
       console.error('Failed to upload face image:', error);
@@ -739,7 +739,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
   // 顔画像を削除
   const removeFaceImage = async () => {
     if (!characterData.face_image_url) return;
-    
+
     try {
       const faceImagePath = getImagePathFromUrl(characterData.face_image_url);
       if (faceImagePath) {
@@ -806,7 +806,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
             {characterData.page_password_enabled ? 'パスワード保護ON' : 'パスワード保護OFF'}
           </span>
         </div>
-        
+
         {characterData.page_password_enabled && (
           <div className="password-input-group" style={{ marginTop: '10px' }}>
             <label htmlFor="page_password">
@@ -870,17 +870,16 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
                     <i className="fas fa-times"></i>
                   </button>
                 </div>
-                
+
                 {/* 顔画像セクション */}
                 <div className="face-image-section">
                   <div className="face-image-header">
                     <h4>
                       <i className="fas fa-user-circle"></i>
-                      キャラクターリスト用顔画像
+                      リスト用顔画像
                     </h4>
-                    <p>一覧ページに表示される顔画像を設定できます</p>
                   </div>
-                  
+
                   <div className="face-image-controls">
                     {characterData.face_image_url ? (
                       <div className="face-image-preview">
@@ -897,7 +896,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
                             disabled={faceImageUploading}
                           >
                             <i className="fas fa-crop"></i>
-                            再設定
+                            <span>再設定</span>
                           </button>
                           <button
                             type="button"
@@ -906,7 +905,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
                             disabled={faceImageUploading}
                           >
                             <i className="fas fa-trash"></i>
-                            削除
+                            <span>削除</span>
                           </button>
                         </div>
                       </div>
@@ -919,7 +918,7 @@ export default function CharacterInfo({ characterData, handleInputChange }: Char
                           disabled={faceImageUploading}
                         >
                           <i className={faceImageUploading ? "fas fa-spinner fa-spin" : "fas fa-crop"}></i>
-                          {faceImageUploading ? '処理中...' : '顔画像を設定'}
+                          <span>{faceImageUploading ? '処理中...' : '顔画像を設定'}</span>
                         </button>
                       </div>
                     )}

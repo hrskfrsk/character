@@ -1069,6 +1069,12 @@ textarea,
   justify-content: center;
   max-height: 240px;
 }
+@media only screen and (max-width: 768px) {
+  .character-info .character-image-section .image-preview-container {
+    max-height: fit-content;
+    flex-direction: column;
+  }
+}
 
 .character-info .character-image-section .image-preview {
   position: relative;
@@ -4647,16 +4653,15 @@ li {
 
 /* 顔画像関連のスタイル */
 .face-image-section {
-  margin-top: 20px;
-  padding: 20px;
+  padding: 10px;
   background: #f8f9fa;
   border-radius: 8px;
   border: 1px solid #e0e0e0;
 }
 
 .face-image-header h4 {
-  margin: 0 0 8px 0;
-  font-size: 16px;
+  margin: 0 0 3px 0;
+  font-size: 1em;
   color: #333;
   display: flex;
   align-items: center;
@@ -4669,27 +4674,23 @@ li {
   color: #666;
 }
 
-.face-image-controls {
-  margin-top: 15px;
-}
-
 .face-image-preview {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 5px;
+  flex-direction: column;
 }
 
 .face-preview-img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
   border: 2px solid #ddd;
 }
 
 .face-image-actions {
   display: flex;
-  gap: 8px;
+  gap: 5px;
 }
 
 .btn-face-crop,
@@ -4731,6 +4732,20 @@ li {
 
 .face-image-setup {
   text-align: center;
+}
+
+/* レスポンシブ対応 - 1029px以下でボタンをアイコンのみに */
+@media (max-width: 1029px) {
+  .btn-face-crop,
+  .btn-face-remove {
+    padding: 8px;
+    gap: 0;
+  }
+  
+  .btn-face-crop span,
+  .btn-face-remove span {
+    display: none;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */
