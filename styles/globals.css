@@ -4760,9 +4760,16 @@ li {
   transition: all 0.3s ease !important;
 }
 
+.nav-link.edit-btn {
+  color: #fff !important;
+}
+
 .edit-btn:hover {
   color: #74cdc3 !important;
   text-decoration: none !important;
+}
+.nav-link.edit-btn:hover {
+  color: #fff !important;
 }
 
 .edit-btn i {

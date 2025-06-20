@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { collection, getDocs, orderBy, query, limit, startAfter, DocumentSnapshot, getCountFromServer } from 'firebase/firestore';
 import { db } from '../lib/firebase-client';
+import { calculateAbilityTotal } from '../lib/character-calculations';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -78,15 +79,32 @@ export default function Home() {
 
     // ソート
     filtered.sort((a, b) => {
-      let aValue = a[sortBy];
-      let bValue = b[sortBy];
+      let aValue, bValue;
 
-      if (sortBy === 'updatedAt' || sortBy === 'createdAt') {
-        aValue = aValue?.seconds || 0;
-        bValue = bValue?.seconds || 0;
-      } else if (typeof aValue === 'string') {
-        aValue = aValue.toLowerCase();
-        bValue = bValue?.toLowerCase() || '';
+      // 能力値の場合は計算済みの値を使用
+      if (sortBy.endsWith('_total')) {
+        const abilityName = sortBy.replace('_total', '');
+        aValue = calculateAbilityTotal(
+          a[`${abilityName}_base`] || 0,
+          a[`${abilityName}_age_mod`] || 0,
+          a[`${abilityName}_other_mod`] || 0
+        );
+        bValue = calculateAbilityTotal(
+          b[`${abilityName}_base`] || 0,
+          b[`${abilityName}_age_mod`] || 0,
+          b[`${abilityName}_other_mod`] || 0
+        );
+      } else {
+        aValue = a[sortBy];
+        bValue = b[sortBy];
+
+        if (sortBy === 'updatedAt' || sortBy === 'createdAt') {
+          aValue = aValue?.seconds || 0;
+          bValue = bValue?.seconds || 0;
+        } else if (typeof aValue === 'string') {
+          aValue = aValue.toLowerCase();
+          bValue = bValue?.toLowerCase() || '';
+        }
       }
 
       if (sortOrder === 'asc') {
@@ -185,6 +203,14 @@ export default function Home() {
               <option value="updatedAt">更新日時</option>
               <option value="character_name">名前</option>
               <option value="createdAt">作成日時</option>
+              <option value="str_total">STR</option>
+              <option value="con_total">CON</option>
+              <option value="pow_total">POW</option>
+              <option value="dex_total">DEX</option>
+              <option value="app_total">APP</option>
+              <option value="siz_total">SIZ</option>
+              <option value="int_total">INT</option>
+              <option value="edu_total">EDU</option>
             </select>
             <button
               onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
