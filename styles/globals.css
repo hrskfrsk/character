@@ -4782,7 +4782,7 @@ li {
 
 /* 新しいキャラクター作成ボタン */
 .btn-primary {
-  background: var(--ui-theme-color) !important;
+  background: #74cdc3 !important;
   color: white !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -4794,12 +4794,12 @@ li {
   letter-spacing: 0.02em !important;
   text-decoration: none !important;
   transition: all 0.3s ease !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
 }
 
 .btn-primary::before {
-  content: '\f067' !important;
-  font-family: 'Font Awesome 5 Free' !important;
+  content: "\f067" !important;
+  font-family: "Font Awesome 5 Free" !important;
   font-weight: 900 !important;
   font-size: 12px !important;
 }
@@ -4807,7 +4807,7 @@ li {
 .btn-primary:hover {
   background: var(--ui-theme-color-hover) !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
   color: white !important;
   text-decoration: none !important;
 }
@@ -4818,7 +4818,7 @@ li {
     padding: 6px 12px !important;
     font-size: 12px !important;
   }
-  
+
   .btn-primary::before {
     font-size: 11px !important;
   }
