@@ -16,12 +16,25 @@ interface RecordPageProps {
 export default function RecordPage({ recordSection, characterName, sectionTitle }: RecordPageProps) {
   const router = useRouter();
   const [openFields, setOpenFields] = useState<{ [key: string]: boolean }>({});
+  const [passwordInputs, setPasswordInputs] = useState<{ [key: string]: string }>({});
+  const [passwordAuthenticated, setPasswordAuthenticated] = useState<{ [key: string]: boolean }>({});
 
   const toggleField = (fieldId: string) => {
     setOpenFields(prev => ({
       ...prev,
       [fieldId]: !prev[fieldId]
     }));
+  };
+
+  // パスワード認証
+  const handlePasswordSubmit = (fieldId: string, field: any) => {
+    const inputPassword = passwordInputs[fieldId] || '';
+    if (inputPassword === field.password) {
+      setPasswordAuthenticated(prev => ({ ...prev, [fieldId]: true }));
+      setPasswordInputs(prev => ({ ...prev, [fieldId]: '' }));
+    } else {
+      alert('パスワードが正しくありません');
+    }
   };
 
   if (!recordSection) {
@@ -79,10 +92,9 @@ export default function RecordPage({ recordSection, characterName, sectionTitle 
             <h1 style={{
               fontSize: '24px',
               marginBottom: '8px',
-              color: '#333',
               display: 'flex',
               alignItems: 'center',
-              gap: '10px'
+              gap: '15px'
             }}>
               <i className="fas fa-clipboard"></i>
               {sectionTitle}
@@ -99,7 +111,14 @@ export default function RecordPage({ recordSection, characterName, sectionTitle 
           {/* 記録内容 */}
           <div className="record-content">
             {recordSection.fields.map((field: any) => {
-              const isOpen = openFields[field.id] !== false; // デフォルトで開いている
+              // 開閉状態：open_by_defaultがtrueの場合は開いている、未定義/falseの場合は閉じている
+              const defaultOpen = field.open_by_default === true;
+              const isOpen = openFields[field.id] !== undefined ? openFields[field.id] : defaultOpen;
+
+              // パスワード保護
+              const isPasswordProtected = field.password_protected;
+              const isAuthenticated = passwordAuthenticated[field.id] || false;
+              const shouldShowContent = !isPasswordProtected || isAuthenticated;
 
               return (
                 <div key={field.id} style={{ marginBottom: '0' }}>
@@ -119,6 +138,13 @@ export default function RecordPage({ recordSection, characterName, sectionTitle 
                       }}
                     >
                       <i className={`fas ${isOpen ? 'fa-chevron-down' : 'fa-chevron-right'}`} style={{ fontSize: '12px', marginRight: '8px' }}></i>
+                      {isPasswordProtected && (
+                        <i className="fas fa-lock" style={{
+                          fontSize: '10px',
+                          marginRight: '5px',
+                          opacity: 0.7
+                        }}></i>
+                      )}
                       <span>{field.title}</span>
                     </h2>
                   )}
@@ -130,7 +156,73 @@ export default function RecordPage({ recordSection, characterName, sectionTitle 
                       whiteSpace: 'pre-wrap',
                       padding: '10px 10px 30px',
                     }}>
-                      {linkifyText(field.content)}
+                      {isPasswordProtected && !isAuthenticated ? (
+                        <div style={{
+                          textAlign: 'center',
+                          padding: '20px',
+                          backgroundColor: '#f8f9fa',
+                          borderRadius: '4px',
+                          border: '1px solid #e0e0e0'
+                        }}>
+                          <i className="fas fa-lock" style={{
+                            fontSize: '24px',
+                            color: '#ccc',
+                            marginBottom: '10px',
+                            display: 'block'
+                          }}></i>
+                          <p style={{
+                            marginBottom: '15px',
+                            color: '#666',
+                            fontSize: '0.8rem'
+                          }}>
+                            この項目はパスワードで保護されています
+                          </p>
+                          <div style={{
+                            display: 'flex',
+                            gap: '8px',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            maxWidth: '250px',
+                            margin: '0 auto'
+                          }}>
+                            <input
+                              type="password"
+                              placeholder="パスワード"
+                              value={passwordInputs[field.id] || ''}
+                              onChange={(e) => setPasswordInputs(prev => ({ ...prev, [field.id]: e.target.value }))}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  handlePasswordSubmit(field.id, field);
+                                }
+                              }}
+                              style={{
+                                flex: 1,
+                                padding: '6px 8px',
+                                border: '1px solid #ddd',
+                                borderRadius: '3px',
+                                fontSize: '0.8rem'
+                              }}
+                            />
+                            <button
+                              onClick={() => handlePasswordSubmit(field.id, field)}
+                              style={{
+                                padding: '6px 12px',
+                                backgroundColor: '#2196F3',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '3px',
+                                cursor: 'pointer',
+                                fontSize: '0.8rem',
+                                fontWeight: 'bold'
+                              }}
+                            >
+                              解除
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        linkifyText(field.content)
+                      )}
                     </div>
                   )}
                 </div>
