@@ -188,7 +188,7 @@ export default function Home() {
           background-size: cover, cover;
           background-position: center, center 20%;
           background-repeat: no-repeat, no-repeat;
-          padding: 80px 0 120px;
+          padding: 80px 0 90px;
           color: white;
           position: relative;
           overflow: hidden;
