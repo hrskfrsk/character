@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { collection, getDocs, orderBy, query, limit, startAfter, DocumentSnapshot } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, limit, startAfter, DocumentSnapshot, getCountFromServer } from 'firebase/firestore';
 import { db } from '../lib/firebase-client';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -13,7 +13,23 @@ export default function Home() {
   const [lastDoc, setLastDoc] = useState<DocumentSnapshot | null>(null);
   const [hasNextPage, setHasNextPage] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalCharacters, setTotalCharacters] = useState(0);
   const CHARACTERS_PER_PAGE = 50;
+
+  const fetchTotalCount = async () => {
+    try {
+      if (!db) return;
+      
+      const countQuery = query(collection(db, 'characters'));
+      const snapshot = await getCountFromServer(countQuery);
+      const total = snapshot.data().count;
+      
+      setTotalCharacters(total);
+      setTotalPages(Math.ceil(total / CHARACTERS_PER_PAGE));
+    } catch (error) {
+      console.error('総数取得エラー:', error);
+    }
+  };
 
   const fetchCharacters = async (page: number = 1, lastDocument: DocumentSnapshot | null = null) => {
     try {
@@ -48,7 +64,7 @@ export default function Home() {
       const hasMore = docs.length > CHARACTERS_PER_PAGE;
       setHasNextPage(hasMore);
       
-      // 実際に表示するデータ（最大50件）
+      // 実際に表示するデータ（最大3件）
       const characterList = docs.slice(0, CHARACTERS_PER_PAGE).map((doc) => ({
         id: doc.id,
         ...doc.data()
@@ -83,6 +99,7 @@ export default function Home() {
   };
 
   useEffect(() => {
+    fetchTotalCount();
     fetchCharacters(1);
   }, []);
 
@@ -167,11 +184,10 @@ export default function Home() {
                   className="pagination-btn"
                 >
                   <i className="fas fa-chevron-left"></i>
-                  前のページ
                 </button>
                 
                 <span className="page-info">
-                  ページ {currentPage}
+                  {currentPage} / {totalPages}
                 </span>
                 
                 <button 
@@ -179,7 +195,6 @@ export default function Home() {
                   disabled={!hasNextPage}
                   className="pagination-btn"
                 >
-                  次のページ
                   <i className="fas fa-chevron-right"></i>
                 </button>
               </div>
@@ -447,7 +462,7 @@ export default function Home() {
           align-items: center;
           gap: 8px;
           padding: 12px 20px;
-          background: #4CAF50;
+          background: var(--ui-theme-color);
           color: white;
           border: none;
           border-radius: 6px;
@@ -458,7 +473,7 @@ export default function Home() {
         }
         
         .pagination-btn:hover:not(:disabled) {
-          background: #45a049;
+          background: var(--ui-theme-color-hover);
           transform: translateY(-2px);
           box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
@@ -473,7 +488,6 @@ export default function Home() {
         .page-info {
           font-size: 16px;
           font-weight: 600;
-          color: #333;
           padding: 0 10px;
         }
         
