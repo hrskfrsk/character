@@ -369,7 +369,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
   // パスワードモーダルを閉じる（認証なし）
   const handlePasswordModalClose = () => {
     setShowPasswordModal(false);
-    router.push('/'); // ホームページにリダイレクト
+    router.push('/list'); // キャラクター一覧にリダイレクト
   };
 
   // テーマカラーのスタイルを事前計算
@@ -445,7 +445,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
 
       <Header 
         showBackButton={true}
-        customBackUrl="/"
+        customBackUrl="/list"
         showEditButton={canEdit}
         editUrl={`/create?edit=${characterId}`}
         showShareButton={true}

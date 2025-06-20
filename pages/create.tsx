@@ -428,7 +428,7 @@ export default function CreateCharacterPage() {
         // ユーザー権限チェック
         if (data.userId && data.userId !== user?.uid) {
           alert('このキャラクターを編集する権限がありません');
-          router.push('/');
+          router.push('/list');
           return;
         }
         
@@ -1161,7 +1161,7 @@ export default function CreateCharacterPage() {
         // 追加セキュリティチェック：キャラクターの所有者を確認
         if (originalData.userId && originalData.userId !== user.uid) {
           alert('このキャラクターを編集する権限がありません');
-          router.push('/');
+          router.push('/list');
           return;
         }
         
@@ -1253,7 +1253,7 @@ export default function CreateCharacterPage() {
 
       if (response.ok) {
         alert('キャラクターを削除しました');
-        router.push('/');
+        router.push('/list');
       } else {
         const error = await response.json();
         alert(`削除に失敗しました: ${error.error || '不明なエラー'}`);
@@ -1280,7 +1280,7 @@ export default function CreateCharacterPage() {
       <Header
         title={isEditMode ? "キャラクター編集" : "キャラクター作成"}
         showBackButton={true}
-        customBackUrl="/"
+        customBackUrl="/list"
         actionButtons={
           <>
             <button
