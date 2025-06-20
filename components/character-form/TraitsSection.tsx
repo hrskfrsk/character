@@ -297,7 +297,7 @@ export default function TraitsSection({
             type="button"
             onClick={addTrait}
             className="add-btn"
-            style={{ margin: '-10px 0 10px auto' }}>
+            style={{ margin: '0 0 10px auto' }}>
             <i className="fas fa-plus"></i> 特徴を追加
           </button>
         </div>

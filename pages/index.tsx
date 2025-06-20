@@ -64,14 +64,6 @@ export default function Home() {
         ...doc.data()
       }));
 
-      // デバッグ: 性別データの確認
-      const genderData = characterList.map((char: any) => ({
-        name: char.character_name,
-        gender: char.gender,
-        sex: char.sex
-      }));
-      console.log('Gender data in characters:', genderData);
-
       setCharacters(characterList);
       applyFiltersAndSort(characterList);
     } catch (error) {
@@ -94,42 +86,29 @@ export default function Home() {
 
     // 性別フィルター
     if (genderFilter) {
-      console.log('Filtering by gender:', genderFilter);
       filtered = filtered.filter((character: any) => {
         const gender = character.gender || character.sex;
-        if (!gender) {
-          console.log(`Character ${character.character_name} has no gender data`);
-          return false;
-        }
+        if (!gender) return false;
         
         // 性別の表記ブレに対応
         const normalizedGender = gender.toString().toLowerCase();
-        console.log(`Character ${character.character_name}: original gender "${gender}", normalized "${normalizedGender}"`);
         
-        let matches = false;
         switch (genderFilter) {
           case '男性':
-            matches = normalizedGender.includes('男') || normalizedGender === 'male' || normalizedGender === 'm';
-            break;
+            return normalizedGender.includes('男') || normalizedGender === 'male' || normalizedGender === 'm';
           case '女性':
-            matches = normalizedGender.includes('女') || normalizedGender === 'female' || normalizedGender === 'f';
-            break;
+            return normalizedGender.includes('女') || normalizedGender === 'female' || normalizedGender === 'f';
           case 'その他':
-            matches = !normalizedGender.includes('男') && 
-                     !normalizedGender.includes('女') && 
-                     normalizedGender !== 'male' && 
-                     normalizedGender !== 'female' && 
-                     normalizedGender !== 'm' && 
-                     normalizedGender !== 'f';
-            break;
+            return !normalizedGender.includes('男') && 
+                   !normalizedGender.includes('女') && 
+                   normalizedGender !== 'male' && 
+                   normalizedGender !== 'female' && 
+                   normalizedGender !== 'm' && 
+                   normalizedGender !== 'f';
           default:
-            matches = true;
+            return true;
         }
-        
-        console.log(`Character ${character.character_name} matches filter ${genderFilter}: ${matches}`);
-        return matches;
       });
-      console.log(`After gender filter: ${filtered.length} characters`);
     }
 
     // ソート

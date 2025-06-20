@@ -2697,6 +2697,9 @@ li {
   border-left: solid 2px var(--ui-theme-color);
   margin-bottom: 15px;
 }
+.chara-seet .features .f-list:last-of-type {
+  margin-bottom: 5px;
+}
 @media only screen and (max-width: 768pscx) {
   .chara-seet .features .f-list {
     -ms-flex-wrap: wrap;
