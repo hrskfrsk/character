@@ -4741,11 +4741,36 @@ li {
     padding: 8px;
     gap: 0;
   }
-  
+
   .btn-face-crop span,
   .btn-face-remove span {
     display: none;
   }
+}
+
+/* Character list edit button styles */
+.edit-btn {
+  display: flex !important;
+  align-items: center !important;
+  color: #333 !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.edit-btn:hover {
+  color: #74cdc3 !important;
+  text-decoration: none !important;
+}
+
+.edit-btn i {
+  font-size: 16px !important;
+}
+
+.edit-btn span {
+  font-size: 13px !important;
 }
 
 /*# sourceMappingURL=style.css.map */

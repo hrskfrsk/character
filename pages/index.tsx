@@ -21,16 +21,16 @@ export default function Home() {
 
         // キャラクター一覧を更新日時の降順で取得
         const q = query(
-          collection(db, 'characters'), 
+          collection(db, 'characters'),
           orderBy('updatedAt', 'desc')
         );
-        
+
         const querySnapshot = await getDocs(q);
         const characterList = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data()
         }));
-        
+
         setCharacters(characterList);
       } catch (error) {
         console.error('キャラクター取得エラー:', error);
@@ -51,17 +51,17 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
+
       <Header />
-      
+
       <main className="container page-with-header">
-        
+
         <div className="actions">
           <Link href="/create" className="btn btn-primary">
             新しいキャラクター作成
           </Link>
         </div>
-        
+
         {loading ? (
           <div className="loading">キャラクター一覧を読み込み中...</div>
         ) : (
@@ -77,11 +77,11 @@ export default function Home() {
                       <span>LOST</span>
                     </div>
                   )}
-                  <Link href={`/character/${character.id}`} className="character-card-link">
+                  <Link href={`/character/${character.id}`} className="character-card-link" style={{ textDecoration: 'none' }}>
                     <div className="character-avatar">
                       {character.face_image_url ? (
-                        <img 
-                          src={character.face_image_url} 
+                        <img
+                          src={character.face_image_url}
                           alt={`${character.character_name}の顔画像`}
                           className="face-image"
                         />
@@ -101,13 +101,12 @@ export default function Home() {
                     </div>
                   </Link>
                   <div className="character-actions">
-                    <Link 
-                      href={`/create?edit=${character.id}`} 
+                    <Link
+                      href={`/create?edit=${character.id}`}
                       className="edit-btn"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <i className="fas fa-edit"></i>
-                      <span>編集</span>
                     </Link>
                   </div>
                 </div>
@@ -116,12 +115,12 @@ export default function Home() {
           </div>
         )}
       </main>
-      
+
       <Footer />
-      
+
       <style jsx>{`
         .container {
-          max-width: 1200px;
+          max-width: 1400px;
           margin: 0 auto;
           padding: 20px;
           font-family: 'Kosugi', 'Varela Round', sans-serif;
@@ -184,9 +183,18 @@ export default function Home() {
         
         .character-list {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-          gap: 20px;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 16px;
           margin-top: 20px;
+        }
+        
+        @media (min-width: 1200px) {
+          .character-list {
+            grid-template-columns: repeat(5, 1fr);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+          }
         }
         
         .character-card {
@@ -201,28 +209,46 @@ export default function Home() {
           position: relative;
         }
         
-        .character-card-link {
-          text-decoration: none;
-          color: inherit;
+        a.character-card-link {
+          text-decoration: none !important;
+          color: inherit !important;
           display: flex;
           flex-direction: column;
           flex: 1;
           cursor: pointer;
         }
         
-        .character-card-link:hover {
-          text-decoration: none;
-          color: inherit;
+        a.character-card-link:hover {
+          text-decoration: none !important;
+          color: inherit !important;
+        }
+        
+        a.character-card-link:visited {
+          text-decoration: none !important;
+          color: inherit !important;
+        }
+        
+        a.character-card-link:focus {
+          text-decoration: none !important;
+          color: inherit !important;
+        }
+        
+        a.character-card-link * {
+          text-decoration: none !important;
+        }
+        
+        a.character-card-link:hover * {
+          text-decoration: none !important;
         }
         
         .character-card:hover {
-          transform: translateY(-5px);
+          transform: translateY(-2px);
           box-shadow: 0 8px 16px rgba(0,0,0,0.15);
         }
         
         .character-avatar {
           width: 100%;
-          height: 180px;
+          height: 150px;
           overflow: hidden;
           display: flex;
           align-items: center;
@@ -248,22 +274,24 @@ export default function Home() {
         }
         
         .character-info {
-          padding: 20px;
+          padding: 5px 10px 11px;
           text-align: center;
           width: 100%;
         }
         
         .character-info h3 {
-          margin: 0 0 10px 0;
-          color: #333;
-          font-size: 1.2em;
+          margin: 0 0 3px 0;
+          color: #57595d;
+          font-size: 0.95em;
+          font-weight: 500;
         }
         
         
         .last-updated {
-          font-size: 0.8em;
+          font-size: 0.7em;
           color: #999;
-          margin-top: 10px;
+          margin-top: 6px;
+          line-height: 1.3;
         }
         
         .lost-badge {
@@ -292,27 +320,21 @@ export default function Home() {
         
         .character-actions {
           position: absolute;
-          bottom: 15px;
-          right: 15px;
+          bottom: 5px;
+          right: 5px;
           z-index: 10;
+          
         }
         
         .edit-btn {
           display: flex;
           align-items: center;
-          gap: 6px;
-          padding: 8px 12px;
-          background: rgba(255, 255, 255, 0.95);
-          color: #2196F3;
-          border: 1px solid rgba(33, 150, 243, 0.3);
-          border-radius: 20px;
+          color: #333;
           font-size: 13px;
           font-weight: 500;
           text-decoration: none;
           cursor: pointer;
           transition: all 0.3s ease;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-          backdrop-filter: blur(10px);
         }
         
         .edit-btn:hover {
@@ -339,17 +361,24 @@ export default function Home() {
           color: #666;
         }
         
+        @media (max-width: 1199px) and (min-width: 769px) {
+          .character-list {
+            grid-template-columns: repeat(4, 1fr);
+          }
+        }
+        
         @media (max-width: 768px) {
           .character-list {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
           }
           
           .character-avatar {
-            height: 150px;
+            height: 130px;
           }
           
           .face-placeholder {
-            font-size: 36px;
+            font-size: 32px;
           }
           
           .lost-badge {
@@ -389,12 +418,17 @@ export default function Home() {
         }
         
         @media (max-width: 480px) {
+          .character-list {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+          }
+          
           .character-avatar {
-            height: 120px;
+            height: 110px;
           }
           
           .face-placeholder {
-            font-size: 30px;
+            font-size: 28px;
           }
           
           .lost-badge {

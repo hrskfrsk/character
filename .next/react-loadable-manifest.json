@@ -1,8 +1,1 @@
-{
-  "components/CcfoliaExportModal.tsx -> ../lib/ccfolia-exporter": {
-    "id": "components/CcfoliaExportModal.tsx -> ../lib/ccfolia-exporter",
-    "files": [
-      "static/chunks/lib_ccfolia-exporter_ts.js"
-    ]
-  }
-}
+{}
