@@ -4790,10 +4790,9 @@ li {
   display: inline-flex !important;
   align-items: center !important;
   gap: 6px !important;
-  padding: 8px 16px !important;
-  border-radius: 20px !important;
+  padding: 8px 20px !important;
+  border-radius: 50px !important;
   font-weight: 600 !important;
-  font-size: 13px !important;
   letter-spacing: 0.02em !important;
   text-decoration: none !important;
   transition: all 0.3s ease !important;
@@ -4808,23 +4807,11 @@ li {
 }
 
 .btn-primary:hover {
-  background: var(--ui-theme-color-hover) !important;
+  background: #7ce6da !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
   color: white !important;
   text-decoration: none !important;
-}
-
-/* レスポンシブ対応 */
-@media (max-width: 768px) {
-  .btn-primary {
-    padding: 6px 12px !important;
-    font-size: 12px !important;
-  }
-
-  .btn-primary::before {
-    font-size: 11px !important;
-  }
 }
 
 /* 認証ページのリンクスタイル */
@@ -4840,6 +4827,52 @@ li {
 .auth-links a:hover {
   color: var(--ui-theme-color-hover) !important;
   text-decoration: none !important;
+}
+
+/* Secondary button styles */
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  border: 2px solid rgba(255, 255, 255, 0.5) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 12px 32px !important;
+  border-radius: 50px !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2) !important;
+  color: white !important;
+  text-decoration: none !important;
+}
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .btn-primary {
+    padding: 13px 20px !important;
+  }
+  .btn-secondary {
+    padding: 8px 32px !important;
+  }
+
+  .btn-primary::before {
+    font-size: 11px !important;
+  }
+  .hero-section {
+    background: linear-gradient(368deg, #5fb5aa 49%, transparent),
+      url(/images/img_top.png) !important;
+    background-size: cover, cover !important;
+    background-position: center, center -60px !important;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

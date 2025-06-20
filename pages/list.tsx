@@ -1022,7 +1022,7 @@ export default function Home() {
           
           .actions {
             flex-direction: column;
-            gap: 10px;
+            gap: 20px;
             text-align: center;
           }
           

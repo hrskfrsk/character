@@ -36,15 +36,15 @@ export default function Home() {
           <div className="hero-container">
             <div className="hero-content">
               <h1 className="hero-title">
-                <img src="/images/logo.svg" alt="ChroLog - クトゥルフ神話TRPG キャラクターシート" className="hero-logo" />
+
+                <img src="/images/logo_white.svg" alt="ChroLog - クトゥルフ神話TRPG キャラクターシート" className="hero-logo" />
               </h1>
+              <p className="hero-tagline">「隠したい」も「見せたい」も。より自由で繊細なキャラ管理を。</p>
               <p className="hero-subtitle">
-                第6版対応の使いやすいキャラクターシート作成ツール
+                ChroLog（クローグ）は、クトゥルフ神話TRPG（6版）のキャラクターシートを<br />
+                作成・管理・共有できる、プレイヤー向けのオンラインツールです。
               </p>
-              <p className="hero-description">
-                キャラクター作成から管理、セッション中の使用まで<br />
-                すべてをサポートする総合ツールです
-              </p>
+
 
               <div className="hero-actions">
                 {user ? (
@@ -52,7 +52,25 @@ export default function Home() {
                     <Link href="/create" className="btn btn-primary btn-large">
                       新しいキャラクター作成
                     </Link>
-                    <Link href="/list" className="btn btn-secondary btn-large">
+                    <Link
+                      href="/list"
+                      className="btn btn-secondary btn-large"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        padding: '16px 32px',
+                        border: '2px solid rgba(255, 255, 255, 0.5)',
+                        borderRadius: '50px',
+                        fontWeight: '600',
+                        textDecoration: 'none',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                        background: 'rgba(255, 255, 255, 0.2)',
+                        color: 'white'
+                      }}
+                    >
                       <i className="fas fa-list"></i>
                       キャラクター一覧
                     </Link>
@@ -63,19 +81,31 @@ export default function Home() {
                       <i className="fas fa-user-plus"></i>
                       今すぐ始める
                     </Link>
-                    <Link href="/auth/login" className="btn btn-secondary btn-large">
+                    <Link
+                      href="/auth/login"
+                      className="btn btn-secondary btn-large"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        padding: '16px 32px',
+                        border: '2px solid rgba(255, 255, 255, 0.5)',
+                        borderRadius: '50px',
+                        fontSize: '18px',
+                        fontWeight: '600',
+                        textDecoration: 'none',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s ease',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                        background: 'rgba(255, 255, 255, 0.2)',
+                        color: 'white'
+                      }}
+                    >
                       <i className="fas fa-sign-in-alt"></i>
                       ログイン
                     </Link>
                   </>
                 )}
-              </div>
-            </div>
-
-            <div className="hero-image">
-              <div className="character-sheet-preview">
-                <i className="fas fa-scroll"></i>
-                <span>キャラクターシート</span>
               </div>
             </div>
           </div>
@@ -84,70 +114,46 @@ export default function Home() {
         {/* 機能紹介セクション */}
         <section className="features-section">
           <div className="container">
-            <h2 className="section-title">主な機能</h2>
+            <h2 className="section-title">主な特徴</h2>
             <div className="features-grid">
               <div className="feature-card">
                 <div className="feature-icon">
-                  <i className="fas fa-edit"></i>
+                  <i className="fas fa-portrait"></i>
                 </div>
-                <h3>簡単作成</h3>
-                <p>直感的なフォームでキャラクターを素早く作成。能力値の自動計算やスキル管理も簡単です。</p>
+                <h3>立ち絵アップロード対応</h3>
+                <p>キャラクターのビジュアルも一緒に残せます。雰囲気や世界観の共有にも◎</p>
+              </div>
+
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <i className="fas fa-user-lock"></i>
+                </div>
+                <h3>公開範囲を柔軟にカスタマイズ</h3>
+                <p>部分的なパスワード保護はもちろん、ページ内の特定情報を除外した公開用シートの生成も可能。</p>
+              </div>
+
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <i className="fas fa-gamepad"></i>
+                </div>
+                <h3>ココフォリア用コマを自動生成</h3>
+                <p>キャラ情報を元に、ワンクリックでコマを出力できます。</p>
               </div>
 
               <div className="feature-card">
                 <div className="feature-icon">
                   <i className="fas fa-dice-d20"></i>
                 </div>
-                <h3>セッション支援</h3>
-                <p>ダイスロール機能やココフォリア連携で、実際のセッションもスムーズに進行できます。</p>
+                <h3>シート内でダイスロールが可能</h3>
+                <p>能力値の個別・一括ダイスロールに対応。技能値ダイス判定もできるので、簡易に判定したい時にも。</p>
               </div>
 
               <div className="feature-card">
                 <div className="feature-icon">
-                  <i className="fas fa-share-alt"></i>
+                  <i className="fas fa-sticky-note"></i>
                 </div>
-                <h3>共有機能</h3>
-                <p>キャラクターシートをURLで簡単共有。KPやプレイヤー間での情報共有が便利です。</p>
-              </div>
-
-              <div className="feature-card">
-                <div className="feature-icon">
-                  <i className="fas fa-cloud"></i>
-                </div>
-                <h3>クラウド保存</h3>
-                <p>データは安全にクラウドに保存。どこからでもアクセスでき、データの紛失もありません。</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 使い方セクション */}
-        <section className="howto-section">
-          <div className="container">
-            <h2 className="section-title">使い方</h2>
-            <div className="steps-container">
-              <div className="step">
-                <div className="step-number">1</div>
-                <div className="step-content">
-                  <h3>アカウント作成</h3>
-                  <p>無料でアカウントを作成し、ログインします</p>
-                </div>
-              </div>
-
-              <div className="step">
-                <div className="step-number">2</div>
-                <div className="step-content">
-                  <h3>キャラクター作成</h3>
-                  <p>フォームに沿って探索者の情報を入力します</p>
-                </div>
-              </div>
-
-              <div className="step">
-                <div className="step-number">3</div>
-                <div className="step-content">
-                  <h3>セッションで使用</h3>
-                  <p>作成したシートをセッションで活用します</p>
-                </div>
+                <h3>パスワード付きメモページ機能</h3>
+                <p>メモ単位で専用ページを発行・制限可能。PLメモやKPとの情報共有にも最適です。</p>
               </div>
             </div>
           </div>
@@ -178,8 +184,11 @@ export default function Home() {
         }
 
         .hero-section {
-          background: linear-gradient(180deg,#74cdc3 35%,transparent);
-          padding: 120px 0 80px;
+          background: linear-gradient(368deg,#5fb5aa 29%,transparent), url('/images/img_top.png');
+          background-size: cover, cover;
+          background-position: center, center 20%;
+          background-repeat: no-repeat, no-repeat;
+          padding: 80px 0 120px;
           color: white;
           position: relative;
           overflow: hidden;
@@ -196,7 +205,7 @@ export default function Home() {
         }
 
         .hero-container {
-          max-width: 1200px;
+          max-width: 1180px;
           margin: 0 auto;
           padding: 0 20px;
           display: grid;
@@ -223,17 +232,20 @@ export default function Home() {
         }
 
         .hero-subtitle {
-          font-size: 1.4rem;
-          margin-bottom: 16px;
-          font-weight: 500;
+          font-size: 0.9rem;
+          margin-bottom: 35px;
+          font-weight: 600;
           opacity: 0.95;
+          text-shadow: 1px 1px 2px rgba(0, 0, 0, .3);
         }
 
-        .hero-description {
-          font-size: 1.1rem;
-          margin-bottom: 40px;
+        .hero-tagline {
+          font-size: 1.15rem;
+          font-weight: 900;
           line-height: 1.6;
-          opacity: 0.9;
+          color: white;
+          margin: 0 0 12px -9px;
+          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
         }
 
         .hero-actions {
@@ -305,20 +317,21 @@ export default function Home() {
         }
 
         .btn-secondary {
-          background: rgba(255, 255, 255, 0.2);
-          color: white;
-          border: 2px solid rgba(255, 255, 255, 0.5);
+          background: rgba(255, 255, 255, 0.2) !important;
+          color: white !important;
+          border: 2px solid rgba(255, 255, 255, 0.5) !important;
         }
 
         .btn-secondary:hover {
-          background: rgba(255, 255, 255, 0.3);
-          border-color: rgba(255, 255, 255, 0.8);
-          transform: translateY(-2px);
+          background: rgba(255, 255, 255, 0.3) !important;
+          border-color: rgba(255, 255, 255, 0.8) !important;
+          transform: translateY(-2px) !important;
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2) !important;
         }
 
         .features-section {
-          padding: 80px 0;
-          background: #f8f9fa;
+          padding: 50px 0 80px;
+          background: linear-gradient(180deg,#5fb5aa 35%,transparent);
         }
 
         .container {
@@ -328,21 +341,23 @@ export default function Home() {
         }
 
         .section-title {
-          text-align: center;
-          font-size: 2.5rem;
+          text-align: left;
+          font-size: 1.6rem;
           font-weight: 700;
-          margin-bottom: 60px;
-          color: #333;
+          margin-bottom: 20px;
+          color: #fff;
+          border-bottom:dotted 1px #fff;
+          padding: 0 10px 10px;
         }
 
         .features-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
           gap: 40px;
         }
 
         .feature-card {
-          background: white;
+          background: rgba(255, 255, 255, 0.9);
           padding: 40px 30px;
           border-radius: 12px;
           text-align: center;
@@ -357,7 +372,7 @@ export default function Home() {
         .feature-icon {
           width: 80px;
           height: 80px;
-          background: var(--ui-theme-color);
+          background: var(--ui-theme-color-hover);
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -368,65 +383,24 @@ export default function Home() {
         }
 
         .feature-card h3 {
-          font-size: 1.5rem;
+          font-size: 1.2rem;
           font-weight: 600;
-          margin-bottom: 16px;
+          margin-bottom: 10px;
           color: #333;
         }
 
         .feature-card p {
           color: #666;
           line-height: 1.6;
+          font-size:0.9rem;
+          margin-top:0;
         }
 
-        .howto-section {
-          padding: 80px 0;
-          background: white;
-        }
 
-        .steps-container {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 40px;
-          max-width: 900px;
-          margin: 0 auto;
-        }
-
-        .step {
-          display: flex;
-          align-items: flex-start;
-          gap: 20px;
-        }
-
-        .step-number {
-          width: 50px;
-          height: 50px;
-          background: var(--ui-theme-color);
-          color: white;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.5rem;
-          font-weight: 700;
-          flex-shrink: 0;
-        }
-
-        .step-content h3 {
-          font-size: 1.3rem;
-          font-weight: 600;
-          margin-bottom: 8px;
-          color: #333;
-        }
-
-        .step-content p {
-          color: #666;
-          line-height: 1.6;
-        }
 
         .cta-section {
           padding: 80px 0;
-          background: var(--ui-theme-color);
+          background: var(--ui-theme-color-hover);
           color: white;
           text-align: center;
         }
@@ -449,6 +423,9 @@ export default function Home() {
         }
 
         @media (max-width: 768px) {
+          .hero-section{
+            padding-bottom:90px;
+          }
           .hero-container {
             grid-template-columns: 1fr;
             gap: 40px;
@@ -457,6 +434,11 @@ export default function Home() {
 
           .hero-logo {
             max-width: 300px;
+          }
+
+          .hero-tagline {
+            font-size: 1.4rem;
+            margin-right:5px;
           }
 
           .hero-actions {
@@ -476,15 +458,6 @@ export default function Home() {
             grid-template-columns: 1fr;
           }
 
-          .steps-container {
-            grid-template-columns: 1fr;
-          }
-
-          .step {
-            text-align: center;
-            flex-direction: column;
-            align-items: center;
-          }
         }
       `}</style>
     </>
