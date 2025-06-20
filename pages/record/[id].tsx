@@ -11,9 +11,10 @@ interface RecordPageProps {
   recordSection: any;
   characterName: string;
   sectionTitle: string;
+  characterId: string;
 }
 
-export default function RecordPage({ recordSection, characterName, sectionTitle }: RecordPageProps) {
+export default function RecordPage({ recordSection, characterName, sectionTitle, characterId }: RecordPageProps) {
   const router = useRouter();
   const [openFields, setOpenFields] = useState<{ [key: string]: boolean }>({});
   const [passwordInputs, setPasswordInputs] = useState<{ [key: string]: string }>({});
@@ -75,7 +76,10 @@ export default function RecordPage({ recordSection, characterName, sectionTitle 
       </Head>
 
       <Header
-        showBackButton={true}
+        showBackButton={false}
+        showCreateButton={false}
+        showEditButton={true}
+        editUrl={`/create?edit=${characterId}`}
       />
 
       <div>
@@ -104,7 +108,27 @@ export default function RecordPage({ recordSection, characterName, sectionTitle 
               fontSize: '14px',
               margin: 0
             }}>
-              キャラクター: {characterName}
+              <a 
+                href={`/character/${characterId}`}
+                style={{ 
+                  color: '#74cdc3',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#5fb5aa';
+                  e.currentTarget.style.textDecoration = 'underline';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = '#74cdc3';
+                  e.currentTarget.style.textDecoration = 'none';
+                }}
+              >
+                <i className="fas fa-arrow-circle-left"></i>
+                {characterName}のシートに戻る
+              </a>
             </p>
           </div>
 
@@ -254,6 +278,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     let foundRecord = null;
     let characterName = '';
     let sectionTitle = '';
+    let characterId = '';
 
     for (const character of allCharacters) {
       if (character.record_sections) {
@@ -262,6 +287,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
           foundRecord = recordSection;
           characterName = character.character_name || 'キャラクター';
           sectionTitle = recordSection.section_title || '無題の記録';
+          characterId = character.id;
           break;
         }
       }
@@ -278,6 +304,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
         recordSection: foundRecord,
         characterName,
         sectionTitle,
+        characterId,
       },
     };
   } catch (error) {
