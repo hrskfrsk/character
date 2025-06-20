@@ -4827,4 +4827,19 @@ li {
   }
 }
 
+/* 認証ページのリンクスタイル */
+.auth-links a {
+  display: block !important;
+  color: #6c757d !important;
+  text-decoration: underline !important;
+  font-size: 12px !important;
+  margin-bottom: 6px !important;
+  transition: color 0.3s ease !important;
+}
+
+.auth-links a:hover {
+  color: var(--ui-theme-color-hover) !important;
+  text-decoration: none !important;
+}
+
 /*# sourceMappingURL=style.css.map */

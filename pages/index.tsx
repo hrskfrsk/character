@@ -858,8 +858,8 @@ export default function Home() {
         
         .lost-badge {
           position: absolute;
-          top: 12px;
-          left: 12px;
+          top: 7px;
+          left: 6px;
           display: flex;
           align-items: center;
           gap: 4px;

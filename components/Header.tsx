@@ -29,6 +29,10 @@ const Header: React.FC<HeaderProps> = ({
   const [showUserMenu, setShowUserMenu] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
+  // 現在のページを判定
+  const isLoginPage = router.pathname === '/auth/login';
+  const isSignupPage = router.pathname === '/auth/signup';
+
   const handleBackClick = () => {
     if (customBackUrl) {
       router.push(customBackUrl);
@@ -148,10 +152,30 @@ const Header: React.FC<HeaderProps> = ({
                 )}
               </div>
             ) : (
-              <Link href="/auth/login" className="nav-link" title="ログイン">
-                <i className="fas fa-sign-in-alt"></i>
-                <span className="nav-text">ログイン</span>
-              </Link>
+              <>
+                {isLoginPage ? (
+                  <Link href="/auth/signup" className="nav-link" title="アカウント作成">
+                    <i className="fas fa-user-plus"></i>
+                    <span className="nav-text">アカウント登録</span>
+                  </Link>
+                ) : isSignupPage ? (
+                  <Link href="/auth/login" className="nav-link" title="ログイン">
+                    <i className="fas fa-sign-in-alt"></i>
+                    <span className="nav-text">ログイン</span>
+                  </Link>
+                ) : (
+                  <>
+                    <Link href="/auth/signup" className="nav-link" title="アカウント作成">
+                      <i className="fas fa-user-plus"></i>
+                      <span className="nav-text">登録</span>
+                    </Link>
+                    <Link href="/auth/login" className="nav-link" title="ログイン">
+                      <i className="fas fa-sign-in-alt"></i>
+                      <span className="nav-text">ログイン</span>
+                    </Link>
+                  </>
+                )}
+              </>
             )}
           </nav>
         </div>
