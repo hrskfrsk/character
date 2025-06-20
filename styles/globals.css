@@ -4083,13 +4083,13 @@ li {
 }
 
 .header-title h1 {
-  margin: 0 0 0 10px;
+  margin: -5px 0 0 10px;
   font-size: 1rem;
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  width: 130px;
 }
 
 .back-button {
@@ -4532,17 +4532,15 @@ li {
 }
 
 .footer-info h3 {
-  color: #ffffff;
-  font-size: 1.5rem;
   margin-bottom: 8px;
   display: flex;
+  width: 200px;
   align-items: center;
-  gap: 8px;
 }
-
-.footer-info h3::before {
-  content: "📜";
-  font-size: 1.2rem;
+@media (max-width: 768px) {
+  .footer-info h3 {
+    margin: 0 auto 10px;
+  }
 }
 
 .footer-info p {

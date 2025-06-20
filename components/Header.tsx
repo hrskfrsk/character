@@ -13,7 +13,7 @@ interface HeaderProps {
   onShare?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ 
+const Header: React.FC<HeaderProps> = ({
   showBackButton = false,
   customBackUrl,
   showEditButton = false,
@@ -48,8 +48,7 @@ const Header: React.FC<HeaderProps> = ({
           )}
           <Link href="/" className="header-title">
             <h1>
-              <i className="fas fa-scroll" style={{ marginRight: '8px' }}></i>
-              ChroLog
+              <img src="/images/logo.svg" alt="ChroLog" style={{ width: '100%', height: 'auto' }} />
             </h1>
           </Link>
         </div>
@@ -58,7 +57,7 @@ const Header: React.FC<HeaderProps> = ({
           <nav className="header-nav">
             {actionButtons}
             {showShareButton && onShare && (
-              <button 
+              <button
                 type="button"
                 className="nav-link"
                 onClick={onShare}
