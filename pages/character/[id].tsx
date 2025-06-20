@@ -212,6 +212,13 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
 
   // UIテーマカラーの動的適用
   useEffect(() => {
+    // デフォルトのテーマカラー
+    const defaultColor = '#74cdc3';
+    const defaultHoverColor = '#5fb5aa';
+    const defaultLightColor = 'rgba(116, 205, 195, 0.15)';
+    const defaultMediumColor = 'rgba(116, 205, 195, 0.4)';
+    const defaultDarkColor = 'rgba(116, 205, 195, 0.7)';
+
     if (character?.ui_theme_color && typeof window !== 'undefined') {
       const color = character.ui_theme_color;
       const hoverColor = adjustBrightness(color, -20);
@@ -224,7 +231,25 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
       document.documentElement.style.setProperty('--ui-theme-color-light', lightColor);
       document.documentElement.style.setProperty('--ui-theme-color-medium', mediumColor);
       document.documentElement.style.setProperty('--ui-theme-color-dark', darkColor);
+    } else if (typeof window !== 'undefined') {
+      // キャラクターにテーマカラーが設定されていない場合はデフォルトに戻す
+      document.documentElement.style.setProperty('--ui-theme-color', defaultColor);
+      document.documentElement.style.setProperty('--ui-theme-color-hover', defaultHoverColor);
+      document.documentElement.style.setProperty('--ui-theme-color-light', defaultLightColor);
+      document.documentElement.style.setProperty('--ui-theme-color-medium', defaultMediumColor);
+      document.documentElement.style.setProperty('--ui-theme-color-dark', defaultDarkColor);
     }
+
+    // コンポーネントがアンマウントされる時にデフォルトカラーに戻す
+    return () => {
+      if (typeof window !== 'undefined') {
+        document.documentElement.style.setProperty('--ui-theme-color', defaultColor);
+        document.documentElement.style.setProperty('--ui-theme-color-hover', defaultHoverColor);
+        document.documentElement.style.setProperty('--ui-theme-color-light', defaultLightColor);
+        document.documentElement.style.setProperty('--ui-theme-color-medium', defaultMediumColor);
+        document.documentElement.style.setProperty('--ui-theme-color-dark', defaultDarkColor);
+      }
+    };
   }, [character?.ui_theme_color]);
 
   // パスワード認証チェック
