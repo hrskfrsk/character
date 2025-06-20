@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { collection, getDocs, orderBy, query, limit, startAfter, DocumentSnapshot } from 'firebase/firestore';
 import { db } from '../lib/firebase-client';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -9,39 +9,82 @@ import Footer from '../components/Footer';
 export default function Home() {
   const [characters, setCharacters] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [lastDoc, setLastDoc] = useState<DocumentSnapshot | null>(null);
+  const [hasNextPage, setHasNextPage] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
+  const CHARACTERS_PER_PAGE = 50;
+
+  const fetchCharacters = async (page: number = 1, lastDocument: DocumentSnapshot | null = null) => {
+    try {
+      setLoading(true);
+      if (!db) {
+        console.error('Firebase not initialized');
+        setLoading(false);
+        return;
+      }
+
+      // ページごとにキャラクター一覧を取得
+      let q = query(
+        collection(db, 'characters'),
+        orderBy('updatedAt', 'desc'),
+        limit(CHARACTERS_PER_PAGE + 1) // +1で次ページの有無を確認
+      );
+
+      // 2ページ目以降の場合、最後のドキュメントから開始
+      if (lastDocument) {
+        q = query(
+          collection(db, 'characters'),
+          orderBy('updatedAt', 'desc'),
+          startAfter(lastDocument),
+          limit(CHARACTERS_PER_PAGE + 1)
+        );
+      }
+
+      const querySnapshot = await getDocs(q);
+      const docs = querySnapshot.docs;
+      
+      // 次ページがあるかどうかを確認
+      const hasMore = docs.length > CHARACTERS_PER_PAGE;
+      setHasNextPage(hasMore);
+      
+      // 実際に表示するデータ（最大50件）
+      const characterList = docs.slice(0, CHARACTERS_PER_PAGE).map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      
+      // 最後のドキュメントを保存（次ページ用）
+      if (characterList.length > 0) {
+        setLastDoc(docs[characterList.length - 1]);
+      }
+
+      setCharacters(characterList);
+      setCurrentPage(page);
+    } catch (error) {
+      console.error('キャラクター取得エラー:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (hasNextPage) {
+      fetchCharacters(currentPage + 1, lastDoc);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      // 前ページに戻る場合は最初から再取得（簡易実装）
+      fetchCharacters(1);
+      // より複雑な実装では前ページのlastDocを保存する必要がある
+    }
+  };
 
   useEffect(() => {
-    const fetchCharacters = async () => {
-      try {
-        if (!db) {
-          console.error('Firebase not initialized');
-          setLoading(false);
-          return;
-        }
-
-        // キャラクター一覧を更新日時の降順で取得
-        const q = query(
-          collection(db, 'characters'),
-          orderBy('updatedAt', 'desc')
-        );
-
-        const querySnapshot = await getDocs(q);
-        const characterList = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-
-        setCharacters(characterList);
-      } catch (error) {
-        console.error('キャラクター取得エラー:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCharacters();
+    fetchCharacters(1);
   }, []);
-
 
   return (
     <>
@@ -65,54 +108,83 @@ export default function Home() {
         {loading ? (
           <div className="loading">キャラクター一覧を読み込み中...</div>
         ) : (
-          <div className="character-list">
-            {characters.length === 0 ? (
-              <p>保存されたキャラクターはありません</p>
-            ) : (
-              characters.map((character) => (
-                <div key={character.id} className="character-card">
-                  {character.is_lost && (
-                    <div className="lost-badge">
-                      <i className="fas fa-skull-crossbones"></i>
-                      <span>LOST</span>
-                    </div>
-                  )}
-                  <Link href={`/character/${character.id}`} className="character-card-link" style={{ textDecoration: 'none' }}>
-                    <div className="character-avatar">
-                      {character.face_image_url ? (
-                        <img
-                          src={character.face_image_url}
-                          alt={`${character.character_name}の顔画像`}
-                          className="face-image"
-                        />
-                      ) : (
-                        <div className="face-placeholder">
-                          <i className="fas fa-user"></i>
-                        </div>
-                      )}
-                    </div>
-                    <div className="character-info">
-                      <h3>{character.character_name || '無名のキャラクター'}</h3>
-                      {character.updatedAt && (
-                        <div className="last-updated">
-                          最終更新: {new Date(character.updatedAt.seconds * 1000).toLocaleDateString('ja-JP')}
-                        </div>
-                      )}
-                    </div>
-                  </Link>
-                  <div className="character-actions">
-                    <Link
-                      href={`/create?edit=${character.id}`}
-                      className="edit-btn"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <i className="fas fa-edit"></i>
+          <>
+            <div className="character-list">
+              {characters.length === 0 ? (
+                <p>保存されたキャラクターはありません</p>
+              ) : (
+                characters.map((character) => (
+                  <div key={character.id} className="character-card">
+                    {character.is_lost && (
+                      <div className="lost-badge">
+                        <i className="fas fa-skull-crossbones"></i>
+                        <span>LOST</span>
+                      </div>
+                    )}
+                    <Link href={`/character/${character.id}`} className="character-card-link" style={{ textDecoration: 'none' }}>
+                      <div className="character-avatar">
+                        {character.face_image_url ? (
+                          <img
+                            src={character.face_image_url}
+                            alt={`${character.character_name}の顔画像`}
+                            className="face-image"
+                          />
+                        ) : (
+                          <div className="face-placeholder">
+                            <i className="fas fa-user"></i>
+                          </div>
+                        )}
+                      </div>
+                      <div className="character-info">
+                        <h3>{character.character_name || '無名のキャラクター'}</h3>
+                        {character.updatedAt && (
+                          <div className="last-updated">
+                            最終更新: {new Date(character.updatedAt.seconds * 1000).toLocaleDateString('ja-JP')}
+                          </div>
+                        )}
+                      </div>
                     </Link>
+                    <div className="character-actions">
+                      <Link
+                        href={`/create?edit=${character.id}`}
+                        className="edit-btn"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <i className="fas fa-edit"></i>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              ))
+                ))
+              )}
+            </div>
+            
+            {/* ページネーション */}
+            {characters.length > 0 && (currentPage > 1 || hasNextPage) && (
+              <div className="pagination">
+                <button 
+                  onClick={handlePrevPage}
+                  disabled={currentPage === 1}
+                  className="pagination-btn"
+                >
+                  <i className="fas fa-chevron-left"></i>
+                  前のページ
+                </button>
+                
+                <span className="page-info">
+                  ページ {currentPage}
+                </span>
+                
+                <button 
+                  onClick={handleNextPage}
+                  disabled={!hasNextPage}
+                  className="pagination-btn"
+                >
+                  次のページ
+                  <i className="fas fa-chevron-right"></i>
+                </button>
+              </div>
             )}
-          </div>
+          </>
         )}
       </main>
 
@@ -361,6 +433,50 @@ export default function Home() {
           color: #666;
         }
         
+        .pagination {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 20px;
+          margin: 40px 0;
+          padding: 20px;
+        }
+        
+        .pagination-btn {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 12px 20px;
+          background: #4CAF50;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: 500;
+          transition: all 0.3s ease;
+        }
+        
+        .pagination-btn:hover:not(:disabled) {
+          background: #45a049;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .pagination-btn:disabled {
+          background: #ccc;
+          cursor: not-allowed;
+          transform: none;
+          box-shadow: none;
+        }
+        
+        .page-info {
+          font-size: 16px;
+          font-weight: 600;
+          color: #333;
+          padding: 0 10px;
+        }
+        
         @media (max-width: 1199px) and (min-width: 769px) {
           .character-list {
             grid-template-columns: repeat(4, 1fr);
@@ -415,6 +531,21 @@ export default function Home() {
           .container {
             padding: 10px;
           }
+          
+          .pagination {
+            gap: 15px;
+            margin: 30px 0;
+            padding: 15px;
+          }
+          
+          .pagination-btn {
+            padding: 10px 16px;
+            font-size: 13px;
+          }
+          
+          .page-info {
+            font-size: 14px;
+          }
         }
         
         @media (max-width: 480px) {
@@ -445,6 +576,25 @@ export default function Home() {
           
           .character-info {
             padding: 15px;
+          }
+          
+          .pagination {
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 10px;
+          }
+          
+          .pagination-btn {
+            padding: 8px 12px;
+            font-size: 12px;
+            width: 100%;
+            max-width: 200px;
+          }
+          
+          .page-info {
+            font-size: 13px;
+            order: -1;
           }
         }
       `}</style>
