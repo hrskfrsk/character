@@ -22,8 +22,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>クトゥルフ神話TRPG第6版 キャラクターシート</title>
-        <meta name="description" content="クトゥルフ神話TRPG第6版のキャラクターシートを簡単に作成・管理できるWebアプリケーション" />
+        <title>ChroLog</title>
+        <meta name="description" content="クトゥルフ神話TRPG第6版のキャラクターシートを簡単に作成・管理できるWebアプリケーション ChroLog" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

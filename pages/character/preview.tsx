@@ -238,7 +238,7 @@ export default function CharacterPreview() {
     );
   }
 
-  const pageTitle = `${character.character_name || 'キャラクター'} - プレビュー`;
+  const pageTitle = `${character.character_name || 'キャラクター'} - プレビュー - ChroLog`;
 
   return (
     <>
