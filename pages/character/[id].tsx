@@ -29,6 +29,23 @@ interface CharacterPageProps {
 export default function CharacterPage({ character, characterId }: CharacterPageProps) {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
+
+  // キャラクターデータがない場合の処理
+  if (!character) {
+    return (
+      <>
+        <Head>
+          <title>キャラクター情報が見つかりません</title>
+        </Head>
+        <Header />
+        <div style={{ padding: '20px', textAlign: 'center' }}>
+          <h1>キャラクター情報が見つかりません</h1>
+          <p>指定されたキャラクターが存在しないか、現在アクセスできません。</p>
+        </div>
+        <Footer />
+      </>
+    );
+  }
   const [mounted, setMounted] = useState(false);
   const [secretMemoVisibility, setSecretMemoVisibility] = useState<Record<string, boolean>>({});
   const [memoPasswordStates, setMemoPasswordStates] = useState<Record<string, { unlocked: boolean; inputPassword: string }>>({});
@@ -768,7 +785,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   try {
     // Firebase Admin初期化チェック
     if (!process.env.FIREBASE_PROJECT_ID || !process.env.FIREBASE_CLIENT_EMAIL || !process.env.FIREBASE_PRIVATE_KEY) {
-      console.warn('Firebase environment variables missing, using empty paths');
+      console.warn('Firebase environment variables missing, using fallback mode');
       return {
         paths: [],
         fallback: 'blocking'
@@ -799,11 +816,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 
   try {
-    // Firebase Admin初期化チェック
+    // Firebase Admin初期化チェック - fallback modeで動的に処理
     if (!process.env.FIREBASE_PROJECT_ID || !process.env.FIREBASE_CLIENT_EMAIL || !process.env.FIREBASE_PRIVATE_KEY) {
-      console.warn('Firebase environment variables missing, redirecting to 404');
+      console.warn('Firebase environment variables missing, trying fallback');
       return {
-        notFound: true,
+        props: {
+          character: null,
+          characterId: params.id,
+        },
+        revalidate: 1
       };
     }
 
