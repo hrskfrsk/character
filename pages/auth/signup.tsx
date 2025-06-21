@@ -83,7 +83,7 @@ export default function SignUp() {
   return (
     <>
       <Head>
-        <title>アカウント作成 - クトゥルフ神話TRPG第6版 キャラクターシート</title>
+        <title>アカウント作成 - ChroLog</title>
       </Head>
 
       <Header showCreateButton={false} />

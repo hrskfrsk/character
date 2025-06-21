@@ -369,7 +369,7 @@ export default function CharacterPage({ character, characterId }: CharacterPageP
     );
   }
 
-  const pageTitle = `${character.character_name || 'キャラクター'} - CoC6版キャラクターシート`;
+  const pageTitle = `${character.character_name || 'キャラクター'} - ChroLog`;
 
   const handleCcfoliaExport = () => {
     setShowCcfoliaModal(true);

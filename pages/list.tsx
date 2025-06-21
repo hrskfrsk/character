@@ -226,7 +226,7 @@ export default function Home() {
   return (
     <ProtectedRoute>
       <Head>
-        <title>クトゥルフ神話TRPG第6版 キャラクターシート</title>
+        <title>ChroLog</title>
         <meta name="description" content="Call of Cthulhu 6th Edition Character Sheet" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

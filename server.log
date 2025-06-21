@@ -1,11 +1,35 @@
 
 > coc-character-sheet@1.0.0 dev
-> next dev
+> next dev -p 3000 -H 0.0.0.0
 
   ▲ Next.js 14.2.30
   - Local:        http://localhost:3000
+  - Network:      http://0.0.0.0:3000
   - Environments: .env.local
+  - Experiments (use with caution):
+    · esmExternals
+    · forceSwcTransforms
 
  ✓ Starting...
- ✓ Ready in 598ms
-[?25h
+ ✓ Ready in 737ms
+ ✓ Compiled / in 203ms (372 modules)
+ GET / 200 in 330ms
+ ✓ Compiled /404 in 79ms (376 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 91ms
+ ✓ Compiled /list in 206ms (384 modules)
+ ✓ Compiled /character/[id] in 356ms (435 modules)
+Firebase Admin initialized successfully
+Firebase Admin initialized successfully
+ GET /_next/data/development/character/1HI9iqDLsrNUT0sU3z6I.json?id=1HI9iqDLsrNUT0sU3z6I 200 in 1501ms
+ ✓ Compiled in 439ms (155 modules)
+Warning: viewport meta tags should not be used in _document.js's <Head>. https://nextjs.org/docs/messages/no-document-viewport-meta
+ GET /_next/data/development/character/1HI9iqDLsrNUT0sU3z6I.json?id=1HI9iqDLsrNUT0sU3z6I 200 in 465ms
+ GET /character/1HI9iqDLsrNUT0sU3z6I 200 in 460ms
+Firebase Admin initialized successfully
+ ✓ Compiled /404 in 54ms (433 modules)
+Warning: viewport meta tags should not be used in _document.js's <Head>. https://nextjs.org/docs/messages/no-document-viewport-meta
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 71ms
+ ✓ Compiled in 395ms (155 modules)
+ ✓ Compiled in 464ms (429 modules)
+ ✓ Compiled in 464ms (429 modules)
+ ✓ Compiled in 380ms (155 modules)

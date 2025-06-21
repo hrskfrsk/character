@@ -65,7 +65,7 @@ export default function RecordPage({ recordSection, characterName, sectionTitle,
     );
   }
 
-  const pageTitle = `${sectionTitle} - ${characterName} - CoC6版キャラクターシート`;
+  const pageTitle = `${sectionTitle} - ${characterName} - ChroLog`;
 
   return (
     <>

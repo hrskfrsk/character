@@ -72,7 +72,7 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>ログイン - クトゥルフ神話TRPG第6版 キャラクターシート</title>
+        <title>ログイン - ChroLog</title>
       </Head>
 
       <Header showCreateButton={false} />

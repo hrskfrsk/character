@@ -583,7 +583,7 @@ export default function CreateCharacterPage() {
     return (
       <>
         <Head>
-          <title>キャラクター作成 - クトゥルフ神話TRPG第6版</title>
+          <title>キャラクター作成 - ChroLog</title>
         </Head>
         <div>Loading...</div>
       </>
@@ -593,7 +593,7 @@ export default function CreateCharacterPage() {
   return (
     <>
       <Head>
-        <title>キャラクター作成 - クトゥルフ神話TRPG第6版</title>
+        <title>キャラクター作成 - ChroLog</title>
         <meta name="description" content="クトゥルフ神話TRPG第6版のキャラクターシート作成フォーム" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 

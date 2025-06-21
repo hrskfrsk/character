@@ -1266,7 +1266,7 @@ export default function CreateCharacterPage() {
     }
   };
 
-  const pageTitle = "キャラクター作成 - クトゥルフ神話TRPG第6版";
+  const pageTitle = "キャラクター作成 - ChroLog";
 
 
   return (

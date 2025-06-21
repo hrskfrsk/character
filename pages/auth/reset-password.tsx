@@ -39,7 +39,7 @@ export default function ResetPassword() {
     return (
       <>
         <Head>
-          <title>パスワードリセット完了 - クトゥルフ神話TRPG第6版 キャラクターシート</title>
+          <title>パスワードリセット完了 - ChroLog</title>
         </Head>
         
         <Header showCreateButton={false} />
@@ -150,7 +150,7 @@ export default function ResetPassword() {
   return (
     <>
       <Head>
-        <title>パスワードリセット - クトゥルフ神話TRPG第6版 キャラクターシート</title>
+        <title>パスワードリセット - ChroLog</title>
       </Head>
       
       <Header showCreateButton={false} />
